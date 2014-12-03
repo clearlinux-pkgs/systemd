@@ -1,0 +1,136 @@
+From 612ac03f5f3d1c4fde55710a46a5f0d097fde652 Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Thu, 24 Sep 2015 19:15:55 +0100
+Subject: [PATCH 26/30] kernel-install: Support alternate root usage via
+ SUBDIR/PLUGIN_SUBDIR
+
+This enables kernel-install to be used with an alternative root, by accepting a new
+--root argument. Supporting plugins can make use of the PLUGIN_SUBDIR variable
+in the environment to prefix all of their operations with the appropriate root.
+
+This ensures that only the files from the given root's filesystem tree are
+used, reducing any host contamination risks or even relying on software being
+present on the host system, during image/filesystem generations.
+
+Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
+---
+ src/kernel-install/kernel-install | 51 +++++++++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 13 deletions(-)
+
+diff --git a/src/kernel-install/kernel-install b/src/kernel-install/kernel-install
+index 3ae1d77..c398c0a 100644
+--- a/src/kernel-install/kernel-install
++++ b/src/kernel-install/kernel-install
+@@ -24,8 +24,11 @@ usage()
+     echo "Usage:"
+     echo "        $0 add KERNEL-VERSION KERNEL-IMAGE"
+     echo "        $0 remove KERNEL-VERSION"
++    echo "        $0 -p | --root: Optional. Prefix kernel-install operations with different root"
+ }
+ 
++SUBDIR=""
++
+ dropindirs_sort()
+ {
+     local suffix=$1; shift
+@@ -54,12 +57,26 @@ dropindirs_sort()
+ 
+ export LC_COLLATE=C
+ 
+-for i in "$@"; do
+-    if [ "$i" == "--help" -o "$i" == "-h" ]; then
++args=("$@")
++for ((i=0; i < $#; i++)) {
++    arg="${args[$i]}"
++    if [ "$arg" == "--help" -o "$arg" == "-h" ]; then
+         usage
+         exit 0
++    elif [ "$arg" == "--root" ]; then
++        if [[ "$((i+1))" -lt $# ]]; then
++            SUBDIR="${args[$((i+1))]}"
++            export SUBDIR
++        else
++            usage
++            exit 1
++        fi
+     fi
+-done
++}
++
++if [[ ! -z "${SUBDIR}" ]]; then
++    shift; shift;
++fi
+ 
+ if [[ "${0##*/}" == 'installkernel' ]]; then
+     COMMAND='add'
+@@ -71,14 +88,21 @@ fi
+ KERNEL_VERSION="$1"
+ KERNEL_IMAGE="$2"
+ 
+-if [[ -f /etc/machine-id ]]; then
+-    read MACHINE_ID < /etc/machine-id
++if [[ -f "${SUBDIR}/etc/machine-id" ]]; then
++    read MACHINE_ID < "${SUBDIR}/etc/machine-id"
+ fi
+ 
+ if ! [[ $MACHINE_ID ]]; then
+-    echo "Could not determine your machine ID from /etc/machine-id." >&2
++    echo "Could not determine your machine ID from ${SUBDIR}/etc/machine-id." >&2
+     echo "Please run 'systemd-machine-id-setup' as root. See man:machine-id(5)" >&2
+-    exit 1
++    if [[ -z "${SUBDIR}" ]]; then
++        exit 1
++    else
++        # Enable bare-chroot usage.
++        BOOT_DIR_ABS="${SUBDIR}/boot"
++    fi
++else
++    BOOT_DIR_ABS="${SUBDIR}/boot/$MACHINE_ID/$KERNEL_VERSION"
+ fi
+ 
+ if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
+@@ -86,13 +110,12 @@ if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
+     exit 1
+ fi
+ 
+-BOOT_DIR_ABS="/boot/$MACHINE_ID/$KERNEL_VERSION"
+ ret=0
+ 
+ readarray -t PLUGINS < <(
+     dropindirs_sort ".install" \
+-        "/etc/kernel/install.d" \
+-        "/usr/lib/kernel/install.d"
++        "${SUBDIR}/etc/kernel/install.d" \
++        "${SUBDIR}/usr/lib/kernel/install.d"
+ )
+ 
+ case $COMMAND in
+@@ -109,7 +132,7 @@ case $COMMAND in
+ 
+         for f in "${PLUGINS[@]}"; do
+             if [[ -x $f ]]; then
+-                "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE"
++                PLUGIN_SUBDIR="${SUBDIR}" "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE"
+                 ((ret+=$?))
+             fi
+         done
+@@ -118,12 +141,14 @@ case $COMMAND in
+     remove)
+         for f in "${PLUGINS[@]}"; do
+             if [[ -x $f ]]; then
+-                "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
++                PLUGIN_SUBDIR="${SUBDIR}" "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
+                 ((ret+=$?))
+             fi
+         done
+ 
+-        rm -rf "$BOOT_DIR_ABS"
++        if [[ -z "${SUBDIR}" ]]; then
++            rm -rf "$BOOT_DIR_ABS"
++        fi
+         ((ret+=$?))
+         ;;
+ 
+-- 
+2.8.1
+

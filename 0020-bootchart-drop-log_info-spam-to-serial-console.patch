@@ -1,0 +1,39 @@
+From 311bcdd6d946e3fbb67980c35907eb2f0412c605 Mon Sep 17 00:00:00 2001
+From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
+Date: Thu, 2 Jul 2015 09:43:35 +0100
+Subject: [PATCH 20/30] bootchart: drop log_info spam to serial console.
+
+---
+ src/bootchart/bootchart.c | 2 --
+ src/bootchart/svg.c       | 2 --
+ 2 files changed, 4 deletions(-)
+
+diff --git a/src/bootchart/bootchart.c b/src/bootchart/bootchart.c
+index b01c25f..5701838 100644
+--- a/src/bootchart/bootchart.c
++++ b/src/bootchart/bootchart.c
+@@ -491,8 +491,6 @@ int main(int argc, char *argv[]) {
+                 return EXIT_FAILURE;
+         }
+ 
+-        log_info("systemd-bootchart wrote %s\n", output_file);
+-
+         r = do_journal_append(output_file);
+         if (r < 0)
+                 return EXIT_FAILURE;
+diff --git a/src/bootchart/svg.c b/src/bootchart/svg.c
+index 97a6a31..a2810d2 100644
+--- a/src/bootchart/svg.c
++++ b/src/bootchart/svg.c
+@@ -175,8 +175,6 @@ static int svg_title(FILE *of, const char *build, int pscount, double log_start,
+                 snprintf(filename, sizeof(filename), "/sys/block/%s/device/model", rootbdev);
+ 
+                 r = read_one_line_file(filename, &model);
+-                if (r < 0)
+-                        log_info("Error reading disk model for %s: %m\n", rootbdev);
+         }
+ 
+         /* various utsname parameters */
+-- 
+2.8.1
+

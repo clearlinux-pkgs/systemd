@@ -1,0 +1,33 @@
+From c653b9654bc249fabd98592978b464b5a866f03f Mon Sep 17 00:00:00 2001
+From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
+Date: Tue, 23 Jun 2015 11:39:45 +0100
+Subject: [PATCH 09/30] tmpfiles: fix etc.conf for stateless.
+
+---
+ tmpfiles.d/etc.conf.m4 | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/tmpfiles.d/etc.conf.m4 b/tmpfiles.d/etc.conf.m4
+index ef7b9b9..1150c28 100644
+--- a/tmpfiles.d/etc.conf.m4
++++ b/tmpfiles.d/etc.conf.m4
+@@ -7,8 +7,6 @@
+ 
+ # See tmpfiles.d(5) for details
+ 
+-L /etc/os-release - - - - ../usr/lib/os-release
+-L /etc/localtime - - - - ../usr/share/zoneinfo/UTC
+ L+ /etc/mtab - - - - ../proc/self/mounts
+ m4_ifdef(`HAVE_SMACK_RUN_LABEL',
+ t /etc/mtab - - - - security.SMACK64=_
+@@ -16,7 +14,3 @@ t /etc/mtab - - - - security.SMACK64=_
+ m4_ifdef(`ENABLE_RESOLVED',
+ L! /etc/resolv.conf - - - - ../run/systemd/resolve/resolv.conf
+ )m4_dnl
+-C /etc/nsswitch.conf - - - -
+-m4_ifdef(`HAVE_PAM',
+-C /etc/pam.d - - - -
+-)m4_dnl
+-- 
+2.8.1
+

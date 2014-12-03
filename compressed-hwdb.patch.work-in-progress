@@ -1,0 +1,51 @@
+--- systemd-218/src/udev/udevadm-hwdb.c~	2014-12-04 19:26:51.000000000 -0500
++++ systemd-218/src/udev/udevadm-hwdb.c	2015-03-14 23:17:09.957276416 -0400
+@@ -22,6 +22,7 @@
+ #include <getopt.h>
+ #include <string.h>
+ #include <ctype.h>
++#include <zlib.h>
+ 
+ #include "util.h"
+ #include "strbuf.h"
+@@ -449,17 +450,17 @@
+                 HW_DATA,
+                 HW_NONE,
+         } state = HW_NONE;
+-        FILE *f;
++        gzFile *f;
+         char line[LINE_MAX];
+         struct udev_list match_list;
+ 
+         udev_list_init(udev, &match_list, false);
+ 
+-        f = fopen(filename, "re");
++        f = gzopen(filename, "rb");
+         if (f == NULL)
+                 return -errno;
+ 
+-        while (fgets(line, sizeof(line), f)) {
++        while (gzgets(line, sizeof(line), f)) {
+                 size_t len;
+                 char *pos;
+ 
+@@ -532,7 +533,7 @@
+                 };
+         }
+ 
+-        fclose(f);
++        gzclose(f);
+         udev_list_cleanup(&match_list);
+         return 0;
+ }
+--- systemd-218/Makefile.am~	2014-12-10 17:20:36.000000000 -0500
++++ systemd-218/Makefile.am	2015-03-14 23:19:07.584805869 -0400
+@@ -3572,7 +3572,7 @@
+ 	src/udev/udevadm-util.h
+ 
+ udevadm_LDADD = \
+-	libudev-core.la
++	libudev-core.la -lz
+ 
+ # Update hwdb on installation. Do not bother if installing
+ # in DESTDIR, since this is likely for packaging purposes.

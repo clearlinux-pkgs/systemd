@@ -1,0 +1,206 @@
+From fa7620d563465b86161606241b1b82b975f12bbe Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Thu, 23 Jul 2015 21:05:40 +0000
+Subject: [PATCH 23/30] Add kernel-efi-stub generator script
+
+---
+ Makefile.am                        |   3 +-
+ src/kernel-install/kernel-efi-stub | 172 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 174 insertions(+), 1 deletion(-)
+ create mode 100644 src/kernel-install/kernel-efi-stub
+
+diff --git a/Makefile.am b/Makefile.am
+index d8f3193..42ce7a2 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -383,7 +383,8 @@ bin_PROGRAMS = \
+ 	systemd-path
+ 
+ dist_bin_SCRIPTS = \
+-	src/kernel-install/kernel-install
++	src/kernel-install/kernel-install \
++	src/kernel-install/kernel-efi-stub
+ 
+ dist_kernelinstall_SCRIPTS = \
+ 	src/kernel-install/50-depmod.install \
+diff --git a/src/kernel-install/kernel-efi-stub b/src/kernel-install/kernel-efi-stub
+new file mode 100644
+index 0000000..7f6eacc
+--- /dev/null
++++ b/src/kernel-install/kernel-efi-stub
+@@ -0,0 +1,172 @@
++#!/bin/bash
++# -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
++# ex: ts=8 sw=4 sts=4 et filetype=sh
++#
++# This file is part of clear linux - systemd.
++#
++# Copyright 2015 Miguel Bernal Marin
++#
++# systemd is free software; you can redistribute it and/or modify it
++# under the terms of the GNU Lesser General Public License as published by
++# the Free Software Foundation; either version 2.1 of the License, or
++# (at your option) any later version.
++#
++# systemd is distributed in the hope that it will be useful, but
++# WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++# General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public License
++# along with systemd; If not, see <http://www.gnu.org/licenses/>.
++
++#https://plus.google.com/u/1/+KaySievers/posts/GisPmPBsqfK
++#http://people.freedesktop.org/~kay/efistub.txt
++
++DESTDIR=/boot/EFI/Linux
++OUTPUT=$DESTDIR/linux.efi
++EFISTUB=/usr/lib/systemd/boot/efi/linuxx64.efi.stub
++
++
++usage() {
++    echo "Usage: $0  [OPTIONS]"
++    echo
++    echo "Generates a kernel efistub file"
++    echo
++    echo "Mandatory: "
++    echo " -r, --os-release OS-RELEASE  file normally at /etc/os-release"
++    echo " -b, --bzimage BZIMAGE        Linux kernel file"
++    echo
++    echo "Optional: "
++    echo " -o, --output NAME            EFI-stub kernel output file"
++    echo " -c, --cmdline CMDLINE        Linux kernel cmdline file"
++    echo " -i, --initrd INITRD          Intrd file"
++    echo " -e, --efi-stub EFI-STUB      EFI-STUB file to take to generate"
++    echo "                                efi-stub kernel file"
++    echo " -h, --help                   Shows this help"
++    echo
++}
++
++validate_os_release() {
++    if [ -f "$1" ]; then
++        source $1
++        if [ -z "$PRETTY_NAME" ]; then
++            echo "Missing variables at os-release" 1>&2
++            exit 3
++        fi
++    else
++        echo "os-release is needed to generate an EFI stub file" 1>&2
++    exit 2
++    fi
++}
++
++validate_bzimage() {
++    if [ -f "$1" ]; then
++        file $1 | grep bzImage > /dev/null 2>&1
++        if [ "$?" != "0" ] ; then
++            echo "Not a bzImage file" 1>&2
++            exit 5
++        fi
++    else
++        echo "bzImage is needed to generate an EFI stub file" 1>&2
++        exit 4
++    fi
++}
++
++validate_objcopy() {
++    which objcopy > /dev/null 2>&1
++    if [ "$?" != "0" ] ; then
++        echo "No objcopy command found" 1>&2
++        exit 6
++    fi
++}
++
++validate_efistub() {
++    if [ -f "$1" ]; then
++        file $1 | grep EFI > /dev/null 2>&1
++        if [ "$?" != "0" ] ; then
++            echo "Not a EFI-stub file" 1>&2
++            exit 8
++        fi
++    else
++        echo "A valid EFI-stub file is needed " 1>&2
++        exit 7
++    fi
++}
++
++
++if [ "$#" -eq 0 ]; then
++    usage
++    exit 0
++fi
++
++while [ -n "$1" ]; do
++    case  "$1" in
++        -r | --os-release)
++            shift
++            OS_RELEASE=$1
++            shift
++            ;;
++        -c | --cmdline)
++            shift
++            CMDLINE=$1
++            shift
++            ;;
++        -b | --bzimage)
++            shift
++            BZIMAGE=$1
++            shift
++            ;;
++        -i | --initrd)
++            shift
++            INITRD=$1
++            shift
++            ;;
++        -o | --output)
++            shift
++            OUTPUT=$1
++            DESTDIR=$(dirname $OUTPUT)
++            shift
++            ;;
++        -e | --efi-stub)
++            shift
++            EFISTUB=$1
++            shift
++            ;;
++        -h | --help)
++            usage
++            exit 0
++            ;;
++        *)
++            echo "$1: Invalid option" 1>&2
++            exit 1
++            ;;
++    esac
++done
++
++validate_os_release $OS_RELEASE
++validate_bzimage $BZIMAGE
++validate_objcopy
++validate_efistub $EFISTUB
++
++OBJ_OSREL="--add-section .osrel=$OS_RELEASE --change-section-vma .osrel=0x20000"
++OBJ_LINUX="--add-section .linux=$BZIMAGE --change-section-vma .linux=0x40000"
++
++OBJ_CMDLINE=""
++if [ -f "$CMDLINE" ]; then
++    OBJ_CMDLINE="--add-section .cmdline=$CMDLINE --change-section-vma .cmdline=0x30000"
++fi
++
++OBJ_INITRD=""
++if [ -f "$INITRD" ]; then
++    OBJ_INITRD="--add-section .initrd=$INITRD --change-section-vma .initrd=0x3000000"
++fi
++
++
++if [ ! -d $DESTDIR ]; then
++    mkdir -p $DESTDIR
++fi
++
++
++CMD="objcopy $OBJ_OSREL $OBJ_CMDLINE $OBJ_LINUX $OBJ_INITRD $EFISTUB $OUTPUT"
++
++$CMD
+-- 
+2.8.1
+

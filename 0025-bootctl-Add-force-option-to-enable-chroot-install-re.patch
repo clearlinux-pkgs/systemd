@@ -1,0 +1,99 @@
+From 32bbdb70ad68a1b046329e5af9d79e070db7b2dd Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Wed, 23 Sep 2015 03:36:36 +0100
+Subject: [PATCH 25/30] bootctl: Add --force option to enable chroot
+ install/remove of sd-boot
+
+This change enables the force-installation, removal, and update of the
+systemd EFI boot binaries and supporting assets, without requiring verification
+of the ESP.
+
+Prior to this change it is assumed the target path is an ESP that can be probed,
+however this requires several virtual filesystems to be present and mounted,
+which may not be possible during filesystem image generation, or even for use
+within eltorito alt sections of an ISO.
+
+Given that an image invocation of bootctl may involve a host that has older,
+or even absent files required by bootctl (such as EFI files), it is not always
+safe to assume one can use the --path option. This change ensures that the
+utility can be used in a consistent manner, in a bare chroot (no virtual
+filesystems), without the need for custom systemd-boot installation routines
+currently seen in many places; i.e bootctl both sets and enforces the standard
+for its installation, configuration and layout.
+---
+ src/boot/bootctl.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
+index 4cf42d1..1794694 100644
+--- a/src/boot/bootctl.c
++++ b/src/boot/bootctl.c
+@@ -942,12 +942,14 @@ static int help(void) {
+ 
+ static const char *arg_path = "/boot";
+ static bool arg_touch_variables = true;
++static bool arg_force = false;
+ 
+ static int parse_argv(int argc, char *argv[]) {
+         enum {
+                 ARG_PATH = 0x100,
+                 ARG_VERSION,
+                 ARG_NO_VARIABLES,
++                ARG_FORCE,
+         };
+ 
+         static const struct option options[] = {
+@@ -955,6 +957,7 @@ static int parse_argv(int argc, char *argv[]) {
+                 { "version",      no_argument,       NULL, ARG_VERSION      },
+                 { "path",         required_argument, NULL, ARG_PATH         },
+                 { "no-variables", no_argument,       NULL, ARG_NO_VARIABLES },
++                { "force",        no_argument,       NULL, ARG_FORCE        },
+                 { NULL,           0,                 NULL, 0                }
+         };
+ 
+@@ -980,6 +983,9 @@ static int parse_argv(int argc, char *argv[]) {
+                 case ARG_NO_VARIABLES:
+                         arg_touch_variables = false;
+                         break;
++                case ARG_FORCE:
++                        arg_force = true;
++                        break;
+ 
+                 case '?':
+                         return -EINVAL;
+@@ -1039,10 +1045,13 @@ static int bootctl_main(int argc, char*argv[]) {
+         if (geteuid() != 0)
+                 return log_error_errno(EPERM, "Need to be root.");
+ 
++        if (arg_force && arg_action < ACTION_INSTALL)
++                return log_error_errno(EINVAL, "Can only force install, update or remove operations");
++
+         r = verify_esp(arg_path, &part, &pstart, &psize, &uuid);
+         if (r == -ENODEV && !arg_path)
+                 log_notice("You might want to use --path= to indicate the path to your ESP, in case it is not mounted on /boot.");
+-        if (r < 0)
++        if (r < 0 && !arg_force)
+                 return r;
+ 
+         switch (arg_action) {
+@@ -1115,7 +1124,7 @@ static int bootctl_main(int argc, char*argv[]) {
+                                 return r;
+                 }
+ 
+-                if (arg_touch_variables)
++                if (arg_touch_variables && !arg_force)
+                         r = install_variables(arg_path,
+                                               part, pstart, psize, uuid,
+                                               "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
+@@ -1125,7 +1134,7 @@ static int bootctl_main(int argc, char*argv[]) {
+         case ACTION_REMOVE:
+                 r = remove_binaries(arg_path);
+ 
+-                if (arg_touch_variables) {
++                if (arg_touch_variables && !arg_force) {
+                         q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
+                         if (q < 0 && r == 0)
+                                 r = q;
+-- 
+2.8.1
+

@@ -1,0 +1,40 @@
+From ffcd47812944367553882f482dfdaed830c5c2dd Mon Sep 17 00:00:00 2001
+From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
+Date: Tue, 23 Jun 2015 11:25:41 +0100
+Subject: [PATCH 03/30] journal: clearout & drop kmsg.
+
+---
+ src/journal/journald-kmsg.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/journal/journald-kmsg.c b/src/journal/journald-kmsg.c
+index e048e04..84b74f2 100644
+--- a/src/journal/journald-kmsg.c
++++ b/src/journal/journald-kmsg.c
+@@ -397,6 +397,7 @@ static int dispatch_dev_kmsg(sd_event_source *es, int fd, uint32_t revents, void
+ 
+ int server_open_dev_kmsg(Server *s) {
+         int r;
++        char buffer[40960];
+ 
+         assert(s);
+ 
+@@ -407,6 +408,15 @@ int server_open_dev_kmsg(Server *s) {
+                 return 0;
+         }
+ 
++
++        /* clear out /dev/kmsg, we don't want all its messages */
++        while (1) {
++                 int ret;
++                 ret = read(s->dev_kmsg_fd, buffer, 40960);
++                 if (ret <= 0)
++                         break;
++        }
++
+         r = sd_event_add_io(s->event, &s->dev_kmsg_event_source, s->dev_kmsg_fd, EPOLLIN, dispatch_dev_kmsg, s);
+         if (r < 0) {
+ 
+-- 
+2.8.1
+
