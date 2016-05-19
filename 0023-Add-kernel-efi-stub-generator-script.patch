@@ -1,4 +1,4 @@
-From fa7620d563465b86161606241b1b82b975f12bbe Mon Sep 17 00:00:00 2001
+From e31e3f27d6636f712ec69f48c551c31948b00853 Mon Sep 17 00:00:00 2001
 From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
 Date: Thu, 23 Jul 2015 21:05:40 +0000
 Subject: [PATCH 23/30] Add kernel-efi-stub generator script
@@ -10,10 +10,10 @@ Subject: [PATCH 23/30] Add kernel-efi-stub generator script
  create mode 100644 src/kernel-install/kernel-efi-stub
 
 diff --git a/Makefile.am b/Makefile.am
-index d8f3193..42ce7a2 100644
+index 895be49..6e00542 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -383,7 +383,8 @@ bin_PROGRAMS = \
+@@ -394,7 +394,8 @@ bin_PROGRAMS = \
  	systemd-path
  
  dist_bin_SCRIPTS = \
@@ -202,5 +202,5 @@ index 0000000..7f6eacc
 +
 +$CMD
 -- 
-2.8.1
+2.8.2
 

@@ -1,4 +1,4 @@
-From 585069c28ad07be224a768b547021e8c2c85f40a Mon Sep 17 00:00:00 2001
+From 1a290d4f9e6b32cc4da72f4c9d3a27e64d14f01b Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:33:47 +0100
 Subject: [PATCH 05/30] udev: add debug processing marks.
@@ -8,10 +8,10 @@ Subject: [PATCH 05/30] udev: add debug processing marks.
  1 file changed, 17 insertions(+)
 
 diff --git a/src/udev/udevd.c b/src/udev/udevd.c
-index 6d9d765..549a817 100644
+index 2c1c4a9..6fc4241 100644
 --- a/src/udev/udevd.c
 +++ b/src/udev/udevd.c
-@@ -378,6 +378,8 @@ static void worker_spawn(Manager *manager, struct event *event) {
+@@ -377,6 +377,8 @@ static void worker_spawn(Manager *manager, struct event *event) {
  
                  manager->event = sd_event_unref(manager->event);
  
@@ -20,7 +20,7 @@ index 6d9d765..549a817 100644
                  sigfillset(&mask);
                  fd_signal = signalfd(-1, &mask, SFD_NONBLOCK|SFD_CLOEXEC);
                  if (fd_signal < 0) {
-@@ -450,6 +452,10 @@ static void worker_spawn(Manager *manager, struct event *event) {
+@@ -449,6 +451,10 @@ static void worker_spawn(Manager *manager, struct event *event) {
                                  }
                          }
  
@@ -31,7 +31,7 @@ index 6d9d765..549a817 100644
                          /* needed for renaming netifs */
                          udev_event->rtnl = rtnl;
  
-@@ -459,28 +465,39 @@ static void worker_spawn(Manager *manager, struct event *event) {
+@@ -458,28 +464,39 @@ static void worker_spawn(Manager *manager, struct event *event) {
                                                   &manager->properties,
                                                   manager->rules);
  
@@ -72,5 +72,5 @@ index 6d9d765..549a817 100644
                          if (r < 0)
                                  log_error_errno(r, "failed to send result of seq %llu to main daemon: %m",
 -- 
-2.8.1
+2.8.2
 

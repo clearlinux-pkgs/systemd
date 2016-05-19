@@ -1,4 +1,4 @@
-From 8b9fb70d9fb83899f1c2bdd9aa936754f2ef810f Mon Sep 17 00:00:00 2001
+From ce777d58e1d13f804af81963834f532f98758b45 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:47:18 +0100
 Subject: [PATCH 13/30] sd-event: return malloc() memory reserves when main
@@ -9,10 +9,10 @@ Subject: [PATCH 13/30] sd-event: return malloc() memory reserves when main
  1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/src/libsystemd/sd-event/sd-event.c b/src/libsystemd/sd-event/sd-event.c
-index 700ac69..72d171c 100644
+index deef6ba..bf80185 100644
 --- a/src/libsystemd/sd-event/sd-event.c
 +++ b/src/libsystemd/sd-event/sd-event.c
-@@ -22,6 +22,7 @@
+@@ -20,6 +20,7 @@
  #include <sys/epoll.h>
  #include <sys/timerfd.h>
  #include <sys/wait.h>
@@ -20,8 +20,8 @@ index 700ac69..72d171c 100644
  
  #include "sd-daemon.h"
  #include "sd-event.h"
-@@ -2620,9 +2621,17 @@ _public_ int sd_event_run(sd_event *e, uint64_t timeout) {
-         assert_return(e->state == SD_EVENT_INITIAL, -EBUSY);
+@@ -2672,9 +2673,17 @@ _public_ int sd_event_run(sd_event *e, uint64_t timeout) {
+         }
  
          r = sd_event_prepare(e);
 -        if (r == 0)
@@ -38,8 +38,8 @@ index 700ac69..72d171c 100644
                  r = sd_event_wait(e, timeout);
 +        }
  
-         if (r > 0) {
-                 /* There's something now, then let's dispatch it */
+         if (e->profile_delays)
+                 e->last_run = now(CLOCK_MONOTONIC);
 -- 
-2.8.1
+2.8.2
 

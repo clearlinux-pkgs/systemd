@@ -1,4 +1,4 @@
-From 162bd3d19274359ea0cdd15f78a3d5d20a61fc04 Mon Sep 17 00:00:00 2001
+From 349fd83e489387ff27df4944d405a69dd16a0dd1 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:36:29 +0100
 Subject: [PATCH 06/30] Makefile.am: drop pam/nsswitch, ship legacy tmpfiles.
@@ -8,10 +8,10 @@ Subject: [PATCH 06/30] Makefile.am: drop pam/nsswitch, ship legacy tmpfiles.
  1 file changed, 12 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index 437905c..da76137 100644
+index 3b7cc1e..9c01d7b 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -2334,10 +2334,8 @@ dist_tmpfiles_DATA = \
+@@ -2389,10 +2389,8 @@ dist_tmpfiles_DATA = \
  	tmpfiles.d/systemd-nspawn.conf \
  	tmpfiles.d/journal-nocow.conf
  
@@ -22,7 +22,7 @@ index 437905c..da76137 100644
  
  SYSINIT_TARGET_WANTS += \
  	systemd-tmpfiles-setup-dev.service \
-@@ -2394,16 +2392,6 @@ EXTRA_DIST += \
+@@ -2453,16 +2451,6 @@ EXTRA_DIST += \
  	sysusers.d/basic.conf.in
  
  # ------------------------------------------------------------------------------
@@ -40,5 +40,5 @@ index 437905c..da76137 100644
  systemd_firstboot_SOURCES = \
  	src/firstboot/firstboot.c
 -- 
-2.8.1
+2.8.2
 

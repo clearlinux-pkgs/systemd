@@ -1,4 +1,4 @@
-From 898c76a905e4d257e64152157f0deb744874c995 Mon Sep 17 00:00:00 2001
+From 7516b0b3c1da4dc000d1b35294975797a70e17fc Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:26:11 +0100
 Subject: [PATCH 04/30] core: use mmap to load files.
@@ -8,10 +8,10 @@ Subject: [PATCH 04/30] core: use mmap to load files.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/core/load-fragment.c b/src/core/load-fragment.c
-index dda7926..73a9891 100644
+index b3dec7b..f7f92de 100644
 --- a/src/core/load-fragment.c
 +++ b/src/core/load-fragment.c
-@@ -3690,7 +3690,7 @@ static int open_follow(char **filename, FILE **_f, Set *names, char **_final) {
+@@ -3569,7 +3569,7 @@ static int open_follow(char **filename, FILE **_f, Set *names, char **_final) {
                  *filename = target;
          }
  
@@ -21,5 +21,5 @@ index dda7926..73a9891 100644
                  safe_close(fd);
                  return -errno;
 -- 
-2.8.1
+2.8.2
 

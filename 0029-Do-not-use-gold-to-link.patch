@@ -1,4 +1,4 @@
-From ae58575fcee5b0c529bd7fba88f30a925960b762 Mon Sep 17 00:00:00 2001
+From cbc180509801844c10218418f2cb496d92f32008 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 20 Apr 2016 11:22:41 -0700
 Subject: [PATCH 29/30] Do not use gold to link.
@@ -9,7 +9,7 @@ If acl/attr are linked without gold, then this won't compile.
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index 95258ff..e331716 100644
+index 0b79888..220c9a8 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -239,8 +239,7 @@ CC_CHECK_FLAGS_APPEND([with_ldflags], [LDFLAGS], [\
@@ -23,5 +23,5 @@ index 95258ff..e331716 100644
  
  AC_CHECK_SIZEOF(pid_t)
 -- 
-2.8.1
+2.8.2
 

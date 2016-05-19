@@ -1,4 +1,4 @@
-From 0bd03b6d00a3c2fdfdc1f29830afe4dfa573b305 Mon Sep 17 00:00:00 2001
+From 978df00f3819e0ce37931613785634e6f956d4b6 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 14 Oct 2015 17:40:56 +0100
 Subject: [PATCH 27/30] bootctl: Handle gummiboot -> systemd migration
@@ -16,10 +16,10 @@ route for distributions.
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 1794694..2c287c5 100644
+index 44c9c97..e258aa2 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -429,8 +429,10 @@ static int version_check(int fd, const char *from, const char *to) {
+@@ -425,8 +425,10 @@ static int version_check(int fd, const char *from, const char *to) {
          if (r < 0)
                  return r;
          if (r == 0 || compare_product(a, b) != 0) {
@@ -33,5 +33,5 @@ index 1794694..2c287c5 100644
  
          if (compare_version(a, b) < 0) {
 -- 
-2.8.1
+2.8.2
 

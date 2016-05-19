@@ -1,31 +1,36 @@
-From 52a54b019da643f19b9dd0f65b7965bb14242cca Mon Sep 17 00:00:00 2001
+From 1ea034bf50e97ed49a05fe3019b179f93e4db0e0 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
 Subject: [PATCH 16/30] core: do not apply presets.
 
 ---
- src/core/main.c | 8 --------
- 1 file changed, 8 deletions(-)
+ src/core/main.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
 diff --git a/src/core/main.c b/src/core/main.c
-index 97f904b..64c3643 100644
+index e208857..4939ac8 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -1661,14 +1661,6 @@ int main(int argc, char *argv[]) {
+@@ -1708,18 +1708,9 @@ int main(int argc, char *argv[]) {
+                 if (prctl(PR_SET_CHILD_SUBREAPER, 1) < 0)
+                         log_warning_errno(errno, "Failed to make us a subreaper: %m");
  
-         if (arg_running_as == MANAGER_SYSTEM) {
+-        if (arg_running_as == MANAGER_SYSTEM) {
++        if (arg_running_as == MANAGER_SYSTEM)
                  bump_rlimit_nofile(&saved_rlimit_nofile);
--
+ 
 -                if (empty_etc) {
 -                        r = unit_file_preset_all(UNIT_FILE_SYSTEM, false, NULL, UNIT_FILE_PRESET_ENABLE_ONLY, false, NULL, 0);
 -                        if (r < 0)
--                                log_warning_errno(r, "Failed to populate /etc with preset unit settings, ignoring: %m");
+-                                log_full_errno(r == -EEXIST ? LOG_NOTICE : LOG_WARNING, r, "Failed to populate /etc with preset unit settings, ignoring: %m");
 -                        else
 -                                log_info("Populated /etc with preset unit settings.");
 -                }
-         }
- 
+-        }
+-
          r = manager_new(arg_running_as, arg_action == ACTION_TEST, &m);
+         if (r < 0) {
+                 log_emergency_errno(r, "Failed to allocate manager object: %m");
 -- 
-2.8.1
+2.8.2
 

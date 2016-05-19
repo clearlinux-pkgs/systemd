@@ -1,4 +1,4 @@
-From 32bbdb70ad68a1b046329e5af9d79e070db7b2dd Mon Sep 17 00:00:00 2001
+From b378f8f18182abd36390733802a962133ef2893d Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
 Subject: [PATCH 25/30] bootctl: Add --force option to enable chroot
@@ -25,10 +25,10 @@ for its installation, configuration and layout.
  1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 4cf42d1..1794694 100644
+index e9baf69..44c9c97 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -942,12 +942,14 @@ static int help(void) {
+@@ -932,12 +932,14 @@ static int help(void) {
  
  static const char *arg_path = "/boot";
  static bool arg_touch_variables = true;
@@ -43,7 +43,7 @@ index 4cf42d1..1794694 100644
          };
  
          static const struct option options[] = {
-@@ -955,6 +957,7 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -945,6 +947,7 @@ static int parse_argv(int argc, char *argv[]) {
                  { "version",      no_argument,       NULL, ARG_VERSION      },
                  { "path",         required_argument, NULL, ARG_PATH         },
                  { "no-variables", no_argument,       NULL, ARG_NO_VARIABLES },
@@ -51,7 +51,7 @@ index 4cf42d1..1794694 100644
                  { NULL,           0,                 NULL, 0                }
          };
  
-@@ -980,6 +983,9 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -970,6 +973,9 @@ static int parse_argv(int argc, char *argv[]) {
                  case ARG_NO_VARIABLES:
                          arg_touch_variables = false;
                          break;
@@ -61,7 +61,7 @@ index 4cf42d1..1794694 100644
  
                  case '?':
                          return -EINVAL;
-@@ -1039,10 +1045,13 @@ static int bootctl_main(int argc, char*argv[]) {
+@@ -1029,10 +1035,13 @@ static int bootctl_main(int argc, char*argv[]) {
          if (geteuid() != 0)
                  return log_error_errno(EPERM, "Need to be root.");
  
@@ -76,7 +76,7 @@ index 4cf42d1..1794694 100644
                  return r;
  
          switch (arg_action) {
-@@ -1115,7 +1124,7 @@ static int bootctl_main(int argc, char*argv[]) {
+@@ -1105,7 +1114,7 @@ static int bootctl_main(int argc, char*argv[]) {
                                  return r;
                  }
  
@@ -85,7 +85,7 @@ index 4cf42d1..1794694 100644
                          r = install_variables(arg_path,
                                                part, pstart, psize, uuid,
                                                "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
-@@ -1125,7 +1134,7 @@ static int bootctl_main(int argc, char*argv[]) {
+@@ -1115,7 +1124,7 @@ static int bootctl_main(int argc, char*argv[]) {
          case ACTION_REMOVE:
                  r = remove_binaries(arg_path);
  
@@ -95,5 +95,5 @@ index 4cf42d1..1794694 100644
                          if (q < 0 && r == 0)
                                  r = q;
 -- 
-2.8.1
+2.8.2
 

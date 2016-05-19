@@ -1,12 +1,12 @@
 Name:           systemd
-Version:        228
-Release:        59
+Version:        229
+Release:        60
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
 Group:          base/shell
-Source0:        https://github.com/systemd/systemd/archive/v228.tar.gz
-Source1:	    20-pci-vendor-model.hwdb
+Source0:        https://github.com/systemd/systemd/archive/v229.tar.gz
+Source1:        20-pci-vendor-model.hwdb
 BuildRequires:  filesystem-chroot
 BuildRequires:  tzdata
 BuildRequires:  autoconf
@@ -133,7 +133,7 @@ Summary:         coredump component for systemd package
 %description coredump
 coredump component for systemd package
 
-%prep 
+%prep
 
 %setup -q -n %{name}-%{version}
 %patch01 -p1
@@ -167,7 +167,7 @@ coredump component for systemd package
 %patch29 -p1
 %patch30 -p1
 
-%build 
+%build
 export CFLAGS="$CFLAGS -fno-semantic-interposition"
 ./autogen.sh
 %configure \
@@ -221,6 +221,7 @@ ln -s %{_bindir}/systemctl %{buildroot}%{_sbindir}/shutdown
 # All users should be defined in the systemd-config package
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-remote.conf
 rmdir %{buildroot}/usr/lib/sysusers.d
 
 # These configuration files, are actually documentation only
@@ -315,6 +316,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %{_bindir}/systemd-notify
 %{_bindir}/systemd-nspawn
 %{_bindir}/systemd-path
+%{_bindir}/systemd-resolve
 %{_bindir}/systemd-run
 %{_bindir}/systemd-stdio-bridge
 %{_bindir}/systemd-tmpfiles
@@ -322,7 +324,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %{_bindir}/timedatectl
 %{_bindir}/udevadm
 
-/usr/lib//sysctl.d/50-default.conf
+/usr/lib/sysctl.d/50-default.conf
 /usr/lib/systemd/catalog/systemd.catalog
 /usr/lib/systemd/network/80-container-host0.network
 /usr/lib/systemd/network/80-container-ve.network

@@ -1,4 +1,4 @@
-From 576d868e4dfbf550821852e11039362d4779b456 Mon Sep 17 00:00:00 2001
+From ee483aac63a20acf23c10cd3ff1a4186b765bb57 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:22:48 +0100
 Subject: [PATCH 01/30] bootchart: use ms units in a few places.
@@ -8,10 +8,10 @@ Subject: [PATCH 01/30] bootchart: use ms units in a few places.
  1 file changed, 47 insertions(+), 20 deletions(-)
 
 diff --git a/src/bootchart/svg.c b/src/bootchart/svg.c
-index 2bf473f..e67d28e 100644
+index f2af535..cc6f599 100644
 --- a/src/bootchart/svg.c
 +++ b/src/bootchart/svg.c
-@@ -46,6 +46,7 @@
+@@ -45,6 +45,7 @@
  #define ps_to_graph(n) ((n) * arg_scale_y)
  #define kb_to_graph(m) ((m) * arg_scale_y * 0.0001)
  #define to_color(n) (192.0 - ((n) * 192.0))
@@ -19,7 +19,7 @@ index 2bf473f..e67d28e 100644
  
  static const char * const colorwheel[12] = {
          "rgb(255,32,32)",  // red
-@@ -209,7 +210,9 @@ static int svg_title(FILE *of, const char *build, int pscount, double log_start,
+@@ -208,7 +209,9 @@ static int svg_title(FILE *of, const char *build, int pscount, double log_start,
          fprintf(of, "<text class=\"t2\" x=\"20\" y=\"125\">Log start time: %.03fs</text>\n", log_start);
          fprintf(of, "<text class=\"t2\" x=\"20\" y=\"140\">Idle time: ");
  
@@ -30,7 +30,7 @@ index 2bf473f..e67d28e 100644
                  fprintf(of, "%.03fs", idletime);
          else
                  fprintf(of, "Not detected");
-@@ -990,10 +993,18 @@ static void svg_do_initcall(FILE *of, struct list_sample_data *head, int count_o
+@@ -989,10 +992,18 @@ static void svg_do_initcall(FILE *of, struct list_sample_data *head, int count_o
                          ps_to_graph(1));
  
                  /* label */
@@ -53,7 +53,7 @@ index 2bf473f..e67d28e 100644
  
                  kcount++;
          }
-@@ -1035,8 +1046,8 @@ static void svg_ps_bars(FILE *of,
+@@ -1034,8 +1045,8 @@ static void svg_ps_bars(FILE *of,
                          continue;
  
                  /* leave some trace of what we actually filtered etc. */
@@ -64,7 +64,7 @@ index 2bf473f..e67d28e 100644
  
                  starttime = ps->first->sampledata->sampletime;
  
-@@ -1116,13 +1127,23 @@ static void svg_ps_bars(FILE *of,
+@@ -1115,13 +1126,23 @@ static void svg_ps_bars(FILE *of,
                          w = starttime;
  
                  /* text label of process name */
@@ -95,7 +95,7 @@ index 2bf473f..e67d28e 100644
                  /* paint lines to the parent process */
                  if (ps->parent) {
                          /* horizontal part */
-@@ -1195,10 +1216,16 @@ static void svg_ps_bars(FILE *of,
+@@ -1194,10 +1215,16 @@ static void svg_ps_bars(FILE *of,
                                  -arg_scale_y,
                                  time_to_graph(idletime),
                                  ps_to_graph(pcount) + arg_scale_y);
@@ -116,7 +116,7 @@ index 2bf473f..e67d28e 100644
                          break;
                  }
  
-@@ -1231,9 +1258,9 @@ static void svg_top_ten_cpu(FILE *of, struct ps_struct *ps_first) {
+@@ -1230,9 +1257,9 @@ static void svg_top_ten_cpu(FILE *of, struct ps_struct *ps_first) {
  
          fprintf(of, "<text class=\"t2\" x=\"20\" y=\"0\">Top CPU consumers:</text>\n");
          for (n = 0; n < 10; n++)
@@ -129,5 +129,5 @@ index 2bf473f..e67d28e 100644
                          top[n]->pid);
  }
 -- 
-2.8.1
+2.8.2
 

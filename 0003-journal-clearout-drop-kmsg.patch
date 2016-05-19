@@ -1,4 +1,4 @@
-From ffcd47812944367553882f482dfdaed830c5c2dd Mon Sep 17 00:00:00 2001
+From b8640033d3517b22932c5b046ff981c0e24cf165 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:25:41 +0100
 Subject: [PATCH 03/30] journal: clearout & drop kmsg.
@@ -8,7 +8,7 @@ Subject: [PATCH 03/30] journal: clearout & drop kmsg.
  1 file changed, 10 insertions(+)
 
 diff --git a/src/journal/journald-kmsg.c b/src/journal/journald-kmsg.c
-index e048e04..84b74f2 100644
+index eb1ac90..6ea470b 100644
 --- a/src/journal/journald-kmsg.c
 +++ b/src/journal/journald-kmsg.c
 @@ -397,6 +397,7 @@ static int dispatch_dev_kmsg(sd_event_source *es, int fd, uint32_t revents, void
@@ -36,5 +36,5 @@ index e048e04..84b74f2 100644
          if (r < 0) {
  
 -- 
-2.8.1
+2.8.2
 

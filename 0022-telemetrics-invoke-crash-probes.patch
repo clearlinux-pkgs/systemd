@@ -1,4 +1,4 @@
-From 047d8c21481b99804f10c5d56d58016c59bdbf9a Mon Sep 17 00:00:00 2001
+From b5c6a54465763a1bedbdb97db85bbf52677e419a Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Fri, 10 Jul 2015 16:24:47 +0100
 Subject: [PATCH 22/30] telemetrics: invoke crash-probes.
@@ -6,21 +6,21 @@ Subject: [PATCH 22/30] telemetrics: invoke crash-probes.
 ---
  src/basic/util.c | 106 ++++++++++++++++++++++++++++++++++++++++++-------------
  src/basic/util.h |   5 +++
- 2 files changed, 87 insertions(+), 24 deletions(-)
+ 2 files changed, 86 insertions(+), 25 deletions(-)
 
 diff --git a/src/basic/util.c b/src/basic/util.c
-index 58617b3..fc2a80b 100644
+index ea1bed7..e42835e 100644
 --- a/src/basic/util.c
 +++ b/src/basic/util.c
-@@ -71,6 +71,7 @@
+@@ -36,6 +36,7 @@
  
  #include "alloc-util.h"
  #include "build.h"
 +#include "copy.h"
  #include "def.h"
- #include "device-nodes.h"
  #include "dirent-util.h"
-@@ -125,11 +126,73 @@ size_t page_size(void) {
+ #include "fd-util.h"
+@@ -78,11 +79,73 @@ size_t page_size(void) {
          return pgsz;
  }
  
@@ -95,7 +95,7 @@ index 58617b3..fc2a80b 100644
          /* We fork this all off from a child process so that we can
           * somewhat cleanly make use of SIGALRM to set a time limit */
  
-@@ -184,31 +247,20 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
+@@ -137,31 +200,19 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
                                  continue;
                          }
  
@@ -105,13 +105,10 @@ index 58617b3..fc2a80b 100644
 -                                continue;
 -                        } else if (pid == 0) {
 -                                char *_argv[2];
+-
+-                                assert_se(prctl(PR_SET_PDEATHSIG, SIGTERM) == 0);
 +                        /* Replace the placeholder value */
 +                        argv[0] = path;
- 
--                                assert_se(prctl(PR_SET_PDEATHSIG, SIGTERM) == 0);
-+                        r = handler(argv, data, &pid);
-+                        if (r < 0)
-+                                return r;
  
 -                                if (!argv) {
 -                                        _argv[0] = path;
@@ -119,16 +116,19 @@ index 58617b3..fc2a80b 100644
 -                                        argv = _argv;
 -                                } else
 -                                        argv[0] = path;
-+                        if (pid) {
-+                                log_debug("Spawned %s as " PID_FMT ".", path, pid);
- 
+-
 -                                execv(path, argv);
 -                                return log_error_errno(errno, "Failed to execute %s: %m", path);
++                        r = handler(argv, data, &pid);
++                        if (r < 0)
++                                return r;
++                        if (pid) {
++                                log_debug("Spawned %s as " PID_FMT ".", path, pid);
 +                                r = hashmap_put(pids, UINT_TO_PTR(pid), path);
 +                                if (r < 0)
 +                                        return log_oom();
                          }
--
+ 
 -                        log_debug("Spawned %s as " PID_FMT ".", path, pid);
 -
 -                        r = hashmap_put(pids, PID_TO_PTR(pid), path);
@@ -137,7 +137,7 @@ index 58617b3..fc2a80b 100644
                          path = NULL;
                  }
          }
-@@ -236,7 +288,8 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
+@@ -189,7 +240,8 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
          return 0;
  }
  
@@ -147,7 +147,7 @@ index 58617b3..fc2a80b 100644
          pid_t executor_pid;
          int r;
          char *name;
-@@ -258,13 +311,18 @@ void execute_directories(const char* const* directories, usec_t timeout, char *a
+@@ -211,13 +263,17 @@ void execute_directories(const char* const* directories, usec_t timeout, char *a
                  return;
  
          } else if (executor_pid == 0) {
@@ -163,15 +163,14 @@ index 58617b3..fc2a80b 100644
 +        return iterate_directories(directories, timeout, argv, do_cmd_exec, NULL);
 +}
 +
-+
  bool plymouth_running(void) {
          return access("/run/plymouth/pid", F_OK) >= 0;
  }
 diff --git a/src/basic/util.h b/src/basic/util.h
-index d9d2f72..3c94bf4 100644
+index 6f42c85..04a9cd2 100644
 --- a/src/basic/util.h
 +++ b/src/basic/util.h
-@@ -59,7 +59,12 @@ static inline const char* one_zero(bool b) {
+@@ -60,7 +60,12 @@ static inline const char* one_zero(bool b) {
          return b ? "1" : "0";
  }
  
@@ -185,5 +184,5 @@ index d9d2f72..3c94bf4 100644
  bool plymouth_running(void);
  
 -- 
-2.8.1
+2.8.2
 

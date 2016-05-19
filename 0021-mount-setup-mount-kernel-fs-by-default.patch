@@ -1,4 +1,4 @@
-From 6685b63f2dcb91434618306c4592dfdf8eb289eb Mon Sep 17 00:00:00 2001
+From 62cba334a1a3616b964839e567693ffd392db8e4 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
 Subject: [PATCH 21/30] mount-setup: mount kernel fs by default.
@@ -9,11 +9,11 @@ configfs, debugfs directly from mount-setup.
  Makefile.am                         | 10 ----------
  src/core/mount-setup.c              | 10 ++++++++++
  units/dev-hugepages.mount           | 20 --------------------
- units/dev-mqueue.mount              | 19 -------------------
- units/sys-fs-fuse-connections.mount | 20 --------------------
+ units/dev-mqueue.mount              | 20 --------------------
+ units/sys-fs-fuse-connections.mount | 21 ---------------------
  units/sys-kernel-config.mount       | 21 ---------------------
  units/sys-kernel-debug.mount        | 20 --------------------
- 7 files changed, 10 insertions(+), 110 deletions(-)
+ 7 files changed, 10 insertions(+), 112 deletions(-)
  delete mode 100644 units/dev-hugepages.mount
  delete mode 100644 units/dev-mqueue.mount
  delete mode 100644 units/sys-fs-fuse-connections.mount
@@ -21,10 +21,10 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/Makefile.am b/Makefile.am
-index da76137..d8f3193 100644
+index 9c01d7b..895be49 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -506,11 +506,6 @@ dist_systemunit_DATA = \
+@@ -510,11 +510,6 @@ dist_systemunit_DATA = \
  	units/x-.slice \
  	units/systemd-initctl.socket \
  	units/syslog.socket \
@@ -36,7 +36,7 @@ index da76137..d8f3193 100644
  	units/tmp.mount \
  	units/var-lib-machines.mount \
  	units/printer.target \
-@@ -6031,11 +6026,6 @@ MULTI_USER_TARGET_WANTS += \
+@@ -6137,11 +6132,6 @@ MULTI_USER_TARGET_WANTS += \
  	systemd-ask-password-wall.path
  
  SYSINIT_TARGET_WANTS += \
@@ -49,22 +49,22 @@ index da76137..d8f3193 100644
  	systemd-ask-password-console.path
  
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index 2b8d590..ddbad1a 100644
+index de1a361..079ca33 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
-@@ -112,6 +112,16 @@ static const MountPoint mount_table[] = {
+@@ -110,6 +110,16 @@ static const MountPoint mount_table[] = {
  #endif
          { "kdbusfs",    "/sys/fs/kdbus",             "kdbusfs",    NULL, MS_NOSUID|MS_NOEXEC|MS_NODEV,
            is_kdbus_wanted,       MNT_IN_CONTAINER },
-+        { "hugetlbfs",   "/dev/hugepages",           "hugetlbfs",   NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++        { "hugetlbfs",   "/dev/hugepages",           "hugetlbfs",   NULL,
 +          NULL,          MNT_NONE                   },
-+        { "mqueue",      "/dev/mqueue",              "mqueue",      NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++        { "mqueue",      "/dev/mqueue",              "mqueue",      NULL,
 +          NULL,          MNT_NONE                   },
-+        { "fusectl",     "/sys/fs/fuse/connections", "fusectl",     NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++        { "fusectl",     "/sys/fs/fuse/connections", "fusectl",     NULL,
 +          NULL,          MNT_NONE                   },
-+        { "configfs",    "/sys/kernel/config",       "configfs",    NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++        { "configfs",    "/sys/kernel/config",       "configfs",    NULL,
 +          NULL,          MNT_NONE                   },
-+        { "debugfs",    "/sys/kernel/debug",         "debugfs",     NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++        { "debugfs",    "/sys/kernel/debug",         "debugfs",     NULL,
 +          NULL,          MNT_NONE                   },
  };
  
@@ -97,10 +97,10 @@ index 882adb4..0000000
 -Type=hugetlbfs
 diff --git a/units/dev-mqueue.mount b/units/dev-mqueue.mount
 deleted file mode 100644
-index 5c11ca7..0000000
+index 8d29f96..0000000
 --- a/units/dev-mqueue.mount
 +++ /dev/null
-@@ -1,19 +0,0 @@
+@@ -1,20 +0,0 @@
 -#  This file is part of systemd.
 -#
 -#  systemd is free software; you can redistribute it and/or modify it
@@ -115,6 +115,7 @@ index 5c11ca7..0000000
 -DefaultDependencies=no
 -Before=sysinit.target
 -ConditionPathExists=/proc/sys/fs/mqueue
+-ConditionCapability=CAP_SYS_ADMIN
 -
 -[Mount]
 -What=mqueue
@@ -122,10 +123,10 @@ index 5c11ca7..0000000
 -Type=mqueue
 diff --git a/units/sys-fs-fuse-connections.mount b/units/sys-fs-fuse-connections.mount
 deleted file mode 100644
-index ebd93e2..0000000
+index e940beb..0000000
 --- a/units/sys-fs-fuse-connections.mount
 +++ /dev/null
-@@ -1,20 +0,0 @@
+@@ -1,21 +0,0 @@
 -#  This file is part of systemd.
 -#
 -#  systemd is free software; you can redistribute it and/or modify it
@@ -139,6 +140,7 @@ index ebd93e2..0000000
 -Documentation=http://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
 -DefaultDependencies=no
 -ConditionPathExists=/sys/fs/fuse/connections
+-ConditionCapability=CAP_SYS_ADMIN
 -After=systemd-modules-load.service
 -Before=sysinit.target
 -
@@ -200,5 +202,5 @@ index 1e94387..0000000
 -Where=/sys/kernel/debug
 -Type=debugfs
 -- 
-2.8.1
+2.8.2
 

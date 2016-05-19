@@ -1,4 +1,4 @@
-From 9f9ce56c067c24682d6377e14caeb4685e46395d Mon Sep 17 00:00:00 2001
+From 61c6070317580872d2c9d4ef00f52ecc81075d44 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:37:04 +0100
 Subject: [PATCH 07/30] bootchart: mount /proc early.
@@ -8,10 +8,10 @@ Subject: [PATCH 07/30] bootchart: mount /proc early.
  1 file changed, 3 insertions(+)
 
 diff --git a/src/bootchart/bootchart.c b/src/bootchart/bootchart.c
-index 6a0e1d6..b01c25f 100644
+index 77d158f..0587e9b 100644
 --- a/src/bootchart/bootchart.c
 +++ b/src/bootchart/bootchart.c
-@@ -42,6 +42,7 @@
+@@ -40,6 +40,7 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
@@ -19,7 +19,7 @@ index 6a0e1d6..b01c25f 100644
  #include <sys/resource.h>
  #include <time.h>
  #include <unistd.h>
-@@ -378,6 +379,8 @@ int main(int argc, char *argv[]) {
+@@ -376,6 +377,8 @@ int main(int argc, char *argv[]) {
                  graph_start = log_start - uptime;
          }
  
@@ -29,5 +29,5 @@ index 6a0e1d6..b01c25f 100644
                  log_error("Failed to setup graph start time.\n\n"
                            "The system uptime probably includes time that the system was suspended. "
 -- 
-2.8.1
+2.8.2
 

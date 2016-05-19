@@ -1,4 +1,4 @@
-From 4c37f95ad78a4c1f494227942c602c0af5fa55f8 Mon Sep 17 00:00:00 2001
+From 8f1a8e0377437366d7caadca58a367a3e0135c4d Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:35:47 +0100
 Subject: [PATCH 18/30] bootchart: fix per-cpu & small scales.
@@ -9,10 +9,10 @@ Closes systemd/systemd#330
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/bootchart/svg.c b/src/bootchart/svg.c
-index e67d28e..97a6a31 100644
+index cc6f599..af289bf 100644
 --- a/src/bootchart/svg.c
 +++ b/src/bootchart/svg.c
-@@ -244,7 +244,7 @@ static void svg_graph_box(FILE *of, struct list_sample_data *head, int height, d
+@@ -243,7 +243,7 @@ static void svg_graph_box(FILE *of, struct list_sample_data *head, int height, d
                  ps_to_graph(height));
  
          for (d = graph_start; d <= finalsample;
@@ -22,5 +22,5 @@ index e67d28e..97a6a31 100644
                  if (i % 50 == 0)
                          fprintf(of, "  <line class=\"sec5\" x1=\"%.03f\" y1=\"0\" x2=\"%.03f\" y2=\"%.03f\" />\n",
 -- 
-2.8.1
+2.8.2
 

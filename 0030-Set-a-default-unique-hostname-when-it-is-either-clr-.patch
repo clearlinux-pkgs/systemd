@@ -1,4 +1,4 @@
-From faf0fa24e441140ae1c1d2c44acfc0dba6509977 Mon Sep 17 00:00:00 2001
+From e702a9072991c7ed8ca0887b10af572de9220585 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
 Subject: [PATCH 30/30] Set a default, unique, hostname, when it is either
@@ -8,14 +8,14 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
  src/core/hostname-setup.c | 41 +++++++++++++++++++++++++++++++++++++++++
  src/core/hostname-setup.h |  2 ++
- src/core/main.c           |  3 +++
- 3 files changed, 46 insertions(+)
+ src/core/main.c           |  2 ++
+ 3 files changed, 45 insertions(+)
 
 diff --git a/src/core/hostname-setup.c b/src/core/hostname-setup.c
-index d92a9a7..abb296f 100644
+index 68be528..5c720e2 100644
 --- a/src/core/hostname-setup.c
 +++ b/src/core/hostname-setup.c
-@@ -22,6 +22,9 @@
+@@ -20,6 +20,9 @@
  #include <errno.h>
  #include <stdio.h>
  #include <stdlib.h>
@@ -25,7 +25,7 @@ index d92a9a7..abb296f 100644
  
  #include "alloc-util.h"
  #include "fileio.h"
-@@ -68,3 +71,41 @@ int hostname_setup(void) {
+@@ -66,3 +69,41 @@ int hostname_setup(void) {
          log_info("Set hostname to <%s>.", hn);
          return 0;
  }
@@ -68,29 +68,28 @@ index d92a9a7..abb296f 100644
 +}
 +
 diff --git a/src/core/hostname-setup.h b/src/core/hostname-setup.h
-index 8dc3a9e..91c83f4 100644
+index 73e8c75..f8a52a8 100644
 --- a/src/core/hostname-setup.h
 +++ b/src/core/hostname-setup.h
-@@ -22,3 +22,5 @@
+@@ -20,3 +20,5 @@
  ***/
  
  int hostname_setup(void);
 +
 +int set_first_hostname(void);
 diff --git a/src/core/main.c b/src/core/main.c
-index 64c3643..f34e13d 100644
+index 4939ac8..ff7c8e2 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -1618,6 +1618,9 @@ int main(int argc, char *argv[]) {
+@@ -1667,6 +1667,8 @@ int main(int argc, char *argv[]) {
  
                  hostname_setup();
-                 machine_id_setup(NULL);
-+                if (set_first_hostname() == 0) {
+                 machine_id_setup(NULL, arg_machine_id);
++                if (set_first_hostname() == 0)
 +                        log_error("Failed to initialise default hostname");
-+                }
                  loopback_setup();
                  bump_unix_max_dgram_qlen();
  
 -- 
-2.8.1
+2.8.2
 

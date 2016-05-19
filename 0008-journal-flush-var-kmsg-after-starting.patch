@@ -1,4 +1,4 @@
-From 1b621a6fb6d2df27ddfe22f07f3edc109bd9c842 Mon Sep 17 00:00:00 2001
+From 54cabda7a96076094d627c5bb4a57902aa29fff9 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
 Subject: [PATCH 08/30] journal: flush var/kmsg after starting.
@@ -8,10 +8,10 @@ Subject: [PATCH 08/30] journal: flush var/kmsg after starting.
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/src/journal/journald.c b/src/journal/journald.c
-index b9f5c09..42d8afd 100644
+index 272acb7..f205117 100644
 --- a/src/journal/journald.c
 +++ b/src/journal/journald.c
-@@ -54,12 +54,13 @@ int main(int argc, char *argv[]) {
+@@ -52,14 +52,15 @@ int main(int argc, char *argv[]) {
                  goto finish;
  
          server_vacuum(&server, false, false);
@@ -19,7 +19,9 @@ index b9f5c09..42d8afd 100644
 -        server_flush_dev_kmsg(&server);
  
          log_debug("systemd-journald running as pid "PID_FMT, getpid());
-         server_driver_message(&server, SD_MESSAGE_JOURNAL_START, "Journal started");
+         server_driver_message(&server, SD_MESSAGE_JOURNAL_START,
+                               LOG_MESSAGE("Journal started"),
+                               NULL);
  
 +        server_flush_to_var(&server);
 +        server_flush_dev_kmsg(&server);
@@ -28,5 +30,5 @@ index b9f5c09..42d8afd 100644
                  usec_t t = USEC_INFINITY, n;
  
 -- 
-2.8.1
+2.8.2
 
