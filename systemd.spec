@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        60
+Release:        61
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -188,7 +188,6 @@ export CFLAGS="$CFLAGS -fno-semantic-interposition"
     --disable-journald-authenticate \
     --disable-microhttpd \
     --localstatedir=%{_localstatedir} \
-    --enable-bootchart \
     --enable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
@@ -226,7 +225,6 @@ rmdir %{buildroot}/usr/lib/sysusers.d
 
 # These configuration files, are actually documentation only
 # We have manpages for that
-rm -f %{buildroot}/etc/systemd/bootchart.conf
 rm -f %{buildroot}/etc/systemd/journald.conf
 rm -f %{buildroot}/etc/systemd/logind.conf
 rm -f %{buildroot}/etc/systemd/resolved.conf
@@ -285,6 +283,11 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %exclude /usr/share/dbus-1/system-services/org.freedesktop.import1.service
 %exclude /usr/share/dbus-1/system.d/org.freedesktop.import1.conf
 %exclude /usr/lib/systemd/systemd-coredump
+%exclude /usr/lib/systemd/systemd-bootchart
+%exclude /usr/lib/systemd/system/systemd-bootchart.service
+%exclude /usr/share/man/man1/systemd-bootchart.1
+%exclude /usr/share/man/man5/bootchart.conf.5
+%exclude /usr/share/man/man5/bootchart.conf.d.5
 
 %{_datadir}/pam.d/systemd-user
 
