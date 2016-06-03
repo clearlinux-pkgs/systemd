@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        61
+Release:        62
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -236,6 +236,11 @@ rmdir %{buildroot}/etc/udev/hwdb.d
 rmdir %{buildroot}/etc/udev/rules.d
 rmdir %{buildroot}/etc/udev
 
+# remove bootchart man pages
+rm -f %{buildroot}/usr/share/man/man1/systemd-bootchart.1
+rm -f %{buildroot}/usr/share/man/man5/bootchart.conf.5
+rm -f %{buildroot}/usr/share/man/man5/bootchart.conf.d.5
+
 # Do not ship broken symlink
 rm -f %{buildroot}/etc/xdg/systemd/user
 
@@ -285,9 +290,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %exclude /usr/lib/systemd/systemd-coredump
 %exclude /usr/lib/systemd/systemd-bootchart
 %exclude /usr/lib/systemd/system/systemd-bootchart.service
-%exclude /usr/share/man/man1/systemd-bootchart.1
-%exclude /usr/share/man/man5/bootchart.conf.5
-%exclude /usr/share/man/man5/bootchart.conf.d.5
 
 %{_datadir}/pam.d/systemd-user
 
