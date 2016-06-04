@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        62
+Release:        63
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -168,9 +168,8 @@ coredump component for systemd package
 %patch30 -p1
 
 %build
-export CFLAGS="$CFLAGS -fno-semantic-interposition"
 ./autogen.sh
-%configure \
+%configure CFLAGS="$CFLAGS -fno-semantic-interposition -Os -fno-tree-vectorize" \
     --enable-pam \
     --disable-smack \
     --disable-silent-rules \
