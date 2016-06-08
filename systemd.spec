@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        64
+Release:        65
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -78,7 +78,7 @@ Patch27: 0027-bootctl-Handle-gummiboot-systemd-migration.patch
 Patch28: 0028-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
 Patch29: 0029-Do-not-use-gold-to-link.patch
 Patch30: 0030-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
-Patch31: no-devurandom.patch
+Patch31: systemd-rdrand.patch
 
 %description
 System and service manager.
@@ -182,6 +182,7 @@ coredump component for systemd package
     --disable-kdbus \
     --disable-split-usr \
     --without-python \
+    --enable-rdrand \
     --sysconfdir=%{_sysconfdir} \
     --with-sysvinit-path="" \
     --with-sysvrcnd-path="" \
