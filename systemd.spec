@@ -341,8 +341,8 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system-generators/systemd-debug-generator
 /usr/lib/systemd/system-generators/systemd-fstab-generator
 /usr/lib/systemd/system-generators/systemd-getty-generator
-/usr/lib/systemd/system-generators/systemd-gpt-auto-generator
-/usr/lib/systemd/system-generators/systemd-cryptsetup-generator
+%exclude /usr/lib/systemd/system-generators/systemd-gpt-auto-generator
+%exclude /usr/lib/systemd/system-generators/systemd-cryptsetup-generator
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 /usr/lib/systemd/system-preset/90-systemd.preset
 /usr/lib/systemd/system/-.slice
