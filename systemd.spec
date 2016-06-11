@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        66
+Release:        67
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -176,7 +176,7 @@ coredump component for systemd package
     --enable-pam \
     --disable-smack \
     --disable-silent-rules \
-    --enable-xz \
+    --disable-xz \
     --enable-lz4 \
     --enable-coredump \
     --disable-kdbus \
@@ -187,7 +187,7 @@ coredump component for systemd package
     --with-sysvinit-path="" \
     --with-sysvrcnd-path="" \
     ac_cv_path_KILL=/usr/bin/kill \
-    --enable-gcrypt \
+    --disable-gcrypt \
     --disable-journald-authenticate \
     --disable-microhttpd \
     --localstatedir=%{_localstatedir} \
@@ -285,11 +285,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-update-done.service
 %exclude /usr/lib/systemd/systemd-update-done
-%exclude /usr/lib/systemd/system/systemd-importd.service
-%exclude /usr/lib/systemd/systemd-importd
-%exclude /usr/lib/systemd/systemd-import
-%exclude /usr/share/dbus-1/system-services/org.freedesktop.import1.service
-%exclude /usr/share/dbus-1/system.d/org.freedesktop.import1.conf
 %exclude /usr/lib/systemd/systemd-coredump
 %exclude /usr/lib/systemd/systemd-bootchart
 %exclude /usr/lib/systemd/system/systemd-bootchart.service
@@ -470,7 +465,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/systemd
 /usr/lib/systemd/systemd-*
 %exclude /usr/lib/systemd/systemd-journal-upload
-%exclude /usr/lib/systemd/systemd-pull
 /usr/lib/systemd/user/*.service
 /usr/lib/systemd/user/*.socket
 /usr/lib/systemd/user/*.target
@@ -542,7 +536,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/share/polkit-1/actions/*
 /usr/bin/systemd-firstboot
 /usr/lib/systemd/systemd-journal-upload
-/usr/lib/systemd/systemd-pull
 %{_bindir}/systemd-sysusers
 /usr/lib/systemd/system-generators/systemd-system-update-generator
 /usr/lib/systemd/system/ldconfig.service
@@ -565,17 +558,8 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/udev/rules.d/60-persistent-v4l.rules
 /usr/lib/udev/rules.d/75-probe_mtd.rules
 /usr/lib/udev/rules.d/78-sound-card.rules
-/usr/lib/systemd/system/dbus-org.freedesktop.import1.service
-/usr/lib/systemd/system/org.freedesktop.import1.busname
-/usr/lib/systemd/system/busnames.target.wants/org.freedesktop.import1.busname
 /usr/lib/systemd/system/local-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/var-lib-machines.mount
-/usr/lib/systemd/system/systemd-importd.service
-/usr/lib/systemd/systemd-importd
-/usr/lib/systemd/systemd-import
-/usr/share/dbus-1/system-services/org.freedesktop.import1.service
-/usr/share/dbus-1/system.d/org.freedesktop.import1.conf
-/usr/lib/systemd/import-pubring.gpg
 
 
 %files locale -f systemd.lang
