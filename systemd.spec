@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        67
+Release:        68
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -336,7 +336,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system-generators/systemd-debug-generator
 /usr/lib/systemd/system-generators/systemd-fstab-generator
 /usr/lib/systemd/system-generators/systemd-getty-generator
-%exclude /usr/lib/systemd/system-generators/systemd-gpt-auto-generator
+/usr/lib/systemd/system-generators/systemd-gpt-auto-generator
 %exclude /usr/lib/systemd/system-generators/systemd-cryptsetup-generator
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 /usr/lib/systemd/system-preset/90-systemd.preset
