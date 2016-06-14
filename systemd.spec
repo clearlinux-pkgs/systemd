@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        68
+Release:        69
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
