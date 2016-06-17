@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        69
+Release:        70
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -52,7 +52,6 @@ Patch01: 0001-bootchart-use-ms-units-in-a-few-places.patch
 Patch02: 0002-journal-raise-compression-threshold.patch
 Patch03: 0003-journal-clearout-drop-kmsg.patch
 Patch04: 0004-core-use-mmap-to-load-files.patch
-Patch05: 0005-udev-add-debug-processing-marks.patch
 Patch06: 0006-Makefile.am-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
 Patch07: 0007-bootchart-mount-proc-early.patch
 Patch08: 0008-journal-flush-var-kmsg-after-starting.patch
@@ -142,7 +141,6 @@ coredump component for systemd package
 %patch02 -p1
 %patch03 -p1
 %patch04 -p1
-%patch05 -p1
 %patch06 -p1
 %patch07 -p1
 %patch08 -p1
