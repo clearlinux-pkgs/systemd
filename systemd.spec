@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        71
+Release:        72
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -78,6 +78,7 @@ Patch28: 0028-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
 Patch29: 0029-Do-not-use-gold-to-link.patch
 Patch30: 0030-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
 Patch31: systemd-rdrand.patch
+Patch32: udev-children.patch
 
 %description
 System and service manager.
@@ -167,6 +168,7 @@ coredump component for systemd package
 %patch29 -p1
 %patch30 -p1
 %patch31 -p1
+%patch32 -p1
 
 %build
 ./autogen.sh

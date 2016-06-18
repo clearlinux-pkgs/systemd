@@ -1,0 +1,11 @@
+--- systemd-229/units/systemd-udevd.service.in~	2016-02-11 16:28:00.000000000 +0000
++++ systemd-229/units/systemd-udevd.service.in	2016-06-18 17:32:40.653887670 +0000
+@@ -20,7 +20,7 @@
+ Sockets=systemd-udevd-control.socket systemd-udevd-kernel.socket
+ Restart=always
+ RestartSec=0
+-ExecStart=@rootlibexecdir@/systemd-udevd
++ExecStart=@rootlibexecdir@/systemd-udevd  --children-max=64
+ MountFlags=slave
+ KillMode=mixed
+ WatchdogSec=3min
