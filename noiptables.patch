@@ -1,0 +1,16 @@
+--- systemd-229/src/core/kmod-setup.c~	2016-02-11 16:28:00.000000000 +0000
++++ systemd-229/src/core/kmod-setup.c	2016-06-19 00:50:33.862072356 +0000
+@@ -64,13 +64,6 @@
+                 /* this should never be a module */
+                 { "unix",      "/proc/net/unix",            true,   true,    NULL      },
+ 
+-                /* IPC is needed before we bring up any other services */
+-                { "kdbus",     "/sys/fs/kdbus",             false,  false,   is_kdbus_wanted },
+-
+-#ifdef HAVE_LIBIPTC
+-                /* netfilter is needed by networkd, nspawn among others, and cannot be autoloaded */
+-                { "ip_tables", "/proc/net/ip_tables_names", false,  false,   NULL      },
+-#endif
+         };
+         struct kmod_ctx *ctx = NULL;
+         unsigned int i;
