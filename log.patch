@@ -1,0 +1,120 @@
+temporary print hack for diagnostics; should be removed in July 2016
+
+--- systemd-229/src/core/main.c.org	2016-06-19 14:41:03.558384909 +0000
++++ systemd-229/src/core/main.c	2016-06-20 17:13:55.403962013 +0000
+@@ -1358,17 +1358,24 @@
+                 make_null_stdio();
+                 log_set_target(LOG_TARGET_KMSG);
+                 log_open();
++                
++                log_error("log started");
++
+ 
+                 if (in_initrd())
+                         initrd_timestamp = userspace_timestamp;
+ 
+                 if (!skip_setup) {
++                        log_error("mount_setup_early");
++
+                         r = mount_setup_early();
+                         if (r < 0) {
+                                 error_message = "Failed to early mount API filesystems";
+                                 goto finish;
+                         }
+                         dual_timestamp_get(&security_start_timestamp);
++                        log_error("mac_selinux_setup");
++
+                         if (mac_selinux_setup(&loaded_policy) < 0) {
+                                 error_message = "Failed to load SELinux policy";
+                                 goto finish;
+@@ -1381,6 +1388,7 @@
+                         }
+                         dual_timestamp_get(&security_finish_timestamp);
+                 }
++                log_error("mac_selinux_init");
+ 
+                 if (mac_selinux_init(NULL) < 0) {
+                         error_message = "Failed to initialize SELinux policy";
+@@ -1388,6 +1396,8 @@
+                 }
+ 
+                 if (!skip_setup) {
++                        log_error("clock_is_localtime");
++
+                         if (clock_is_localtime() > 0) {
+                                 int min;
+ 
+@@ -1480,12 +1490,14 @@
+                 error_message = "Failed to set default unit";
+                 goto finish;
+         }
++        log_error("initialize_join_controllers");
+ 
+         r = initialize_join_controllers();
+         if (r < 0) {
+                 error_message = "Failed to initialize cgroup controllers";
+                 goto finish;
+         }
++        log_error("kmod_setup");
+ 
+         /* Mount /proc, /sys and friends, so that /proc/cmdline and
+          * /proc/$PID/fd is available. */
+@@ -1495,17 +1507,23 @@
+                 if (!skip_setup)
+                         kmod_setup();
+ 
++                log_error("Finished kmod_setup");
++
+                 r = mount_setup(loaded_policy);
+                 if (r < 0) {
+                         error_message = "Failed to mount API filesystems";
+                         goto finish;
+                 }
++                log_error("Finished mount_setup");
++
+         }
+ 
+         /* Reset all signal handlers. */
+         (void) reset_all_signal_handlers();
+         (void) ignore_signals(SIGNALS_IGNORE, -1);
+ 
++        log_error("parse_config_file");
++
+         if (parse_config_file() < 0) {
+                 error_message = "Failed to parse config file";
+                 goto finish;
+@@ -1549,6 +1567,8 @@
+         if (arg_action == ACTION_TEST)
+                 skip_setup = true;
+ 
++        log_error("pager_open_if_enabled");
++
+         pager_open_if_enabled();
+ 
+         if (arg_action == ACTION_HELP) {
+@@ -1575,6 +1595,8 @@
+         assert_se(arg_action == ACTION_RUN || arg_action == ACTION_TEST);
+ 
+         /* Close logging fds, in order not to confuse fdset below */
++        log_error("log_close");
++
+         log_close();
+ 
+         /* Remember open file descriptors for later deserialization */
+@@ -1611,6 +1633,8 @@
+ 
+         /* Open the logging devices, if possible and necessary */
+         log_open();
++        log_error("log_open");
++
+ 
+         if (arg_show_status == _SHOW_STATUS_UNSET)
+                 arg_show_status = SHOW_STATUS_YES;
+@@ -1619,6 +1643,7 @@
+          * kernel. */
+         if (getpid() == 1) {
+                 install_crash_handler();
++                log_error("mount_cgroup_controllers");
+ 
+                 r = mount_cgroup_controllers(arg_join_controllers);
+                 if (r < 0)
