@@ -48,12 +48,10 @@ BuildRequires:  iptables-dev
 Requires(post): glibc-utils
 Requires(post): shadow
 Requires:       clr-systemd-config
-Patch01: 0001-bootchart-use-ms-units-in-a-few-places.patch
 Patch02: 0002-journal-raise-compression-threshold.patch
 Patch03: 0003-journal-clearout-drop-kmsg.patch
 Patch04: 0004-core-use-mmap-to-load-files.patch
 Patch06: 0006-Makefile.am-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
-Patch07: 0007-bootchart-mount-proc-early.patch
 Patch08: 0008-journal-flush-var-kmsg-after-starting.patch
 Patch09: 0009-tmpfiles-fix-etc.conf-for-stateless.patch
 Patch10: 0010-logind-pam-fix-systemd-user-to-include-common-sessio.patch
@@ -64,9 +62,7 @@ Patch14: 0014-tmpfiles-create-locale-cache-dir.patch
 Patch15: 0015-efi-boot-generator-Do-not-automount-boot-partition.patch
 Patch16: 0016-core-do-not-apply-presets.patch
 Patch17: 0017-locale-setup-set-default-locale-to-a-unicode-one.patch
-Patch18: 0018-bootchart-fix-per-cpu-small-scales.patch
 Patch19: 0019-autoconf-add-option-to-disable-journald-authenticati.patch
-Patch20: 0020-bootchart-drop-log_info-spam-to-serial-console.patch
 Patch21: 0021-mount-setup-mount-kernel-fs-by-default.patch
 Patch22: 0022-telemetrics-invoke-crash-probes.patch
 Patch23: 0023-Add-kernel-efi-stub-generator-script.patch
@@ -139,12 +135,10 @@ coredump component for systemd package
 %prep
 
 %setup -q -n %{name}-%{version}
-%patch01 -p1
 %patch02 -p1
 %patch03 -p1
 %patch04 -p1
 %patch06 -p1
-%patch07 -p1
 %patch08 -p1
 %patch09 -p1
 %patch10 -p1
@@ -155,9 +149,7 @@ coredump component for systemd package
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
-%patch18 -p1
 %patch19 -p1
-%patch20 -p1
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
@@ -193,6 +185,7 @@ coredump component for systemd package
     --disable-journald-authenticate \
     --disable-microhttpd \
     --localstatedir=%{_localstatedir} \
+    --disable-bootchart \
     --enable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
@@ -241,11 +234,6 @@ rmdir %{buildroot}/etc/udev/hwdb.d
 rmdir %{buildroot}/etc/udev/rules.d
 rmdir %{buildroot}/etc/udev
 
-# remove bootchart man pages
-rm -f %{buildroot}/usr/share/man/man1/systemd-bootchart.1
-rm -f %{buildroot}/usr/share/man/man5/bootchart.conf.5
-rm -f %{buildroot}/usr/share/man/man5/bootchart.conf.d.5
-
 # Do not ship broken symlink
 rm -f %{buildroot}/etc/xdg/systemd/user
 
@@ -288,8 +276,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %exclude /usr/lib/systemd/system/systemd-update-done.service
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/systemd/systemd-coredump
-%exclude /usr/lib/systemd/systemd-bootchart
-%exclude /usr/lib/systemd/system/systemd-bootchart.service
 
 %{_datadir}/pam.d/systemd-user
 
