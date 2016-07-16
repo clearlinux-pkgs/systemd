@@ -65,7 +65,6 @@ Patch17: 0017-locale-setup-set-default-locale-to-a-unicode-one.patch
 Patch19: 0019-autoconf-add-option-to-disable-journald-authenticati.patch
 Patch21: 0021-mount-setup-mount-kernel-fs-by-default.patch
 Patch22: 0022-telemetrics-invoke-crash-probes.patch
-Patch23: 0023-Add-kernel-efi-stub-generator-script.patch
 Patch24: 0024-Ship-default-services-in-system-unit-dir.patch
 Patch25: 0025-bootctl-Add-force-option-to-enable-chroot-install-re.patch
 Patch26: 0026-kernel-install-Support-alternate-root-usage-via-SUBD.patch
@@ -152,7 +151,6 @@ coredump component for systemd package
 %patch19 -p1
 %patch21 -p1
 %patch22 -p1
-%patch23 -p1
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
