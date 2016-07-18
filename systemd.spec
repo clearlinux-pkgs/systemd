@@ -76,6 +76,7 @@ Patch0024: 0024-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
 Patch0025: 0025-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
 Patch0026: 0026-more-udev-children-workers.patch
 Patch0027: 0027-not-load-iptables.patch
+Patch0028: 0028-force-write-resovl.conf-at-boot.patch
 
 %description
 System and service manager.
@@ -163,6 +164,7 @@ coredump component for systemd package
 %patch0025 -p1
 %patch0026 -p1
 %patch0027 -p1
+%patch0028 -p1
 
 %build
 ./autogen.sh
