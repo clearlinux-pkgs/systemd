@@ -1,6 +1,17 @@
---- systemd-229/src/core/kmod-setup.c~	2016-02-11 16:28:00.000000000 +0000
-+++ systemd-229/src/core/kmod-setup.c	2016-06-19 00:50:33.862072356 +0000
-@@ -64,13 +64,6 @@
+From 224162c9db2e2b630bd0167db8c8ccf5698b29a6 Mon Sep 17 00:00:00 2001
+From: Arjan van de Ven <arjan@linux.intel.com>
+Date: Sun, 19 Jun 2016 00:51:22 +0000
+Subject: [PATCH 27/28] not load iptables
+
+---
+ src/core/kmod-setup.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/src/core/kmod-setup.c b/src/core/kmod-setup.c
+index 3503db5..21a3cc5 100644
+--- a/src/core/kmod-setup.c
++++ b/src/core/kmod-setup.c
+@@ -64,13 +64,6 @@ int kmod_setup(void) {
                  /* this should never be a module */
                  { "unix",      "/proc/net/unix",            true,   true,    NULL      },
  
@@ -14,3 +25,6 @@
          };
          struct kmod_ctx *ctx = NULL;
          unsigned int i;
+-- 
+2.9.0
+

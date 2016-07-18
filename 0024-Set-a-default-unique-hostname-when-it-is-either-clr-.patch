@@ -1,18 +1,18 @@
-From e702a9072991c7ed8ca0887b10af572de9220585 Mon Sep 17 00:00:00 2001
+From c2722a7d28399e4ba66420bcf7f5f2988e887ab6 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
-Subject: [PATCH 30/30] Set a default, unique, hostname, when it is either
+Subject: [PATCH 24/28] Set a default, unique, hostname, when it is either
  'clr' or 'localhost'
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
- src/core/hostname-setup.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ src/core/hostname-setup.c | 40 ++++++++++++++++++++++++++++++++++++++++
  src/core/hostname-setup.h |  2 ++
  src/core/main.c           |  2 ++
- 3 files changed, 45 insertions(+)
+ 3 files changed, 44 insertions(+)
 
 diff --git a/src/core/hostname-setup.c b/src/core/hostname-setup.c
-index 68be528..5c720e2 100644
+index 68be528..4fe2886 100644
 --- a/src/core/hostname-setup.c
 +++ b/src/core/hostname-setup.c
 @@ -20,6 +20,9 @@
@@ -25,7 +25,7 @@ index 68be528..5c720e2 100644
  
  #include "alloc-util.h"
  #include "fileio.h"
-@@ -66,3 +69,41 @@ int hostname_setup(void) {
+@@ -66,3 +69,40 @@ int hostname_setup(void) {
          log_info("Set hostname to <%s>.", hn);
          return 0;
  }
@@ -66,7 +66,6 @@ index 68be528..5c720e2 100644
 +
 +        return 0;
 +}
-+
 diff --git a/src/core/hostname-setup.h b/src/core/hostname-setup.h
 index 73e8c75..f8a52a8 100644
 --- a/src/core/hostname-setup.h
@@ -91,5 +90,5 @@ index 4939ac8..ff7c8e2 100644
                  bump_unix_max_dgram_qlen();
  
 -- 
-2.8.2
+2.9.0
 

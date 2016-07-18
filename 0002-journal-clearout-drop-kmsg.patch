@@ -1,7 +1,7 @@
-From b8640033d3517b22932c5b046ff981c0e24cf165 Mon Sep 17 00:00:00 2001
+From 72f8e5d6e8df53f76208a276ada5ebd3eb72c712 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:25:41 +0100
-Subject: [PATCH 03/30] journal: clearout & drop kmsg.
+Subject: [PATCH 02/28] journal: clearout & drop kmsg.
 
 ---
  src/journal/journald-kmsg.c | 10 ++++++++++
@@ -36,5 +36,5 @@ index eb1ac90..6ea470b 100644
          if (r < 0) {
  
 -- 
-2.8.2
+2.9.0
 

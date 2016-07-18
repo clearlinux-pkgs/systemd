@@ -1,22 +1,22 @@
-From fb1d9c27edeb7d57fdf136ed41a4373f0cf92dbf Mon Sep 17 00:00:00 2001
+From fad06ee913e0b68b0c1d30d95685576700a93417 Mon Sep 17 00:00:00 2001
 From: Jim Kukunas <james.t.kukunas@linux.intel.com>
 Date: Tue, 7 Jun 2016 17:56:31 -0400
-Subject: [PATCH] Add RDRAND support as an alternative to /dev/urandom
+Subject: [PATCH 25/28] Add RDRAND support as an alternative to /dev/urandom
 
 ---
  Makefile.am               | 15 +++++++++
- configure.ac              | 34 +++++++++++++++++++
+ configure.ac              | 33 +++++++++++++++++++
  src/basic/random-rdrand.c | 83 +++++++++++++++++++++++++++++++++++++++++++++++
  src/basic/random-util.c   | 23 ++++++++-----
  src/basic/random-util.h   | 28 ++++++++++++++--
- 5 files changed, 173 insertions(+), 10 deletions(-)
+ 5 files changed, 172 insertions(+), 10 deletions(-)
  create mode 100644 src/basic/random-rdrand.c
 
 diff --git a/Makefile.am b/Makefile.am
-index 9a34c68..df67b22 100644
+index b2e0cc8..5241ec4 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -1094,6 +1094,21 @@ libfirewall_la_LIBADD = \
+@@ -1100,6 +1100,21 @@ libfirewall_la_LIBADD = \
  endif
  
  # -----------------------------------------------------------------------------
@@ -39,11 +39,11 @@ index 9a34c68..df67b22 100644
  dist_systemunit_DATA += \
  	units/ldconfig.service
 diff --git a/configure.ac b/configure.ac
-index 329861a..386ec39 100644
+index 220c9a8..6cafe9f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1177,6 +1177,39 @@ AC_DEFINE_UNQUOTED(DEFAULT_DNSSEC_MODE, [$mode], [Default DNSSEC mode])
- AC_SUBST(DEFAULT_DNSSEC_MODE)
+@@ -1138,6 +1138,38 @@ AC_DEFINE_UNQUOTED(DNS_SERVERS, ["$DNS_SERVERS"], [Default DNS Servers])
+ AC_SUBST(DNS_SERVERS)
  
  # ------------------------------------------------------------------------------
 +have_rdrand=no
@@ -77,12 +77,11 @@ index 329861a..386ec39 100644
 +AM_CONDITIONAL(USE_RDRAND, [test "x$have_rdrand_intrinsics" = "xyes"])
 +AC_SUBST(RDRAND_CFLAGS)
 +
-+
 +# ------------------------------------------------------------------------------
  have_networkd=no
  AC_ARG_ENABLE(networkd, AS_HELP_STRING([--disable-networkd], [disable networkd]))
  AS_IF([test "x$enable_networkd" != "xno"], [
-@@ -1580,6 +1613,7 @@ AC_MSG_RESULT([
+@@ -1580,6 +1612,7 @@ AC_MSG_RESULT([
          ldconfig support:        ${enable_ldconfig}
          hibernate support:       ${enable_hibernate}
          extra debugging:         ${enable_debug}
@@ -264,5 +263,5 @@ index 3cee4c5..9d5ad07 100644
          return u;
  }
 -- 
-2.8.3
+2.9.0
 

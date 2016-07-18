@@ -1,7 +1,7 @@
-From 1ea034bf50e97ed49a05fe3019b179f93e4db0e0 Mon Sep 17 00:00:00 2001
+From 8955f44813ce282a201b7f43ee6c978b30015190 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
-Subject: [PATCH 16/30] core: do not apply presets.
+Subject: [PATCH 13/28] core: do not apply presets.
 
 ---
  src/core/main.c | 11 +----------
@@ -32,5 +32,5 @@ index e208857..4939ac8 100644
          if (r < 0) {
                  log_emergency_errno(r, "Failed to allocate manager object: %m");
 -- 
-2.8.2
+2.9.0
 

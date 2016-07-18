@@ -1,7 +1,7 @@
-From 54cabda7a96076094d627c5bb4a57902aa29fff9 Mon Sep 17 00:00:00 2001
+From 57bfbf5f8553a9181c6764f7d0fd763ffc4f14f3 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
-Subject: [PATCH 08/30] journal: flush var/kmsg after starting.
+Subject: [PATCH 05/28] journal: flush var/kmsg after starting.
 
 ---
  src/journal/journald.c | 5 +++--
@@ -30,5 +30,5 @@ index 272acb7..f205117 100644
                  usec_t t = USEC_INFINITY, n;
  
 -- 
-2.8.2
+2.9.0
 

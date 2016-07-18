@@ -48,33 +48,34 @@ BuildRequires:  iptables-dev
 Requires(post): glibc-utils
 Requires(post): shadow
 Requires:       clr-systemd-config
-Patch02: 0002-journal-raise-compression-threshold.patch
-Patch03: 0003-journal-clearout-drop-kmsg.patch
-Patch04: 0004-core-use-mmap-to-load-files.patch
-Patch06: 0006-Makefile.am-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
-Patch08: 0008-journal-flush-var-kmsg-after-starting.patch
-Patch09: 0009-tmpfiles-fix-etc.conf-for-stateless.patch
-Patch10: 0010-logind-pam-fix-systemd-user-to-include-common-sessio.patch
-Patch11: 0011-analyze-increase-precision.patch
-Patch12: 0012-configure.ac-disable-pie.patch
-Patch13: 0013-sd-event-return-malloc-memory-reserves-when-main-loo.patch
-Patch14: 0014-tmpfiles-create-locale-cache-dir.patch
-Patch15: 0015-efi-boot-generator-Do-not-automount-boot-partition.patch
-Patch16: 0016-core-do-not-apply-presets.patch
-Patch17: 0017-locale-setup-set-default-locale-to-a-unicode-one.patch
-Patch19: 0019-autoconf-add-option-to-disable-journald-authenticati.patch
-Patch21: 0021-mount-setup-mount-kernel-fs-by-default.patch
-Patch22: 0022-telemetrics-invoke-crash-probes.patch
-Patch24: 0024-Ship-default-services-in-system-unit-dir.patch
-Patch25: 0025-bootctl-Add-force-option-to-enable-chroot-install-re.patch
-Patch26: 0026-kernel-install-Support-alternate-root-usage-via-SUBD.patch
-Patch27: 0027-bootctl-Handle-gummiboot-systemd-migration.patch
-Patch28: 0028-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
-Patch29: 0029-Do-not-use-gold-to-link.patch
-Patch30: 0030-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
-Patch31: systemd-rdrand.patch
-Patch32: udev-children.patch
-Patch33: noiptables.patch
+
+Patch0001: 0001-journal-raise-compression-threshold.patch
+Patch0002: 0002-journal-clearout-drop-kmsg.patch
+Patch0003: 0003-core-use-mmap-to-load-files.patch
+Patch0004: 0004-Makefile.am-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
+Patch0005: 0005-journal-flush-var-kmsg-after-starting.patch
+Patch0006: 0006-tmpfiles-fix-etc.conf-for-stateless.patch
+Patch0007: 0007-logind-pam-fix-systemd-user-to-include-common-sessio.patch
+Patch0008: 0008-analyze-increase-precision.patch
+Patch0009: 0009-configure.ac-disable-pie.patch
+Patch0010: 0010-sd-event-return-malloc-memory-reserves-when-main-loo.patch
+Patch0011: 0011-tmpfiles-create-locale-cache-dir.patch
+Patch0012: 0012-efi-boot-generator-Do-not-automount-boot-partition.patch
+Patch0013: 0013-core-do-not-apply-presets.patch
+Patch0014: 0014-locale-setup-set-default-locale-to-a-unicode-one.patch
+Patch0015: 0015-autoconf-add-option-to-disable-journald-authenticati.patch
+Patch0016: 0016-mount-setup-mount-kernel-fs-by-default.patch
+Patch0017: 0017-telemetrics-invoke-crash-probes.patch
+Patch0018: 0018-Ship-default-services-in-system-unit-dir.patch
+Patch0019: 0019-bootctl-Add-force-option-to-enable-chroot-install-re.patch
+Patch0020: 0020-kernel-install-Support-alternate-root-usage-via-SUBD.patch
+Patch0021: 0021-bootctl-Handle-gummiboot-systemd-migration.patch
+Patch0022: 0022-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
+Patch0023: 0023-Do-not-use-gold-to-link.patch
+Patch0024: 0024-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
+Patch0025: 0025-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
+Patch0026: 0026-more-udev-children-workers.patch
+Patch0027: 0027-not-load-iptables.patch
 
 %description
 System and service manager.
@@ -134,33 +135,34 @@ coredump component for systemd package
 %prep
 
 %setup -q -n %{name}-%{version}
-%patch02 -p1
-%patch03 -p1
-%patch04 -p1
-%patch06 -p1
-%patch08 -p1
-%patch09 -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch19 -p1
-%patch21 -p1
-%patch22 -p1
-%patch24 -p1
-%patch25 -p1
-%patch26 -p1
-%patch27 -p1
-%patch28 -p1
-%patch29 -p1
-%patch30 -p1
-%patch31 -p1
-%patch32 -p1
-%patch33 -p1
+
+%patch0001 -p1
+%patch0002 -p1
+%patch0003 -p1
+%patch0004 -p1
+%patch0005 -p1
+%patch0006 -p1
+%patch0007 -p1
+%patch0008 -p1
+%patch0009 -p1
+%patch0010 -p1
+%patch0011 -p1
+%patch0012 -p1
+%patch0013 -p1
+%patch0014 -p1
+%patch0015 -p1
+%patch0016 -p1
+%patch0017 -p1
+%patch0018 -p1
+%patch0019 -p1
+%patch0020 -p1
+%patch0021 -p1
+%patch0022 -p1
+%patch0023 -p1
+%patch0024 -p1
+%patch0025 -p1
+%patch0026 -p1
+%patch0027 -p1
 
 %build
 ./autogen.sh

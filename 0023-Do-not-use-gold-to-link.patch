@@ -1,7 +1,7 @@
-From cbc180509801844c10218418f2cb496d92f32008 Mon Sep 17 00:00:00 2001
+From abd4bd1128b72eff96c89d79727a6c8f8d5a3e98 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 20 Apr 2016 11:22:41 -0700
-Subject: [PATCH 29/30] Do not use gold to link.
+Subject: [PATCH 23/28] Do not use gold to link.
 
 If acl/attr are linked without gold, then this won't compile.
 ---
@@ -23,5 +23,5 @@ index 0b79888..220c9a8 100644
  
  AC_CHECK_SIZEOF(pid_t)
 -- 
-2.8.2
+2.9.0
 

@@ -1,7 +1,7 @@
-From 7dfee3f930ae7afce503977798f092871ee80e08 Mon Sep 17 00:00:00 2001
+From 5d6335a2844ef4c0b90efa419abd0638d7bf6091 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:39:45 +0100
-Subject: [PATCH 09/30] tmpfiles: fix etc.conf for stateless.
+Subject: [PATCH 06/28] tmpfiles: fix etc.conf for stateless.
 
 ---
  tmpfiles.d/etc.conf.m4 | 6 ------
@@ -29,5 +29,5 @@ index ef7b9b9..1150c28 100644
 -C /etc/pam.d - - - -
 -)m4_dnl
 -- 
-2.8.2
+2.9.0
 

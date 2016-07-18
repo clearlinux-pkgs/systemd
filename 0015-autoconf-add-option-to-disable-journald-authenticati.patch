@@ -1,7 +1,7 @@
-From 097f497c7ca404df77d30cabfdcc122b426e3935 Mon Sep 17 00:00:00 2001
+From 61700d3c701f981a6783f9cf2b0a0fc245634906 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 12:35:29 +0100
-Subject: [PATCH 19/30] autoconf: add option to disable journald
+Subject: [PATCH 15/28] autoconf: add option to disable journald
  authentication.
 
 This way one can compile importd (need gcrypt), without linking
@@ -70,5 +70,5 @@ index 273242b..0a9c31d 100644
                          log_notice("Journal file %s has sealing enabled but verification key has not been passed using --verify-key=.", f->path);
  #endif
 -- 
-2.8.2
+2.9.0
 

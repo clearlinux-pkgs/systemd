@@ -1,7 +1,7 @@
-From f4feae76567b11e1b898bdebc54f24b84a31ac2b Mon Sep 17 00:00:00 2001
+From 005c1d03a8d7cf14d65087e742cd8510536f507b Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:41:17 +0100
-Subject: [PATCH 11/30] analyze: increase precision.
+Subject: [PATCH 08/28] analyze: increase precision.
 
 ---
  src/analyze/analyze.c | 31 ++++++++++++++++++-------------
@@ -91,5 +91,5 @@ index a847084..6174328 100644
  
          free_unit_times(times, (unsigned) n);
 -- 
-2.8.2
+2.9.0
 

@@ -1,7 +1,7 @@
-From 349fd83e489387ff27df4944d405a69dd16a0dd1 Mon Sep 17 00:00:00 2001
+From 9cdb3cda5981fea693427435d2da5c796860cb5b Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:36:29 +0100
-Subject: [PATCH 06/30] Makefile.am: drop pam/nsswitch, ship legacy tmpfiles.
+Subject: [PATCH 04/28] Makefile.am: drop pam/nsswitch, ship legacy tmpfiles.
 
 ---
  Makefile.am | 12 ------------
@@ -40,5 +40,5 @@ index 3b7cc1e..9c01d7b 100644
  systemd_firstboot_SOURCES = \
  	src/firstboot/firstboot.c
 -- 
-2.8.2
+2.9.0
 

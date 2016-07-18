@@ -1,7 +1,7 @@
-From b5c6a54465763a1bedbdb97db85bbf52677e419a Mon Sep 17 00:00:00 2001
+From 66e0f8c780754353fa253be572fb0708db33ea7c Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Fri, 10 Jul 2015 16:24:47 +0100
-Subject: [PATCH 22/30] telemetrics: invoke crash-probes.
+Subject: [PATCH 17/28] telemetrics: invoke crash-probes.
 
 ---
  src/basic/util.c | 106 ++++++++++++++++++++++++++++++++++++++++++-------------
@@ -184,5 +184,5 @@ index 6f42c85..04a9cd2 100644
  bool plymouth_running(void);
  
 -- 
-2.8.2
+2.9.0
 
