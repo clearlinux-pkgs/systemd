@@ -565,7 +565,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 
 %files boot
 %{_bindir}/bootctl
-%{_bindir}/kernel-efi-stub
 /usr/lib/systemd/boot/efi/
 
 %files coredump
