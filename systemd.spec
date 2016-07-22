@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        229
-Release:        78
+Release:        79
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -77,6 +77,7 @@ Patch0025: 0025-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
 Patch0026: 0026-more-udev-children-workers.patch
 Patch0027: 0027-not-load-iptables.patch
 Patch0028: 0028-force-write-resovl.conf-at-boot.patch
+Patch0029: 0029-pam-start-systemd-user-session.patch
 
 %description
 System and service manager.
@@ -165,6 +166,7 @@ coredump component for systemd package
 %patch0026 -p1
 %patch0027 -p1
 %patch0028 -p1
+%patch0029 -p1
 
 %build
 ./autogen.sh
