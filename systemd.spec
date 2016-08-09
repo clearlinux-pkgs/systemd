@@ -193,7 +193,7 @@ coredump component for systemd package
     --enable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
-    --with-pamlibdir=%{_libdir}/security
+    --with-pamlibdir=/usr/lib64/security
 
 # Disable unified cgroups, as a guess that that's why we are seeing pid 1 aborts
 # This regresses bootspeed.
@@ -503,18 +503,18 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %exclude /var/lib/systemd/catalog/database
 
 %files libs
-%{_libdir}/libnss_myhostname.so.2
-%{_libdir}/libnss_mymachines.so.2
-%{_libdir}/libnss_resolve.so.2
+/usr/lib64/libnss_myhostname.so.2
+/usr/lib64/libnss_mymachines.so.2
+/usr/lib64/libnss_resolve.so.2
 
-%{_libdir}/libudev.*
-%{_libdir}/libsystemd.so.*
-%{_libdir}/security/pam_systemd.so
+/usr/lib64/libudev.*
+/usr/lib64/libsystemd.so.*
+/usr/lib64/security/pam_systemd.so
 
 %files dev
-%{_includedir}/*.h
-%{_includedir}/systemd/*.h
-%{_libdir}/*.so
+/usr/include/*.h
+/usr/include/systemd/*.h
+/usr/lib64/*.so
 /usr/lib/rpm/macros.d/macros.systemd
 /usr/lib64/pkgconfig/*.pc
 
