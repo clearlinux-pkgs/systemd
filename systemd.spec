@@ -181,7 +181,7 @@ coredump component for systemd package
     --disable-split-usr \
     --without-python \
     --enable-rdrand \
-    --sysconfdir=%{_sysconfdir} \
+    --sysconfdir=/etc \
     --with-sysvinit-path="" \
     --with-sysvrcnd-path="" \
     ac_cv_path_KILL=/usr/bin/kill \
@@ -208,16 +208,16 @@ make V=1 VERBOSE=1 %{?_smp_mflags} check || :
 %install
 %make_install
 
-# need to provide %{_sbindir}/init
-mkdir -p %{buildroot}%{_sbindir}
-ln -s /usr/lib/systemd/systemd %{buildroot}%{_sbindir}/init
+# need to provide /usr/bin/init
+mkdir -p %{buildroot}/usr/bin
+ln -s /usr/lib/systemd/systemd %{buildroot}/usr/bin/init
 
 # compat symlinks
-ln -s %{_bindir}/systemctl %{buildroot}%{_sbindir}/halt
-ln -s %{_bindir}/systemctl %{buildroot}%{_sbindir}/poweroff
-ln -s %{_bindir}/systemctl %{buildroot}%{_sbindir}/reboot
-ln -s %{_bindir}/systemctl %{buildroot}%{_sbindir}/runlevel
-ln -s %{_bindir}/systemctl %{buildroot}%{_sbindir}/shutdown
+ln -s /usr/bin/systemctl %{buildroot}/usr/bin/halt
+ln -s /usr/bin/systemctl %{buildroot}/usr/bin/poweroff
+ln -s /usr/bin/systemctl %{buildroot}/usr/bin/reboot
+ln -s /usr/bin/systemctl %{buildroot}/usr/bin/runlevel
+ln -s /usr/bin/systemctl %{buildroot}/usr/bin/shutdown
 
 # All users should be defined in the systemd-config package
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
@@ -242,14 +242,14 @@ rmdir %{buildroot}/etc/udev
 rm -f %{buildroot}/etc/xdg/systemd/user
 
 # Move config file into system PAM location
-mv %{buildroot}%{_sysconfdir}/pam.d %{buildroot}%{_datadir}/.
+mv %{buildroot}/etc/pam.d %{buildroot}%{_datadir}/.
 
 cp %{SOURCE1} %{buildroot}/usr/lib/udev/hwdb.d/
 rm -f %{buildroot}/usr/lib/udev/hwdb.d/20-usb-vendor-model.hwdb
 
 # Move dbus config
 mkdir -p %{buildroot}%{_datadir}/dbus-1/system.d
-mv %{buildroot}%{_sysconfdir}/dbus-1/system.d/* %{buildroot}%{_datadir}/dbus-1/system.d
+mv %{buildroot}/etc/dbus-1/system.d/* %{buildroot}%{_datadir}/dbus-1/system.d
 
 # Pre-generate and pre-ship hwdb, to speed up first boot
 ./systemd-hwdb --root %{buildroot} --usr || ./udevadm hwdb --root %{buildroot} --update --usr
@@ -283,41 +283,41 @@ rm -rvf %{buildroot}/usr/lib/kernel
 
 %{_datadir}/pam.d/systemd-user
 
-%{_sbindir}/halt
-%{_sbindir}/init
-%{_sbindir}/poweroff
-%{_sbindir}/reboot
-%{_sbindir}/runlevel
-%{_sbindir}/shutdown
-%{_bindir}/busctl
-%{_bindir}/hostnamectl
-%{_bindir}/journalctl
-%{_bindir}/kernel-install
-%{_bindir}/localectl
-%{_bindir}/loginctl
-%{_bindir}/machinectl
-%{_bindir}/networkctl
-%{_bindir}/systemctl
-%{_bindir}/systemd-analyze
-%{_bindir}/systemd-ask-password
-%{_bindir}/systemd-cat
-%{_bindir}/systemd-cgls
-%{_bindir}/systemd-cgtop
-%{_bindir}/systemd-delta
-%{_bindir}/systemd-detect-virt
-%{_bindir}/systemd-escape
-%{_bindir}/systemd-inhibit
-%{_bindir}/systemd-machine-id-setup
-%{_bindir}/systemd-notify
-%{_bindir}/systemd-nspawn
-%{_bindir}/systemd-path
-%{_bindir}/systemd-resolve
-%{_bindir}/systemd-run
-%{_bindir}/systemd-stdio-bridge
-%{_bindir}/systemd-tmpfiles
-%{_bindir}/systemd-tty-ask-password-agent
-%{_bindir}/timedatectl
-%{_bindir}/udevadm
+/usr/bin/halt
+/usr/bin/init
+/usr/bin/poweroff
+/usr/bin/reboot
+/usr/bin/runlevel
+/usr/bin/shutdown
+/usr/bin/busctl
+/usr/bin/hostnamectl
+/usr/bin/journalctl
+/usr/bin/kernel-install
+/usr/bin/localectl
+/usr/bin/loginctl
+/usr/bin/machinectl
+/usr/bin/networkctl
+/usr/bin/systemctl
+/usr/bin/systemd-analyze
+/usr/bin/systemd-ask-password
+/usr/bin/systemd-cat
+/usr/bin/systemd-cgls
+/usr/bin/systemd-cgtop
+/usr/bin/systemd-delta
+/usr/bin/systemd-detect-virt
+/usr/bin/systemd-escape
+/usr/bin/systemd-inhibit
+/usr/bin/systemd-machine-id-setup
+/usr/bin/systemd-notify
+/usr/bin/systemd-nspawn
+/usr/bin/systemd-path
+/usr/bin/systemd-resolve
+/usr/bin/systemd-run
+/usr/bin/systemd-stdio-bridge
+/usr/bin/systemd-tmpfiles
+/usr/bin/systemd-tty-ask-password-agent
+/usr/bin/timedatectl
+/usr/bin/udevadm
 
 /usr/lib/sysctl.d/50-default.conf
 /usr/lib/systemd/catalog/systemd.catalog
@@ -528,7 +528,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/share/polkit-1/actions/*
 /usr/bin/systemd-firstboot
 /usr/lib/systemd/systemd-journal-upload
-%{_bindir}/systemd-sysusers
+/usr/bin/systemd-sysusers
 /usr/lib/systemd/system-generators/systemd-system-update-generator
 /usr/lib/systemd/system/ldconfig.service
 /usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
@@ -540,7 +540,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system/systemd-firstboot.service
 /usr/lib/systemd/system/systemd-sysusers.service
 /usr/lib/systemd/system/systemd-hwdb-update.service
-%{_bindir}/systemd-hwdb
+/usr/bin/systemd-hwdb
 /usr/lib/udev/hwdb.d/*.hwdb
 /usr/lib/systemd/system/systemd-update-done.service
 /usr/lib/systemd/systemd-update-done
@@ -566,7 +566,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/catalog/systemd.zh_CN.catalog
 
 %files boot
-%{_bindir}/bootctl
+/usr/bin/bootctl
 /usr/lib/systemd/boot/efi/
 
 %files coredump
