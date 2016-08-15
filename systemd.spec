@@ -78,6 +78,7 @@ Patch0026: 0026-more-udev-children-workers.patch
 Patch0027: 0027-not-load-iptables.patch
 Patch0028: 0028-force-write-resovl.conf-at-boot.patch
 Patch0029: 0029-pam-start-systemd-user-session.patch
+Patch0030: 0030-journal-flush-for-azure.patch
 
 %description
 System and service manager.
@@ -167,6 +168,7 @@ coredump component for systemd package
 %patch0027 -p1
 %patch0028 -p1
 %patch0029 -p1
+%patch0030 -p1
 
 %build
 ./autogen.sh
