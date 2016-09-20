@@ -1,7 +1,7 @@
-From 64e9a514e9f6a409eb39f084abebbe6dc7046cd5 Mon Sep 17 00:00:00 2001
+From 746ab3b7a07b00c2fb21b3852a67602a5bbd1cf7 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 14 Oct 2015 17:40:56 +0100
-Subject: [PATCH 21/28] bootctl: Handle gummiboot -> systemd migration
+Subject: [PATCH 21/30] bootctl: Handle gummiboot -> systemd migration
 
 On Linux systems we may encounter cases where the legacy gummiboot binary
 is still present on the ESP. In these cases a `bootctl install` or even
@@ -16,7 +16,7 @@ route for distributions.
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 44c9c97..e258aa2 100644
+index 4619999..0803195 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
 @@ -425,8 +425,10 @@ static int version_check(int fd, const char *from, const char *to) {
@@ -33,5 +33,5 @@ index 44c9c97..e258aa2 100644
  
          if (compare_version(a, b) < 0) {
 -- 
-2.9.0
+2.10.0
 

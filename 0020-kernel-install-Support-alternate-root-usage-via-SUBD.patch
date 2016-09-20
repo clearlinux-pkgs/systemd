@@ -1,7 +1,7 @@
-From bd6a44fee7af5197b84dda901bb8cdedf60b711d Mon Sep 17 00:00:00 2001
+From 116d507f274aee8d433673bf94851d9819d95691 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 24 Sep 2015 19:15:55 +0100
-Subject: [PATCH 20/28] kernel-install: Support alternate root usage via
+Subject: [PATCH 20/30] kernel-install: Support alternate root usage via
  SUBDIR/PLUGIN_SUBDIR
 
 This enables kernel-install to be used with an alternative root, by accepting a new
@@ -14,11 +14,11 @@ present on the host system, during image/filesystem generations.
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
- src/kernel-install/kernel-install | 51 +++++++++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 13 deletions(-)
+ src/kernel-install/kernel-install | 50 +++++++++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 12 deletions(-)
 
 diff --git a/src/kernel-install/kernel-install b/src/kernel-install/kernel-install
-index 3ae1d77..c398c0a 100644
+index 1159dc3..9152d2c 100644
 --- a/src/kernel-install/kernel-install
 +++ b/src/kernel-install/kernel-install
 @@ -24,8 +24,11 @@ usage()
@@ -89,12 +89,7 @@ index 3ae1d77..c398c0a 100644
  fi
  
  if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
-@@ -86,13 +110,12 @@ if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
-     exit 1
- fi
- 
--BOOT_DIR_ABS="/boot/$MACHINE_ID/$KERNEL_VERSION"
- ret=0
+@@ -99,8 +123,8 @@ ret=0
  
  readarray -t PLUGINS < <(
      dropindirs_sort ".install" \
@@ -105,7 +100,7 @@ index 3ae1d77..c398c0a 100644
  )
  
  case $COMMAND in
-@@ -109,7 +132,7 @@ case $COMMAND in
+@@ -117,7 +141,7 @@ case $COMMAND in
  
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
@@ -114,7 +109,7 @@ index 3ae1d77..c398c0a 100644
                  ((ret+=$?))
              fi
          done
-@@ -118,12 +141,14 @@ case $COMMAND in
+@@ -126,12 +150,14 @@ case $COMMAND in
      remove)
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
@@ -132,5 +127,5 @@ index 3ae1d77..c398c0a 100644
          ;;
  
 -- 
-2.9.0
+2.10.0
 

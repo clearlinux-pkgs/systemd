@@ -1,11 +1,11 @@
 Name:           systemd
-Version:        229
-Release:        83
+Version:        231
+Release:        84
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
 Group:          base/shell
-Source0:        https://github.com/systemd/systemd/archive/v229.tar.gz
+Source0:        https://github.com/systemd/systemd/archive/v231.tar.gz
 Source1:        20-pci-vendor-model.hwdb
 BuildRequires:  filesystem-chroot
 BuildRequires:  tzdata
@@ -77,8 +77,8 @@ Patch0025: 0025-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
 Patch0026: 0026-more-udev-children-workers.patch
 Patch0027: 0027-not-load-iptables.patch
 Patch0028: 0028-force-write-resovl.conf-at-boot.patch
-Patch0029: 0029-pam-start-systemd-user-session.patch
-Patch0030: 0030-journal-flush-for-azure.patch
+Patch0029: 0029-Start-user-session-by-default-for-logins.patch
+Patch0030: 0030-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
 
 %description
 System and service manager.
@@ -179,7 +179,6 @@ coredump component for systemd package
     --disable-xz \
     --enable-lz4 \
     --enable-coredump \
-    --disable-kdbus \
     --disable-split-usr \
     --without-python \
     --enable-rdrand \
@@ -188,10 +187,8 @@ coredump component for systemd package
     --with-sysvrcnd-path="" \
     ac_cv_path_KILL=/usr/bin/kill \
     --disable-gcrypt \
-    --disable-journald-authenticate \
     --disable-microhttpd \
     --localstatedir=%{_localstatedir} \
-    --disable-bootchart \
     --enable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
@@ -226,6 +223,9 @@ rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd-remote.conf
 rmdir %{buildroot}/usr/lib/sysusers.d
+
+# No external linking of this shared object should happen
+rm -f %{buildroot}/usr/lib/systemd/libsystemd-shared.so
 
 # These configuration files, are actually documentation only
 # We have manpages for that
@@ -315,6 +315,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/bin/systemd-path
 /usr/bin/systemd-resolve
 /usr/bin/systemd-run
+/usr/bin/systemd-socket-activate
 /usr/bin/systemd-stdio-bridge
 /usr/bin/systemd-tmpfiles
 /usr/bin/systemd-tty-ask-password-agent
@@ -323,10 +324,11 @@ rm -rvf %{buildroot}/usr/lib/kernel
 
 /usr/lib/sysctl.d/50-default.conf
 /usr/lib/systemd/catalog/systemd.catalog
+/usr/lib/systemd/catalog/systemd.bg.catalog
 /usr/lib/systemd/network/80-container-host0.network
 /usr/lib/systemd/network/80-container-ve.network
+/usr/lib/systemd/network/80-container-vz.network
 /usr/lib/systemd/network/99-default.link
-/usr/lib/systemd/system-generators/systemd-dbus1-generator
 /usr/lib/systemd/system-generators/systemd-debug-generator
 /usr/lib/systemd/system-generators/systemd-fstab-generator
 /usr/lib/systemd/system-generators/systemd-getty-generator
@@ -371,6 +373,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system/initrd-switch-root.target
 /usr/lib/systemd/system/initrd-udevadm-cleanup-db.service
 /usr/lib/systemd/system/initrd.target
+/usr/lib/systemd/system/initrd-root-device.target
 
 /usr/lib/systemd/system/getty.target.wants/getty@tty1.service
 
@@ -458,11 +461,12 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system/user@.service
 /usr/lib/systemd/systemd
 /usr/lib/systemd/systemd-*
+/usr/lib/systemd/resolv.conf
 %exclude /usr/lib/systemd/systemd-journal-upload
 /usr/lib/systemd/user/*.service
-/usr/lib/systemd/user/*.socket
 /usr/lib/systemd/user/*.target
-/usr/lib/systemd/user-generators/systemd-dbus1-generator
+
+/usr/lib/systemd/libsystemd-shared-%{version}.so
 
 /usr/lib/tmpfiles.d/*.conf
 
@@ -478,6 +482,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/udev/rules.d/64-btrfs.rules
 /usr/lib/udev/rules.d/70-mouse.rules
 /usr/lib/udev/rules.d/70-power-switch.rules
+/usr/lib/udev/rules.d/70-touchpad.rules
 /usr/lib/udev/rules.d/70-uaccess.rules
 /usr/lib/udev/rules.d/71-seat.rules
 /usr/lib/udev/rules.d/73-seat-late.rules
@@ -511,6 +516,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 
 /usr/lib64/libudev.*
 /usr/lib64/libsystemd.so.*
+
 /usr/lib64/security/pam_systemd.so
 
 %files dev

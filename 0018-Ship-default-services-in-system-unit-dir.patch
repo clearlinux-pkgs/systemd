@@ -1,17 +1,17 @@
-From 1f6321906f2a6f11391bc8ce77a5825d147c1ab9 Mon Sep 17 00:00:00 2001
+From 8e71899643207623da06e09042ae91f18c374243 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 18/28] Ship default services in system unit dir.
+Subject: [PATCH 18/30] Ship default services in system unit dir.
 
 ---
  Makefile.am | 14 +++++++-------
  1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index 895be49..b2e0cc8 100644
+index a48549e..fa49881 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -4851,7 +4851,7 @@ nodist_systemunit_DATA += \
+@@ -4957,7 +4957,7 @@ nodist_systemunit_DATA += \
  	units/systemd-timesyncd.service
  
  GENERAL_ALIASES += \
@@ -20,7 +20,7 @@ index 895be49..b2e0cc8 100644
  
  nodist_pkgsysconf_DATA += \
  	src/timesync/timesyncd.conf
-@@ -5244,7 +5244,7 @@ BUSNAMES_TARGET_WANTS += \
+@@ -5377,7 +5377,7 @@ BUSNAMES_TARGET_WANTS += \
  	org.freedesktop.resolve1.busname
  
  GENERAL_ALIASES += \
@@ -29,7 +29,7 @@ index 895be49..b2e0cc8 100644
  
  nodist_pkgsysconf_DATA += \
  	src/resolve/resolved.conf
-@@ -5493,9 +5493,9 @@ dist_dbuspolicy_DATA += \
+@@ -5692,9 +5692,9 @@ dist_dbuspolicy_DATA += \
  	src/network/org.freedesktop.network1.conf
  
  GENERAL_ALIASES += \
@@ -42,7 +42,7 @@ index 895be49..b2e0cc8 100644
  
  SYSTEM_UNIT_ALIASES += \
  	systemd-networkd.service dbus-org.freedesktop.network1.service
-@@ -6165,8 +6165,8 @@ USER_UNIT_ALIASES += \
+@@ -6257,8 +6257,8 @@ USER_UNIT_ALIASES += \
  	$(systemunitdir)/busnames.target busnames.target
  
  GENERAL_ALIASES += \
@@ -54,5 +54,5 @@ index 895be49..b2e0cc8 100644
  	$(dbussystemservicedir)/org.freedesktop.systemd1.service $(dbussessionservicedir)/org.freedesktop.systemd1.service
  
 -- 
-2.9.0
+2.10.0
 

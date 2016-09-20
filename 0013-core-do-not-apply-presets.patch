@@ -1,22 +1,22 @@
-From 8955f44813ce282a201b7f43ee6c978b30015190 Mon Sep 17 00:00:00 2001
+From c598c07a0d9a9ed3af2712106738efa404b27c64 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
-Subject: [PATCH 13/28] core: do not apply presets.
+Subject: [PATCH 13/30] core: do not apply presets.
 
 ---
- src/core/main.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ src/core/main.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
 diff --git a/src/core/main.c b/src/core/main.c
-index e208857..4939ac8 100644
+index f2adca7..f66c23a 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -1708,18 +1708,9 @@ int main(int argc, char *argv[]) {
+@@ -1765,19 +1765,11 @@ int main(int argc, char *argv[]) {
                  if (prctl(PR_SET_CHILD_SUBREAPER, 1) < 0)
                          log_warning_errno(errno, "Failed to make us a subreaper: %m");
  
--        if (arg_running_as == MANAGER_SYSTEM) {
-+        if (arg_running_as == MANAGER_SYSTEM)
+-        if (arg_system) {
++        if (arg_system)
                  bump_rlimit_nofile(&saved_rlimit_nofile);
  
 -                if (empty_etc) {
@@ -28,9 +28,11 @@ index e208857..4939ac8 100644
 -                }
 -        }
 -
-         r = manager_new(arg_running_as, arg_action == ACTION_TEST, &m);
+         r = manager_new(arg_system ? UNIT_FILE_SYSTEM : UNIT_FILE_USER, arg_action == ACTION_TEST, &m);
++
          if (r < 0) {
                  log_emergency_errno(r, "Failed to allocate manager object: %m");
+                 error_message = "Failed to allocate manager object";
 -- 
-2.9.0
+2.10.0
 

@@ -1,7 +1,7 @@
-From 66e0f8c780754353fa253be572fb0708db33ea7c Mon Sep 17 00:00:00 2001
+From 1f60008edf9e31c2f4e39a8539871241a18a9eaf Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Fri, 10 Jul 2015 16:24:47 +0100
-Subject: [PATCH 17/28] telemetrics: invoke crash-probes.
+Subject: [PATCH 17/30] telemetrics: invoke crash-probes.
 
 ---
  src/basic/util.c | 106 ++++++++++++++++++++++++++++++++++++++++++-------------
@@ -9,18 +9,18 @@ Subject: [PATCH 17/28] telemetrics: invoke crash-probes.
  2 files changed, 86 insertions(+), 25 deletions(-)
 
 diff --git a/src/basic/util.c b/src/basic/util.c
-index ea1bed7..e42835e 100644
+index 9d66d28..7092acc 100644
 --- a/src/basic/util.c
 +++ b/src/basic/util.c
-@@ -36,6 +36,7 @@
- 
+@@ -37,6 +37,7 @@
  #include "alloc-util.h"
  #include "build.h"
+ #include "cgroup-util.h"
 +#include "copy.h"
  #include "def.h"
  #include "dirent-util.h"
  #include "fd-util.h"
-@@ -78,11 +79,73 @@ size_t page_size(void) {
+@@ -81,11 +82,73 @@ size_t page_size(void) {
          return pgsz;
  }
  
@@ -95,7 +95,7 @@ index ea1bed7..e42835e 100644
          /* We fork this all off from a child process so that we can
           * somewhat cleanly make use of SIGALRM to set a time limit */
  
-@@ -137,31 +200,19 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
+@@ -140,31 +203,19 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
                                  continue;
                          }
  
@@ -137,7 +137,7 @@ index ea1bed7..e42835e 100644
                          path = NULL;
                  }
          }
-@@ -189,7 +240,8 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
+@@ -192,7 +243,8 @@ static int do_execute(char **directories, usec_t timeout, char *argv[]) {
          return 0;
  }
  
@@ -147,7 +147,7 @@ index ea1bed7..e42835e 100644
          pid_t executor_pid;
          int r;
          char *name;
-@@ -211,13 +263,17 @@ void execute_directories(const char* const* directories, usec_t timeout, char *a
+@@ -214,13 +266,17 @@ void execute_directories(const char* const* directories, usec_t timeout, char *a
                  return;
  
          } else if (executor_pid == 0) {
@@ -167,10 +167,10 @@ index ea1bed7..e42835e 100644
          return access("/run/plymouth/pid", F_OK) >= 0;
  }
 diff --git a/src/basic/util.h b/src/basic/util.h
-index 6f42c85..04a9cd2 100644
+index 44497dc..df853e6 100644
 --- a/src/basic/util.h
 +++ b/src/basic/util.h
-@@ -60,7 +60,12 @@ static inline const char* one_zero(bool b) {
+@@ -61,7 +61,12 @@ static inline const char* one_zero(bool b) {
          return b ? "1" : "0";
  }
  
@@ -184,5 +184,5 @@ index 6f42c85..04a9cd2 100644
  bool plymouth_running(void);
  
 -- 
-2.9.0
+2.10.0
 

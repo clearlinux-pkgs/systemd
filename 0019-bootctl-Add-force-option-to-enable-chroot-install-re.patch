@@ -1,7 +1,7 @@
-From 3f07d05a0396a10c1adaf0147bdf8b0096e0b0d2 Mon Sep 17 00:00:00 2001
+From 0d6a05a6393fa4aa689a6ddb6df444c248c27fc6 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH 19/28] bootctl: Add --force option to enable chroot
+Subject: [PATCH 19/30] bootctl: Add --force option to enable chroot
  install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of the
@@ -25,7 +25,7 @@ for its installation, configuration and layout.
  1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index e9baf69..44c9c97 100644
+index 37fa049..4619999 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
 @@ -932,12 +932,14 @@ static int help(void) {
@@ -95,5 +95,5 @@ index e9baf69..44c9c97 100644
                          if (q < 0 && r == 0)
                                  r = q;
 -- 
-2.9.0
+2.10.0
 

@@ -1,7 +1,7 @@
-From e65a47e56b0388328dcd8bf490b6af3a0c5f5655 Mon Sep 17 00:00:00 2001
+From 70d9bc8fdce97ac8036bff0ab00fd66feb79363d Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 16/28] mount-setup: mount kernel fs by default.
+Subject: [PATCH 16/30] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.
@@ -21,10 +21,10 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/Makefile.am b/Makefile.am
-index 9c01d7b..895be49 100644
+index 7bff1dd..a48549e 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -510,11 +510,6 @@ dist_systemunit_DATA = \
+@@ -504,11 +504,6 @@ dist_systemunit_DATA = \
  	units/x-.slice \
  	units/systemd-initctl.socket \
  	units/syslog.socket \
@@ -36,7 +36,7 @@ index 9c01d7b..895be49 100644
  	units/tmp.mount \
  	units/var-lib-machines.mount \
  	units/printer.target \
-@@ -6137,11 +6132,6 @@ MULTI_USER_TARGET_WANTS += \
+@@ -6229,11 +6224,6 @@ MULTI_USER_TARGET_WANTS += \
  	systemd-ask-password-wall.path
  
  SYSINIT_TARGET_WANTS += \
@@ -49,13 +49,13 @@ index 9c01d7b..895be49 100644
  	systemd-ask-password-console.path
  
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index de1a361..079ca33 100644
+index 5d8ab0e..919466c 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
-@@ -110,6 +110,16 @@ static const MountPoint mount_table[] = {
+@@ -109,6 +109,16 @@ static const MountPoint mount_table[] = {
+         { "efivarfs",    "/sys/firmware/efi/efivars", "efivarfs",   NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
+           is_efi_boot,   MNT_NONE                   },
  #endif
-         { "kdbusfs",    "/sys/fs/kdbus",             "kdbusfs",    NULL, MS_NOSUID|MS_NOEXEC|MS_NODEV,
-           is_kdbus_wanted,       MNT_IN_CONTAINER },
 +        { "hugetlbfs",   "/dev/hugepages",           "hugetlbfs",   NULL,
 +          NULL,          MNT_NONE                   },
 +        { "mqueue",      "/dev/mqueue",              "mqueue",      NULL,
@@ -202,5 +202,5 @@ index 1e94387..0000000
 -Where=/sys/kernel/debug
 -Type=debugfs
 -- 
-2.9.0
+2.10.0
 

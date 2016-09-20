@@ -1,17 +1,17 @@
-From 005c1d03a8d7cf14d65087e742cd8510536f507b Mon Sep 17 00:00:00 2001
+From dc9f432b17da08e7afc5dd321bc520fffd8242fe Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:41:17 +0100
-Subject: [PATCH 08/28] analyze: increase precision.
+Subject: [PATCH 08/30] analyze: increase precision.
 
 ---
  src/analyze/analyze.c | 31 ++++++++++++++++++-------------
  1 file changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/src/analyze/analyze.c b/src/analyze/analyze.c
-index a847084..6174328 100644
+index cbf9354..3dbaa78 100644
 --- a/src/analyze/analyze.c
 +++ b/src/analyze/analyze.c
-@@ -45,6 +45,8 @@
+@@ -46,6 +46,8 @@
  #define SCALE_X (0.1 / 1000.0)   /* pixels per us */
  #define SCALE_Y (20.0)
  
@@ -20,7 +20,7 @@ index a847084..6174328 100644
  #define compare(a, b) (((a) > (b))? 1 : (((b) > (a))? -1 : 0))
  
  #define svg(...) printf(__VA_ARGS__)
-@@ -500,16 +502,19 @@ static int pretty_boot_time(sd_bus *bus, char **_buf) {
+@@ -493,16 +495,19 @@ static int pretty_boot_time(sd_bus *bus, char **_buf) {
  
          size = strpcpyf(&ptr, size, "Startup finished in ");
          if (t->firmware_time)
@@ -46,7 +46,7 @@ index a847084..6174328 100644
  
          ptr = strdup(buf);
          if (!ptr)
-@@ -713,7 +718,7 @@ static int analyze_plot(sd_bus *bus) {
+@@ -706,7 +711,7 @@ static int analyze_plot(sd_bus *bus) {
                  b = u->activating * SCALE_X < width / 2;
                  if (u->time)
                          svg_text(b, u->activating, y, "%s (%s)",
@@ -55,25 +55,25 @@ index a847084..6174328 100644
                  else
                          svg_text(b, u->activating, y, "%s", u->name);
                  y++;
-@@ -766,10 +771,10 @@ static int list_dependencies_print(const char *name, unsigned int level, unsigne
+@@ -759,10 +764,10 @@ static int list_dependencies_print(const char *name, unsigned int level, unsigne
          if (times) {
                  if (times->time)
-                         printf("%s%s @%s +%s%s", ANSI_HIGHLIGHT_RED, name,
+                         printf("%s%s @%s +%s%s", ansi_highlight_red(), name,
 -                               format_timespan(ts, sizeof(ts), times->activating - boot->userspace_time, USEC_PER_MSEC),
--                               format_timespan(ts2, sizeof(ts2), times->time, USEC_PER_MSEC), ANSI_NORMAL);
+-                               format_timespan(ts2, sizeof(ts2), times->time, USEC_PER_MSEC), ansi_normal());
 +                               format_timespan(ts, sizeof(ts), times->activating - boot->userspace_time, USEC_PER_MSEC_DECIMAL),
-+                               format_timespan(ts2, sizeof(ts2), times->time, USEC_PER_MSEC_DECIMAL), ANSI_NORMAL);
++                               format_timespan(ts2, sizeof(ts2), times->time, USEC_PER_MSEC_DECIMAL), ansi_normal());
                  else if (times->activated > boot->userspace_time)
 -                        printf("%s @%s", name, format_timespan(ts, sizeof(ts), times->activated - boot->userspace_time, USEC_PER_MSEC));
 +                        printf("%s @%s", name, format_timespan(ts, sizeof(ts), times->activated - boot->userspace_time, USEC_PER_MSEC_DECIMAL));
                  else
                          printf("%s", name);
          } else
-@@ -934,9 +939,9 @@ static int list_dependencies(sd_bus *bus, const char *name) {
+@@ -927,9 +932,9 @@ static int list_dependencies(sd_bus *bus, const char *name) {
          if (times) {
                  if (times->time)
-                         printf("%s%s +%s%s\n", ANSI_HIGHLIGHT_RED, id,
--                               format_timespan(ts, sizeof(ts), times->time, USEC_PER_MSEC), ANSI_NORMAL);
+                         printf("%s%s +%s%s\n", ansi_highlight_red(), id,
+-                               format_timespan(ts, sizeof(ts), times->time, USEC_PER_MSEC), ansi_normal());
 +                               format_timespan(ts, sizeof(ts), times->time, USEC_PER_MSEC_DECIMAL), ANSI_NORMAL);
                  else if (times->activated > boot->userspace_time)
 -                        printf("%s @%s\n", id, format_timespan(ts, sizeof(ts), times->activated - boot->userspace_time, USEC_PER_MSEC));
@@ -81,7 +81,7 @@ index a847084..6174328 100644
                  else
                          printf("%s\n", id);
          }
-@@ -999,7 +1004,7 @@ static int analyze_blame(sd_bus *bus) {
+@@ -992,7 +997,7 @@ static int analyze_blame(sd_bus *bus) {
                  char ts[FORMAT_TIMESPAN_MAX];
  
                  if (times[i].time > 0)
@@ -91,5 +91,5 @@ index a847084..6174328 100644
  
          free_unit_times(times, (unsigned) n);
 -- 
-2.9.0
+2.10.0
 

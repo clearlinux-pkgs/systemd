@@ -1,7 +1,7 @@
-From 0cd17f4d1c1c4036f0f777bcafbdee4221f09eba Mon Sep 17 00:00:00 2001
+From 3cb70fa47188de5016e86eb4acdfd5a8ee17c83c Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:47:46 +0100
-Subject: [PATCH 11/28] tmpfiles: create locale cache dir.
+Subject: [PATCH 11/30] tmpfiles: create locale cache dir.
 
 ---
  tmpfiles.d/var.conf | 1 +
@@ -20,5 +20,5 @@ index ae7952e..03cb0f5 100644
  d /var/lib 0755 - - -
  
 -- 
-2.9.0
+2.10.0
 

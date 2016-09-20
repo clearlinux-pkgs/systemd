@@ -1,14 +1,14 @@
-From b4c198d010377bb5a2efdc67c244c1037d2f3ded Mon Sep 17 00:00:00 2001
+From d339872393bd552d02f54a9e05eb35f4600d9c38 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:41:36 +0100
-Subject: [PATCH 09/28] configure.ac: disable pie.
+Subject: [PATCH 09/30] configure.ac: disable pie.
 
 ---
  configure.ac | 1 -
  1 file changed, 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index 5fd73c5..0b79888 100644
+index cf595e6..2ec9b25 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -240,7 +240,6 @@ CC_CHECK_FLAGS_APPEND([with_ldflags], [LDFLAGS], [\
@@ -20,5 +20,5 @@ index 5fd73c5..0b79888 100644
  AC_SUBST([OUR_LDFLAGS], "$with_ldflags $sanitizer_ldflags")
  
 -- 
-2.9.0
+2.10.0
 
