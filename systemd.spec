@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        85
+Release:        86
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -79,7 +79,8 @@ Patch0027: 0027-not-load-iptables.patch
 Patch0028: 0028-force-write-resovl.conf-at-boot.patch
 Patch0029: 0029-Start-user-session-by-default-for-logins.patch
 Patch0030: 0030-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
-Patch0031: cve-2016-7795.patch
+Patch0031: 0031-Disable-systemd-resolved-as-default-resolver.patch
+Patch0032: cve-2016-7795.patch
 
 %description
 System and service manager.
@@ -171,6 +172,7 @@ coredump component for systemd package
 %patch0029 -p1
 %patch0030 -p1
 %patch0031 -p1
+%patch0032 -p1
 
 %build
 ./autogen.sh
