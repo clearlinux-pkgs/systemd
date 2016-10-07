@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        86
+Release:        87
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -191,6 +191,7 @@ coredump component for systemd package
     --with-sysvrcnd-path="" \
     ac_cv_path_KILL=/usr/bin/kill \
     --disable-gcrypt \
+    --disable-libcryptsetup \
     --disable-microhttpd \
     --localstatedir=%{_localstatedir} \
     --enable-elfutils \
@@ -337,7 +338,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system-generators/systemd-fstab-generator
 /usr/lib/systemd/system-generators/systemd-getty-generator
 /usr/lib/systemd/system-generators/systemd-gpt-auto-generator
-%exclude /usr/lib/systemd/system-generators/systemd-cryptsetup-generator
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 /usr/lib/systemd/system-preset/90-systemd.preset
 /usr/lib/systemd/system/-.slice
