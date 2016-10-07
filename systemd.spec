@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        89
+Release:        90
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -254,12 +254,21 @@ mv %{buildroot}/etc/pam.d %{buildroot}%{_datadir}/.
 cp %{SOURCE1} %{buildroot}/usr/lib/udev/hwdb.d/
 rm -f %{buildroot}/usr/lib/udev/hwdb.d/20-usb-vendor-model.hwdb
 
-# Move dbus config
-mkdir -p %{buildroot}%{_datadir}/dbus-1/system.d
-mv %{buildroot}/etc/dbus-1/system.d/* %{buildroot}%{_datadir}/dbus-1/system.d
+# exclude hwdb for pci device id vendors - we don't want this in containers
+# or VMs. An update trigger will remake the full hwdb for non-vm cases.
+mkdir -p %{buildroot}/usr/lib/udev/hwdb.d/20
+mv %{buildroot}/usr/lib/udev/hwdb.d/20-* %{buildroot}/usr/lib/udev/hwdb.d/20
 
 # Pre-generate and pre-ship hwdb, to speed up first boot
 ./systemd-hwdb --root %{buildroot} --usr || ./udevadm hwdb --root %{buildroot} --update --usr
+
+# restore 20-* hwdb files
+mv %{buildroot}/usr/lib/udev/hwdb.d/20/* %{buildroot}/usr/lib/udev/hwdb.d/
+rmdir %{buildroot}/usr/lib/udev/hwdb.d/20
+
+# Move dbus config
+mkdir -p %{buildroot}%{_datadir}/dbus-1/system.d
+mv %{buildroot}/etc/dbus-1/system.d/* %{buildroot}%{_datadir}/dbus-1/system.d
 
 # Compute catalog
 ./journalctl --root %{buildroot} --update-catalog
