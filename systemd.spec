@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        87
+Release:        88
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -496,8 +496,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/udev/rules.d/90-vconsole.rules
 /usr/lib/udev/rules.d/99-systemd.rules
 
-/usr/lib/systemd/system/cryptsetup-pre.target
-/usr/lib/systemd/system/cryptsetup.target
 /usr/lib/udev/rules.d/60-block.rules
 /usr/lib/udev/rules.d/60-evdev.rules
 /usr/lib/udev/rules.d/60-serial.rules
