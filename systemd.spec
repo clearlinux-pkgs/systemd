@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        90
+Release:        91
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -545,18 +545,18 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/share/zsh/site-functions/*
 %{_datadir}/bash-completion/completions/*
 /usr/share/polkit-1/actions/*
-/usr/bin/systemd-firstboot
+%exclude /usr/bin/systemd-firstboot
 /usr/lib/systemd/systemd-journal-upload
 /usr/bin/systemd-sysusers
 /usr/lib/systemd/system-generators/systemd-system-update-generator
 /usr/lib/systemd/system/ldconfig.service
 /usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
-/usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
 /usr/lib/systemd/system/system-update.target
-/usr/lib/systemd/system/systemd-firstboot.service
+%exclude /usr/lib/systemd/system/systemd-firstboot.service
 /usr/lib/systemd/system/systemd-sysusers.service
 /usr/lib/systemd/system/systemd-hwdb-update.service
 /usr/bin/systemd-hwdb
