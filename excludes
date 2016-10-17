@@ -1,3 +1,0 @@
-/usr/lib/sysctl.d/coredump.conf
-/usr/lib/systemd/user/default.target
-/usr/lib/systemd/system/systemd-tmpfiles-clean.timer

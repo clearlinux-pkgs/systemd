@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        91
+Release:        92
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -193,11 +193,13 @@ coredump component for systemd package
     --disable-gcrypt \
     --disable-libcryptsetup \
     --disable-microhttpd \
+    --disable-quotacheck \
     --localstatedir=%{_localstatedir} \
     --enable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
-    --with-pamlibdir=/usr/lib64/security
+    --with-pamlibdir=/usr/lib64/security \
+    --without-kill-user-processes
 
 # Disable unified cgroups, as a guess that that's why we are seeing pid 1 aborts
 # This regresses bootspeed.
