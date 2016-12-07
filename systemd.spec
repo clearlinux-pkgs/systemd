@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        92
+Release:        93
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -199,7 +199,8 @@ coredump component for systemd package
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
     --with-pamlibdir=/usr/lib64/security \
-    --without-kill-user-processes
+    --without-kill-user-processes \
+    --disable-polkit
 
 # Disable unified cgroups, as a guess that that's why we are seeing pid 1 aborts
 # This regresses bootspeed.
@@ -546,7 +547,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %files extras
 /usr/share/zsh/site-functions/*
 %{_datadir}/bash-completion/completions/*
-/usr/share/polkit-1/actions/*
 %exclude /usr/bin/systemd-firstboot
 /usr/lib/systemd/systemd-journal-upload
 /usr/bin/systemd-sysusers
