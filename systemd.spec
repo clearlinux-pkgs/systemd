@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        94
+Release:        95
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -130,7 +130,7 @@ License:        GPL-2.0 and LGPL-2.1 and MIT
 Summary:        System and service manager
 Group:          devel
 Requires:       %{name} = %{version}-%{release}
-Requires:       systemd-libs = %{version}-%{release}
+Requires:       systemd-lib32 = %{version}-%{release}
 
 %description dev32
 System and service manager.
