@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        93
+Release:        94
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -12,27 +12,35 @@ BuildRequires:  tzdata
 BuildRequires:  autoconf
 BuildRequires:  automake-dev automake m4 libtool libtool-dev
 BuildRequires:  dbus-dev
+BuildRequires:  dbus-dev32
 BuildRequires:  gettext-dev
 BuildRequires:  gettext-bin
 BuildRequires:  gperf
 BuildRequires:  intltool
 BuildRequires:  intltool-dev
 BuildRequires:  kmod-dev
+BuildRequires:  kmod-dev32
 BuildRequires:  acl-dev
+BuildRequires:  acl-dev32
 BuildRequires:  libcap-dev
+BuildRequires:  libcap-dev32
 BuildRequires:  libcgroup-dev
 BuildRequires:  libffi-dev
 BuildRequires:  libgcrypt-dev
+BuildRequires:  libgcrypt-dev32
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  glib-bin
 BuildRequires:  bzip2-dev
 BuildRequires:  xz-dev
 BuildRequires:  lz4-dev
 BuildRequires:  Linux-PAM-dev
+BuildRequires:  Linux-PAM-dev32
 BuildRequires:  readline-dev
 BuildRequires:  pkgconfig(zlib)
+BuildRequires:  zlib-dev32
 BuildRequires:  shadow
 BuildRequires:  util-linux-dev
+BuildRequires:  util-linux-dev32
 BuildRequires:  pkg-config-dev
 BuildRequires:  libxslt-bin docbook-xml
 BuildRequires:  perl(XML::Parser)
@@ -44,6 +52,12 @@ BuildRequires:  gnu-efi
 BuildRequires:  gnu-efi-dev
 BuildRequires:  elfutils-dev
 BuildRequires:  iptables-dev
+BuildRequires:  iptables-dev32
+BuildRequires:  gcc-dev32
+BuildRequires:  gcc-libgcc32
+BuildRequires:  gcc-libstdc++32
+BuildRequires:  glibc-dev32
+BuildRequires:  glibc-libc32
 
 Requires(post): glibc-utils
 Requires(post): shadow
@@ -101,6 +115,24 @@ Requires:       %{name} = %{version}-%{release}
 Requires:       systemd-libs = %{version}-%{release}
 
 %description dev
+System and service manager.
+
+%package lib32
+License:        GPL-2.0 and LGPL-2.1 and MIT
+Summary:        System and service manager
+Group:          base/shell
+
+%description lib32
+System and service manager.
+
+%package dev32
+License:        GPL-2.0 and LGPL-2.1 and MIT
+Summary:        System and service manager
+Group:          devel
+Requires:       %{name} = %{version}-%{release}
+Requires:       systemd-libs = %{version}-%{release}
+
+%description dev32
 System and service manager.
 
 %package doc
@@ -174,7 +206,13 @@ coredump component for systemd package
 %patch0031 -p1
 %patch0032 -p1
 
+pushd ..
+cp -a  %{name}-%{version}  build32
+popd
+
 %build
+
+
 ./autogen.sh
 %configure CFLAGS="$CFLAGS -fno-semantic-interposition -Os -fno-tree-vectorize" \
     --enable-pam \
@@ -209,10 +247,59 @@ coredump component for systemd package
 
 make %{?_smp_mflags}
 
+# then do the 32 bit build
+pushd ../build32/
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+
+./autogen.sh
+%configure CFLAGS="$CFLAGS -fno-semantic-interposition -Os -fno-tree-vectorize" \
+    --libdir=/usr/lib32 \
+    --disable-pam \
+    --disable-smack \
+    --disable-silent-rules \
+    --disable-xz \
+    --disable-lz4 \
+    --disable-coredump \
+    --disable-split-usr \
+    --without-python \
+    --disable-rdrand \
+    --sysconfdir=/etc \
+    --with-sysvinit-path="" \
+    --with-sysvrcnd-path="" \
+    ac_cv_path_KILL=/usr/bin/kill \
+    --disable-gcrypt \
+    --disable-libcryptsetup \
+    --disable-microhttpd \
+    --disable-quotacheck \
+    --disable-libcurl \
+    --disable-libiptc \
+    --localstatedir=%{_localstatedir} \
+    --disable-elfutils \
+    --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
+    --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
+    --with-pamlibdir=/usr/lib64/security \
+    --without-kill-user-processes \
+    --disable-polkit
+
+make %{?_smp_mflags}
+popd
+
+
 %check
 make V=1 VERBOSE=1 %{?_smp_mflags} check || :
 
 %install
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do mv $i 32$i ; done
+popd
+fi
+popd
+
 %make_install
 
 # need to provide /usr/bin/init
@@ -539,6 +626,19 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib64/*.so
 /usr/lib/rpm/macros.d/macros.systemd
 /usr/lib64/pkgconfig/*.pc
+
+%files lib32
+/usr/lib32/libnss_myhostname.so.2
+/usr/lib32/libnss_mymachines.so.2
+/usr/lib32/libnss_resolve.so.2
+
+/usr/lib32/libudev.*
+/usr/lib32/libsystemd.so.*
+
+
+%files dev32
+/usr/lib32/*.so
+/usr/lib32/pkgconfig/*.pc
 
 %files doc
 %{_datadir}/doc/systemd/*
