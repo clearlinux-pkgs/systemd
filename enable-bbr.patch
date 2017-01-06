@@ -1,0 +1,11 @@
+--- systemd-231/sysctl.d/50-default.conf~	2016-07-25 19:49:47.000000000 +0000
++++ systemd-231/sysctl.d/50-default.conf	2017-01-06 14:45:43.141864021 +0000
+@@ -33,7 +33,7 @@
+ net.ipv4.conf.all.promote_secondaries = 1
+ 
+ # Fair Queue CoDel packet scheduler to fight bufferbloat
+-net.core.default_qdisc = fq_codel
++net.core.default_qdisc = fq
+ 
+ # Enable hard and soft link protection
+ fs.protected_hardlinks = 1
