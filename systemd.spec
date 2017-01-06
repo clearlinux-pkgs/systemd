@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        97
+Release:        98
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -221,7 +221,7 @@ popd
     --disable-smack \
     --disable-silent-rules \
     --disable-xz \
-    --enable-lz4 \
+    --disable-lz4 \
     --enable-coredump \
     --disable-split-usr \
     --without-python \
