@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        98
+Release:        99
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -389,6 +389,9 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/systemd/systemd-coredump
 
+%{_datadir}/bash-completion/completions/*
+/usr/share/zsh/site-functions/*
+
 %{_datadir}/pam.d/systemd-user
 
 /usr/bin/halt
@@ -647,8 +650,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %{_mandir}/*/*
 
 %files extras
-/usr/share/zsh/site-functions/*
-%{_datadir}/bash-completion/completions/*
 %exclude /usr/bin/systemd-firstboot
 /usr/lib/systemd/systemd-journal-upload
 /usr/bin/systemd-sysusers
