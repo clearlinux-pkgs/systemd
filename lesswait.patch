@@ -1,0 +1,16 @@
+--- systemd-231/src/network/networkd-wait-online-manager.c~	2016-07-25 19:49:47.000000000 +0000
++++ systemd-231/src/network/networkd-wait-online-manager.c	2017-01-23 21:54:59.287864572 +0000
+@@ -71,13 +71,11 @@
+                 if (!l->state) {
+                         log_debug("link %s has not yet been processed by udev",
+                                   l->ifname);
+-                        return false;
+                 }
+ 
+                 if (STR_IN_SET(l->state, "configuring", "pending")) {
+                         log_debug("link %s is being processed by networkd",
+                                   l->ifname);
+-                        return false;
+                 }
+ 
+                 if (l->operational_state &&
