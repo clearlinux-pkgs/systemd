@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        100
+Release:        101
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -97,6 +97,7 @@ Patch0031: 0031-Disable-systemd-resolved-as-default-resolver.patch
 Patch0032: cve-2016-7795.patch
 Patch0033: enable-bbr.patch
 Patch0034: lesswait.patch
+Patch0035: dhcp-faster-retry.patch
 
 %description
 System and service manager.
@@ -209,6 +210,7 @@ coredump component for systemd package
 %patch0032 -p1
 %patch0033 -p1
 %patch0034 -p1
+%patch0035 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
