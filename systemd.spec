@@ -668,8 +668,8 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system/var-lib-machines.mount
 
 %files hwdb
-/usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
-/usr/lib/systemd/system/systemd-hwdb-update.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
+%exclude /usr/lib/systemd/system/systemd-hwdb-update.service
 /usr/bin/systemd-hwdb
 /usr/lib/udev/hwdb.d/*.hwdb
 /usr/lib/udev/rules.d/60-cdrom_id.rules
