@@ -147,18 +147,25 @@ Group:          doc
 System and service manager.
 
 %package locale
-Summary:        locate component for systemd package
+Summary:        locale component for systemd package
 Group:          doc
 
 %description locale
 locale component for systemd package
 
 %package extras
-Summary:        locate component for systemd package
+Summary:        extras component for systemd package
 Group:          doc
 
 %description extras
 extras component for systemd package
+
+%package hwdb
+Summary:        hwdb component for systemd package
+Group:          base/shell
+
+%description hwdb
+hwdb component for systemd package
 
 %package boot
 Summary:         efi boot component for systemd package
@@ -379,19 +386,8 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %find_lang systemd
 
 %files
-%exclude /usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-catalog-update.service
 %exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
-%exclude /usr/lib/systemd/system/systemd-firstboot.service
-%exclude /usr/lib/systemd/system/systemd-sysusers.service
-%exclude /usr/lib/systemd/system/systemd-hwdb-update.service
-%exclude /usr/lib/systemd/system/systemd-update-done.service
-%exclude /usr/lib/systemd/systemd-update-done
-%exclude /usr/lib/systemd/systemd-coredump
 
 %{_datadir}/bash-completion/completions/*
 /usr/share/zsh/site-functions/*
@@ -662,24 +658,26 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
-/usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
 /usr/lib/systemd/system/system-update.target
 %exclude /usr/lib/systemd/system/systemd-firstboot.service
 /usr/lib/systemd/system/systemd-sysusers.service
+/usr/lib/systemd/system/systemd-update-done.service
+/usr/lib/systemd/systemd-update-done
+/usr/lib/systemd/system/local-fs.target.wants/var-lib-machines.mount
+/usr/lib/systemd/system/var-lib-machines.mount
+
+%files hwdb
+/usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
 /usr/lib/systemd/system/systemd-hwdb-update.service
 /usr/bin/systemd-hwdb
 /usr/lib/udev/hwdb.d/*.hwdb
-/usr/lib/systemd/system/systemd-update-done.service
-/usr/lib/systemd/systemd-update-done
 /usr/lib/udev/rules.d/60-cdrom_id.rules
 /usr/lib/udev/rules.d/60-persistent-alsa.rules
 /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
 /usr/lib/udev/rules.d/60-persistent-v4l.rules
 /usr/lib/udev/rules.d/75-probe_mtd.rules
 /usr/lib/udev/rules.d/78-sound-card.rules
-/usr/lib/systemd/system/local-fs.target.wants/var-lib-machines.mount
-/usr/lib/systemd/system/var-lib-machines.mount
 
 
 %files locale -f systemd.lang
