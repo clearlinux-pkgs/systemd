@@ -386,8 +386,19 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %find_lang systemd
 
 %files
+%exclude /usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-catalog-update.service
 %exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
+%exclude /usr/lib/systemd/system/systemd-firstboot.service
+%exclude /usr/lib/systemd/system/systemd-sysusers.service
+%exclude /usr/lib/systemd/system/systemd-hwdb-update.service
+%exclude /usr/lib/systemd/system/systemd-update-done.service
+%exclude /usr/lib/systemd/systemd-update-done
+%exclude /usr/lib/systemd/systemd-coredump
 
 %{_datadir}/bash-completion/completions/*
 /usr/share/zsh/site-functions/*
