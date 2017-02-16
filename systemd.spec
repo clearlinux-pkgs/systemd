@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        231
-Release:        105
+Release:        106
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -590,10 +590,8 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/tmpfiles.d/*.conf
 
 /usr/lib/udev/ata_id
-/usr/lib/udev/cdrom_id
-/usr/lib/udev/collect
+/usr/lib/udev/scsi_id
 /usr/lib/udev/hwdb.bin
-/usr/lib/udev/mtd_probe
 /usr/lib/udev/rules.d/50-udev-default.rules
 /usr/lib/udev/rules.d/60-drm.rules
 /usr/lib/udev/rules.d/60-persistent-input.rules
@@ -614,9 +612,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/udev/rules.d/60-block.rules
 /usr/lib/udev/rules.d/60-evdev.rules
 /usr/lib/udev/rules.d/60-serial.rules
-
-/usr/lib/udev/scsi_id
-/usr/lib/udev/v4l_id
 
 %{_datadir}/dbus-1/system.d/*.conf
 %{_datadir}/dbus-1/system-services/*
@@ -678,6 +673,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system/local-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/var-lib-machines.mount
 
+
 %files hwdb
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
@@ -689,6 +685,10 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/udev/rules.d/60-persistent-v4l.rules
 /usr/lib/udev/rules.d/75-probe_mtd.rules
 /usr/lib/udev/rules.d/78-sound-card.rules
+/usr/lib/udev/cdrom_id
+/usr/lib/udev/collect
+/usr/lib/udev/mtd_probe
+/usr/lib/udev/v4l_id
 
 
 %files locale -f systemd.lang
