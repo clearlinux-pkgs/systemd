@@ -656,17 +656,17 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %{_mandir}/*/*
 
 %files extras
-%exclude /usr/bin/systemd-firstboot
+/usr/bin/systemd-firstboot
 /usr/lib/systemd/systemd-journal-upload
 /usr/bin/systemd-sysusers
 /usr/lib/systemd/system-generators/systemd-system-update-generator
 /usr/lib/systemd/system/ldconfig.service
-/usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
-/usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
-/usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
 /usr/lib/systemd/system/system-update.target
-%exclude /usr/lib/systemd/system/systemd-firstboot.service
+/usr/lib/systemd/system/systemd-firstboot.service
 /usr/lib/systemd/system/systemd-sysusers.service
 /usr/lib/systemd/system/systemd-update-done.service
 /usr/lib/systemd/systemd-update-done
