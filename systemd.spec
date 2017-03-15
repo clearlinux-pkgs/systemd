@@ -626,7 +626,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib64/libnss_mymachines.so.2
 /usr/lib64/libnss_resolve.so.2
 
-/usr/lib64/libudev.*
+/usr/lib64/libudev.so.*
 /usr/lib64/libsystemd.so.*
 
 /usr/lib64/security/pam_systemd.so
