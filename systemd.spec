@@ -643,7 +643,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib32/libnss_mymachines.so.2
 /usr/lib32/libnss_resolve.so.2
 
-/usr/lib32/libudev.*
+/usr/lib32/libudev.so.*
 /usr/lib32/libsystemd.so.*
 
 
