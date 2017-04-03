@@ -1,7 +1,7 @@
-From 116d507f274aee8d433673bf94851d9819d95691 Mon Sep 17 00:00:00 2001
+From 7237947decc6b801eb6a42551dfeaedee3a0b597 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 24 Sep 2015 19:15:55 +0100
-Subject: [PATCH 20/30] kernel-install: Support alternate root usage via
+Subject: [PATCH 19/32] kernel-install: Support alternate root usage via
  SUBDIR/PLUGIN_SUBDIR
 
 This enables kernel-install to be used with an alternative root, by accepting a new
@@ -18,10 +18,10 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  1 file changed, 38 insertions(+), 12 deletions(-)
 
 diff --git a/src/kernel-install/kernel-install b/src/kernel-install/kernel-install
-index 1159dc3..9152d2c 100644
+index c7d9f4eea..ea6b9c37b 100644
 --- a/src/kernel-install/kernel-install
 +++ b/src/kernel-install/kernel-install
-@@ -24,8 +24,11 @@ usage()
+@@ -26,8 +26,11 @@ usage()
      echo "Usage:"
      echo "        $0 add KERNEL-VERSION KERNEL-IMAGE"
      echo "        $0 remove KERNEL-VERSION"
@@ -33,7 +33,7 @@ index 1159dc3..9152d2c 100644
  dropindirs_sort()
  {
      local suffix=$1; shift
-@@ -54,12 +57,26 @@ dropindirs_sort()
+@@ -56,12 +59,26 @@ dropindirs_sort()
  
  export LC_COLLATE=C
  
@@ -63,7 +63,7 @@ index 1159dc3..9152d2c 100644
  
  if [[ "${0##*/}" == 'installkernel' ]]; then
      COMMAND='add'
-@@ -71,14 +88,21 @@ fi
+@@ -73,14 +90,21 @@ fi
  KERNEL_VERSION="$1"
  KERNEL_IMAGE="$2"
  
@@ -89,33 +89,36 @@ index 1159dc3..9152d2c 100644
  fi
  
  if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
-@@ -99,8 +123,8 @@ ret=0
+@@ -106,8 +130,8 @@ ret=0
  
- readarray -t PLUGINS < <(
+ readarray -t PLUGINS <<<"$(
      dropindirs_sort ".install" \
 -        "/etc/kernel/install.d" \
 -        "/usr/lib/kernel/install.d"
 +        "${SUBDIR}/etc/kernel/install.d" \
 +        "${SUBDIR}/usr/lib/kernel/install.d"
- )
+ )"
  
  case $COMMAND in
-@@ -117,7 +141,7 @@ case $COMMAND in
+@@ -124,7 +148,7 @@ case $COMMAND in
  
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
 -                "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE"
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE"
-                 ((ret+=$?))
-             fi
-         done
-@@ -126,12 +150,14 @@ case $COMMAND in
+                 x=$?
+                 if [[ $x == $SKIP_REMAINING ]]; then
+                     exit 0
+@@ -137,7 +161,7 @@ case $COMMAND in
      remove)
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
 -                "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
-                 ((ret+=$?))
+                 x=$?
+                 if [[ $x == $SKIP_REMAINING ]]; then
+                     exit 0
+@@ -146,7 +170,9 @@ case $COMMAND in
              fi
          done
  
@@ -127,5 +130,5 @@ index 1159dc3..9152d2c 100644
          ;;
  
 -- 
-2.10.0
+2.12.2
 

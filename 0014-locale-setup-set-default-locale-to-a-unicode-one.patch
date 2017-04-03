@@ -1,14 +1,14 @@
-From 181a3c4e2082b1fe1989d59edc1e5b35757d9a87 Mon Sep 17 00:00:00 2001
+From c46d72eb0b0641da5c2ce71363e3a7546854930e Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:44 +0100
-Subject: [PATCH 14/30] locale-setup: set default locale to a unicode one.
+Subject: [PATCH 14/32] locale-setup: set default locale to a unicode one.
 
 ---
  src/core/locale-setup.c | 5 +++++
  1 file changed, 5 insertions(+)
 
 diff --git a/src/core/locale-setup.c b/src/core/locale-setup.c
-index ccf61d2..d0b0bfa 100644
+index fdd847ee8..b65da54c8 100644
 --- a/src/core/locale-setup.c
 +++ b/src/core/locale-setup.c
 @@ -80,6 +80,11 @@ int locale_setup(char ***environment) {
@@ -24,5 +24,5 @@ index ccf61d2..d0b0bfa 100644
          for (i = 0; i < _VARIABLE_LC_MAX; i++) {
                  char *s;
 -- 
-2.10.0
+2.12.2
 

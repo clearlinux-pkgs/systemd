@@ -1,7 +1,7 @@
-From 4716a166f640fd5f410ada46729e47b4aad9ed0e Mon Sep 17 00:00:00 2001
+From ac72044cb6ea247fef424b1bce10a1591a668673 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 12:35:29 +0100
-Subject: [PATCH 15/30] autoconf: add option to disable journald
+Subject: [PATCH 15/32] autoconf: add option to disable journald
  authentication.
 
 This way one can compile importd (need gcrypt), without linking
@@ -12,28 +12,28 @@ is present).
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/src/journal/journalctl.c b/src/journal/journalctl.c
-index 53c6180..49e29dc 100644
+index ad11fb314..fe33d8b84 100644
 --- a/src/journal/journalctl.c
 +++ b/src/journal/journalctl.c
-@@ -104,7 +104,7 @@ static char **arg_file = NULL;
+@@ -105,7 +105,7 @@ static char **arg_file = NULL;
  static bool arg_file_stdin = false;
  static int arg_priorities = 0xFF;
- static const char *arg_verify_key = NULL;
+ static char *arg_verify_key = NULL;
 -#ifdef HAVE_GCRYPT
 +#ifdef HAVE_JOURNALD_AUTHENTICATE
  static usec_t arg_interval = DEFAULT_FSS_INTERVAL_USEC;
  static bool arg_force = false;
  #endif
-@@ -311,7 +311,7 @@ static void help(void) {
+@@ -312,7 +312,7 @@ static void help(void) {
                 "  -D --directory=PATH      Show journal files from directory\n"
                 "     --file=PATH           Show journal file\n"
-                "     --root=ROOT           Operate on catalog files below a root directory\n"
+                "     --root=ROOT           Operate on files below a root directory\n"
 -#ifdef HAVE_GCRYPT
 +#ifdef HAVE_JOURNALD_AUTHENTICATE
                 "     --interval=TIME       Time interval for changing the FSS sealing key\n"
                 "     --verify-key=KEY      Specify FSS verification key\n"
                 "     --force               Override of the FSS key pair with --setup-keys\n"
-@@ -334,7 +334,7 @@ static void help(void) {
+@@ -335,7 +335,7 @@ static void help(void) {
                 "     --dump-catalog        Show entries in the message catalog\n"
                 "     --update-catalog      Update the message catalog database\n"
                 "     --new-id128           Generate a new 128-bit ID\n"
@@ -42,7 +42,7 @@ index 53c6180..49e29dc 100644
                 "     --setup-keys          Generate a new FSS key pair\n"
  #endif
                 , program_invocation_short_name);
-@@ -671,7 +671,7 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -672,7 +672,7 @@ static int parse_argv(int argc, char *argv[]) {
                          arg_action = ACTION_VACUUM;
                          break;
  
@@ -51,7 +51,7 @@ index 53c6180..49e29dc 100644
                  case ARG_FORCE:
                          arg_force = true;
                          break;
-@@ -1548,7 +1548,7 @@ static int add_syslog_identifier(sd_journal *j) {
+@@ -1564,7 +1564,7 @@ static int add_syslog_identifier(sd_journal *j) {
  }
  
  static int setup_keys(void) {
@@ -60,7 +60,7 @@ index 53c6180..49e29dc 100644
          size_t mpk_size, seed_size, state_size, i;
          uint8_t *mpk, *seed, *state;
          int fd = -1, r;
-@@ -1756,7 +1756,7 @@ static int verify(sd_journal *j) {
+@@ -1772,7 +1772,7 @@ static int verify(sd_journal *j) {
                  int k;
                  usec_t first = 0, validated = 0, last = 0;
  
@@ -70,5 +70,5 @@ index 53c6180..49e29dc 100644
                          log_notice("Journal file %s has sealing enabled but verification key has not been passed using --verify-key=.", f->path);
  #endif
 -- 
-2.10.0
+2.12.2
 

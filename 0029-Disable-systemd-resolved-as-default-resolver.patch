@@ -1,7 +1,7 @@
-From 629520a9cb77ff59188c82d126a274516e6e9405 Mon Sep 17 00:00:00 2001
+From 14ee092e7232d220a342dfacd611283c1e34c502 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Tue, 4 Oct 2016 10:13:21 -0700
-Subject: [PATCH] Disable systemd-resolved as default resolver.
+Subject: [PATCH 29/32] Disable systemd-resolved as default resolver.
 
 Let docker, etc, use the direct nameserver information in
 /etc/resolv.conf, instead of redirecting to the stub resolver in
@@ -14,7 +14,7 @@ Ref: https://github.com/coreos/coreos-overlay/pull/2129/commits/76830bedf02a8c54
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tmpfiles.d/etc.conf.m4 b/tmpfiles.d/etc.conf.m4
-index d88727e..12b61ff 100644
+index d88727ec6..12b61ff61 100644
 --- a/tmpfiles.d/etc.conf.m4
 +++ b/tmpfiles.d/etc.conf.m4
 @@ -12,6 +12,6 @@ m4_ifdef(`HAVE_SMACK_RUN_LABEL',
@@ -27,5 +27,5 @@ index d88727e..12b61ff 100644
 +L+! /etc/resolv.conf - - - - ../run/systemd/resolve/resolv.conf
  )m4_dnl
 -- 
-2.10.0
+2.12.2
 

@@ -1,11 +1,11 @@
 Name:           systemd
-Version:        231
-Release:        113
+Version:        233
+Release:        114
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
 Group:          base/shell
-Source0:        https://github.com/systemd/systemd/archive/v231.tar.gz
+Source0:        https://github.com/systemd/systemd/archive/v233.tar.gz
 Source1:        20-pci-vendor-model.hwdb
 BuildRequires:  filesystem-chroot
 BuildRequires:  tzdata
@@ -79,25 +79,22 @@ Patch0013: 0013-core-do-not-apply-presets.patch
 Patch0014: 0014-locale-setup-set-default-locale-to-a-unicode-one.patch
 Patch0015: 0015-autoconf-add-option-to-disable-journald-authenticati.patch
 Patch0016: 0016-mount-setup-mount-kernel-fs-by-default.patch
-Patch0017: 0017-telemetrics-invoke-crash-probes.patch
-Patch0018: 0018-Ship-default-services-in-system-unit-dir.patch
-Patch0019: 0019-bootctl-Add-force-option-to-enable-chroot-install-re.patch
-Patch0020: 0020-kernel-install-Support-alternate-root-usage-via-SUBD.patch
-Patch0021: 0021-bootctl-Handle-gummiboot-systemd-migration.patch
-Patch0022: 0022-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
-Patch0023: 0023-Do-not-use-gold-to-link.patch
-Patch0024: 0024-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
-Patch0025: 0025-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
-Patch0026: 0026-more-udev-children-workers.patch
-Patch0027: 0027-not-load-iptables.patch
-Patch0028: 0028-force-write-resovl.conf-at-boot.patch
-Patch0029: 0029-Start-user-session-by-default-for-logins.patch
-Patch0030: 0030-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
-Patch0031: 0031-Disable-systemd-resolved-as-default-resolver.patch
-Patch0032: cve-2016-7795.patch
-Patch0033: enable-bbr.patch
-Patch0034: lesswait.patch
-Patch0035: dhcp-faster-retry.patch
+Patch0017: 0017-Ship-default-services-in-system-unit-dir.patch
+Patch0018: 0018-bootctl-Add-force-option-to-enable-chroot-install-re.patch
+Patch0019: 0019-kernel-install-Support-alternate-root-usage-via-SUBD.patch
+Patch0020: 0020-bootctl-Handle-gummiboot-systemd-migration.patch
+Patch0021: 0021-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
+Patch0022: 0022-Do-not-use-gold-to-link.patch
+Patch0023: 0023-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
+Patch0024: 0024-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
+Patch0025: 0025-more-udev-children-workers.patch
+Patch0026: 0026-not-load-iptables.patch
+Patch0027: 0027-force-write-resovl.conf-at-boot.patch
+Patch0028: 0028-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
+Patch0029: 0029-Disable-systemd-resolved-as-default-resolver.patch
+Patch0030: 0030-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
+Patch0031: 0031-network-online-complete-once-one-link-is-online-not-.patch
+Patch0032: 0032-DHCP-retry-faster.patch
 
 %description
 System and service manager.
@@ -215,9 +212,6 @@ coredump component for systemd package
 %patch0030 -p1
 %patch0031 -p1
 %patch0032 -p1
-%patch0033 -p1
-%patch0034 -p1
-%patch0035 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
@@ -371,10 +365,6 @@ mv %{buildroot}/usr/lib/udev/hwdb.d/20-* %{buildroot}/usr/lib/udev/hwdb.d/20
 mv %{buildroot}/usr/lib/udev/hwdb.d/20/* %{buildroot}/usr/lib/udev/hwdb.d/
 rmdir %{buildroot}/usr/lib/udev/hwdb.d/20
 
-# Move dbus config
-#mkdir -p %{buildroot}%{_datadir}/dbus-1/system.d
-#mv %{buildroot}/etc/dbus-1/system.d/* %{buildroot}%{_datadir}/dbus-1/system.d
-
 # Compute catalog
 ./journalctl --root %{buildroot} --update-catalog
 
@@ -394,6 +384,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-catalog-update.service
+%exclude /usr/lib/systemd/system/system-update-cleanup.service
 %exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
 %exclude /usr/lib/systemd/system/systemd-firstboot.service
 %exclude /usr/lib/systemd/system/systemd-sysusers.service
@@ -432,6 +423,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/bin/systemd-escape
 /usr/bin/systemd-inhibit
 /usr/bin/systemd-machine-id-setup
+/usr/bin/systemd-mount
 /usr/bin/systemd-notify
 /usr/bin/systemd-nspawn
 /usr/bin/systemd-path
@@ -441,6 +433,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/bin/systemd-stdio-bridge
 /usr/bin/systemd-tmpfiles
 /usr/bin/systemd-tty-ask-password-agent
+/usr/bin/systemd-umount
 /usr/bin/timedatectl
 /usr/bin/udevadm
 
@@ -457,12 +450,10 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system-generators/systemd-gpt-auto-generator
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 /usr/lib/systemd/system-preset/90-systemd.preset
-/usr/lib/systemd/system/-.slice
 /usr/lib/systemd/system/autovt@.service
 /usr/lib/systemd/system/basic.target
 /usr/lib/systemd/system/bluetooth.target
 /usr/lib/systemd/system/console-getty.service
-/usr/lib/systemd/system/console-shell.service
 /usr/lib/systemd/system/container-getty@.service
 /usr/lib/systemd/system/ctrl-alt-del.target
 /usr/lib/systemd/system/dbus-org.freedesktop.hostname1.service
@@ -587,6 +578,8 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/user/*.service
 /usr/lib/systemd/user/*.target
 
+/usr/lib/systemd/user-environment-generators/*
+
 /usr/lib/systemd/libsystemd-shared-%{version}.so
 
 /usr/lib/tmpfiles.d/*.conf
@@ -614,10 +607,14 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/udev/rules.d/60-block.rules
 /usr/lib/udev/rules.d/60-evdev.rules
 /usr/lib/udev/rules.d/60-serial.rules
+/usr/lib/udev/rules.d/60-sensor.rules
+
 
 %{_datadir}/dbus-1/system.d/*.conf
 %{_datadir}/dbus-1/system-services/*
 %{_datadir}/dbus-1/services/*
+
+/usr/lib/environment.d/99-environment.conf
 
 %{_datadir}/systemd/*
 
@@ -627,6 +624,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib64/libnss_myhostname.so.2
 /usr/lib64/libnss_mymachines.so.2
 /usr/lib64/libnss_resolve.so.2
+/usr/lib64/libnss_systemd.so.2
 
 /usr/lib64/libudev.so.*
 /usr/lib64/libsystemd.so.*
@@ -644,6 +642,7 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib32/libnss_myhostname.so.2
 /usr/lib32/libnss_mymachines.so.2
 /usr/lib32/libnss_resolve.so.2
+/usr/lib32/libnss_systemd.so.2
 
 /usr/lib32/libudev.so.*
 /usr/lib32/libsystemd.so.*

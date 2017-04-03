@@ -1,14 +1,14 @@
-From 0c6be1a4c229ae7ee74cd3aba77ae78b69da8e10 Mon Sep 17 00:00:00 2001
+From b763a90c6fc4ca5fce9ecb5653df02b361fa5408 Mon Sep 17 00:00:00 2001
 From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
 Date: Mon, 18 Jul 2016 14:02:51 -0500
-Subject: [PATCH 28/30] force write resovl.conf at boot
+Subject: [PATCH 27/32] force write resovl.conf at boot
 
 ---
  tmpfiles.d/etc.conf.m4 | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/tmpfiles.d/etc.conf.m4 b/tmpfiles.d/etc.conf.m4
-index 62208c9..d88727e 100644
+index 62208c9a0..d88727ec6 100644
 --- a/tmpfiles.d/etc.conf.m4
 +++ b/tmpfiles.d/etc.conf.m4
 @@ -13,4 +13,5 @@ t /etc/mtab - - - - security.SMACK64=_
@@ -18,5 +18,5 @@ index 62208c9..d88727e 100644
 +L+! /etc/resolv.conf - - - - ../usr/lib/systemd/resolv.conf
  )m4_dnl
 -- 
-2.10.0
+2.12.2
 

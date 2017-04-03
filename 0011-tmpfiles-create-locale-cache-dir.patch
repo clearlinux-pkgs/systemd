@@ -1,14 +1,14 @@
-From 3cb70fa47188de5016e86eb4acdfd5a8ee17c83c Mon Sep 17 00:00:00 2001
+From bd585a6a0e2db375a73504c52ef23d6940c910bd Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:47:46 +0100
-Subject: [PATCH 11/30] tmpfiles: create locale cache dir.
+Subject: [PATCH 11/32] tmpfiles: create locale cache dir.
 
 ---
  tmpfiles.d/var.conf | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/tmpfiles.d/var.conf b/tmpfiles.d/var.conf
-index ae7952e..03cb0f5 100644
+index ae7952e77..03cb0f581 100644
 --- a/tmpfiles.d/var.conf
 +++ b/tmpfiles.d/var.conf
 @@ -16,6 +16,7 @@ f /var/log/wtmp 0664 root utmp -
@@ -20,5 +20,5 @@ index ae7952e..03cb0f5 100644
  d /var/lib 0755 - - -
  
 -- 
-2.10.0
+2.12.2
 

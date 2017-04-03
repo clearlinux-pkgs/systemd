@@ -1,7 +1,7 @@
-From d9a1257d7f118dc5413b2800f3c1cdceeb94a612 Mon Sep 17 00:00:00 2001
+From ec7c941dbea020d2917bbb2dfb8165b4b0bb2fb7 Mon Sep 17 00:00:00 2001
 From: Matthew Johnson <matthew.johnson@intel.com>
 Date: Tue, 20 Sep 2016 10:49:55 -0700
-Subject: [PATCH 30/30] Add journal flush service for Microsoft Azure VMs
+Subject: [PATCH 28/32] Add journal flush service for Microsoft Azure VMs
 
 Removes "Before" clause when in a Microsoft VM.
 ---
@@ -12,10 +12,10 @@ Removes "Before" clause when in a Microsoft VM.
  create mode 100644 units/systemd-journal-flush-msft.service.in
 
 diff --git a/Makefile.am b/Makefile.am
-index 7feb54c..19cbb54 100644
+index eadadfed3..e6ad1e939 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -4401,6 +4401,7 @@ dist_systemunit_DATA += \
+@@ -4579,6 +4579,7 @@ dist_systemunit_DATA += \
  nodist_systemunit_DATA += \
  	units/systemd-journald.service \
  	units/systemd-journal-flush.service \
@@ -23,7 +23,7 @@ index 7feb54c..19cbb54 100644
  	units/systemd-journal-catalog-update.service
  
  dist_pkgsysconf_DATA += \
-@@ -4437,6 +4438,7 @@ SOCKETS_TARGET_WANTS += \
+@@ -4615,6 +4616,7 @@ SOCKETS_TARGET_WANTS += \
  SYSINIT_TARGET_WANTS += \
  	systemd-journald.service \
  	systemd-journal-flush.service \
@@ -33,7 +33,7 @@ index 7feb54c..19cbb54 100644
  EXTRA_DIST += \
 diff --git a/units/systemd-journal-flush-msft.service.in b/units/systemd-journal-flush-msft.service.in
 new file mode 100644
-index 0000000..056da1f
+index 000000000..056da1f6e
 --- /dev/null
 +++ b/units/systemd-journal-flush-msft.service.in
 @@ -0,0 +1,22 @@
@@ -60,7 +60,7 @@ index 0000000..056da1f
 +RemainAfterExit=yes
 +TimeoutSec=90s
 diff --git a/units/systemd-journal-flush.service.in b/units/systemd-journal-flush.service.in
-index a0a2e3f..be2b48c 100644
+index a0a2e3fdb..be2b48cfd 100644
 --- a/units/systemd-journal-flush.service.in
 +++ b/units/systemd-journal-flush.service.in
 @@ -14,6 +14,7 @@ After=systemd-journald.service
@@ -72,5 +72,5 @@ index a0a2e3f..be2b48c 100644
  [Service]
  ExecStart=@rootbindir@/journalctl --flush
 -- 
-2.10.0
+2.12.2
 

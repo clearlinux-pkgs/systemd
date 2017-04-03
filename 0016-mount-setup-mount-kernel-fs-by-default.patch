@@ -1,19 +1,19 @@
-From 70d9bc8fdce97ac8036bff0ab00fd66feb79363d Mon Sep 17 00:00:00 2001
+From 702e4cc1d7bead56fe436427ccd644b58d72b61e Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 16/30] mount-setup: mount kernel fs by default.
+Subject: [PATCH 16/32] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.
 ---
  Makefile.am                         | 10 ----------
  src/core/mount-setup.c              | 10 ++++++++++
- units/dev-hugepages.mount           | 20 --------------------
+ units/dev-hugepages.mount           | 21 ---------------------
  units/dev-mqueue.mount              | 20 --------------------
- units/sys-fs-fuse-connections.mount | 21 ---------------------
+ units/sys-fs-fuse-connections.mount | 22 ----------------------
  units/sys-kernel-config.mount       | 21 ---------------------
  units/sys-kernel-debug.mount        | 20 --------------------
- 7 files changed, 10 insertions(+), 112 deletions(-)
+ 7 files changed, 10 insertions(+), 114 deletions(-)
  delete mode 100644 units/dev-hugepages.mount
  delete mode 100644 units/dev-mqueue.mount
  delete mode 100644 units/sys-fs-fuse-connections.mount
@@ -21,11 +21,11 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/Makefile.am b/Makefile.am
-index 7bff1dd..a48549e 100644
+index 61382c83e..e6b3679e0 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -504,11 +504,6 @@ dist_systemunit_DATA = \
- 	units/x-.slice \
+@@ -526,11 +526,6 @@ dist_systemunit_DATA = \
+ 	units/system.slice \
  	units/systemd-initctl.socket \
  	units/syslog.socket \
 -	units/dev-hugepages.mount \
@@ -36,7 +36,7 @@ index 7bff1dd..a48549e 100644
  	units/tmp.mount \
  	units/var-lib-machines.mount \
  	units/printer.target \
-@@ -6229,11 +6224,6 @@ MULTI_USER_TARGET_WANTS += \
+@@ -6472,11 +6467,6 @@ MULTI_USER_TARGET_WANTS += \
  	systemd-ask-password-wall.path
  
  SYSINIT_TARGET_WANTS += \
@@ -49,10 +49,10 @@ index 7bff1dd..a48549e 100644
  	systemd-ask-password-console.path
  
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index 5d8ab0e..919466c 100644
+index 7295efbf3..1db30c1e5 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
-@@ -109,6 +109,16 @@ static const MountPoint mount_table[] = {
+@@ -111,6 +111,16 @@ static const MountPoint mount_table[] = {
          { "efivarfs",    "/sys/firmware/efi/efivars", "efivarfs",   NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
            is_efi_boot,   MNT_NONE                   },
  #endif
@@ -71,10 +71,10 @@ index 5d8ab0e..919466c 100644
  /* These are API file systems that might be mounted by other software,
 diff --git a/units/dev-hugepages.mount b/units/dev-hugepages.mount
 deleted file mode 100644
-index 882adb4..0000000
+index 489cc777e..000000000
 --- a/units/dev-hugepages.mount
 +++ /dev/null
-@@ -1,20 +0,0 @@
+@@ -1,21 +0,0 @@
 -#  This file is part of systemd.
 -#
 -#  systemd is free software; you can redistribute it and/or modify it
@@ -90,6 +90,7 @@ index 882adb4..0000000
 -Before=sysinit.target
 -ConditionPathExists=/sys/kernel/mm/hugepages
 -ConditionCapability=CAP_SYS_ADMIN
+-ConditionVirtualization=!private-users
 -
 -[Mount]
 -What=hugetlbfs
@@ -97,7 +98,7 @@ index 882adb4..0000000
 -Type=hugetlbfs
 diff --git a/units/dev-mqueue.mount b/units/dev-mqueue.mount
 deleted file mode 100644
-index 8d29f96..0000000
+index 8d29f96ca..000000000
 --- a/units/dev-mqueue.mount
 +++ /dev/null
 @@ -1,20 +0,0 @@
@@ -123,10 +124,10 @@ index 8d29f96..0000000
 -Type=mqueue
 diff --git a/units/sys-fs-fuse-connections.mount b/units/sys-fs-fuse-connections.mount
 deleted file mode 100644
-index e940beb..0000000
+index 336b5f627..000000000
 --- a/units/sys-fs-fuse-connections.mount
 +++ /dev/null
-@@ -1,21 +0,0 @@
+@@ -1,22 +0,0 @@
 -#  This file is part of systemd.
 -#
 -#  systemd is free software; you can redistribute it and/or modify it
@@ -141,6 +142,7 @@ index e940beb..0000000
 -DefaultDependencies=no
 -ConditionPathExists=/sys/fs/fuse/connections
 -ConditionCapability=CAP_SYS_ADMIN
+-ConditionVirtualization=!private-users
 -After=systemd-modules-load.service
 -Before=sysinit.target
 -
@@ -150,7 +152,7 @@ index e940beb..0000000
 -Type=fusectl
 diff --git a/units/sys-kernel-config.mount b/units/sys-kernel-config.mount
 deleted file mode 100644
-index 21648ef..0000000
+index 21648eff6..000000000
 --- a/units/sys-kernel-config.mount
 +++ /dev/null
 @@ -1,21 +0,0 @@
@@ -177,7 +179,7 @@ index 21648ef..0000000
 -Type=configfs
 diff --git a/units/sys-kernel-debug.mount b/units/sys-kernel-debug.mount
 deleted file mode 100644
-index 1e94387..0000000
+index 1e94387ba..000000000
 --- a/units/sys-kernel-debug.mount
 +++ /dev/null
 @@ -1,20 +0,0 @@
@@ -202,5 +204,5 @@ index 1e94387..0000000
 -Where=/sys/kernel/debug
 -Type=debugfs
 -- 
-2.10.0
+2.12.2
 

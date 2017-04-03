@@ -1,17 +1,17 @@
-From 8e71899643207623da06e09042ae91f18c374243 Mon Sep 17 00:00:00 2001
+From c2dc240cc632731988edf9afb252c0df75be4840 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 18/30] Ship default services in system unit dir.
+Subject: [PATCH 17/32] Ship default services in system unit dir.
 
 ---
- Makefile.am | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ Makefile.am | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index a48549e..fa49881 100644
+index e6b3679e0..94b08f51e 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -4957,7 +4957,7 @@ nodist_systemunit_DATA += \
+@@ -5151,7 +5151,7 @@ nodist_systemunit_DATA += \
  	units/systemd-timesyncd.service
  
  GENERAL_ALIASES += \
@@ -20,16 +20,18 @@ index a48549e..fa49881 100644
  
  nodist_pkgsysconf_DATA += \
  	src/timesync/timesyncd.conf
-@@ -5377,7 +5377,7 @@ BUSNAMES_TARGET_WANTS += \
+@@ -5589,8 +5589,8 @@ BUSNAMES_TARGET_WANTS += \
  	org.freedesktop.resolve1.busname
  
  GENERAL_ALIASES += \
--	$(systemunitdir)/systemd-resolved.service $(pkgsysconfdir)/system/multi-user.target.wants/systemd-resolved.service
-+	$(systemunitdir)/systemd-resolved.service $(systemunitdir)/multi-user.target.wants/systemd-resolved.service
+-	$(systemunitdir)/systemd-resolved.service $(pkgsysconfdir)/system/multi-user.target.wants/systemd-resolved.service \
+-	$(systemunitdir)/systemd-resolved.service $(pkgsysconfdir)/system/dbus-org.freedesktop.resolve1.service
++	$(systemunitdir)/systemd-resolved.service $(systemunitdir)/multi-user.target.wants/systemd-resolved.service \
++	$(systemunitdir)/systemd-resolved.service $(systemunitdir)/dbus-org.freedesktop.resolve1.service
  
  nodist_pkgsysconf_DATA += \
  	src/resolve/resolved.conf
-@@ -5692,9 +5692,9 @@ dist_dbuspolicy_DATA += \
+@@ -5914,9 +5914,9 @@ dist_dbuspolicy_DATA += \
  	src/network/org.freedesktop.network1.conf
  
  GENERAL_ALIASES += \
@@ -42,8 +44,8 @@ index a48549e..fa49881 100644
  
  SYSTEM_UNIT_ALIASES += \
  	systemd-networkd.service dbus-org.freedesktop.network1.service
-@@ -6257,8 +6257,8 @@ USER_UNIT_ALIASES += \
- 	$(systemunitdir)/busnames.target busnames.target
+@@ -6487,8 +6487,8 @@ SYSTEM_UNIT_ALIASES += \
+ 	getty@.service autovt@.service
  
  GENERAL_ALIASES += \
 -	$(systemunitdir)/remote-fs.target $(pkgsysconfdir)/system/multi-user.target.wants/remote-fs.target \
@@ -54,5 +56,5 @@ index a48549e..fa49881 100644
  	$(dbussystemservicedir)/org.freedesktop.systemd1.service $(dbussessionservicedir)/org.freedesktop.systemd1.service
  
 -- 
-2.10.0
+2.12.2
 
