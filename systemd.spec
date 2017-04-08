@@ -372,8 +372,8 @@ mv %{buildroot}/usr/lib/udev/hwdb.d/20/* %{buildroot}/usr/lib/udev/hwdb.d/
 rmdir %{buildroot}/usr/lib/udev/hwdb.d/20
 
 # Move dbus config
-mkdir -p %{buildroot}%{_datadir}/dbus-1/system.d
-mv %{buildroot}/etc/dbus-1/system.d/* %{buildroot}%{_datadir}/dbus-1/system.d
+#mkdir -p %{buildroot}%{_datadir}/dbus-1/system.d
+#mv %{buildroot}/etc/dbus-1/system.d/* %{buildroot}%{_datadir}/dbus-1/system.d
 
 # Compute catalog
 ./journalctl --root %{buildroot} --update-catalog
