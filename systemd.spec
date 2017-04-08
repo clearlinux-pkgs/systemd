@@ -245,6 +245,7 @@ popd
     --disable-libcryptsetup \
     --disable-microhttpd \
     --disable-quotacheck \
+    --with-dbuspolicydir=/usr/share/dbus-1/system.d \
     --localstatedir=%{_localstatedir} \
     --enable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
@@ -285,6 +286,7 @@ export CXXFLAGS="$CXXFLAGS -m32"
     --disable-libcryptsetup \
     --disable-microhttpd \
     --disable-quotacheck \
+    --with-dbuspolicydir=/usr/share/dbus-1/system.d \
     --disable-libcurl \
     --disable-libiptc \
     --localstatedir=%{_localstatedir} \
