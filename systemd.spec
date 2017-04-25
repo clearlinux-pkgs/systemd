@@ -176,6 +176,13 @@ Summary:         coredump component for systemd package
 %description coredump
 coredump component for systemd package
 
+%package polkit
+Summary:        polkit component for systemd package
+Group:          doc
+
+%description polkit
+polkit component for systemd package
+
 %prep
 
 %setup -q -n %{name}-%{version}
@@ -246,7 +253,7 @@ popd
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
     --with-pamlibdir=/usr/lib64/security \
     --without-kill-user-processes \
-    --disable-polkit
+    --enable-polkit
 
 # Disable unified cgroups, as a guess that that's why we are seeing pid 1 aborts
 # This regresses bootspeed.
@@ -374,6 +381,9 @@ ln -s ../../../bin/crashprobe %{buildroot}/usr/lib/systemd/system-coredump/crash
 
 # only supported plugin is "clear.install"
 rm -rvf %{buildroot}/usr/lib/kernel
+
+# Remove unused systemd plka
+rm -rvf %{buildroot}/var/lib/polkit-1
 
 %find_lang systemd
 
@@ -674,7 +684,6 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/systemd/system/local-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/var-lib-machines.mount
 
-
 %files hwdb
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
@@ -712,3 +721,12 @@ rm -rvf %{buildroot}/usr/lib/kernel
 /usr/lib/sysctl.d/50-coredump.conf
 /usr/lib/systemd/systemd-coredump
 /usr/lib/systemd/system-coredump/crashprobe
+
+%files polkit
+/usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
+/usr/share/polkit-1/actions/org.freedesktop.locale1.policy
+/usr/share/polkit-1/actions/org.freedesktop.login1.policy
+/usr/share/polkit-1/actions/org.freedesktop.machine1.policy
+/usr/share/polkit-1/actions/org.freedesktop.systemd1.policy
+/usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
+/usr/share/polkit-1/rules.d/systemd-networkd.rules
