@@ -8,3 +8,14 @@
  
          /* The meaning of the kernel option is reversed wrt. to the return value
           * of this function, hence the negation. */
+--- systemd-233/src/basic/cgroup-util.c~	2017-04-28 12:42:58.000000000 +0000
++++ systemd-233/src/basic/cgroup-util.c	2017-04-28 18:22:24.886393506 +0000
+@@ -2521,6 +2521,8 @@
+         int r;
+         bool b;
+         const bool is_default = DEFAULT_HIERARCHY >= CGROUP_UNIFIED_SYSTEMD;
++
++	return 0;
+         /* We default to true if the default is "hybrid", obviously,
+          * but also when the default is "unified", because if we get
+          * called, it means that unified hierarchy was not mounted. */
