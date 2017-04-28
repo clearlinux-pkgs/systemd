@@ -95,7 +95,6 @@ Patch0029: 0029-Disable-systemd-resolved-as-default-resolver.patch
 Patch0030: 0030-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
 Patch0031: 0031-network-online-complete-once-one-link-is-online-not-.patch
 Patch0032: 0032-DHCP-retry-faster.patch
-Patch0033: legacy.patch
 
 %description
 System and service manager.
@@ -220,7 +219,6 @@ polkit component for systemd package
 %patch0030 -p1
 %patch0031 -p1
 %patch0032 -p1
-%patch0033 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
@@ -255,7 +253,8 @@ popd
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
     --with-pamlibdir=/usr/lib64/security \
     --without-kill-user-processes \
-    --enable-polkit
+    --enable-polkit \
+    --with-default-hierarchy=legacy
 
 # Disable unified cgroups, as a guess that that's why we are seeing pid 1 aborts
 # This regresses bootspeed.
@@ -298,7 +297,8 @@ export CXXFLAGS="$CXXFLAGS -m32"
     --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
     --with-pamlibdir=/usr/lib64/security \
     --without-kill-user-processes \
-    --disable-polkit
+    --disable-polkit \
+    --with-default-hierarchy=legacy
 
 make %{?_smp_mflags}
 popd
