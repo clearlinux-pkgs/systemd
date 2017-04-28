@@ -1,0 +1,10 @@
+--- systemd-233/src/basic/cgroup-util.c~	2017-03-01 21:43:06.000000000 +0000
++++ systemd-233/src/basic/cgroup-util.c	2017-04-28 12:42:58.780712867 +0000
+@@ -2538,6 +2538,7 @@
+         /* Otherwise, let's see what the kernel command line has to say.
+          * Since checking is expensive, cache a non-error result. */
+         r = proc_cmdline_get_bool("systemd.legacy_systemd_cgroup_controller", &b);
++	r = 1;
+ 
+         /* The meaning of the kernel option is reversed wrt. to the return value
+          * of this function, hence the negation. */
