@@ -9,7 +9,7 @@ timesyncd pulls in libm, only for one single exp2() in a debug log statement...
                    NTP_FIELD_MODE(ntpmsg.field),
                    ntpmsg.stratum,
 -                  exp2(ntpmsg.precision), ntpmsg.precision,
-+                  0, ntpmsg.precision,
++                  0.0, ntpmsg.precision,
                    root_distance,
                    ntpmsg.stratum == 1 ? ntpmsg.refid : "n/a",
                    origin - OFFSET_1900_1970,
