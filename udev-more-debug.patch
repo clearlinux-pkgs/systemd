@@ -1,0 +1,13 @@
+--- systemd-233/src/udev/udevd.c~	2017-03-01 21:43:06.000000000 +0000
++++ systemd-233/src/udev/udevd.c	2017-05-06 20:58:32.114541610 +0000
+@@ -614,8 +614,8 @@
+         event->is_block = streq("block", udev_device_get_subsystem(dev));
+         event->ifindex = udev_device_get_ifindex(dev);
+ 
+-        log_debug("seq %llu queued, '%s' '%s'", udev_device_get_seqnum(dev),
+-             udev_device_get_action(dev), udev_device_get_subsystem(dev));
++        log_debug("seq %llu queued, '%s' '%s' '%s'", udev_device_get_seqnum(dev),
++             udev_device_get_action(dev), udev_device_get_subsystem(dev), udev_device_get_devpath(dev));
+ 
+         event->state = EVENT_QUEUED;
+ 
