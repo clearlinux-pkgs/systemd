@@ -16,7 +16,7 @@ index 46d637883..64edcefea 100644
  Restart=always
  RestartSec=0
 -ExecStart=@rootlibexecdir@/systemd-udevd
-+ExecStart=@rootlibexecdir@/systemd-udevd  --children-max=64
++ExecStart=@rootlibexecdir@/systemd-udevd  --children-max=16
  KillMode=mixed
  WatchdogSec=3min
  TasksMax=infinity
