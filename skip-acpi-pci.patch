@@ -1,0 +1,47 @@
+skip not-present ACPI devices
+
+Xen and older Qemu expose a boatload (253) ACPI devices to the guest that are not present;
+these show up in sysfs but there's nothing meaningful one can do with them.
+
+This patch will have udev skip these devices to save the 100ms+ boot time
+
+
+--- systemd-233/src/libsystemd/sd-device/device-enumerator.c.org	2017-05-07 02:08:28.775426820 +0000
++++ systemd-233/src/libsystemd/sd-device/device-enumerator.c	2017-05-07 02:12:58.467048034 +0000
+@@ -465,6 +465,26 @@
+         return false;
+ }
+ 
++static int acpi_status_disabled(char *sysfspath)
++{
++	FILE *file;
++	unsigned int i;
++	char newpath[4096];
++	char line[128];
++	sprintf(newpath, "%s/status", sysfspath);
++	file = fopen(newpath, "r");
++	if (!file)
++		return 0;
++	line[0] = 0;
++	fgets(line, 128, file);
++	fclose(file);
++	i = strtoull(line, NULL, 10);
++	
++	if (strstr(sysfspath, "acpi") && ((i & 1) == 0))
++		return 1;
++	return 0;
++}
++
+ static int enumerator_scan_dir_and_add_devices(sd_device_enumerator *enumerator, const char *basedir, const char *subdir1, const char *subdir2) {
+         _cleanup_closedir_ DIR *dir = NULL;
+         char *path;
+@@ -500,6 +520,9 @@
+ 
+                 (void)sprintf(syspath, "%s%s", path, dent->d_name);
+ 
++		if (acpi_status_disabled(syspath))
++			continue;
++
+                 k = sd_device_new_from_syspath(&device, syspath);
+                 if (k < 0) {
+                         if (k != -ENODEV)
