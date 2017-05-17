@@ -1,0 +1,24 @@
+--- systemd-233/src/core/mount-setup.c~	2017-03-01 21:43:06.000000000 +0000
++++ systemd-233/src/core/mount-setup.c	2017-05-17 23:31:30.297709679 +0000
+@@ -357,12 +357,21 @@
+ #endif
+ 
+ int mount_setup(bool loaded_policy) {
++	struct stat sb;
++	int ret;
+         int r = 0;
+ 
+         r = mount_points_setup(ELEMENTSOF(mount_table), loaded_policy);
+         if (r < 0)
+                 return r;
+ 
++	ret = lstat("/var/run", &sb);
++	if (ret == 0 && sb.st_mode & S_IFDIR) {
++		char path[256];
++		sprintf(path, "/var/run.%i", (int)time(NULL));
++		rename("/var/run", path);
++	}
++
+ #if defined(HAVE_SELINUX) || defined(HAVE_SMACK)
+         /* Nodes in devtmpfs and /run need to be manually updated for
+          * the appropriate labels, after mounting. The other virtual

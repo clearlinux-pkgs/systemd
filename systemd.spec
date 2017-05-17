@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        233
-Release:        129
+Release:        130
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -98,6 +98,7 @@ Patch0032: 0032-DHCP-retry-faster.patch
 Patch0033: timesync-no-libm.patch
 Patch0034: udev-more-debug.patch
 Patch0035: skip-acpi-pci.patch
+Patch0036: var-run-directory.patch
 
 %description
 System and service manager.
@@ -225,6 +226,7 @@ polkit component for systemd package
 %patch0033 -p1
 %patch0034 -p1
 %patch0035 -p1
+%patch0036 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
