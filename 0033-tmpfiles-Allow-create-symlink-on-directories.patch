@@ -1,0 +1,45 @@
+From 32b4bc78ad3a18516de82a510ffb8ee7ee8e7dde Mon Sep 17 00:00:00 2001
+From: William Douglas <william.r.douglas@gmail.com>
+Date: Thu, 18 May 2017 22:24:09 +0000
+Subject: [PATCH] tmpfiles: Allow create symlink on directories
+
+Currently if tmpfiles is run with force on symlink creation but the already
+exists and is a directory, the creation will fail. This change updates the
+behavior to create the symlink with a timestamp and use renameat2() to swap
+places with a timestamped symlink and the directory atomically.
+---
+ src/tmpfiles/tmpfiles.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/src/tmpfiles/tmpfiles.c b/src/tmpfiles/tmpfiles.c
+index 7326597..92421b4 100644
+--- a/src/tmpfiles/tmpfiles.c
++++ b/src/tmpfiles/tmpfiles.c
+@@ -1359,8 +1359,22 @@ static int create_item(Item *i) {
+                                         r = symlink_atomic(resolved, i->path);
+                                         mac_selinux_create_file_clear();
+ 
+-                                        if (r < 0)
+-                                                return log_error_errno(r, "symlink(%s, %s) failed: %m", resolved, i->path);
++                                        if (r < 0) {
++                                                _cleanup_free_ char *tmpfn = NULL;
++                                                if (asprintf(&tmpfn, "%s-%" PRI_USEC, i->path, now(CLOCK_MONOTONIC)) < 0) {
++                                                        return log_oom();
++                                                }
++                                                mac_selinux_create_file_prepare(tmpfn, S_IFLNK);
++                                                r = symlink(resolved, tmpfn);
++                                                mac_selinux_create_file_clear();
++
++                                                r = renameat2(AT_FDCWD, i->path, AT_FDCWD, tmpfn, RENAME_EXCHANGE);
++
++                                                if (r < 0) {
++                                                        (void) unlink(tmpfn);
++                                                        return log_error_errno(r, "symlink(%s, %s) failed: %m", resolved, i->path);
++                                                }
++                                        }
+ 
+                                         creation = CREATION_FORCE;
+                                 } else {
+-- 
+2.13.0
+
