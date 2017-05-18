@@ -258,7 +258,7 @@ popd
     --localstatedir=%{_localstatedir} \
     --enable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
-    --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
+    --with-efi-ldsdir=/usr/lib64 --with-efi-libdir=/usr/lib64 \
     --with-pamlibdir=/usr/lib64/security \
     --without-kill-user-processes \
     --enable-polkit \
@@ -302,7 +302,7 @@ export CXXFLAGS="$CXXFLAGS -m32"
     --localstatedir=%{_localstatedir} \
     --disable-elfutils \
     --with-ntp-servers='gateway. 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org' \
-    --with-efi-ldsdir=/usr/lib --with-efi-libdir=/usr/lib \
+    --with-efi-ldsdir=/usr/lib64 --with-efi-libdir=/usr/lib64 \
     --with-pamlibdir=/usr/lib64/security \
     --without-kill-user-processes \
     --disable-polkit \
