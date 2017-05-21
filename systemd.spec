@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        233
-Release:        135
+Release:        136
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -109,6 +109,7 @@ Patch0037: var-run-directory.patch
 
 Patch0038: timesyncd-is-simple.patch
 Patch0039: udev-is-O3.patch
+Patch0040: dont-wait-for-me-utmp.patch
 
 %description
 System and service manager.
@@ -251,6 +252,7 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0037 -p1
 %patch0038 -p1
 %patch0039 -p1
+%patch0040 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
@@ -434,6 +436,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 %exclude /usr/lib/systemd/system/systemd-sysusers.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-update-done.service
+%exclude /usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/systemd/systemd-coredump
 
@@ -689,7 +692,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 
 %files doc
 /usr/share/doc/systemd/*
-%{_mandir}/*/*
+/usr/share/man/*/*
 
 %files extras
 /usr/bin/systemd-firstboot
@@ -701,6 +704,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
+/usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
 /usr/lib/systemd/system/system-update.target
 /usr/lib/systemd/system/systemd-firstboot.service
 /usr/lib/systemd/system/systemd-sysusers.service
