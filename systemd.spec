@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        233
-Release:        133
+Release:        134
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -59,9 +59,15 @@ BuildRequires:  gcc-libstdc++32
 BuildRequires:  glibc-dev32
 BuildRequires:  glibc-libc32
 
-Requires(post): glibc-utils
-Requires(post): shadow
 Requires:       clr-systemd-config
+
+
+#
+# Temporary Requires: for compatibility
+# The objective is to split out the -console sub package and not include it
+# by default, but this can only be done once all of the bundles are adjusted
+#
+Requires: 	systemd-console
 
 Patch0001: 0001-journal-raise-compression-threshold.patch
 Patch0002: 0002-journal-clearout-drop-kmsg.patch
@@ -100,6 +106,8 @@ Patch0034: timesync-no-libm.patch
 Patch0035: udev-more-debug.patch
 Patch0036: skip-acpi-pci.patch
 Patch0037: var-run-directory.patch
+
+Patch0038: timesyncd-is-simple.patch
 
 %description
 System and service manager.
@@ -188,6 +196,17 @@ Group:          doc
 %description polkit
 polkit component for systemd package
 
+
+%package console
+Summary:        systemd and udev units used when you have an actual console
+Group:          base
+
+%description console
+Some systemd units and udev rules are useful only when you have an actual console,
+this subpackage contains these units. Images/systems that don't have a console
+(cloud VMs) can omit this subpackage.
+
+
 %prep
 
 %setup -q -n %{name}-%{version}
@@ -229,6 +248,7 @@ polkit component for systemd package
 %patch0035 -p1
 %patch0036 -p1
 %patch0037 -p1
+%patch0038 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
@@ -367,7 +387,7 @@ rmdir %{buildroot}/etc/udev
 rm -f %{buildroot}/etc/xdg/systemd/user
 
 # Move config file into system PAM location
-mv %{buildroot}/etc/pam.d %{buildroot}%{_datadir}/.
+mv %{buildroot}/etc/pam.d %{buildroot}/usr/share/.
 
 cp %{SOURCE1} %{buildroot}/usr/lib/udev/hwdb.d/
 rm -f %{buildroot}/usr/lib/udev/hwdb.d/20-usb-vendor-model.hwdb
@@ -415,10 +435,10 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/systemd/systemd-coredump
 
-%{_datadir}/bash-completion/completions/*
+/usr/share/bash-completion/completions/*
 /usr/share/zsh/site-functions/*
 
-%{_datadir}/pam.d/systemd-user
+/usr/share/pam.d/systemd-user
 
 /usr/bin/halt
 /usr/bin/init
@@ -509,7 +529,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/initrd.target
 /usr/lib/systemd/system/initrd-root-device.target
 
-/usr/lib/systemd/system/getty.target.wants/getty@tty1.service
 
 /usr/lib/systemd/system/kexec.target
 /usr/lib/systemd/system/kmod-static-nodes.service
@@ -566,7 +585,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/rescue.target
 /usr/lib/systemd/system/rpcbind.target
 
-/usr/lib/systemd/system/serial-getty@.service
 /usr/lib/systemd/system/shutdown.target
 /usr/lib/systemd/system/sigpwr.target
 /usr/lib/systemd/system/sleep.target
@@ -610,35 +628,28 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/udev/scsi_id
 /usr/lib/udev/hwdb.bin
 /usr/lib/udev/rules.d/50-udev-default.rules
-/usr/lib/udev/rules.d/60-drm.rules
-/usr/lib/udev/rules.d/60-persistent-input.rules
 /usr/lib/udev/rules.d/60-persistent-storage.rules
-/usr/lib/udev/rules.d/64-btrfs.rules
-/usr/lib/udev/rules.d/70-mouse.rules
 /usr/lib/udev/rules.d/70-power-switch.rules
-/usr/lib/udev/rules.d/70-touchpad.rules
 /usr/lib/udev/rules.d/70-uaccess.rules
 /usr/lib/udev/rules.d/71-seat.rules
 /usr/lib/udev/rules.d/73-seat-late.rules
 /usr/lib/udev/rules.d/75-net-description.rules
 /usr/lib/udev/rules.d/80-drivers.rules
 /usr/lib/udev/rules.d/80-net-setup-link.rules
-/usr/lib/udev/rules.d/90-vconsole.rules
 /usr/lib/udev/rules.d/99-systemd.rules
 
 /usr/lib/udev/rules.d/60-block.rules
-/usr/lib/udev/rules.d/60-evdev.rules
 /usr/lib/udev/rules.d/60-serial.rules
 /usr/lib/udev/rules.d/60-sensor.rules
 
 
-%{_datadir}/dbus-1/system.d/*.conf
-%{_datadir}/dbus-1/system-services/*
-%{_datadir}/dbus-1/services/*
+/usr/share/dbus-1/system.d/*.conf
+/usr/share/dbus-1/system-services/*
+/usr/share/dbus-1/services/*
 
 /usr/lib/environment.d/99-environment.conf
 
-%{_datadir}/systemd/*
+/usr/share/systemd/*
 
 %exclude /var/lib/systemd/catalog/database
 
@@ -675,7 +686,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib32/pkgconfig/*.pc
 
 %files doc
-%{_datadir}/doc/systemd/*
+/usr/share/doc/systemd/*
 %{_mandir}/*/*
 
 %files extras
@@ -695,6 +706,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/systemd-update-done
 /usr/lib/systemd/system/local-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/var-lib-machines.mount
+/usr/lib/udev/rules.d/64-btrfs.rules
 
 %files hwdb
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
@@ -742,3 +754,13 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/share/polkit-1/actions/org.freedesktop.systemd1.policy
 /usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
 /usr/share/polkit-1/rules.d/systemd-networkd.rules
+
+%files console
+/usr/lib/udev/rules.d/90-vconsole.rules
+/usr/lib/udev/rules.d/70-mouse.rules
+/usr/lib/udev/rules.d/60-drm.rules
+/usr/lib/udev/rules.d/60-persistent-input.rules
+/usr/lib/systemd/system/serial-getty@.service
+/usr/lib/systemd/system/getty.target.wants/getty@tty1.service
+/usr/lib/udev/rules.d/70-touchpad.rules
+/usr/lib/udev/rules.d/60-evdev.rules
