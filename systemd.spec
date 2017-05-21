@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        233
-Release:        134
+Release:        135
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -108,6 +108,7 @@ Patch0036: skip-acpi-pci.patch
 Patch0037: var-run-directory.patch
 
 Patch0038: timesyncd-is-simple.patch
+Patch0039: udev-is-O3.patch
 
 %description
 System and service manager.
@@ -249,6 +250,7 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0036 -p1
 %patch0037 -p1
 %patch0038 -p1
+%patch0039 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
