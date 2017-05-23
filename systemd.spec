@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        233
-Release:        136
+Release:        137
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -436,7 +436,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 %exclude /usr/lib/systemd/system/systemd-sysusers.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-update-done.service
-%exclude /usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
+/usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/systemd/systemd-coredump
 
