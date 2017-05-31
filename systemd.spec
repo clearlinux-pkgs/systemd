@@ -111,6 +111,8 @@ Patch0038: timesyncd-is-simple.patch
 Patch0039: udev-is-O3.patch
 Patch0040: dont-wait-for-me-utmp.patch
 
+Patch0041: CVE-2017-9217.patch
+
 %description
 System and service manager.
 
@@ -253,6 +255,7 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0038 -p1
 %patch0039 -p1
 %patch0040 -p1
+%patch0041 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
