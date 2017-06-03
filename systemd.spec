@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        233
-Release:        138
+Release:        139
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -443,8 +443,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/systemd/systemd-coredump
 
-/usr/share/bash-completion/completions/*
-/usr/share/zsh/site-functions/*
 
 /usr/share/pam.d/systemd-user
 
@@ -696,6 +694,8 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 %files doc
 /usr/share/doc/systemd/*
 /usr/share/man/*/*
+/usr/share/bash-completion/completions/*
+/usr/share/zsh/site-functions/*
 
 %files extras
 /usr/bin/systemd-firstboot
