@@ -1,11 +1,11 @@
 Name:           systemd
-Version:        233
-Release:        144
+Version:        234
+Release:        145
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
 Group:          base/shell
-Source0:        https://github.com/systemd/systemd/archive/v233.tar.gz
+Source0:        https://github.com/systemd/systemd/archive/v234.tar.gz
 Source1:        20-pci-vendor-model.hwdb
 BuildRequires:  filesystem-chroot
 BuildRequires:  tzdata
@@ -28,7 +28,6 @@ BuildRequires:  libcgroup-dev
 BuildRequires:  libffi-dev
 BuildRequires:  libgcrypt-dev
 BuildRequires:  libgcrypt-dev32
-BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  glib-bin
 BuildRequires:  bzip2-dev
 BuildRequires:  xz-dev
@@ -59,6 +58,8 @@ BuildRequires:  gcc-libstdc++32
 BuildRequires:  glibc-dev32
 BuildRequires:  glibc-libc32
 
+BuildRequires:	python3
+
 Requires:       clr-systemd-config
 
 
@@ -79,41 +80,35 @@ Patch0007: 0007-logind-pam-fix-systemd-user-to-include-common-sessio.patch
 Patch0008: 0008-analyze-increase-precision.patch
 Patch0009: 0009-configure.ac-disable-pie.patch
 Patch0010: 0010-sd-event-return-malloc-memory-reserves-when-main-loo.patch
-Patch0011: 0011-tmpfiles-create-locale-cache-dir.patch
-Patch0012: 0012-efi-boot-generator-Do-not-automount-boot-partition.patch
-Patch0013: 0013-core-do-not-apply-presets.patch
-Patch0014: 0014-locale-setup-set-default-locale-to-a-unicode-one.patch
-Patch0015: 0015-autoconf-add-option-to-disable-journald-authenticati.patch
-Patch0016: 0016-mount-setup-mount-kernel-fs-by-default.patch
-Patch0017: 0017-Ship-default-services-in-system-unit-dir.patch
-Patch0018: 0018-bootctl-Add-force-option-to-enable-chroot-install-re.patch
-Patch0019: 0019-kernel-install-Support-alternate-root-usage-via-SUBD.patch
-Patch0020: 0020-bootctl-Handle-gummiboot-systemd-migration.patch
-Patch0021: 0021-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
-Patch0022: 0022-Do-not-use-gold-to-link.patch
-Patch0023: 0023-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
-Patch0024: 0024-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
-Patch0025: 0025-more-udev-children-workers.patch
-Patch0026: 0026-not-load-iptables.patch
-Patch0027: 0027-force-write-resovl.conf-at-boot.patch
-Patch0028: 0028-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
-Patch0029: 0029-Disable-systemd-resolved-as-default-resolver.patch
-Patch0030: 0030-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
-Patch0031: 0031-network-online-complete-once-one-link-is-online-not-.patch
-Patch0032: 0032-DHCP-retry-faster.patch
-Patch0033: 0033-tmpfiles-Allow-create-symlink-on-directories.patch
-Patch0034: timesync-no-libm.patch
-Patch0035: udev-more-debug.patch
-Patch0036: skip-acpi-pci.patch
-Patch0037: var-run-directory.patch
-
-Patch0038: timesyncd-is-simple.patch
-Patch0039: udev-is-O3.patch
-Patch0040: dont-wait-for-me-utmp.patch
-
-Patch0041: CVE-2017-9217.patch
-Patch0042: CVE-2017-9445.patch
-Patch0043: CVE-2017-1000082.patch
+Patch0011: 0011-efi-boot-generator-Do-not-automount-boot-partition.patch
+Patch0012: 0012-core-do-not-apply-presets.patch
+Patch0013: 0013-locale-setup-set-default-locale-to-a-unicode-one.patch
+Patch0014: 0014-autoconf-add-option-to-disable-journald-authenticati.patch
+Patch0015: 0015-mount-setup-mount-kernel-fs-by-default.patch
+Patch0016: 0016-Ship-default-services-in-system-unit-dir.patch
+Patch0017: 0017-bootctl-Add-force-option-to-enable-chroot-install-re.patch
+Patch0018: 0018-kernel-install-Support-alternate-root-usage-via-SUBD.patch
+Patch0019: 0019-bootctl-Handle-gummiboot-systemd-migration.patch
+Patch0020: 0020-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
+Patch0021: 0021-Do-not-use-gold-to-link.patch
+Patch0022: 0022-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
+Patch0023: 0023-Add-RDRAND-support-as-an-alternative-to-dev-urandom.patch
+Patch0024: 0024-more-udev-children-workers.patch
+Patch0025: 0025-not-load-iptables.patch
+Patch0026: 0026-force-write-resovl.conf-at-boot.patch
+Patch0027: 0027-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
+Patch0028: 0028-Disable-systemd-resolved-as-default-resolver.patch
+Patch0029: 0029-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
+Patch0030: 0030-network-online-complete-once-one-link-is-online-not-.patch
+Patch0031: 0031-DHCP-retry-faster.patch
+Patch0032: 0032-tmpfiles-Allow-create-symlink-on-directories.patch
+Patch0033: 0033-Remove-libm-memory-overhead.patch
+Patch0034: 0034-udev-log-also-device-path.patch
+Patch0035: 0035-skip-not-present-ACPI-devices.patch
+Patch0036: 0036-Ensure-var-run-is-never-a-directory.patch
+Patch0037: 0037-Make-timesyncd-a-simple-service.patch
+Patch0038: 0038-Compile-udev-with-O3.patch
+Patch0039: 0039-Don-t-wait-for-utmp-at-shutdown.patch
 
 %description
 System and service manager.
@@ -256,10 +251,6 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0037 -p1
 %patch0038 -p1
 %patch0039 -p1
-%patch0040 -p1
-%patch0041 -p1
-%patch0042 -p1
-%patch0043 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
@@ -443,7 +434,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 %exclude /usr/lib/systemd/system/systemd-sysusers.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-update-done.service
-/usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/systemd/systemd-coredump
 
@@ -528,6 +518,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/hibernate.target
 /usr/lib/systemd/system/hybrid-sleep.target
 /usr/lib/systemd/system/machines.target
+/usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
 
 /usr/lib/systemd/system/initrd-cleanup.service
 /usr/lib/systemd/system/initrd-fs.target
@@ -538,7 +529,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/initrd-udevadm-cleanup-db.service
 /usr/lib/systemd/system/initrd.target
 /usr/lib/systemd/system/initrd-root-device.target
-
 
 /usr/lib/systemd/system/kexec.target
 /usr/lib/systemd/system/kmod-static-nodes.service
@@ -591,6 +581,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/reboot.target
 /usr/lib/systemd/system/remote-fs-pre.target
 /usr/lib/systemd/system/remote-fs.target
+/usr/lib/systemd/system/remote-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/rescue.service
 /usr/lib/systemd/system/rescue.target
 /usr/lib/systemd/system/rpcbind.target
@@ -717,7 +708,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/systemd-sysusers.service
 /usr/lib/systemd/system/systemd-update-done.service
 /usr/lib/systemd/systemd-update-done
-/usr/lib/systemd/system/local-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/var-lib-machines.mount
 /usr/lib/udev/rules.d/64-btrfs.rules
 
@@ -727,9 +717,11 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/bin/systemd-hwdb
 /usr/lib/udev/hwdb.d/*.hwdb
 /usr/lib/udev/rules.d/60-cdrom_id.rules
+/usr/lib/udev/rules.d/60-input-id.rules
 /usr/lib/udev/rules.d/60-persistent-alsa.rules
 /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
 /usr/lib/udev/rules.d/60-persistent-v4l.rules
+/usr/lib/udev/rules.d/70-joystick.rules
 /usr/lib/udev/rules.d/75-probe_mtd.rules
 /usr/lib/udev/rules.d/78-sound-card.rules
 /usr/lib/udev/cdrom_id

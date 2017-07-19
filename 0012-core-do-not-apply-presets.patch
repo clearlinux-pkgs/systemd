@@ -1,17 +1,17 @@
-From 05ffc63d347bd890f0727b688e4074c698df4c01 Mon Sep 17 00:00:00 2001
+From 757295b938b1be53d15b8a5dd83f4c1172af3af2 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
-Subject: [PATCH 13/32] core: do not apply presets.
+Subject: [PATCH 12/39] core: do not apply presets.
 
 ---
  src/core/main.c | 12 ++----------
  1 file changed, 2 insertions(+), 10 deletions(-)
 
 diff --git a/src/core/main.c b/src/core/main.c
-index bcf9ea5f2..b06e08147 100644
+index 88e2c9250..816bc3382 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -1798,19 +1798,11 @@ int main(int argc, char *argv[]) {
+@@ -1808,19 +1808,11 @@ int main(int argc, char *argv[]) {
                  if (prctl(PR_SET_CHILD_SUBREAPER, 1) < 0)
                          log_warning_errno(errno, "Failed to make us a subreaper: %m");
  
@@ -34,5 +34,5 @@ index bcf9ea5f2..b06e08147 100644
                  log_emergency_errno(r, "Failed to allocate manager object: %m");
                  error_message = "Failed to allocate manager object";
 -- 
-2.12.2
+2.13.3
 

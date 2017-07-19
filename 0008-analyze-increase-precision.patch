@@ -1,14 +1,14 @@
-From 2fec3524ee4a4bb134a3d639e770831627ac114d Mon Sep 17 00:00:00 2001
+From 4de478139c17dd2ad7d0857a37089d4bd8022753 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:41:17 +0100
-Subject: [PATCH 08/32] analyze: increase precision.
+Subject: [PATCH 08/39] analyze: increase precision.
 
 ---
  src/analyze/analyze.c | 31 ++++++++++++++++++-------------
  1 file changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/src/analyze/analyze.c b/src/analyze/analyze.c
-index ac0470b20..19b753360 100644
+index 1eb2ca0cc..584999909 100644
 --- a/src/analyze/analyze.c
 +++ b/src/analyze/analyze.c
 @@ -49,6 +49,8 @@
@@ -91,5 +91,5 @@ index ac0470b20..19b753360 100644
  
          free_unit_times(times, (unsigned) n);
 -- 
-2.12.2
+2.13.3
 

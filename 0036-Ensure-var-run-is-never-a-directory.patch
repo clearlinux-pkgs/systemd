@@ -1,6 +1,17 @@
---- systemd-233/src/core/mount-setup.c~	2017-03-01 21:43:06.000000000 +0000
-+++ systemd-233/src/core/mount-setup.c	2017-05-17 23:31:30.297709679 +0000
-@@ -357,12 +357,21 @@
+From c7b3e0a85852949426482cb3fcc14e5bb8238662 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Fri, 14 Jul 2017 11:34:00 -0700
+Subject: [PATCH 36/39] Ensure /var/run is never a directory.
+
+---
+ src/core/mount-setup.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
+index 1db30c1e5..8dc9b302b 100644
+--- a/src/core/mount-setup.c
++++ b/src/core/mount-setup.c
+@@ -367,12 +367,21 @@ static int nftw_cb(
  #endif
  
  int mount_setup(bool loaded_policy) {
@@ -22,3 +33,6 @@
  #if defined(HAVE_SELINUX) || defined(HAVE_SMACK)
          /* Nodes in devtmpfs and /run need to be manually updated for
           * the appropriate labels, after mounting. The other virtual
+-- 
+2.13.3
+

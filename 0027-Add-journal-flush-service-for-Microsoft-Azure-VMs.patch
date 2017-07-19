@@ -1,7 +1,7 @@
-From ec7c941dbea020d2917bbb2dfb8165b4b0bb2fb7 Mon Sep 17 00:00:00 2001
+From e7ac4dbe8c1e659461103dcfdfd047c6e9440f85 Mon Sep 17 00:00:00 2001
 From: Matthew Johnson <matthew.johnson@intel.com>
 Date: Tue, 20 Sep 2016 10:49:55 -0700
-Subject: [PATCH 28/32] Add journal flush service for Microsoft Azure VMs
+Subject: [PATCH 27/39] Add journal flush service for Microsoft Azure VMs
 
 Removes "Before" clause when in a Microsoft VM.
 ---
@@ -12,10 +12,10 @@ Removes "Before" clause when in a Microsoft VM.
  create mode 100644 units/systemd-journal-flush-msft.service.in
 
 diff --git a/Makefile.am b/Makefile.am
-index eadadfed3..e6ad1e939 100644
+index 9693f32cc..f29a7b875 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -4579,6 +4579,7 @@ dist_systemunit_DATA += \
+@@ -4660,6 +4660,7 @@ dist_systemunit_DATA += \
  nodist_systemunit_DATA += \
  	units/systemd-journald.service \
  	units/systemd-journal-flush.service \
@@ -23,7 +23,7 @@ index eadadfed3..e6ad1e939 100644
  	units/systemd-journal-catalog-update.service
  
  dist_pkgsysconf_DATA += \
-@@ -4615,6 +4616,7 @@ SOCKETS_TARGET_WANTS += \
+@@ -4696,6 +4697,7 @@ SOCKETS_TARGET_WANTS += \
  SYSINIT_TARGET_WANTS += \
  	systemd-journald.service \
  	systemd-journal-flush.service \
@@ -72,5 +72,5 @@ index a0a2e3fdb..be2b48cfd 100644
  [Service]
  ExecStart=@rootbindir@/journalctl --flush
 -- 
-2.12.2
+2.13.3
 

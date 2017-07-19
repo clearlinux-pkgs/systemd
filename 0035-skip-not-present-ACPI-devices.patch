@@ -1,0 +1,59 @@
+From 532820eb28fefdacec980df0b869e0ac6defbb26 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Fri, 14 Jul 2017 11:33:26 -0700
+Subject: [PATCH 35/39] skip not-present ACPI devices
+
+Xen and older Qemu expose a boatload (253) ACPI devices to the guest
+that are not present; these show up in sysfs but there's nothing
+meaningful one can do with them.
+
+This patch will have udev skip these devices to save the 100ms+
+boot time
+---
+ src/libsystemd/sd-device/device-enumerator.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/src/libsystemd/sd-device/device-enumerator.c b/src/libsystemd/sd-device/device-enumerator.c
+index ebb8b2d16..39172c457 100644
+--- a/src/libsystemd/sd-device/device-enumerator.c
++++ b/src/libsystemd/sd-device/device-enumerator.c
+@@ -465,6 +465,26 @@ static bool match_sysname(sd_device_enumerator *enumerator, const char *sysname)
+         return false;
+ }
+ 
++static int acpi_status_disabled(char *sysfspath)
++{
++	FILE *file;
++	unsigned int i;
++	char newpath[4096];
++	char line[128];
++	sprintf(newpath, "%s/status", sysfspath);
++	file = fopen(newpath, "r");
++	if (!file)
++		return 0;
++//	line[0] = 0;
++//	fgets(line, 128, file);
++	fclose(file);
++//	i = strtoull(line, NULL, 10);
++	
++	if (strstr(sysfspath, "acpi") && strstr(sysfspath, "device:"))
++		return 1;
++	return 0;
++}
++
+ static int enumerator_scan_dir_and_add_devices(sd_device_enumerator *enumerator, const char *basedir, const char *subdir1, const char *subdir2) {
+         _cleanup_closedir_ DIR *dir = NULL;
+         char *path;
+@@ -500,6 +520,9 @@ static int enumerator_scan_dir_and_add_devices(sd_device_enumerator *enumerator,
+ 
+                 (void)sprintf(syspath, "%s%s", path, dent->d_name);
+ 
++		if (acpi_status_disabled(syspath))
++			continue;
++
+                 k = sd_device_new_from_syspath(&device, syspath);
+                 if (k < 0) {
+                         if (k != -ENODEV)
+-- 
+2.13.3
+

@@ -1,7 +1,7 @@
-From 7237947decc6b801eb6a42551dfeaedee3a0b597 Mon Sep 17 00:00:00 2001
+From 7aab558bc9554eb6721a3a560c1db837d7921ba2 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 24 Sep 2015 19:15:55 +0100
-Subject: [PATCH 19/32] kernel-install: Support alternate root usage via
+Subject: [PATCH 18/39] kernel-install: Support alternate root usage via
  SUBDIR/PLUGIN_SUBDIR
 
 This enables kernel-install to be used with an alternative root, by accepting a new
@@ -14,11 +14,11 @@ present on the host system, during image/filesystem generations.
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
- src/kernel-install/kernel-install | 50 +++++++++++++++++++++++++++++----------
- 1 file changed, 38 insertions(+), 12 deletions(-)
+ src/kernel-install/kernel-install | 52 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 10 deletions(-)
 
 diff --git a/src/kernel-install/kernel-install b/src/kernel-install/kernel-install
-index c7d9f4eea..ea6b9c37b 100644
+index 66bc4a6e8..cee153057 100644
 --- a/src/kernel-install/kernel-install
 +++ b/src/kernel-install/kernel-install
 @@ -26,8 +26,11 @@ usage()
@@ -63,7 +63,7 @@ index c7d9f4eea..ea6b9c37b 100644
  
  if [[ "${0##*/}" == 'installkernel' ]]; then
      COMMAND='add'
-@@ -73,14 +90,21 @@ fi
+@@ -73,8 +90,21 @@ fi
  KERNEL_VERSION="$1"
  KERNEL_IMAGE="$2"
  
@@ -71,13 +71,11 @@ index c7d9f4eea..ea6b9c37b 100644
 -    read MACHINE_ID < /etc/machine-id
 +if [[ -f "${SUBDIR}/etc/machine-id" ]]; then
 +    read MACHINE_ID < "${SUBDIR}/etc/machine-id"
- fi
- 
- if ! [[ $MACHINE_ID ]]; then
--    echo "Could not determine your machine ID from /etc/machine-id." >&2
++fi
++
++if ! [[ $MACHINE_ID ]]; then
 +    echo "Could not determine your machine ID from ${SUBDIR}/etc/machine-id." >&2
-     echo "Please run 'systemd-machine-id-setup' as root. See man:machine-id(5)" >&2
--    exit 1
++    echo "Please run 'systemd-machine-id-setup' as root. See man:machine-id(5)" >&2
 +    if [[ -z "${SUBDIR}" ]]; then
 +        exit 1
 +    else
@@ -89,7 +87,7 @@ index c7d9f4eea..ea6b9c37b 100644
  fi
  
  if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
-@@ -106,8 +130,8 @@ ret=0
+@@ -105,8 +135,8 @@ ret=0
  
  readarray -t PLUGINS <<<"$(
      dropindirs_sort ".install" \
@@ -100,7 +98,7 @@ index c7d9f4eea..ea6b9c37b 100644
  )"
  
  case $COMMAND in
-@@ -124,7 +148,7 @@ case $COMMAND in
+@@ -123,7 +153,7 @@ case $COMMAND in
  
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
@@ -108,8 +106,8 @@ index c7d9f4eea..ea6b9c37b 100644
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE"
                  x=$?
                  if [[ $x == $SKIP_REMAINING ]]; then
-                     exit 0
-@@ -137,7 +161,7 @@ case $COMMAND in
+                     ret=0
+@@ -145,7 +175,7 @@ case $COMMAND in
      remove)
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
@@ -117,8 +115,8 @@ index c7d9f4eea..ea6b9c37b 100644
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
                  x=$?
                  if [[ $x == $SKIP_REMAINING ]]; then
-                     exit 0
-@@ -146,7 +170,9 @@ case $COMMAND in
+                     ret=0
+@@ -155,7 +185,9 @@ case $COMMAND in
              fi
          done
  
@@ -130,5 +128,5 @@ index c7d9f4eea..ea6b9c37b 100644
          ;;
  
 -- 
-2.12.2
+2.13.3
 

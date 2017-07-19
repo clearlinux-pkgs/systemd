@@ -1,22 +1,22 @@
-From 0bb849351e56f538b35fb70bb780bae550acb2ca Mon Sep 17 00:00:00 2001
+From 7963b5b68bf15a33f9f56515f633801ab26cc9ff Mon Sep 17 00:00:00 2001
 From: Jim Kukunas <james.t.kukunas@linux.intel.com>
 Date: Tue, 7 Jun 2016 17:56:31 -0400
-Subject: [PATCH 24/32] Add RDRAND support as an alternative to /dev/urandom
+Subject: [PATCH 23/39] Add RDRAND support as an alternative to /dev/urandom
 
 ---
  Makefile.am               |  9 +++++
  configure.ac              | 32 ++++++++++++++++++
  src/basic/random-rdrand.c | 83 +++++++++++++++++++++++++++++++++++++++++++++++
- src/basic/random-util.c   | 23 ++++++++-----
- src/basic/random-util.h   | 28 ++++++++++++++--
- 5 files changed, 165 insertions(+), 10 deletions(-)
+ src/basic/random-util.c   | 21 ++++++++----
+ src/basic/random-util.h   | 30 +++++++++++++++--
+ 5 files changed, 166 insertions(+), 9 deletions(-)
  create mode 100644 src/basic/random-rdrand.c
 
 diff --git a/Makefile.am b/Makefile.am
-index 94b08f51e..eadadfed3 100644
+index 89f750dc1..9693f32cc 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -1200,6 +1200,15 @@ libfirewall_la_LIBADD = \
+@@ -1215,6 +1215,15 @@ libfirewall_la_LIBADD = \
  endif
  
  # -----------------------------------------------------------------------------
@@ -33,10 +33,10 @@ index 94b08f51e..eadadfed3 100644
  dist_systemunit_DATA += \
  	units/ldconfig.service
 diff --git a/configure.ac b/configure.ac
-index a98532d92..ce1ec0ba2 100644
+index d6a9a9110..477fe4997 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1265,6 +1265,38 @@ AC_DEFINE_UNQUOTED(DEFAULT_DNSSEC_MODE, [$mode], [Default DNSSEC mode])
+@@ -1347,6 +1347,38 @@ AC_DEFINE_UNQUOTED(DEFAULT_DNSSEC_MODE, [$mode], [Default DNSSEC mode])
  AC_SUBST(DEFAULT_DNSSEC_MODE)
  
  # ------------------------------------------------------------------------------
@@ -165,48 +165,44 @@ index 000000000..22f254fdb
 +
 +#endif
 diff --git a/src/basic/random-util.c b/src/basic/random-util.c
-index ad7b3eedf..ce26f312e 100644
+index 810eeab4d..c7af4ea90 100644
 --- a/src/basic/random-util.c
 +++ b/src/basic/random-util.c
-@@ -119,15 +119,22 @@ void random_bytes(void *p, size_t n) {
-         uint8_t *q;
+@@ -161,11 +161,18 @@ void pseudorandom_bytes(void *p, size_t n) {
+ void random_bytes(void *p, size_t n) {
          int r;
  
--        r = dev_urandom(p, n);
+-        r = acquire_random_bytes(p, n, false);
 -        if (r >= 0)
 -                return;
+-
+-        /* If some idiot made /dev/urandom unavailable to us, or the
+-         * kernel has no entropy, use a PRNG instead. */
+-        return pseudorandom_bytes(p, n);
 +#ifdef USE_RDRAND
 +        if (cpu_has_rdrand())
 +                random_rdrand(p, n);
 +        else
 +#endif
 +        {
-+                r = dev_urandom(p, n);
++                r = acquire_random_bytes(p, n, false);
 +                if (r >= 0)
 +                        return;
- 
--        /* If some idiot made /dev/urandom unavailable to us, he'll
--         * get a PRNG instead. */
-+                /* If some idiot made /dev/urandom unavailable to us, he'll
-+                 * get a PRNG instead. */
- 
--        initialize_srand();
-+                initialize_srand();
- 
--        for (q = p; q < (uint8_t*) p + n; q ++)
--                *q = rand();
-+                for (q = p; q < (uint8_t*) p + n; q ++)
-+                        *q = rand();
++
++                /* If some idiot made /dev/urandom unavailable to us, or the
++                * kernel has no entropy, use a PRNG instead. */
++                return pseudorandom_bytes(p, n);
 +        }
  }
 diff --git a/src/basic/random-util.h b/src/basic/random-util.h
-index 3cee4c501..9d5ad07fc 100644
+index 804e225fc..af8b666f8 100644
 --- a/src/basic/random-util.h
 +++ b/src/basic/random-util.h
-@@ -22,18 +22,42 @@
- #include <stddef.h>
- #include <stdint.h>
+@@ -25,17 +25,43 @@
  
+ int acquire_random_bytes(void *p, size_t n, bool high_quality_required);
+ void pseudorandom_bytes(void *p, size_t n);
++
 +#ifdef USE_RDRAND
 +extern int cpu_has_rdrand(void);
 +extern uint16_t rdrand_16(void);
@@ -215,7 +211,7 @@ index 3cee4c501..9d5ad07fc 100644
 +extern void random_rdrand(void *p, size_t n);
 +#endif
 +
- int dev_urandom(void *p, size_t n);
++int dev_urandom(void *p, size_t n);
  void random_bytes(void *p, size_t n);
  void initialize_srand(void);
  
@@ -249,5 +245,5 @@ index 3cee4c501..9d5ad07fc 100644
          return u;
  }
 -- 
-2.12.2
+2.13.3
 

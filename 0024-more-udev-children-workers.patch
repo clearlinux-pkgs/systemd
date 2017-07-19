@@ -1,14 +1,14 @@
-From 14bca38d4982aaf2ad71c8f4ce3109586871893b Mon Sep 17 00:00:00 2001
+From ee960a27d8629d34c8e730dc28e95d0144d9a37c Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 18 Jun 2016 17:33:33 +0000
-Subject: [PATCH 25/32] more udev children workers
+Subject: [PATCH 24/39] more udev children workers
 
 ---
  units/systemd-udevd.service.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/units/systemd-udevd.service.in b/units/systemd-udevd.service.in
-index 46d637883..64edcefea 100644
+index fc037b5a5..6806d5b41 100644
 --- a/units/systemd-udevd.service.in
 +++ b/units/systemd-udevd.service.in
 @@ -20,7 +20,7 @@ OOMScoreAdjust=-1000
@@ -21,5 +21,5 @@ index 46d637883..64edcefea 100644
  WatchdogSec=3min
  TasksMax=infinity
 -- 
-2.12.2
+2.13.3
 

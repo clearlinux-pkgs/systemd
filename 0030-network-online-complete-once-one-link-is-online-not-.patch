@@ -1,7 +1,7 @@
-From 60debc27d4c8c43f0c8f5e81bc1dcdda14e95c4e Mon Sep 17 00:00:00 2001
+From 59528e7de409edb9ad9425b3748c9cd9a7c6f479 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:15:52 -0700
-Subject: [PATCH 31/32] network-online: complete once one link is online, not
+Subject: [PATCH 30/39] network-online: complete once one link is online, not
  all.
 
 ---
@@ -27,5 +27,5 @@ index d51b0a59d..a5781e6e6 100644
  
                  if (l->operational_state &&
 -- 
-2.12.2
+2.13.3
 

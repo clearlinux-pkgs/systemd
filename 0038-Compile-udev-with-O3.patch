@@ -1,0 +1,35 @@
+From f480e8848f72ea0ef6bb2ea7be47faaf4bc8d16f Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Fri, 14 Jul 2017 11:35:13 -0700
+Subject: [PATCH 38/39] Compile udev with -O3
+
+udevd benefits from -O3 as it heavily affects boot time.
+---
+ Makefile.am | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Makefile.am b/Makefile.am
+index f29a7b875..ad4759f19 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -3999,6 +3999,8 @@ endif
+ 
+ systemd_udevd_SOURCES = \
+ 	src/udev/udevd.c
++	
++systemd_udevd_CFLAGS = -O3
+ 
+ systemd_udevd_CFLAGS = \
+ 	$(AM_CFLAGS) \
+@@ -4024,6 +4026,8 @@ udevadm_SOURCES = \
+ udevadm_LDADD = \
+ 	libudev-core.la \
+ 	libbasic.la
++	
++udevadm_CFLAGS = -O3
+ 
+ # ------------------------------------------------------------------------------
+ if ENABLE_HWDB
+-- 
+2.13.3
+

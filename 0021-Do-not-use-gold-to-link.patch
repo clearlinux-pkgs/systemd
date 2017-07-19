@@ -1,7 +1,7 @@
-From 0108edfdfb8d69a211ce869942bee4d3db7ed7c1 Mon Sep 17 00:00:00 2001
+From a716cdc860bea04ac422968832cd91bfdaa16de3 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 20 Apr 2016 11:22:41 -0700
-Subject: [PATCH 22/32] Do not use gold to link.
+Subject: [PATCH 21/39] Do not use gold to link.
 
 If acl/attr are linked without gold, then this won't compile.
 ---
@@ -9,10 +9,10 @@ If acl/attr are linked without gold, then this won't compile.
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index 12c07d9d8..a98532d92 100644
+index 52e9d53ed..d6a9a9110 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -237,8 +237,7 @@ CC_CHECK_FLAGS_APPEND([with_ldflags], [LDFLAGS], [\
+@@ -238,8 +238,7 @@ CC_CHECK_FLAGS_APPEND([with_ldflags], [LDFLAGS], [\
          -Wl,--as-needed \
          -Wl,--no-undefined \
          -Wl,-z,relro \
@@ -23,5 +23,5 @@ index 12c07d9d8..a98532d92 100644
  AC_SUBST([OUR_CPPFLAGS], "$with_cppflags $sanitizer_cppflags")
  AC_SUBST([OUR_CFLAGS], "-D__SANE_USERSPACE_TYPES__ $with_cflags $sanitizer_cflags")
 -- 
-2.12.2
+2.13.3
 

@@ -1,7 +1,7 @@
-From ea5a49a9bccbe93f2fe1cfdaaeb178a8e5681244 Mon Sep 17 00:00:00 2001
+From fde2b8076cfbfe2b9959150ae5872b8cd4196d7a Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH 18/32] bootctl: Add --force option to enable chroot
+Subject: [PATCH 17/39] bootctl: Add --force option to enable chroot
  install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of the
@@ -25,10 +25,10 @@ for its installation, configuration and layout.
  1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 155bf278b..485de72e3 100644
+index 233bc8029..1780b4990 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -957,11 +957,14 @@ static int help(int argc, char *argv[], void *userdata) {
+@@ -967,11 +967,14 @@ static int help(int argc, char *argv[], void *userdata) {
          return 0;
  }
  
@@ -43,7 +43,7 @@ index 155bf278b..485de72e3 100644
          };
  
          static const struct option options[] = {
-@@ -969,6 +972,7 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -979,6 +982,7 @@ static int parse_argv(int argc, char *argv[]) {
                  { "version",      no_argument,       NULL, ARG_VERSION      },
                  { "path",         required_argument, NULL, ARG_PATH         },
                  { "no-variables", no_argument,       NULL, ARG_NO_VARIABLES },
@@ -51,7 +51,7 @@ index 155bf278b..485de72e3 100644
                  { NULL,           0,                 NULL, 0                }
          };
  
-@@ -996,6 +1000,9 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -1006,6 +1010,9 @@ static int parse_argv(int argc, char *argv[]) {
                  case ARG_NO_VARIABLES:
                          arg_touch_variables = false;
                          break;
@@ -61,7 +61,7 @@ index 155bf278b..485de72e3 100644
  
                  case '?':
                          return -EINVAL;
-@@ -1121,7 +1128,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+@@ -1128,7 +1135,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
                  }
          }
  
@@ -70,7 +70,7 @@ index 155bf278b..485de72e3 100644
                  r = install_variables(arg_path,
                                        part, pstart, psize, uuid,
                                        "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
-@@ -1144,7 +1151,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+@@ -1151,7 +1158,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
  
          r = remove_binaries(arg_path);
  
@@ -80,5 +80,5 @@ index 155bf278b..485de72e3 100644
  
                  q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
 -- 
-2.12.2
+2.13.3
 

@@ -1,7 +1,7 @@
-From 32b4bc78ad3a18516de82a510ffb8ee7ee8e7dde Mon Sep 17 00:00:00 2001
+From 9275f878725d675518eecbd0823b79c7d2d87ce2 Mon Sep 17 00:00:00 2001
 From: William Douglas <william.r.douglas@gmail.com>
 Date: Thu, 18 May 2017 22:24:09 +0000
-Subject: [PATCH] tmpfiles: Allow create symlink on directories
+Subject: [PATCH 32/39] tmpfiles: Allow create symlink on directories
 
 Currently if tmpfiles is run with force on symlink creation but the already
 exists and is a directory, the creation will fail. This change updates the
@@ -12,10 +12,10 @@ places with a timestamped symlink and the directory atomically.
  1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/src/tmpfiles/tmpfiles.c b/src/tmpfiles/tmpfiles.c
-index 7326597..92421b4 100644
+index 9419c99e2..a206aaa57 100644
 --- a/src/tmpfiles/tmpfiles.c
 +++ b/src/tmpfiles/tmpfiles.c
-@@ -1359,8 +1359,22 @@ static int create_item(Item *i) {
+@@ -1353,8 +1353,22 @@ static int create_item(Item *i) {
                                          r = symlink_atomic(resolved, i->path);
                                          mac_selinux_create_file_clear();
  
@@ -41,5 +41,5 @@ index 7326597..92421b4 100644
                                          creation = CREATION_FORCE;
                                  } else {
 -- 
-2.13.0
+2.13.3
 

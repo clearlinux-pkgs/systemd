@@ -1,17 +1,17 @@
-From c2dc240cc632731988edf9afb252c0df75be4840 Mon Sep 17 00:00:00 2001
+From 0371a0cfadfcd7010bee4d1a4aa904269159050d Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 17/32] Ship default services in system unit dir.
+Subject: [PATCH 16/39] Ship default services in system unit dir.
 
 ---
- Makefile.am | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ Makefile.am | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index e6b3679e0..94b08f51e 100644
+index e9972a00c..89f750dc1 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -5151,7 +5151,7 @@ nodist_systemunit_DATA += \
+@@ -5245,7 +5245,7 @@ nodist_systemunit_DATA += \
  	units/systemd-timesyncd.service
  
  GENERAL_ALIASES += \
@@ -20,7 +20,7 @@ index e6b3679e0..94b08f51e 100644
  
  nodist_pkgsysconf_DATA += \
  	src/timesync/timesyncd.conf
-@@ -5589,8 +5589,8 @@ BUSNAMES_TARGET_WANTS += \
+@@ -5689,8 +5689,8 @@ BUSNAMES_TARGET_WANTS += \
  	org.freedesktop.resolve1.busname
  
  GENERAL_ALIASES += \
@@ -31,20 +31,25 @@ index e6b3679e0..94b08f51e 100644
  
  nodist_pkgsysconf_DATA += \
  	src/resolve/resolved.conf
-@@ -5914,9 +5914,9 @@ dist_dbuspolicy_DATA += \
+@@ -6033,10 +6033,13 @@ dist_dbuspolicy_DATA += \
  	src/network/org.freedesktop.network1.conf
  
  GENERAL_ALIASES += \
 -	$(systemunitdir)/systemd-networkd.socket $(pkgsysconfdir)/system/sockets.target.wants/systemd-networkd.socket \
 -	$(systemunitdir)/systemd-networkd.service $(pkgsysconfdir)/system/multi-user.target.wants/systemd-networkd.service \
--	$(systemunitdir)/systemd-networkd-wait-online.service $(pkgsysconfdir)/system/network-online.target.wants/systemd-networkd-wait-online.service
+-	$(systemunitdir)/systemd-networkd-wait-online.service $(pkgsysconfdir)/system/network-online.target.wants/systemd-networkd-wait-online.service \
+-	$(systemunitdir)/systemd-networkd.service $(pkgsysconfdir)/system/dbus-org.freedesktop.network1.service
 +	$(systemunitdir)/systemd-networkd.socket $(systemunitdir)/sockets.target.wants/systemd-networkd.socket \
 +	$(systemunitdir)/systemd-networkd.service $(systemunitdir)/multi-user.target.wants/systemd-networkd.service \
-+	$(systemunitdir)/systemd-networkd-wait-online.service $(systemunitdir)/network-online.target.wants/systemd-networkd-wait-online.service
++	$(systemunitdir)/systemd-networkd-wait-online.service $(systemunitdir)/network-online.target.wants/systemd-networkd-wait-online.service \
++	$(systemunitdir)/systemd-networkd.service $(systemunitdir)/dbus-org.freedesktop.network1.service
++
++SYSTEM_UNIT_ALIASES += \
++	systemd-networkd.service dbus-org.freedesktop.network1.service
  
- SYSTEM_UNIT_ALIASES += \
- 	systemd-networkd.service dbus-org.freedesktop.network1.service
-@@ -6487,8 +6487,8 @@ SYSTEM_UNIT_ALIASES += \
+ BUSNAMES_TARGET_WANTS += \
+ 	org.freedesktop.network1.busname
+@@ -6618,8 +6621,8 @@ SYSTEM_UNIT_ALIASES += \
  	getty@.service autovt@.service
  
  GENERAL_ALIASES += \
@@ -56,5 +61,5 @@ index e6b3679e0..94b08f51e 100644
  	$(dbussystemservicedir)/org.freedesktop.systemd1.service $(dbussessionservicedir)/org.freedesktop.systemd1.service
  
 -- 
-2.12.2
+2.13.3
 

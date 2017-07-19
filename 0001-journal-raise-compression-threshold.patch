@@ -1,14 +1,14 @@
-From c4ea345072af698679c316be5b8ed73fbd393d86 Mon Sep 17 00:00:00 2001
+From 499add1098733d5b45d46a56177e01792904bc80 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:23:57 +0100
-Subject: [PATCH 01/32] journal: raise compression threshold.
+Subject: [PATCH 01/39] journal: raise compression threshold.
 
 ---
  src/journal/journal-file.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/journal/journal-file.c b/src/journal/journal-file.c
-index a6ccb679a..3fcdc17e2 100644
+index 4ff38de2e..3769ebe0d 100644
 --- a/src/journal/journal-file.c
 +++ b/src/journal/journal-file.c
 @@ -48,7 +48,7 @@
@@ -21,5 +21,5 @@ index a6ccb679a..3fcdc17e2 100644
  /* This is the minimum journal file size */
  #define JOURNAL_FILE_SIZE_MIN (512ULL*1024ULL)                 /* 512 KiB */
 -- 
-2.12.2
+2.13.3
 

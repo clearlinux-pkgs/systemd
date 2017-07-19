@@ -1,7 +1,7 @@
-From 702e4cc1d7bead56fe436427ccd644b58d72b61e Mon Sep 17 00:00:00 2001
+From bbb6f1765cb1166b3b60d8ed550a708176c589ce Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 16/32] mount-setup: mount kernel fs by default.
+Subject: [PATCH 15/39] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.
@@ -21,10 +21,10 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/Makefile.am b/Makefile.am
-index 61382c83e..e6b3679e0 100644
+index abcf41ec2..e9972a00c 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -526,11 +526,6 @@ dist_systemunit_DATA = \
+@@ -537,11 +537,6 @@ dist_systemunit_DATA = \
  	units/system.slice \
  	units/systemd-initctl.socket \
  	units/syslog.socket \
@@ -34,9 +34,9 @@ index 61382c83e..e6b3679e0 100644
 -	units/sys-kernel-debug.mount \
 -	units/sys-fs-fuse-connections.mount \
  	units/tmp.mount \
- 	units/var-lib-machines.mount \
  	units/printer.target \
-@@ -6472,11 +6467,6 @@ MULTI_USER_TARGET_WANTS += \
+ 	units/sound.target \
+@@ -6598,11 +6593,6 @@ MULTI_USER_TARGET_WANTS += \
  	systemd-ask-password-wall.path
  
  SYSINIT_TARGET_WANTS += \
@@ -71,7 +71,7 @@ index 7295efbf3..1db30c1e5 100644
  /* These are API file systems that might be mounted by other software,
 diff --git a/units/dev-hugepages.mount b/units/dev-hugepages.mount
 deleted file mode 100644
-index 489cc777e..000000000
+index 86ad7ac2c..000000000
 --- a/units/dev-hugepages.mount
 +++ /dev/null
 @@ -1,21 +0,0 @@
@@ -85,7 +85,7 @@ index 489cc777e..000000000
 -[Unit]
 -Description=Huge Pages File System
 -Documentation=https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt
--Documentation=http://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
+-Documentation=https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
 -DefaultDependencies=no
 -Before=sysinit.target
 -ConditionPathExists=/sys/kernel/mm/hugepages
@@ -98,7 +98,7 @@ index 489cc777e..000000000
 -Type=hugetlbfs
 diff --git a/units/dev-mqueue.mount b/units/dev-mqueue.mount
 deleted file mode 100644
-index 8d29f96ca..000000000
+index b2adfeb83..000000000
 --- a/units/dev-mqueue.mount
 +++ /dev/null
 @@ -1,20 +0,0 @@
@@ -112,7 +112,7 @@ index 8d29f96ca..000000000
 -[Unit]
 -Description=POSIX Message Queue File System
 -Documentation=man:mq_overview(7)
--Documentation=http://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
+-Documentation=https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
 -DefaultDependencies=no
 -Before=sysinit.target
 -ConditionPathExists=/proc/sys/fs/mqueue
@@ -124,7 +124,7 @@ index 8d29f96ca..000000000
 -Type=mqueue
 diff --git a/units/sys-fs-fuse-connections.mount b/units/sys-fs-fuse-connections.mount
 deleted file mode 100644
-index 336b5f627..000000000
+index 492ceb16f..000000000
 --- a/units/sys-fs-fuse-connections.mount
 +++ /dev/null
 @@ -1,22 +0,0 @@
@@ -138,7 +138,7 @@ index 336b5f627..000000000
 -[Unit]
 -Description=FUSE Control File System
 -Documentation=https://www.kernel.org/doc/Documentation/filesystems/fuse.txt
--Documentation=http://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
+-Documentation=https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
 -DefaultDependencies=no
 -ConditionPathExists=/sys/fs/fuse/connections
 -ConditionCapability=CAP_SYS_ADMIN
@@ -152,7 +152,7 @@ index 336b5f627..000000000
 -Type=fusectl
 diff --git a/units/sys-kernel-config.mount b/units/sys-kernel-config.mount
 deleted file mode 100644
-index 21648eff6..000000000
+index b585f3256..000000000
 --- a/units/sys-kernel-config.mount
 +++ /dev/null
 @@ -1,21 +0,0 @@
@@ -164,9 +164,9 @@ index 21648eff6..000000000
 -#  (at your option) any later version.
 -
 -[Unit]
--Description=Configuration File System
+-Description=Kernel Configuration File System
 -Documentation=https://www.kernel.org/doc/Documentation/filesystems/configfs/configfs.txt
--Documentation=http://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
+-Documentation=https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
 -DefaultDependencies=no
 -ConditionPathExists=/sys/kernel/config
 -ConditionCapability=CAP_SYS_RAWIO
@@ -179,7 +179,7 @@ index 21648eff6..000000000
 -Type=configfs
 diff --git a/units/sys-kernel-debug.mount b/units/sys-kernel-debug.mount
 deleted file mode 100644
-index 1e94387ba..000000000
+index 808dbf08f..000000000
 --- a/units/sys-kernel-debug.mount
 +++ /dev/null
 @@ -1,20 +0,0 @@
@@ -191,9 +191,9 @@ index 1e94387ba..000000000
 -#  (at your option) any later version.
 -
 -[Unit]
--Description=Debug File System
+-Description=Kernel Debug File System
 -Documentation=https://www.kernel.org/doc/Documentation/filesystems/debugfs.txt
--Documentation=http://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
+-Documentation=https://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
 -DefaultDependencies=no
 -ConditionPathExists=/sys/kernel/debug
 -ConditionCapability=CAP_SYS_RAWIO
@@ -204,5 +204,5 @@ index 1e94387ba..000000000
 -Where=/sys/kernel/debug
 -Type=debugfs
 -- 
-2.12.2
+2.13.3
 

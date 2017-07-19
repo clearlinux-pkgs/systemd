@@ -1,7 +1,7 @@
-From 26513dc229228d16245a5d1cb6fbcafc00ca19c6 Mon Sep 17 00:00:00 2001
+From 26e3a9d59419e2dd45bc32fcb82034d38c0a0629 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sun, 19 Jun 2016 00:51:22 +0000
-Subject: [PATCH 26/32] not load iptables
+Subject: [PATCH 25/39] not load iptables
 
 ---
  src/core/kmod-setup.c | 4 ----
@@ -23,5 +23,5 @@ index fd1021f70..21a3cc5f2 100644
          struct kmod_ctx *ctx = NULL;
          unsigned int i;
 -- 
-2.12.2
+2.13.3
 
