@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        145
+Release:        146
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -717,7 +717,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/bin/systemd-hwdb
 /usr/lib/udev/hwdb.d/*.hwdb
 /usr/lib/udev/rules.d/60-cdrom_id.rules
-/usr/lib/udev/rules.d/60-input-id.rules
 /usr/lib/udev/rules.d/60-persistent-alsa.rules
 /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
 /usr/lib/udev/rules.d/60-persistent-v4l.rules
@@ -769,3 +768,4 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/getty.target.wants/getty@tty1.service
 /usr/lib/udev/rules.d/70-touchpad.rules
 /usr/lib/udev/rules.d/60-evdev.rules
+/usr/lib/udev/rules.d/60-input-id.rules
