@@ -1,0 +1,24 @@
+From 4e20603e5351f986505a7e3a488406a5f2bc1f66 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Thu, 19 Oct 2017 16:07:51 -0700
+Subject: [PATCH] network-wait-online: don't pass NULL to strv_find().
+
+---
+ src/network/wait-online/manager.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/network/wait-online/manager.c b/src/network/wait-online/manager.c
+index a5781e6e6..68b963caa 100644
+--- a/src/network/wait-online/manager.c
++++ b/src/network/wait-online/manager.c
+@@ -71,6 +71,7 @@ bool manager_all_configured(Manager *m) {
+                 if (!l->state) {
+                         log_debug("link %s has not yet been processed by udev",
+                                   l->ifname);
++                        continue;
+                 }
+ 
+                 if (STR_IN_SET(l->state, "configuring", "pending")) {
+-- 
+2.14.2
+

@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        150
+Release:        151
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -109,6 +109,7 @@ Patch0036: 0036-Ensure-var-run-is-never-a-directory.patch
 Patch0037: 0037-Make-timesyncd-a-simple-service.patch
 Patch0038: 0038-Compile-udev-with-O3.patch
 Patch0039: 0039-Don-t-wait-for-utmp-at-shutdown.patch
+Patch0040: 0040-network-wait-online-don-t-pass-NULL-to-strv_find.patch
 
 %description
 System and service manager.
@@ -251,6 +252,7 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0037 -p1
 %patch0038 -p1
 %patch0039 -p1
+%patch0040 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
