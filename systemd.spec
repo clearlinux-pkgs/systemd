@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        151
+Release:        152
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -493,6 +493,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system-generators/systemd-getty-generator
 /usr/lib/systemd/system-generators/systemd-gpt-auto-generator
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
+%exclude /usr/lib/systemd/system/systemd-coredump@.service
 /usr/lib/systemd/system-preset/90-systemd.preset
 /usr/lib/systemd/system/autovt@.service
 /usr/lib/systemd/system/basic.target
@@ -618,6 +619,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/systemd-*
 /usr/lib/systemd/resolv.conf
 %exclude /usr/lib/systemd/systemd-journal-upload
+%exclude /usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/user/*.service
 /usr/lib/systemd/user/*.target
 
@@ -711,6 +713,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/system/systemd-update-done.service
 /usr/lib/systemd/systemd-update-done
 /usr/lib/systemd/system/var-lib-machines.mount
+/usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/udev/rules.d/64-btrfs.rules
 
 %files hwdb
@@ -751,6 +754,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/sysctl.d/50-coredump.conf
 /usr/lib/systemd/systemd-coredump
 /usr/lib/systemd/system-coredump/crashprobe
+/usr/lib/systemd/system/systemd-coredump@.service
 
 %files polkit
 /usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
