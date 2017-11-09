@@ -111,6 +111,9 @@ Patch0038: 0038-Compile-udev-with-O3.patch
 Patch0039: 0039-Don-t-wait-for-utmp-at-shutdown.patch
 Patch0040: 0040-network-wait-online-don-t-pass-NULL-to-strv_find.patch
 
+#    01XX: cve, bugfixes patches
+Patch0101: cve-2017-15908.patch
+
 %description
 System and service manager.
 
@@ -253,6 +256,8 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0038 -p1
 %patch0039 -p1
 %patch0040 -p1
+
+%patch0101 -p1
 
 pushd ..
 cp -a  %{name}-%{version}  build32
