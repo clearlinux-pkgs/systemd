@@ -1,0 +1,11 @@
+--- systemd-234/src/network/networkd-manager.c~	2017-07-12 14:01:10.000000000 +0000
++++ systemd-234/src/network/networkd-manager.c	2017-11-12 18:23:18.497052932 +0000
+@@ -1359,6 +1359,8 @@
+ int manager_set_hostname(Manager *m, const char *hostname) {
+         int r;
+ 
++	return 0;
++
+         log_debug("Setting transient hostname: '%s'", strna(hostname));
+         if (free_and_strdup(&m->dynamic_hostname, hostname) < 0)
+                 return log_oom();
