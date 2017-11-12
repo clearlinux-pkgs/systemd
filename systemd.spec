@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        154
+Release:        155
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -624,6 +624,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/systemd-*
 /usr/lib/systemd/resolv.conf
 %exclude /usr/lib/systemd/systemd-journal-upload
+%exclude /usr/lib/systemd/systemd-vconsole-setup
 %exclude /usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/user/*.service
 /usr/lib/systemd/user/*.target
@@ -780,3 +781,4 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/udev/rules.d/70-touchpad.rules
 /usr/lib/udev/rules.d/60-evdev.rules
 /usr/lib/udev/rules.d/60-input-id.rules
+/usr/lib/systemd/systemd-vconsole-setup
