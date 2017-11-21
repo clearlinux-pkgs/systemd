@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        157
+Release:        158
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -644,6 +644,7 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/udev/hwdb.bin
 /usr/lib/udev/rules.d/50-udev-default.rules
 /usr/lib/udev/rules.d/60-persistent-storage.rules
+/usr/lib/udev/rules.d/64-btrfs.rules
 /usr/lib/udev/rules.d/70-power-switch.rules
 /usr/lib/udev/rules.d/70-uaccess.rules
 /usr/lib/udev/rules.d/71-seat.rules
@@ -724,7 +725,6 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 /usr/lib/systemd/systemd-update-done
 /usr/lib/systemd/system/var-lib-machines.mount
 /usr/lib/systemd/system/systemd-journal-upload.service
-/usr/lib/udev/rules.d/64-btrfs.rules
 
 %files hwdb
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
