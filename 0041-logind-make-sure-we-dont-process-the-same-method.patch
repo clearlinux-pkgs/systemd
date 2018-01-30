@@ -1,0 +1,25 @@
+From 9b957715e881eb4532f95c1b5692d98ff0de0c61 Mon Sep 17 00:00:00 2001
+From: Lennart Poettering <lennart@poettering.net>
+Date: Wed, 9 Aug 2017 19:31:12 +0200
+Subject: [PATCH] logind: make sure we don't process the same method call twice
+
+Tiny mistake, big effect.
+
+Fixes: #6375
+---
+ src/login/logind-session-dbus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/login/logind-session-dbus.c b/src/login/logind-session-dbus.c
+index 22e5349a67..649f3c155e 100644
+--- a/src/login/logind-session-dbus.c
++++ b/src/login/logind-session-dbus.c
+@@ -457,7 +457,7 @@ static int method_take_device(sd_bus_message *message, void *userdata, sd_bus_er
+                 goto error;
+ 
+         session_save(s);
+-        return 0;
++        return 1;
+ 
+ error:
+         session_device_free(sd);
