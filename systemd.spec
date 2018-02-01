@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        160
+Release:        161
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -435,6 +435,9 @@ rm -rvf %{buildroot}/var/lib/polkit-1
 # Services that are OK to restart after software update
 mkdir -p %{buildroot}/usr/share/clr-service-restart
 ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/clr-service-restart/systemd-timesyncd.service
+ln -sf /usr/lib/systemd/system/systemd-resolved.service %{buildroot}/usr/share/clr-service-restart/systemd-resolved.service
+ln -sf /usr/lib/systemd/system/systemd-udevd.service %{buildroot}/usr/share/clr-service-restart/systemd-udevd.service
+ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/clr-service-restart/systemd-journald.service
 
 %find_lang systemd
 
@@ -673,7 +676,7 @@ ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/
 
 /usr/share/systemd/*
 
-/usr/share/clr-service-restart/systemd-timesyncd.service
+/usr/share/clr-service-restart/*
 
 %exclude /var/lib/systemd/catalog/database
 
