@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        163
+Release:        164
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -111,6 +111,7 @@ Patch0038: 0038-Compile-udev-with-O3.patch
 Patch0039: 0039-Don-t-wait-for-utmp-at-shutdown.patch
 Patch0040: 0040-network-wait-online-don-t-pass-NULL-to-strv_find.patch
 Patch0041: 0041-logind-make-sure-we-dont-process-the-same-method.patch
+Patch0042 : memfd.patch
 
 Patch0050: inhibit-transient-hostname.patch
 
@@ -260,6 +261,7 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0039 -p1
 %patch0040 -p1
 %patch0041 -p1
+%patch0042 -p1
 
 %patch0050 -p1
 
