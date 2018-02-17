@@ -1,6 +1,6 @@
 Name:           systemd
 Version:        234
-Release:        165
+Release:        166
 License:        GPL-2.0 LGPL-2.1 MIT
 Summary:        System and service manager
 Url:            http://www.freedesktop.org/wiki/Software/systemd
@@ -98,7 +98,6 @@ Patch0025: 0025-not-load-iptables.patch
 Patch0026: 0026-force-write-resovl.conf-at-boot.patch
 Patch0027: 0027-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
 Patch0028: 0028-Disable-systemd-resolved-as-default-resolver.patch
-Patch0029: 0029-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
 Patch0030: 0030-network-online-complete-once-one-link-is-online-not-.patch
 Patch0031: 0031-DHCP-retry-faster.patch
 Patch0032: 0032-tmpfiles-Allow-create-symlink-on-directories.patch
@@ -248,7 +247,6 @@ this subpackage contains these units. Images/systems that don't have a console
 %patch0026 -p1
 %patch0027 -p1
 %patch0028 -p1
-%patch0029 -p1
 %patch0030 -p1
 %patch0031 -p1
 %patch0032 -p1
