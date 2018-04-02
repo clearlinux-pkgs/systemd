@@ -214,6 +214,12 @@ Some systemd units and udev rules are useful only when you have an actual consol
 this subpackage contains these units. Images/systems that don't have a console
 (cloud VMs) can omit this subpackage.
 
+%package cryptsetup
+Summary:        cryptsetup generators
+Group:          base
+
+%description cryptsetup
+Systemd generators for cryptsetup (Luks encryption and verity)
 
 %prep
 
@@ -288,7 +294,6 @@ popd
     --with-sysvrcnd-path="" \
     ac_cv_path_KILL=/usr/bin/kill \
     --disable-gcrypt \
-    --disable-libcryptsetup \
     --disable-microhttpd \
     --disable-quotacheck \
     --with-dbuspolicydir=/usr/share/dbus-1/system.d \
@@ -797,3 +802,9 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/rules.d/60-evdev.rules
 /usr/lib/udev/rules.d/60-input-id.rules
 /usr/lib/systemd/systemd-vconsole-setup
+
+%files cryptsetup
+/usr/lib/systemd/system-generators/systemd-cryptsetup-generator
+/usr/lib/systemd/system-generators/systemd-veritysetup-generator
+/usr/lib/systemd/system/cryptsetup-pre.target
+/usr/lib/systemd/system/cryptsetup.target
