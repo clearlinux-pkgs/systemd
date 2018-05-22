@@ -19,6 +19,7 @@ Requires: systemd-doc
 Requires: systemd-locales
 Requires: dnf-plugins-core
 Requires: meson
+Requires: libcap
 BuildRequires : Linux-PAM-dev
 BuildRequires : Linux-PAM-dev32
 BuildRequires : acl-dev
@@ -209,6 +210,7 @@ lib components for the systemd package.
 Summary: lib32 components for the systemd package.
 Group: Default
 Requires: systemd-data
+Requires: libcap
 
 %description lib32
 lib32 components for the systemd package.
