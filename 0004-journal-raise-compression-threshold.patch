@@ -1,0 +1,25 @@
+From 7d572c8b1d88fdacc757eff22559bbc0ee640f6e Mon Sep 17 00:00:00 2001
+From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
+Date: Tue, 23 Jun 2015 11:23:57 +0100
+Subject: [PATCH 04/36] journal: raise compression threshold.
+
+---
+ src/journal/journal-file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/journal/journal-file.c b/src/journal/journal-file.c
+index 6e5d14227..1f9a789cd 100644
+--- a/src/journal/journal-file.c
++++ b/src/journal/journal-file.c
+@@ -52,7 +52,7 @@
+ #define DEFAULT_DATA_HASH_TABLE_SIZE (2047ULL*sizeof(HashItem))
+ #define DEFAULT_FIELD_HASH_TABLE_SIZE (333ULL*sizeof(HashItem))
+ 
+-#define COMPRESSION_SIZE_THRESHOLD (512ULL)
++#define COMPRESSION_SIZE_THRESHOLD (8192ULL)
+ 
+ /* This is the minimum journal file size */
+ #define JOURNAL_FILE_SIZE_MIN (512ULL*1024ULL)                 /* 512 KiB */
+-- 
+2.17.0
+

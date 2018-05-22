@@ -1,0 +1,7 @@
+-Ddefault-hierarchy=legacy
+-Dsmack=false
+-Dsysvinit-path=
+-Dsysvrcnd_path=
+-Dxz=false
+-Dgcrypt=false
+-Dlz4=false

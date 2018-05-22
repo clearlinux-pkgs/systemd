@@ -1,65 +1,68 @@
-From 0371a0cfadfcd7010bee4d1a4aa904269159050d Mon Sep 17 00:00:00 2001
+From 4d2fc8afd8beba35dd6e66b4304af1d87b553a5e Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 16/39] Ship default services in system unit dir.
+Subject: [PATCH 16/36] Ship default services in system unit dir.
 
 ---
- Makefile.am | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ units/meson.build | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/Makefile.am b/Makefile.am
-index e9972a00c..89f750dc1 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -5245,7 +5245,7 @@ nodist_systemunit_DATA += \
- 	units/systemd-timesyncd.service
- 
- GENERAL_ALIASES += \
--	$(systemunitdir)/systemd-timesyncd.service $(pkgsysconfdir)/system/sysinit.target.wants/systemd-timesyncd.service
-+	$(systemunitdir)/systemd-timesyncd.service $(systemunitdir)/sysinit.target.wants/systemd-timesyncd.service
- 
- nodist_pkgsysconf_DATA += \
- 	src/timesync/timesyncd.conf
-@@ -5689,8 +5689,8 @@ BUSNAMES_TARGET_WANTS += \
- 	org.freedesktop.resolve1.busname
- 
- GENERAL_ALIASES += \
--	$(systemunitdir)/systemd-resolved.service $(pkgsysconfdir)/system/multi-user.target.wants/systemd-resolved.service \
--	$(systemunitdir)/systemd-resolved.service $(pkgsysconfdir)/system/dbus-org.freedesktop.resolve1.service
-+	$(systemunitdir)/systemd-resolved.service $(systemunitdir)/multi-user.target.wants/systemd-resolved.service \
-+	$(systemunitdir)/systemd-resolved.service $(systemunitdir)/dbus-org.freedesktop.resolve1.service
- 
- nodist_pkgsysconf_DATA += \
- 	src/resolve/resolved.conf
-@@ -6033,10 +6033,13 @@ dist_dbuspolicy_DATA += \
- 	src/network/org.freedesktop.network1.conf
- 
- GENERAL_ALIASES += \
--	$(systemunitdir)/systemd-networkd.socket $(pkgsysconfdir)/system/sockets.target.wants/systemd-networkd.socket \
--	$(systemunitdir)/systemd-networkd.service $(pkgsysconfdir)/system/multi-user.target.wants/systemd-networkd.service \
--	$(systemunitdir)/systemd-networkd-wait-online.service $(pkgsysconfdir)/system/network-online.target.wants/systemd-networkd-wait-online.service \
--	$(systemunitdir)/systemd-networkd.service $(pkgsysconfdir)/system/dbus-org.freedesktop.network1.service
-+	$(systemunitdir)/systemd-networkd.socket $(systemunitdir)/sockets.target.wants/systemd-networkd.socket \
-+	$(systemunitdir)/systemd-networkd.service $(systemunitdir)/multi-user.target.wants/systemd-networkd.service \
-+	$(systemunitdir)/systemd-networkd-wait-online.service $(systemunitdir)/network-online.target.wants/systemd-networkd-wait-online.service \
-+	$(systemunitdir)/systemd-networkd.service $(systemunitdir)/dbus-org.freedesktop.network1.service
-+
-+SYSTEM_UNIT_ALIASES += \
-+	systemd-networkd.service dbus-org.freedesktop.network1.service
- 
- BUSNAMES_TARGET_WANTS += \
- 	org.freedesktop.network1.busname
-@@ -6618,8 +6621,8 @@ SYSTEM_UNIT_ALIASES += \
- 	getty@.service autovt@.service
- 
- GENERAL_ALIASES += \
--	$(systemunitdir)/remote-fs.target $(pkgsysconfdir)/system/multi-user.target.wants/remote-fs.target \
--	$(systemunitdir)/getty@.service $(pkgsysconfdir)/system/getty.target.wants/getty@tty1.service \
-+	$(systemunitdir)/remote-fs.target $(systemunitdir)/multi-user.target.wants/remote-fs.target \
-+	$(systemunitdir)/getty@.service $(systemunitdir)/getty.target.wants/getty@tty1.service \
- 	$(pkgsysconfdir)/user $(sysconfdir)/xdg/systemd/user \
- 	$(dbussystemservicedir)/org.freedesktop.systemd1.service $(dbussessionservicedir)/org.freedesktop.systemd1.service
- 
+diff --git a/units/meson.build b/units/meson.build
+index 72560c2ee..75d720b90 100644
+--- a/units/meson.build
++++ b/units/meson.build
+@@ -65,7 +65,7 @@ units = [
+          join_paths(pkgsysconfdir, 'system/multi-user.target.wants/')],
+         ['remote-fs-pre.target',                ''],
+         ['remote-fs.target',                    '',
+-         join_paths(pkgsysconfdir, 'system/multi-user.target.wants/')],
++         'multi-user.target.wants/'],
+         ['rescue.target',                       '',
+          'runlevel1.target'],
+         ['rpcbind.target',                      ''],
+@@ -98,7 +98,7 @@ units = [
+         ['systemd-journald.socket',             '',
+          'sockets.target.wants/'],
+         ['systemd-networkd.socket',             'ENABLE_NETWORKD',
+-         join_paths(pkgsysconfdir, 'system/sockets.target.wants/')],
++         'sockets.target.wants/'],
+         ['systemd-rfkill.socket',               'ENABLE_RFKILL'],
+         ['systemd-tmpfiles-clean.timer',        '',
+          'timers.target.wants/'],
+@@ -173,10 +173,10 @@ in_units = [
+         ['systemd-modules-load.service',         'HAVE_KMOD',
+          'sysinit.target.wants/'],
+         ['systemd-networkd.service',             'ENABLE_NETWORKD',
+-         join_paths(pkgsysconfdir, 'system/dbus-org.freedesktop.network1.service') + ' ' +
+-         join_paths(pkgsysconfdir, 'system/multi-user.target.wants/')],
++         ('dbus-org.freedesktop.network1.service' + ' ' +
++         'multi-user.target.wants/')],
+         ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD',
+-         join_paths(pkgsysconfdir, 'system/network-online.target.wants/')],
++         'network-online.target.wants/'],
+         ['systemd-nspawn@.service',              ''],
+         ['systemd-poweroff.service',             ''],
+         ['systemd-quotacheck.service',           'ENABLE_QUOTACHECK'],
+@@ -186,8 +186,8 @@ in_units = [
+         ['systemd-remount-fs.service',           '',
+          'local-fs.target.wants/'],
+         ['systemd-resolved.service',             'ENABLE_RESOLVE',
+-         join_paths(pkgsysconfdir, 'system/dbus-org.freedesktop.resolve1.service') + ' ' +
+-         join_paths(pkgsysconfdir, 'system/multi-user.target.wants/')],
++         ('dbus-org.freedesktop.resolve1.service' + ' ' +
++         'multi-user.target.wants/')],
+         ['systemd-rfkill.service',               'ENABLE_RFKILL'],
+         ['systemd-suspend.service',              ''],
+         ['systemd-sysctl.service',               '',
+@@ -197,7 +197,7 @@ in_units = [
+         ['systemd-timedated.service',            'ENABLE_TIMEDATED',
+          'dbus-org.freedesktop.timedate1.service'],
+         ['systemd-timesyncd.service',            'ENABLE_TIMESYNCD',
+-         join_paths(pkgsysconfdir, 'system/sysinit.target.wants/')],
++         'sysinit.target.wants/'],
+         ['systemd-tmpfiles-clean.service',       'ENABLE_TMPFILES'],
+         ['systemd-tmpfiles-setup-dev.service',   'ENABLE_TMPFILES',
+          'sysinit.target.wants/'],
 -- 
-2.13.3
+2.17.0
 

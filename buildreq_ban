@@ -1,0 +1,6 @@
+# This file contains build requirements that get picked up but are
+# undesirable. One entry per line, no whitespace.
+lz4-dev
+lz4-dev32
+xz-dev
+xz-dev32

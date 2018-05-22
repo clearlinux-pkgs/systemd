@@ -1,0 +1,22 @@
+# This file contains the output files that need %exclude. Full path
+# names, one per line.
+/usr/bin/systemd-firstboot
+/usr/lib/sysctl.d/50-coredump.conf
+/usr/lib/systemd/systemd-journal-upload
+/usr/lib/systemd/systemd-update-done
+/usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
+/usr/lib/systemd/system-generators/systemd-system-update-generator
+/usr/lib/systemd/system/ldconfig.service
+/usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
+/usr/lib/systemd/system/sockets.target.wants/systemd-journald-audit.socket
+/usr/lib/systemd/system/systemd-firstboot.service
+/usr/lib/systemd/system/systemd-hwdb-update.service
+/usr/lib/systemd/system/systemd-journal-catalog-update.service
+/usr/lib/systemd/system/systemd-journal-upload.service
+/usr/lib/systemd/system/systemd-sysusers.service
+/usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
+/usr/lib/systemd/system/systemd-update-done.service
+/usr/lib/systemd/system/system-update-cleanup.service
+/usr/lib/systemd/system/system-update.target
+/var/lib/systemd/catalog/database
+/var/log/README

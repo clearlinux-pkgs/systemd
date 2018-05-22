@@ -1,0 +1,4 @@
+-Dlibcryptsetup=false
+-Dgnutls=false
+-Dlibcurl=false
+-Delfutils=false

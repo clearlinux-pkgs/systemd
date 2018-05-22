@@ -1,0 +1,70 @@
+
+# All users should be defined in the systemd-config package
+rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-remote.conf
+rmdir %{buildroot}/usr/lib/sysusers.d
+
+# No external linking of this shared object should happen
+rm -f %{buildroot}/usr/lib/systemd/libsystemd-shared.so
+
+# These configuration files, are actually documentation only
+# We have manpages for that
+rm -f %{buildroot}/etc/systemd/journald.conf
+rm -f %{buildroot}/etc/systemd/logind.conf
+rm -f %{buildroot}/etc/systemd/resolved.conf
+rm -f %{buildroot}/etc/systemd/system.conf
+rm -f %{buildroot}/etc/systemd/timesyncd.conf
+rm -f %{buildroot}/etc/systemd/user.conf
+rm -f %{buildroot}/etc/udev/udev.conf
+rmdir %{buildroot}/etc/udev/hwdb.d
+rmdir %{buildroot}/etc/udev/rules.d
+rmdir %{buildroot}/etc/udev
+
+# These are unwanted and would end up in -autostart, because %exclude isn't
+# honored by -autostart auto subrpm
+rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
+rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
+rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
+rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-journal-catalog-update.service
+rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
+rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
+
+# Do not ship broken symlinks
+rm -f %{buildroot}/etc/xdg/systemd/user
+rm -f %{buildroot}/usr/lib/environment.d/99-environment.conf
+
+# Move config file into system PAM location
+mv %{buildroot}/etc/pam.d %{buildroot}/usr/share/.
+
+# exclude hwdb for pci device id vendors - we don't want this in containers
+# or VMs. An update trigger will remake the full hwdb for non-vm cases.
+mkdir -p %{buildroot}/usr/lib/udev/hwdb.d/20
+mv %{buildroot}/usr/lib/udev/hwdb.d/20-* %{buildroot}/usr/lib/udev/hwdb.d/20
+
+# Pre-generate and pre-ship hwdb, to speed up first boot
+builddir/udevadm hwdb --root %{buildroot} --update --usr
+
+# restore 20-* hwdb files
+mv %{buildroot}/usr/lib/udev/hwdb.d/20/* %{buildroot}/usr/lib/udev/hwdb.d/
+rmdir %{buildroot}/usr/lib/udev/hwdb.d/20
+
+# Compute catalog
+builddir/journalctl --root %{buildroot} --update-catalog
+
+# Add a hook to integrate telemetrics crashprobe with systemd-coredump
+mkdir -p %{buildroot}/usr/lib/systemd/system-coredump
+ln -s ../../../bin/crashprobe %{buildroot}/usr/lib/systemd/system-coredump/crashprobe
+
+# only supported plugin is "clear.install"
+rm -rvf %{buildroot}/usr/lib/kernel
+
+# Remove unused systemd plka
+rm -rvf %{buildroot}/var/lib/polkit-1
+
+# Services that are OK to restart after software update
+mkdir -p %{buildroot}/usr/share/clr-service-restart
+ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/clr-service-restart/systemd-timesyncd.service
+ln -sf /usr/lib/systemd/system/systemd-resolved.service %{buildroot}/usr/share/clr-service-restart/systemd-resolved.service
+ln -sf /usr/lib/systemd/system/systemd-udevd.service %{buildroot}/usr/share/clr-service-restart/systemd-udevd.service
+ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/clr-service-restart/systemd-journald.service

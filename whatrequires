@@ -1,0 +1,10 @@
+# This file contains recursive sources that require this package
+Keras
+Theano
+beignet
+clr-init
+libvirt
+linux-oracle
+mariadb
+pciutils
+sysstat
