@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 238
-Release  : 171
+Release  : 172
 URL      : https://github.com/systemd/systemd/archive/v238.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v238.tar.gz
 Summary  : systemd Library
