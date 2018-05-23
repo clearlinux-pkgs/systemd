@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 238
-Release  : 172
+Release  : 173
 URL      : https://github.com/systemd/systemd/archive/v238.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v238.tar.gz
 Summary  : systemd Library
@@ -17,8 +17,8 @@ Requires: systemd-lib
 Requires: systemd-data
 Requires: systemd-doc
 Requires: systemd-locales
-Requires: dnf-plugins-core
-Requires: meson
+Requires: libcap
+Requires: libcap-lib32
 BuildRequires : Linux-PAM-dev
 BuildRequires : Linux-PAM-dev32
 BuildRequires : acl-dev
@@ -209,8 +209,6 @@ lib components for the systemd package.
 Summary: lib32 components for the systemd package.
 Group: Default
 Requires: systemd-data
-Requires: libcap-lib32
-
 
 %description lib32
 lib32 components for the systemd package.
@@ -273,7 +271,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526580983
+export SOURCE_DATE_EPOCH=1527109106
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS

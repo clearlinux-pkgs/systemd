@@ -1,8 +1,12 @@
 .*~
 *~
 *.swp
-*xz
-*gz
-
-results
-mock*log
+.repo-index
+*.log
+build.log.round*
+*.tar.*
+*.tgz
+!*.tar.*.*
+*.zip
+commitmsg
+results/
