@@ -5,3 +5,4 @@
 -Dxz=false
 -Dgcrypt=false
 -Dlz4=false
+-Ddefault-kill-user-processes=false
