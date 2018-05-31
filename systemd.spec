@@ -122,8 +122,14 @@ Summary: bin components for the systemd package.
 Group: Binaries
 Requires: systemd-data
 Requires: systemd-config
-Requires: systemd-license
-Requires: systemd-man
+Obsoletes: systemd-boot
+Provides: systemd-boot
+Obsoletes: systemd-console
+Provides: systemd-console
+Obsoletes: systemd-coredump
+Provides: systemd-coredump
+Obsoletes: systemd-cryptsetup
+Provides: systemd-cryptsetup
 
 %description bin
 bin components for the systemd package.
@@ -181,6 +187,10 @@ doc components for the systemd package.
 %package extras
 Summary: extras components for the systemd package.
 Group: Default
+Obsoletes: systemd-hwdb
+Provides: systemd-hwdb
+Obsoletes: systemd-polkit
+Provides: systemd-polkit
 
 %description extras
 extras components for the systemd package.
@@ -190,7 +200,8 @@ extras components for the systemd package.
 Summary: lib components for the systemd package.
 Group: Libraries
 Requires: systemd-data
-Requires: systemd-license
+Obsoletes: systemd-lib
+Provides: systemd-lib
 
 %description lib
 lib components for the systemd package.
