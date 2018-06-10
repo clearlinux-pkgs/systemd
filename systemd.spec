@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 238
-Release  : 175
+Release  : 176
 URL      : https://github.com/systemd/systemd/archive/v238.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v238.tar.gz
 Summary  : systemd Library
@@ -19,7 +19,6 @@ Requires: systemd-license
 Requires: systemd-locales
 Requires: systemd-man
 Requires: libcap
-Requires: libcap-lib32
 BuildRequires : Linux-PAM-dev
 BuildRequires : Linux-PAM-dev32
 BuildRequires : acl-dev
