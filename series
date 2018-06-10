@@ -34,3 +34,4 @@
 0034-Compile-udev-with-O3.patch
 0035-Don-t-wait-for-utmp-at-shutdown.patch
 0036-Don-t-do-transient-hostnames-we-set-ours-already.patch
+reduce-libm.patch

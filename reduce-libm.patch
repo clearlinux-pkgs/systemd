@@ -1,0 +1,24 @@
+--- systemd-238/src/resolve/resolved-dns-rr.c~	2018-03-05 22:16:37.000000000 +0000
++++ systemd-238/src/resolve/resolved-dns-rr.c	2018-06-10 17:14:39.744818715 +0000
+@@ -735,6 +735,8 @@
+         }
+ }
+ 
++static double exp10table[16] = {1.0+00, 1.0+01, 1.0+02, 1.0+03, 1.0+04, 1.0+05, 1.0+06, 1.0+07, 1.0+08, 1.0+09, 1.0+10, 1.0+11, 1.0+12, 1.0+13, 1.0+14, 1.0+15};
++
+ static char* format_location(uint32_t latitude, uint32_t longitude, uint32_t altitude,
+                              uint8_t size, uint8_t horiz_pre, uint8_t vert_pre) {
+         char *s;
+@@ -744,9 +746,9 @@
+         int lat = latitude >= 1U<<31 ? (int) (latitude - (1U<<31)) : (int) ((1U<<31) - latitude);
+         int lon = longitude >= 1U<<31 ? (int) (longitude - (1U<<31)) : (int) ((1U<<31) - longitude);
+         double alt = altitude >= 10000000u ? altitude - 10000000u : -(double)(10000000u - altitude);
+-        double siz = (size >> 4) * exp10((double) (size & 0xF));
+-        double hor = (horiz_pre >> 4) * exp10((double) (horiz_pre & 0xF));
+-        double ver = (vert_pre >> 4) * exp10((double) (vert_pre & 0xF));
++        double siz = (size >> 4) * exp10table[size & 0xF];
++        double hor = (horiz_pre >> 4) * exp10table[horiz_pre & 0xF];
++        double ver = (vert_pre >> 4) * exp10table[vert_pre & 0xF];
+ 
+         if (asprintf(&s, "%d %d %.3f %c %d %d %.3f %c %.2fm %.2fm %.2fm %.2fm",
+                      (lat / 60000 / 60),
