@@ -1,7 +1,7 @@
 From f2170e0def7c3668e8f18953d2ddd29d06c98983 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH 17/36] bootctl: Add --force option to enable chroot
+Subject: [PATCH 17/38] bootctl: Add --force option to enable chroot
  install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of
@@ -84,5 +84,5 @@ index ce77020aa..022d2f32a 100644
  
                  q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
 -- 
-2.17.0
+2.17.1
 

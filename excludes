@@ -1,5 +1,6 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
+/usr/bin/kernel-install
 /usr/bin/systemd-firstboot
 /usr/lib/sysctl.d/50-coredump.conf
 /usr/lib/systemd/systemd-journal-upload
@@ -18,5 +19,7 @@
 /usr/lib/systemd/system/systemd-update-done.service
 /usr/lib/systemd/system/system-update-cleanup.service
 /usr/lib/systemd/system/system-update.target
+/usr/share/bash-completion/completions/kernel-install
+/usr/share/zsh/site-functions/_kernel-install
 /var/lib/systemd/catalog/database
 /var/log/README

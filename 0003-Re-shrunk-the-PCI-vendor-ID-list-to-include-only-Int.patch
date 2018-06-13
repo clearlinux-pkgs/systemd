@@ -1,7 +1,7 @@
 From c40021925ba08ae843eecd7bef64cd55344b2b2a Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 09:28:16 -0700
-Subject: [PATCH 03/36] Re-shrunk the PCI vendor ID list to include only Intel
+Subject: [PATCH 03/38] Re-shrunk the PCI vendor ID list to include only Intel
  PCI IDs
 
 ---
@@ -102338,5 +102338,5 @@ index 5b2a494e2..5a0a44658 100644
 -pci:v0000FFFF*
 - ID_VENDOR_FROM_DATABASE=Illegal Vendor ID
 -- 
-2.17.0
+2.17.1
 

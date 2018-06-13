@@ -1,7 +1,7 @@
 From 49eff7cd60b756c6fa57c1ff3783c0dceec9b99e Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
-Subject: [PATCH 08/36] journal: flush var/kmsg after starting.
+Subject: [PATCH 08/38] journal: flush var/kmsg after starting.
 
 ---
  src/journal/journald.c | 5 +++--
@@ -31,5 +31,5 @@ index 10a695576..47afbb884 100644
           * journal so entries from the runtime journals are ordered
           * before this message. See #4190 for some details. */
 -- 
-2.17.0
+2.17.1
 

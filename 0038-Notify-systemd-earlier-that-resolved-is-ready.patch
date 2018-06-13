@@ -1,0 +1,38 @@
+From 90d525d078f25dea3473a563dae1ad3a3a9679d1 Mon Sep 17 00:00:00 2001
+From: Arjan van de Ven <arjan@linux.intel.com>
+Date: Wed, 13 Jun 2018 13:42:12 -0700
+Subject: [PATCH 38/38] Notify systemd earlier that resolved is ready.
+
+---
+ src/resolve/resolved.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/resolve/resolved.c b/src/resolve/resolved.c
+index a4cda0b5e..4e7cec6d8 100644
+--- a/src/resolve/resolved.c
++++ b/src/resolve/resolved.c
+@@ -83,6 +83,10 @@ int main(int argc, char *argv[]) {
+ 
+         assert_se(sigprocmask_many(SIG_BLOCK, NULL, SIGTERM, SIGINT, SIGUSR1, SIGUSR2, SIGRTMIN+1, -1) >= 0);
+ 
++        sd_notify(false,
++                  "READY=1\n"
++                  "STATUS=Processing requests...");
++
+         r = manager_new(&m);
+         if (r < 0) {
+                 log_error_errno(r, "Could not create manager: %m");
+@@ -105,10 +109,6 @@ int main(int argc, char *argv[]) {
+                 goto finish;
+         }
+ 
+-        sd_notify(false,
+-                  "READY=1\n"
+-                  "STATUS=Processing requests...");
+-
+         r = sd_event_loop(m->event);
+         if (r < 0) {
+                 log_error_errno(r, "Event loop failed: %m");
+-- 
+2.17.1
+
