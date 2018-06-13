@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 238
-Release  : 176
+Release  : 177
 URL      : https://github.com/systemd/systemd/archive/v238.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v238.tar.gz
 Summary  : systemd Library
@@ -102,6 +102,11 @@ Patch33: 0033-Make-timesyncd-a-simple-service.patch
 Patch34: 0034-Compile-udev-with-O3.patch
 Patch35: 0035-Don-t-wait-for-utmp-at-shutdown.patch
 Patch36: 0036-Don-t-do-transient-hostnames-we-set-ours-already.patch
+
+
+%define __strip /bin/true
+%define debug_package %{nil}
+
 
 %description
 systemd System and Service Manager
