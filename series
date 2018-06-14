@@ -36,3 +36,4 @@
 0036-Don-t-do-transient-hostnames-we-set-ours-already.patch
 0037-don-t-use-libm-just-for-integer-exp10.patch
 0038-Notify-systemd-earlier-that-resolved-is-ready.patch
+0039-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch

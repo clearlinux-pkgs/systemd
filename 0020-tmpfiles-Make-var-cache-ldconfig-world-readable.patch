@@ -1,7 +1,7 @@
 From d12bffa91fff9ee5eccc318900e0a6f32910271b Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Fri, 27 Nov 2015 16:30:12 +0000
-Subject: [PATCH 20/38] tmpfiles: Make /var/cache/ldconfig world readable
+Subject: [PATCH 20/39] tmpfiles: Make /var/cache/ldconfig world readable
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---

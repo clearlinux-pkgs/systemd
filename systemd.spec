@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 238
-Release  : 178
+Release  : 179
 URL      : https://github.com/systemd/systemd/archive/v238.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v238.tar.gz
 Summary  : systemd Library
@@ -106,6 +106,7 @@ Patch35: 0035-Don-t-wait-for-utmp-at-shutdown.patch
 Patch36: 0036-Don-t-do-transient-hostnames-we-set-ours-already.patch
 Patch37: 0037-don-t-use-libm-just-for-integer-exp10.patch
 Patch38: 0038-Notify-systemd-earlier-that-resolved-is-ready.patch
+Patch39: 0039-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
 
 %description
 systemd System and Service Manager
@@ -266,6 +267,7 @@ locales components for the systemd package.
 %patch36 -p1
 %patch37 -p1
 %patch38 -p1
+%patch39 -p1
 pushd ..
 cp -a systemd-238 build32
 popd
@@ -275,7 +277,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1528925400
+export SOURCE_DATE_EPOCH=1529000729
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS

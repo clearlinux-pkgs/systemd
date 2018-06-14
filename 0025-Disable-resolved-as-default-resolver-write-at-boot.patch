@@ -1,7 +1,7 @@
 From a85af832a511ec41e33ab575ebbe27a534e81697 Mon Sep 17 00:00:00 2001
 From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
 Date: Mon, 18 Jul 2016 14:02:51 -0500
-Subject: [PATCH 25/38] Disable resolved as default resolver, write at boot
+Subject: [PATCH 25/39] Disable resolved as default resolver, write at boot
 
 Write the resolv.conf at boot immediately.
 

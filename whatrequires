@@ -1,9 +1,4 @@
 # This file contains recursive sources that require this package
-Keras
-Keras_Applications
-Keras_Preprocessing
-Theano
-beignet
 clr-init
 libvirt
 linux-oracle

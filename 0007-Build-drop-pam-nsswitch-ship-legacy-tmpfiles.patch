@@ -1,7 +1,7 @@
 From 8dbea85552d4245c673e625b3c0f1af93b95637c Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 10:02:14 -0700
-Subject: [PATCH 07/38] Build: drop pam/nsswitch, ship legacy tmpfiles.
+Subject: [PATCH 07/39] Build: drop pam/nsswitch, ship legacy tmpfiles.
 
 Adapted from Makefile.am patch by Dimitri John Ledkov.
 ---

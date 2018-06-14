@@ -1,7 +1,7 @@
 From 611a6427680bdf21f2c014b30d8fac5976fb9c02 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
-Subject: [PATCH 21/38] Set a default, unique, hostname, when it is either
+Subject: [PATCH 21/39] Set a default, unique, hostname, when it is either
  'clr' or 'localhost'
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>

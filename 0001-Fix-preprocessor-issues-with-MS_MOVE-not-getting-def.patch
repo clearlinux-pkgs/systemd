@@ -1,7 +1,7 @@
 From 168b7abd813606a40161655b286d17e0bee33b48 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 4 Apr 2018 09:56:53 -0700
-Subject: [PATCH 01/38] Fix preprocessor issues with MS_MOVE not getting
+Subject: [PATCH 01/39] Fix preprocessor issues with MS_MOVE not getting
  defined.
 
 ---

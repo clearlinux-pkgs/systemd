@@ -1,7 +1,7 @@
 From 3d4ecfe88539ce9eb0f9e7fc5e6062708f11aaac Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:26:11 +0100
-Subject: [PATCH 06/38] core: use mmap to load files.
+Subject: [PATCH 06/39] core: use mmap to load files.
 
 ---
  src/core/load-fragment.c | 2 +-

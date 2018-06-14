@@ -1,7 +1,7 @@
 From faba4b54fcf58a5394ecce4ae3c58817a41dda6f Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:31:38 -0700
-Subject: [PATCH 29/38] Remove libm memory overhead.
+Subject: [PATCH 29/39] Remove libm memory overhead.
 
 timesyncd pulls in libm, only for one single exp2() in a debug log
 statement save the memory by not logging this little bit of info.

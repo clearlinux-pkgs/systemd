@@ -1,7 +1,7 @@
 From c40021925ba08ae843eecd7bef64cd55344b2b2a Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 09:28:16 -0700
-Subject: [PATCH 03/38] Re-shrunk the PCI vendor ID list to include only Intel
+Subject: [PATCH 03/39] Re-shrunk the PCI vendor ID list to include only Intel
  PCI IDs
 
 ---
