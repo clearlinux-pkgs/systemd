@@ -1,0 +1,24 @@
+From dec4adc770488430c214cb409c87ae287898e1a3 Mon Sep 17 00:00:00 2001
+From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
+Date: Tue, 23 Jun 2015 11:50:13 +0100
+Subject: [PATCH 12/38] core: do not apply presets.
+
+---
+ src/core/manager.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/core/manager.c b/src/core/manager.c
+index 930df4e23..53b392830 100644
+--- a/src/core/manager.c
++++ b/src/core/manager.c
+@@ -1564,7 +1564,6 @@ int manager_startup(Manager *m, FILE *serialization, FDSet *fds) {
+         if (r < 0)
+                 return r;
+ 
+-        manager_preset_all(m);
+         lookup_paths_reduce(&m->lookup_paths);
+         manager_build_unit_path_cache(m);
+ 
+-- 
+2.17.1
+

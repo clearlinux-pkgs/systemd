@@ -1,0 +1,37 @@
+From 3fe0333d832ba4236b8773a985c048a100b66400 Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Wed, 14 Oct 2015 17:40:56 +0100
+Subject: [PATCH 18/38] bootctl: Handle gummiboot -> systemd migration
+
+On Linux systems we may encounter cases where the legacy gummiboot binary
+is still present on the ESP. In these cases a `bootctl install` or even
+a `bootctl upgrade` will fail on files such as BOOTX64.EFI, as their internal
+version string will not match that of systemd.
+
+To counteract this upgrade problem, we will always continue to replace the
+legacy gummiboot (<=48) with systemd's merged tree, to provide a valid upgrade
+route for distributions.
+---
+ src/boot/bootctl.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
+index 61fb0d7d5..bfdacd4ff 100644
+--- a/src/boot/bootctl.c
++++ b/src/boot/bootctl.c
+@@ -361,8 +361,10 @@ static int version_check(int fd_from, const char *from, int fd_to, const char *t
+         if (r < 0)
+                 return r;
+         if (r == 0 || compare_product(a, b) != 0) {
+-                log_notice("Skipping \"%s\", since it's owned by another boot loader.", to);
+-                return -EEXIST;
++                if (!compare_product(b, "gummiboot")) {
++                        log_notice("Skipping \"%s\", since it's owned by another boot loader.", to);
++                        return -EEXIST;
++                }
+         }
+ 
+         if (compare_version(a, b) < 0) {
+-- 
+2.17.1
+

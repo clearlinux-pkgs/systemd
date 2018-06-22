@@ -1,0 +1,24 @@
+From 3d0fde5e471c19575b06e2014215886436fec987 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Thu, 14 Jun 2018 11:20:27 -0700
+Subject: [PATCH 38/38] Do not crash if udev hasn't initialized one link yet.
+
+---
+ src/network/wait-online/manager.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/network/wait-online/manager.c b/src/network/wait-online/manager.c
+index 824f292c3..74437d2b4 100644
+--- a/src/network/wait-online/manager.c
++++ b/src/network/wait-online/manager.c
+@@ -57,6 +57,7 @@ bool manager_all_configured(Manager *m) {
+                 if (!l->state) {
+                         log_debug("link %s has not yet been processed by udev",
+                                   l->ifname);
++                        continue;
+                 }
+ 
+                 if (STR_IN_SET(l->state, "configuring", "pending")) {
+-- 
+2.17.1
+

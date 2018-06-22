@@ -1,0 +1,27 @@
+From e8060c4f92855a853c6732c9276c895e8ec73a87 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Fri, 14 Jul 2017 11:32:54 -0700
+Subject: [PATCH 29/38] udev: log also device path.
+
+---
+ src/udev/udevd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/udev/udevd.c b/src/udev/udevd.c
+index 34f6a9550..89b2063ba 100644
+--- a/src/udev/udevd.c
++++ b/src/udev/udevd.c
+@@ -605,8 +605,8 @@ static int event_queue_insert(Manager *manager, struct udev_device *dev) {
+         event->is_block = streq("block", udev_device_get_subsystem(dev));
+         event->ifindex = udev_device_get_ifindex(dev);
+ 
+-        log_debug("seq %llu queued, '%s' '%s'", udev_device_get_seqnum(dev),
+-             udev_device_get_action(dev), udev_device_get_subsystem(dev));
++        log_debug("seq %llu queued, '%s' '%s' '%s'", udev_device_get_seqnum(dev),
++             udev_device_get_action(dev), udev_device_get_subsystem(dev), udev_device_get_devpath(dev));
+ 
+         event->state = EVENT_QUEUED;
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,88 @@
+From e79ad9310e99ace8f289cac2af0b509edad524a8 Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Wed, 23 Sep 2015 03:36:36 +0100
+Subject: [PATCH 16/38] bootctl: Add --force option to enable chroot
+ install/remove of sd-boot
+
+This change enables the force-installation, removal, and update of
+the systemd EFI boot binaries and supporting assets, without requiring
+verification of the ESP.
+
+Prior to this change it is assumed the target path is an ESP that can
+be probed, however this requires several virtual filesystems to be
+present and mounted, which may not be possible during filesystem image
+generation, or even for use within eltorito alt sections of an ISO.
+
+Given that an image invocation of bootctl may involve a host that has
+older, or even absent files required by bootctl (such as EFI files),
+it is not always safe to assume one can use the --path option. This
+change ensures that the utility can be used in a consistent manner,
+in a bare chroot (no virtual filesystems), without the need for custom
+systemd-boot installation routines currently seen in many places;
+i.e bootctl both sets and enforces the standard for its installation,
+configuration and layout.
+---
+ src/boot/bootctl.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
+index 2832a39dd..61fb0d7d5 100644
+--- a/src/boot/bootctl.c
++++ b/src/boot/bootctl.c
+@@ -44,6 +44,8 @@ static char *arg_path = NULL;
+ static bool arg_print_path = false;
+ static bool arg_touch_variables = true;
+ 
++static bool arg_force = false;
++
+ static int acquire_esp(
+                 bool unprivileged_mode,
+                 uint32_t *ret_part,
+@@ -852,6 +854,7 @@ static int parse_argv(int argc, char *argv[]) {
+                 ARG_PATH = 0x100,
+                 ARG_VERSION,
+                 ARG_NO_VARIABLES,
++                ARG_FORCE,
+         };
+ 
+         static const struct option options[] = {
+@@ -860,6 +863,7 @@ static int parse_argv(int argc, char *argv[]) {
+                 { "path",         required_argument, NULL, ARG_PATH         },
+                 { "print-path",   no_argument,       NULL, 'p'              },
+                 { "no-variables", no_argument,       NULL, ARG_NO_VARIABLES },
++                { "force",        no_argument,       NULL, ARG_FORCE        },
+                 { NULL,           0,                 NULL, 0                }
+         };
+ 
+@@ -892,6 +896,10 @@ static int parse_argv(int argc, char *argv[]) {
+                         arg_touch_variables = false;
+                         break;
+ 
++                case ARG_FORCE:
++                        arg_force = true;
++                        break;
++
+                 case '?':
+                         return -EINVAL;
+ 
+@@ -1093,7 +1101,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+                 }
+         }
+ 
+-        if (arg_touch_variables)
++        if (arg_touch_variables && !arg_force)
+                 r = install_variables(arg_path,
+                                       part, pstart, psize, uuid,
+                                       "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
+@@ -1112,7 +1120,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+ 
+         r = remove_binaries(arg_path);
+ 
+-        if (arg_touch_variables) {
++        if (arg_touch_variables && !arg_force) {
+                 int q;
+ 
+                 q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
+-- 
+2.17.1
+
