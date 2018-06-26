@@ -37,6 +37,10 @@ rm -f %{buildroot}/usr/lib/environment.d/99-environment.conf
 # Move config file into system PAM location
 mv %{buildroot}/etc/pam.d %{buildroot}/usr/share/.
 
+# Move pc files to default pkgconfig dir
+mv %{buildroot}/usr/share/pkgconfig/* %{buildroot}/usr/lib64/pkgconfig/
+rmdir %{buildroot}/usr/share/pkgconfig/
+
 # exclude hwdb for pci device id vendors - we don't want this in containers
 # or VMs. An update trigger will remake the full hwdb for non-vm cases.
 mkdir -p %{buildroot}/usr/lib/udev/hwdb.d/20
