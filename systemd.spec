@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 183
+Release  : 184
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -128,6 +128,14 @@ Requires: systemd-data
 Requires: systemd-config
 Requires: systemd-license
 Requires: systemd-man
+Obsoletes: systemd-boot
+Provides: systemd-boot
+Obsoletes: systemd-console
+Provides: systemd-console
+Obsoletes: systemd-coredump
+Provides: systemd-coredump
+Obsoletes: systemd-cryptsetup
+Provides: systemd-cryptsetup
 
 %description bin
 bin components for the systemd package.
@@ -185,6 +193,10 @@ doc components for the systemd package.
 %package extras
 Summary: extras components for the systemd package.
 Group: Default
+Obsoletes: systemd-hwdb
+Provides: systemd-hwdb
+Obsoletes: systemd-polkit
+Provides: systemd-polkit
 
 %description extras
 extras components for the systemd package.
