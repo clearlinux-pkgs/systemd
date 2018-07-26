@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 184
+Release  : 185
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -66,9 +66,6 @@ BuildRequires : util-linux-dev
 BuildRequires : util-linux-dev32
 BuildRequires : util-linux-extras
 BuildRequires : zlib-dev32
-# Suppress stripping binaries
-%define __strip /bin/true
-%define debug_package %{nil}
 Patch1: 0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
 Patch2: 0002-Re-shrunk-the-PCI-vendor-ID-list-to-include-only-Int.patch
 Patch3: 0003-journal-raise-compression-threshold.patch
@@ -295,7 +292,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1532544323
+export SOURCE_DATE_EPOCH=1532624328
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
