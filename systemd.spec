@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 185
+Release  : 186
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -104,6 +104,7 @@ Patch35: 0035-Don-t-do-transient-hostnames-we-set-ours-already.patch
 Patch36: 0036-don-t-use-libm-just-for-integer-exp10.patch
 Patch37: 0037-Notify-systemd-earlier-that-resolved-is-ready.patch
 Patch38: 0038-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
+Patch39: 0039-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
 
 %description
 systemd System and Service Manager
@@ -195,6 +196,7 @@ Provides: systemd-hwdb
 Obsoletes: systemd-polkit
 Provides: systemd-polkit
 
+
 %description extras
 extras components for the systemd package.
 
@@ -283,6 +285,7 @@ man components for the systemd package.
 %patch36 -p1
 %patch37 -p1
 %patch38 -p1
+%patch39 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -292,7 +295,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1532624328
+export SOURCE_DATE_EPOCH=1532721740
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -339,7 +342,7 @@ fi
 popd
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang systemd
-## make_install_append content
+## install_append content
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd-remote.conf
@@ -372,8 +375,7 @@ builddir/udevadm hwdb --root %{buildroot} --update --usr
 mv %{buildroot}/usr/lib/udev/hwdb.d/20/* %{buildroot}/usr/lib/udev/hwdb.d/
 rmdir %{buildroot}/usr/lib/udev/hwdb.d/20
 builddir/journalctl --root %{buildroot} --update-catalog
-mkdir -p %{buildroot}/usr/lib/systemd/system-coredump
-ln -s ../../../bin/crashprobe %{buildroot}/usr/lib/systemd/system-coredump/crashprobe
+cp src/coredump/coredump-wrapper %{buildroot}/usr/lib/systemd/
 rm -rvf %{buildroot}/usr/lib/kernel
 rm -rvf %{buildroot}/var/lib/polkit-1
 mkdir -p %{buildroot}/usr/share/clr-service-restart
@@ -381,7 +383,7 @@ ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/
 ln -sf /usr/lib/systemd/system/systemd-resolved.service %{buildroot}/usr/share/clr-service-restart/systemd-resolved.service
 ln -sf /usr/lib/systemd/system/systemd-udevd.service %{buildroot}/usr/share/clr-service-restart/systemd-udevd.service
 ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/clr-service-restart/systemd-journald.service
-## make_install_append end
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -507,7 +509,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files config
 %defattr(-,root,root,-)
-%exclude /usr/lib/sysctl.d/50-coredump.conf
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 %exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
 %exclude /usr/lib/systemd/system/ldconfig.service
@@ -569,6 +570,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/udev/rules.d/70-joystick.rules
 %exclude /usr/lib/udev/rules.d/75-probe_mtd.rules
 %exclude /usr/lib/udev/rules.d/78-sound-card.rules
+/usr/lib/sysctl.d/50-coredump.conf
 /usr/lib/sysctl.d/50-default.conf
 /usr/lib/systemd/boot/efi/linuxx64.efi.stub
 /usr/lib/systemd/boot/efi/systemd-bootx64.efi
@@ -584,6 +586,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/catalog/systemd.ru.catalog
 /usr/lib/systemd/catalog/systemd.zh_CN.catalog
 /usr/lib/systemd/catalog/systemd.zh_TW.catalog
+/usr/lib/systemd/coredump-wrapper
 /usr/lib/systemd/libsystemd-shared-239.so
 /usr/lib/systemd/network/80-container-host0.network
 /usr/lib/systemd/network/80-container-ve.network
@@ -595,7 +598,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/portable/profile/trusted/service.conf
 /usr/lib/systemd/portablectl
 /usr/lib/systemd/resolv.conf
-/usr/lib/systemd/system-coredump/crashprobe
 /usr/lib/systemd/system-generators/systemd-cryptsetup-generator
 /usr/lib/systemd/system-generators/systemd-debug-generator
 /usr/lib/systemd/system-generators/systemd-fstab-generator

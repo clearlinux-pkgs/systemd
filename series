@@ -36,3 +36,4 @@
 0036-don-t-use-libm-just-for-integer-exp10.patch
 0037-Notify-systemd-earlier-that-resolved-is-ready.patch
 0038-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
+0039-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
