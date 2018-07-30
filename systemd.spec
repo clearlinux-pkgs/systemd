@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 186
+Release  : 187
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -23,6 +23,7 @@ BuildRequires : Linux-PAM-dev
 BuildRequires : Linux-PAM-dev32
 BuildRequires : acl-dev
 BuildRequires : acl-dev32
+BuildRequires : bash-completion-dev
 BuildRequires : buildreq-meson
 BuildRequires : bzip2-dev
 BuildRequires : cryptsetup-dev
@@ -196,7 +197,6 @@ Provides: systemd-hwdb
 Obsoletes: systemd-polkit
 Provides: systemd-polkit
 
-
 %description extras
 extras components for the systemd package.
 
@@ -295,7 +295,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1532721740
+export SOURCE_DATE_EPOCH=1532977950
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -387,6 +387,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files
 %defattr(-,root,root,-)
+%exclude /usr/lib/rpm/macros.d/macros.systemd
 %exclude /usr/lib/udev/cdrom_id
 %exclude /usr/lib/udev/collect
 %exclude /usr/lib/udev/hwdb.d/20-OUI.hwdb
@@ -408,7 +409,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/udev/v4l_id
 %exclude /var/lib/systemd/catalog/database
 /usr/lib/modprobe.d/systemd.conf
-/usr/lib/rpm/macros.d/macros.systemd
 /usr/lib/udev/ata_id
 /usr/lib/udev/hwdb.bin
 /usr/lib/udev/hwdb.d/20-usb-vendor-model.hwdb
@@ -962,127 +962,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib64/pkgconfig/libudev.pc
 /usr/lib64/pkgconfig/systemd.pc
 /usr/lib64/pkgconfig/udev.pc
-
-%files dev32
-%defattr(-,root,root,-)
-/usr/lib32/libsystemd.so
-/usr/lib32/libudev.so
-/usr/lib32/pkgconfig/32libsystemd.pc
-/usr/lib32/pkgconfig/32libudev.pc
-/usr/lib32/pkgconfig/libsystemd.pc
-/usr/lib32/pkgconfig/libudev.pc
-
-%files doc
-%defattr(0644,root,root,0755)
-%doc /usr/share/doc/systemd/*
-
-%files extras
-%defattr(-,root,root,-)
-/usr/bin/systemd-hwdb
-/usr/bin/systemd-sysusers
-/usr/lib/systemd/system/systemd-sysusers.service
-/usr/lib/systemd/system/var-lib-machines.mount
-/usr/lib/udev/cdrom_id
-/usr/lib/udev/collect
-/usr/lib/udev/hwdb.d/20-OUI.hwdb
-/usr/lib/udev/hwdb.d/20-acpi-vendor.hwdb
-/usr/lib/udev/hwdb.d/20-bluetooth-vendor-product.hwdb
-/usr/lib/udev/hwdb.d/20-net-ifname.hwdb
-/usr/lib/udev/hwdb.d/20-pci-classes.hwdb
-/usr/lib/udev/hwdb.d/20-pci-vendor-model.hwdb
-/usr/lib/udev/hwdb.d/20-sdio-classes.hwdb
-/usr/lib/udev/hwdb.d/20-sdio-vendor-model.hwdb
-/usr/lib/udev/hwdb.d/20-usb-classes.hwdb
-/usr/lib/udev/hwdb.d/60-evdev.hwdb
-/usr/lib/udev/hwdb.d/60-keyboard.hwdb
-/usr/lib/udev/hwdb.d/60-sensor.hwdb
-/usr/lib/udev/hwdb.d/70-mouse.hwdb
-/usr/lib/udev/hwdb.d/70-pointingstick.hwdb
-/usr/lib/udev/hwdb.d/70-touchpad.hwdb
-/usr/lib/udev/mtd_probe
-/usr/lib/udev/rules.d/60-cdrom_id.rules
-/usr/lib/udev/rules.d/60-persistent-alsa.rules
-/usr/lib/udev/rules.d/60-persistent-storage-tape.rules
-/usr/lib/udev/rules.d/60-persistent-v4l.rules
-/usr/lib/udev/rules.d/70-joystick.rules
-/usr/lib/udev/rules.d/75-probe_mtd.rules
-/usr/lib/udev/rules.d/78-sound-card.rules
-/usr/lib/udev/v4l_id
-/usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
-/usr/share/polkit-1/actions/org.freedesktop.locale1.policy
-/usr/share/polkit-1/actions/org.freedesktop.login1.policy
-/usr/share/polkit-1/actions/org.freedesktop.machine1.policy
-/usr/share/polkit-1/actions/org.freedesktop.systemd1.policy
-/usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
-/usr/share/polkit-1/rules.d/systemd-networkd.rules
-
-%files lib
-%defattr(-,root,root,-)
-/usr/lib64/libnss_myhostname.so.2
-/usr/lib64/libnss_mymachines.so.2
-/usr/lib64/libnss_resolve.so.2
-/usr/lib64/libnss_systemd.so.2
-/usr/lib64/libsystemd.so.0
-/usr/lib64/libsystemd.so.0.23.0
-/usr/lib64/libudev.so.1
-/usr/lib64/libudev.so.1.6.11
-/usr/lib64/security/pam_systemd.so
-
-%files lib32
-%defattr(-,root,root,-)
-/usr/lib32/libnss_myhostname.so.2
-/usr/lib32/libnss_mymachines.so.2
-/usr/lib32/libnss_resolve.so.2
-/usr/lib32/libnss_systemd.so.2
-/usr/lib32/libsystemd.so.0
-/usr/lib32/libsystemd.so.0.23.0
-/usr/lib32/libudev.so.1
-/usr/lib32/libudev.so.1.6.11
-/usr/lib32/security/pam_systemd.so
-
-%files license
-%defattr(-,root,root,-)
-/usr/share/doc/systemd/LICENSE.GPL2
-/usr/share/doc/systemd/LICENSE.LGPL2.1
-
-%files man
-%defattr(-,root,root,-)
-/usr/share/man/man1/bootctl.1
-/usr/share/man/man1/busctl.1
-/usr/share/man/man1/coredumpctl.1
-/usr/share/man/man1/hostnamectl.1
-/usr/share/man/man1/init.1
-/usr/share/man/man1/journalctl.1
-/usr/share/man/man1/localectl.1
-/usr/share/man/man1/loginctl.1
-/usr/share/man/man1/machinectl.1
-/usr/share/man/man1/networkctl.1
-/usr/share/man/man1/portablectl.1
-/usr/share/man/man1/resolvconf.1
-/usr/share/man/man1/resolvectl.1
-/usr/share/man/man1/systemctl.1
-/usr/share/man/man1/systemd-analyze.1
-/usr/share/man/man1/systemd-ask-password.1
-/usr/share/man/man1/systemd-cat.1
-/usr/share/man/man1/systemd-cgls.1
-/usr/share/man/man1/systemd-cgtop.1
-/usr/share/man/man1/systemd-delta.1
-/usr/share/man/man1/systemd-detect-virt.1
-/usr/share/man/man1/systemd-escape.1
-/usr/share/man/man1/systemd-firstboot.1
-/usr/share/man/man1/systemd-firstboot.service.1
-/usr/share/man/man1/systemd-inhibit.1
-/usr/share/man/man1/systemd-machine-id-setup.1
-/usr/share/man/man1/systemd-mount.1
-/usr/share/man/man1/systemd-notify.1
-/usr/share/man/man1/systemd-nspawn.1
-/usr/share/man/man1/systemd-path.1
-/usr/share/man/man1/systemd-run.1
-/usr/share/man/man1/systemd-socket-activate.1
-/usr/share/man/man1/systemd-tty-ask-password-agent.1
-/usr/share/man/man1/systemd-umount.1
-/usr/share/man/man1/systemd.1
-/usr/share/man/man1/timedatectl.1
 /usr/share/man/man3/SD_ALERT.3
 /usr/share/man/man3/SD_BUS_ERROR_ACCESS_DENIED.3
 /usr/share/man/man3/SD_BUS_ERROR_ADDRESS_IN_USE.3
@@ -1571,6 +1450,127 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man3/udev_new.3
 /usr/share/man/man3/udev_ref.3
 /usr/share/man/man3/udev_unref.3
+
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libsystemd.so
+/usr/lib32/libudev.so
+/usr/lib32/pkgconfig/32libsystemd.pc
+/usr/lib32/pkgconfig/32libudev.pc
+/usr/lib32/pkgconfig/libsystemd.pc
+/usr/lib32/pkgconfig/libudev.pc
+
+%files doc
+%defattr(0644,root,root,0755)
+%doc /usr/share/doc/systemd/*
+
+%files extras
+%defattr(-,root,root,-)
+/usr/bin/systemd-hwdb
+/usr/bin/systemd-sysusers
+/usr/lib/systemd/system/systemd-sysusers.service
+/usr/lib/systemd/system/var-lib-machines.mount
+/usr/lib/udev/cdrom_id
+/usr/lib/udev/collect
+/usr/lib/udev/hwdb.d/20-OUI.hwdb
+/usr/lib/udev/hwdb.d/20-acpi-vendor.hwdb
+/usr/lib/udev/hwdb.d/20-bluetooth-vendor-product.hwdb
+/usr/lib/udev/hwdb.d/20-net-ifname.hwdb
+/usr/lib/udev/hwdb.d/20-pci-classes.hwdb
+/usr/lib/udev/hwdb.d/20-pci-vendor-model.hwdb
+/usr/lib/udev/hwdb.d/20-sdio-classes.hwdb
+/usr/lib/udev/hwdb.d/20-sdio-vendor-model.hwdb
+/usr/lib/udev/hwdb.d/20-usb-classes.hwdb
+/usr/lib/udev/hwdb.d/60-evdev.hwdb
+/usr/lib/udev/hwdb.d/60-keyboard.hwdb
+/usr/lib/udev/hwdb.d/60-sensor.hwdb
+/usr/lib/udev/hwdb.d/70-mouse.hwdb
+/usr/lib/udev/hwdb.d/70-pointingstick.hwdb
+/usr/lib/udev/hwdb.d/70-touchpad.hwdb
+/usr/lib/udev/mtd_probe
+/usr/lib/udev/rules.d/60-cdrom_id.rules
+/usr/lib/udev/rules.d/60-persistent-alsa.rules
+/usr/lib/udev/rules.d/60-persistent-storage-tape.rules
+/usr/lib/udev/rules.d/60-persistent-v4l.rules
+/usr/lib/udev/rules.d/70-joystick.rules
+/usr/lib/udev/rules.d/75-probe_mtd.rules
+/usr/lib/udev/rules.d/78-sound-card.rules
+/usr/lib/udev/v4l_id
+/usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
+/usr/share/polkit-1/actions/org.freedesktop.locale1.policy
+/usr/share/polkit-1/actions/org.freedesktop.login1.policy
+/usr/share/polkit-1/actions/org.freedesktop.machine1.policy
+/usr/share/polkit-1/actions/org.freedesktop.systemd1.policy
+/usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
+/usr/share/polkit-1/rules.d/systemd-networkd.rules
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libnss_myhostname.so.2
+/usr/lib64/libnss_mymachines.so.2
+/usr/lib64/libnss_resolve.so.2
+/usr/lib64/libnss_systemd.so.2
+/usr/lib64/libsystemd.so.0
+/usr/lib64/libsystemd.so.0.23.0
+/usr/lib64/libudev.so.1
+/usr/lib64/libudev.so.1.6.11
+/usr/lib64/security/pam_systemd.so
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libnss_myhostname.so.2
+/usr/lib32/libnss_mymachines.so.2
+/usr/lib32/libnss_resolve.so.2
+/usr/lib32/libnss_systemd.so.2
+/usr/lib32/libsystemd.so.0
+/usr/lib32/libsystemd.so.0.23.0
+/usr/lib32/libudev.so.1
+/usr/lib32/libudev.so.1.6.11
+/usr/lib32/security/pam_systemd.so
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/systemd/LICENSE.GPL2
+/usr/share/doc/systemd/LICENSE.LGPL2.1
+
+%files man
+%defattr(-,root,root,-)
+/usr/share/man/man1/bootctl.1
+/usr/share/man/man1/busctl.1
+/usr/share/man/man1/coredumpctl.1
+/usr/share/man/man1/hostnamectl.1
+/usr/share/man/man1/init.1
+/usr/share/man/man1/journalctl.1
+/usr/share/man/man1/localectl.1
+/usr/share/man/man1/loginctl.1
+/usr/share/man/man1/machinectl.1
+/usr/share/man/man1/networkctl.1
+/usr/share/man/man1/portablectl.1
+/usr/share/man/man1/resolvconf.1
+/usr/share/man/man1/resolvectl.1
+/usr/share/man/man1/systemctl.1
+/usr/share/man/man1/systemd-analyze.1
+/usr/share/man/man1/systemd-ask-password.1
+/usr/share/man/man1/systemd-cat.1
+/usr/share/man/man1/systemd-cgls.1
+/usr/share/man/man1/systemd-cgtop.1
+/usr/share/man/man1/systemd-delta.1
+/usr/share/man/man1/systemd-detect-virt.1
+/usr/share/man/man1/systemd-escape.1
+/usr/share/man/man1/systemd-firstboot.1
+/usr/share/man/man1/systemd-firstboot.service.1
+/usr/share/man/man1/systemd-inhibit.1
+/usr/share/man/man1/systemd-machine-id-setup.1
+/usr/share/man/man1/systemd-mount.1
+/usr/share/man/man1/systemd-notify.1
+/usr/share/man/man1/systemd-nspawn.1
+/usr/share/man/man1/systemd-path.1
+/usr/share/man/man1/systemd-run.1
+/usr/share/man/man1/systemd-socket-activate.1
+/usr/share/man/man1/systemd-tty-ask-password-agent.1
+/usr/share/man/man1/systemd-umount.1
+/usr/share/man/man1/systemd.1
+/usr/share/man/man1/timedatectl.1
 /usr/share/man/man5/binfmt.d.5
 /usr/share/man/man5/coredump.conf.5
 /usr/share/man/man5/coredump.conf.d.5
