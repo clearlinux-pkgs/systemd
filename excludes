@@ -2,6 +2,7 @@
 # names, one per line.
 /usr/bin/kernel-install
 /usr/bin/systemd-firstboot
+/usr/lib/rpm/macros.d/macros.systemd
 /usr/lib/systemd/systemd-journal-upload
 /usr/lib/systemd/systemd-update-done
 /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
