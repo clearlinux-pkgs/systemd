@@ -7,6 +7,7 @@
 /usr/lib/systemd/systemd-update-done
 /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 /usr/lib/systemd/system-generators/systemd-system-update-generator
+/usr/lib/systemd/system-generators/systemd-veritysetup-generator
 /usr/lib/systemd/system/ldconfig.service
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald-audit.socket
 /usr/lib/systemd/system/systemd-firstboot.service
