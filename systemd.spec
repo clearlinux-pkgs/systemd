@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 187
+Release  : 188
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -127,14 +127,6 @@ Requires: systemd-data
 Requires: systemd-config
 Requires: systemd-license
 Requires: systemd-man
-Obsoletes: systemd-boot
-Provides: systemd-boot
-Obsoletes: systemd-console
-Provides: systemd-console
-Obsoletes: systemd-coredump
-Provides: systemd-coredump
-Obsoletes: systemd-cryptsetup
-Provides: systemd-cryptsetup
 
 %description bin
 bin components for the systemd package.
@@ -192,10 +184,6 @@ doc components for the systemd package.
 %package extras
 Summary: extras components for the systemd package.
 Group: Default
-Obsoletes: systemd-hwdb
-Provides: systemd-hwdb
-Obsoletes: systemd-polkit
-Provides: systemd-polkit
 
 %description extras
 extras components for the systemd package.
@@ -295,7 +283,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1532977950
+export SOURCE_DATE_EPOCH=1533330952
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -511,6 +499,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %defattr(-,root,root,-)
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 %exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
+%exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
 %exclude /usr/lib/systemd/system/ldconfig.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
@@ -603,7 +592,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system-generators/systemd-fstab-generator
 /usr/lib/systemd/system-generators/systemd-getty-generator
 /usr/lib/systemd/system-generators/systemd-gpt-auto-generator
-/usr/lib/systemd/system-generators/systemd-veritysetup-generator
 /usr/lib/systemd/system-preset/90-systemd.preset
 /usr/lib/systemd/system/autovt@.service
 /usr/lib/systemd/system/basic.target
