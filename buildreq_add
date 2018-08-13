@@ -44,3 +44,4 @@ gcc-libstdc++32
 glibc-dev32
 glibc-libc32
 python3
+libmicrohttpd-dev

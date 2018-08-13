@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 190
+Release  : 191
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -57,6 +57,7 @@ BuildRequires : libffi-dev
 BuildRequires : libgcrypt-dev
 BuildRequires : libgcrypt-dev32
 BuildRequires : libgpg-error-dev
+BuildRequires : libmicrohttpd-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(zlib)
@@ -283,7 +284,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1534191715
+export SOURCE_DATE_EPOCH=1534194317
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -311,7 +312,9 @@ CFLAGS="$CFLAGS -m32" CXXFLAGS="$CXXFLAGS -m32" LDFLAGS="$LDFLAGS -m32" PKG_CONF
 -Ddefault-kill-user-processes=false -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
--Delfutils=false builddir
+-Delfutils=false \
+-Dmicrohttpd=false \
+-Dremote=false builddir
 ninja -v -C builddir
 popd
 
@@ -695,6 +698,10 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/systemd-initctl.socket
 /usr/lib/systemd/system/systemd-journal-flush-msft.service
 /usr/lib/systemd/system/systemd-journal-flush.service
+/usr/lib/systemd/system/systemd-journal-gatewayd.service
+/usr/lib/systemd/system/systemd-journal-gatewayd.socket
+/usr/lib/systemd/system/systemd-journal-remote.service
+/usr/lib/systemd/system/systemd-journal-remote.socket
 /usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/system/systemd-journald-audit.socket
 /usr/lib/systemd/system/systemd-journald-dev-log.socket
@@ -758,6 +765,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-hibernate-resume
 /usr/lib/systemd/systemd-hostnamed
 /usr/lib/systemd/systemd-initctl
+/usr/lib/systemd/systemd-journal-gatewayd
+/usr/lib/systemd/systemd-journal-remote
 /usr/lib/systemd/systemd-journal-upload
 /usr/lib/systemd/systemd-journald
 /usr/lib/systemd/systemd-localed
@@ -904,6 +913,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/pam.d/systemd-user
 /usr/share/polkit-1/actions/org.freedesktop.portable1.policy
 /usr/share/polkit-1/actions/org.freedesktop.resolve1.policy
+/usr/share/systemd/gatewayd/browse.html
 /usr/share/systemd/kbd-model-map
 /usr/share/systemd/language-fallback-map
 /usr/share/zsh/site-functions/_bootctl
@@ -1565,6 +1575,10 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man5/dnssec-trust-anchors.d.5
 /usr/share/man/man5/environment.d.5
 /usr/share/man/man5/hostname.5
+/usr/share/man/man5/journal-remote.conf.5
+/usr/share/man/man5/journal-remote.conf.d.5
+/usr/share/man/man5/journal-upload.conf.5
+/usr/share/man/man5/journal-upload.conf.d.5
 /usr/share/man/man5/journald.conf.5
 /usr/share/man/man5/journald.conf.d.5
 /usr/share/man/man5/loader.conf.5
@@ -1683,6 +1697,14 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man8/systemd-initctl.8
 /usr/share/man/man8/systemd-initctl.service.8
 /usr/share/man/man8/systemd-initctl.socket.8
+/usr/share/man/man8/systemd-journal-gatewayd.8
+/usr/share/man/man8/systemd-journal-gatewayd.service.8
+/usr/share/man/man8/systemd-journal-gatewayd.socket.8
+/usr/share/man/man8/systemd-journal-remote.8
+/usr/share/man/man8/systemd-journal-remote.service.8
+/usr/share/man/man8/systemd-journal-remote.socket.8
+/usr/share/man/man8/systemd-journal-upload.8
+/usr/share/man/man8/systemd-journal-upload.service.8
 /usr/share/man/man8/systemd-journald-audit.socket.8
 /usr/share/man/man8/systemd-journald-dev-log.socket.8
 /usr/share/man/man8/systemd-journald.8

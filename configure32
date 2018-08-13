@@ -2,3 +2,5 @@
 -Dgnutls=false
 -Dlibcurl=false
 -Delfutils=false
+-Dmicrohttpd=false
+-Dremote=false

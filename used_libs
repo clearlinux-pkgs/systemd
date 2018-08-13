@@ -12,6 +12,7 @@ libgnutls.so.30
 libip4tc.so.0
 libkmod.so.2
 libm.so.6
+libmicrohttpd.so.12
 libmount.so.1
 libpam.so.0
 libpam_misc.so.0
