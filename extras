@@ -13,7 +13,6 @@
 /usr/lib/udev/hwdb.d/20-bluetooth-vendor-product.hwdb
 /usr/lib/udev/hwdb.d/20-net-ifname.hwdb
 /usr/lib/udev/hwdb.d/20-pci-classes.hwdb
-/usr/lib/udev/hwdb.d/20-pci-vendor-model.hwdb
 /usr/lib/udev/hwdb.d/20-sdio-classes.hwdb
 /usr/lib/udev/hwdb.d/20-sdio-vendor-model.hwdb
 /usr/lib/udev/hwdb.d/20-usb-classes.hwdb

@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 188
+Release  : 189
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -68,44 +68,44 @@ BuildRequires : util-linux-dev32
 BuildRequires : util-linux-extras
 BuildRequires : zlib-dev32
 Patch1: 0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
-Patch2: 0002-Re-shrunk-the-PCI-vendor-ID-list-to-include-only-Int.patch
-Patch3: 0003-journal-raise-compression-threshold.patch
-Patch4: 0004-journal-clearout-drop-kmsg.patch
-Patch5: 0005-core-use-mmap-to-load-files.patch
-Patch6: 0006-Build-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
-Patch7: 0007-journal-flush-var-kmsg-after-starting.patch
-Patch8: 0008-logind-pam-fix-systemd-user-to-include-common-sessio.patch
-Patch9: 0009-analyze-increase-precision.patch
-Patch10: 0010-sd-event-return-malloc-memory-reserves-when-main-loo.patch
-Patch11: 0011-efi-boot-generator-Do-not-automount-boot-partition.patch
-Patch12: 0012-core-do-not-apply-presets.patch
-Patch13: 0013-locale-setup-set-default-locale-to-a-unicode-one.patch
-Patch14: 0014-mount-setup-mount-kernel-fs-by-default.patch
-Patch15: 0015-Ship-default-services-in-system-unit-dir.patch
-Patch16: 0016-bootctl-Add-force-option-to-enable-chroot-install-re.patch
-Patch17: 0017-kernel-install-Support-alternate-root-usage-via-SUBD.patch
-Patch18: 0018-bootctl-Handle-gummiboot-systemd-migration.patch
-Patch19: 0019-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
-Patch20: 0020-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
-Patch21: 0021-more-udev-children-workers.patch
-Patch22: 0022-not-load-iptables.patch
-Patch23: 0023-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
-Patch24: 0024-Disable-resolved-as-default-resolver-write-at-boot.patch
-Patch25: 0025-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
-Patch26: 0026-network-online-complete-once-one-link-is-online-not-.patch
-Patch27: 0027-DHCP-retry-faster.patch
-Patch28: 0028-Remove-libm-memory-overhead.patch
-Patch29: 0029-udev-log-also-device-path.patch
-Patch30: 0030-skip-not-present-ACPI-devices.patch
-Patch31: 0031-Ensure-var-run-is-never-a-directory.patch
-Patch32: 0032-Make-timesyncd-a-simple-service.patch
-Patch33: 0033-Compile-udev-with-O3.patch
-Patch34: 0034-Don-t-wait-for-utmp-at-shutdown.patch
-Patch35: 0035-Don-t-do-transient-hostnames-we-set-ours-already.patch
-Patch36: 0036-don-t-use-libm-just-for-integer-exp10.patch
-Patch37: 0037-Notify-systemd-earlier-that-resolved-is-ready.patch
-Patch38: 0038-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
-Patch39: 0039-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
+Patch2: 0003-journal-raise-compression-threshold.patch
+Patch3: 0004-journal-clearout-drop-kmsg.patch
+Patch4: 0005-core-use-mmap-to-load-files.patch
+Patch5: 0006-Build-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
+Patch6: 0007-journal-flush-var-kmsg-after-starting.patch
+Patch7: 0008-logind-pam-fix-systemd-user-to-include-common-sessio.patch
+Patch8: 0009-analyze-increase-precision.patch
+Patch9: 0010-sd-event-return-malloc-memory-reserves-when-main-loo.patch
+Patch10: 0011-efi-boot-generator-Do-not-automount-boot-partition.patch
+Patch11: 0012-core-do-not-apply-presets.patch
+Patch12: 0013-locale-setup-set-default-locale-to-a-unicode-one.patch
+Patch13: 0014-mount-setup-mount-kernel-fs-by-default.patch
+Patch14: 0015-Ship-default-services-in-system-unit-dir.patch
+Patch15: 0016-bootctl-Add-force-option-to-enable-chroot-install-re.patch
+Patch16: 0017-kernel-install-Support-alternate-root-usage-via-SUBD.patch
+Patch17: 0018-bootctl-Handle-gummiboot-systemd-migration.patch
+Patch18: 0019-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
+Patch19: 0020-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
+Patch20: 0021-more-udev-children-workers.patch
+Patch21: 0022-not-load-iptables.patch
+Patch22: 0023-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
+Patch23: 0024-Disable-resolved-as-default-resolver-write-at-boot.patch
+Patch24: 0025-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
+Patch25: 0026-network-online-complete-once-one-link-is-online-not-.patch
+Patch26: 0027-DHCP-retry-faster.patch
+Patch27: 0028-Remove-libm-memory-overhead.patch
+Patch28: 0029-udev-log-also-device-path.patch
+Patch29: 0030-skip-not-present-ACPI-devices.patch
+Patch30: 0031-Ensure-var-run-is-never-a-directory.patch
+Patch31: 0032-Make-timesyncd-a-simple-service.patch
+Patch32: 0033-Compile-udev-with-O3.patch
+Patch33: 0034-Don-t-wait-for-utmp-at-shutdown.patch
+Patch34: 0035-Don-t-do-transient-hostnames-we-set-ours-already.patch
+Patch35: 0036-don-t-use-libm-just-for-integer-exp10.patch
+Patch36: 0037-Notify-systemd-earlier-that-resolved-is-ready.patch
+Patch37: 0038-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
+Patch38: 0039-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
+Patch39: 75720bff62a84896e9a0654afc7cf9408cf89a38.patch
 
 %description
 systemd System and Service Manager
@@ -283,7 +283,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1533330952
+export SOURCE_DATE_EPOCH=1534186392
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -1465,7 +1465,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/hwdb.d/20-bluetooth-vendor-product.hwdb
 /usr/lib/udev/hwdb.d/20-net-ifname.hwdb
 /usr/lib/udev/hwdb.d/20-pci-classes.hwdb
-/usr/lib/udev/hwdb.d/20-pci-vendor-model.hwdb
 /usr/lib/udev/hwdb.d/20-sdio-classes.hwdb
 /usr/lib/udev/hwdb.d/20-sdio-vendor-model.hwdb
 /usr/lib/udev/hwdb.d/20-usb-classes.hwdb

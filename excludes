@@ -19,6 +19,7 @@
 /usr/lib/systemd/system/systemd-update-done.service
 /usr/lib/systemd/system/system-update-cleanup.service
 /usr/lib/systemd/system/system-update.target
+/usr/lib/udev/hwdb.d/20-pci-vendor-model.hwdb
 /usr/share/bash-completion/completions/kernel-install
 /usr/share/zsh/site-functions/_kernel-install
 /var/lib/systemd/catalog/database
