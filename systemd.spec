@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 189
+Release  : 190
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -283,7 +283,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1534186392
+export SOURCE_DATE_EPOCH=1534191715
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -544,13 +544,11 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/systemd/system/systemd-firstboot.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
-%exclude /usr/lib/systemd/system/systemd-journal-upload.service
 %exclude /usr/lib/systemd/system/systemd-sysusers.service
 %exclude /usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
 %exclude /usr/lib/systemd/system/systemd-update-done.service
 %exclude /usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 %exclude /usr/lib/systemd/system/var-lib-machines.mount
-%exclude /usr/lib/systemd/systemd-journal-upload
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/udev/rules.d/60-cdrom_id.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-alsa.rules
@@ -697,6 +695,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/systemd-initctl.socket
 /usr/lib/systemd/system/systemd-journal-flush-msft.service
 /usr/lib/systemd/system/systemd-journal-flush.service
+/usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/system/systemd-journald-audit.socket
 /usr/lib/systemd/system/systemd-journald-dev-log.socket
 /usr/lib/systemd/system/systemd-journald.service
@@ -759,6 +758,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-hibernate-resume
 /usr/lib/systemd/systemd-hostnamed
 /usr/lib/systemd/systemd-initctl
+/usr/lib/systemd/systemd-journal-upload
 /usr/lib/systemd/systemd-journald
 /usr/lib/systemd/systemd-localed
 /usr/lib/systemd/systemd-logind
