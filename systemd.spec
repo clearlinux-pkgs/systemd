@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 191
+Release  : 192
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -284,7 +284,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1534194317
+export SOURCE_DATE_EPOCH=1534277673
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -547,11 +547,19 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/systemd/system/systemd-firstboot.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
 %exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
+%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.service
+%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.socket
+%exclude /usr/lib/systemd/system/systemd-journal-remote.service
+%exclude /usr/lib/systemd/system/systemd-journal-remote.socket
+%exclude /usr/lib/systemd/system/systemd-journal-upload.service
 %exclude /usr/lib/systemd/system/systemd-sysusers.service
 %exclude /usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
 %exclude /usr/lib/systemd/system/systemd-update-done.service
 %exclude /usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 %exclude /usr/lib/systemd/system/var-lib-machines.mount
+%exclude /usr/lib/systemd/systemd-journal-gatewayd
+%exclude /usr/lib/systemd/systemd-journal-remote
+%exclude /usr/lib/systemd/systemd-journal-upload
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/udev/rules.d/60-cdrom_id.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-alsa.rules
@@ -698,11 +706,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/systemd-initctl.socket
 /usr/lib/systemd/system/systemd-journal-flush-msft.service
 /usr/lib/systemd/system/systemd-journal-flush.service
-/usr/lib/systemd/system/systemd-journal-gatewayd.service
-/usr/lib/systemd/system/systemd-journal-gatewayd.socket
-/usr/lib/systemd/system/systemd-journal-remote.service
-/usr/lib/systemd/system/systemd-journal-remote.socket
-/usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/system/systemd-journald-audit.socket
 /usr/lib/systemd/system/systemd-journald-dev-log.socket
 /usr/lib/systemd/system/systemd-journald.service
@@ -765,9 +768,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-hibernate-resume
 /usr/lib/systemd/systemd-hostnamed
 /usr/lib/systemd/systemd-initctl
-/usr/lib/systemd/systemd-journal-gatewayd
-/usr/lib/systemd/systemd-journal-remote
-/usr/lib/systemd/systemd-journal-upload
 /usr/lib/systemd/systemd-journald
 /usr/lib/systemd/systemd-localed
 /usr/lib/systemd/systemd-logind
@@ -1466,8 +1466,16 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %defattr(-,root,root,-)
 /usr/bin/systemd-hwdb
 /usr/bin/systemd-sysusers
+/usr/lib/systemd/system/systemd-journal-gatewayd.service
+/usr/lib/systemd/system/systemd-journal-gatewayd.socket
+/usr/lib/systemd/system/systemd-journal-remote.service
+/usr/lib/systemd/system/systemd-journal-remote.socket
+/usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/system/systemd-sysusers.service
 /usr/lib/systemd/system/var-lib-machines.mount
+/usr/lib/systemd/systemd-journal-gatewayd
+/usr/lib/systemd/systemd-journal-remote
+/usr/lib/systemd/systemd-journal-upload
 /usr/lib/udev/cdrom_id
 /usr/lib/udev/collect
 /usr/lib/udev/hwdb.d/20-OUI.hwdb
@@ -1493,6 +1501,18 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/rules.d/75-probe_mtd.rules
 /usr/lib/udev/rules.d/78-sound-card.rules
 /usr/lib/udev/v4l_id
+/usr/share/man/man5/journal-remote.conf.5
+/usr/share/man/man5/journal-remote.conf.d.5
+/usr/share/man/man5/journal-upload.conf.5
+/usr/share/man/man5/journal-upload.conf.d.5
+/usr/share/man/man8/systemd-journal-gatewayd.8
+/usr/share/man/man8/systemd-journal-gatewayd.service.8
+/usr/share/man/man8/systemd-journal-gatewayd.socket.8
+/usr/share/man/man8/systemd-journal-remote.8
+/usr/share/man/man8/systemd-journal-remote.service.8
+/usr/share/man/man8/systemd-journal-remote.socket.8
+/usr/share/man/man8/systemd-journal-upload.8
+/usr/share/man/man8/systemd-journal-upload.service.8
 /usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
 /usr/share/polkit-1/actions/org.freedesktop.locale1.policy
 /usr/share/polkit-1/actions/org.freedesktop.login1.policy
@@ -1532,6 +1552,18 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files man
 %defattr(-,root,root,-)
+%exclude /usr/share/man/man5/journal-remote.conf.5
+%exclude /usr/share/man/man5/journal-remote.conf.d.5
+%exclude /usr/share/man/man5/journal-upload.conf.5
+%exclude /usr/share/man/man5/journal-upload.conf.d.5
+%exclude /usr/share/man/man8/systemd-journal-gatewayd.8
+%exclude /usr/share/man/man8/systemd-journal-gatewayd.service.8
+%exclude /usr/share/man/man8/systemd-journal-gatewayd.socket.8
+%exclude /usr/share/man/man8/systemd-journal-remote.8
+%exclude /usr/share/man/man8/systemd-journal-remote.service.8
+%exclude /usr/share/man/man8/systemd-journal-remote.socket.8
+%exclude /usr/share/man/man8/systemd-journal-upload.8
+%exclude /usr/share/man/man8/systemd-journal-upload.service.8
 /usr/share/man/man1/bootctl.1
 /usr/share/man/man1/busctl.1
 /usr/share/man/man1/coredumpctl.1
@@ -1575,10 +1607,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man5/dnssec-trust-anchors.d.5
 /usr/share/man/man5/environment.d.5
 /usr/share/man/man5/hostname.5
-/usr/share/man/man5/journal-remote.conf.5
-/usr/share/man/man5/journal-remote.conf.d.5
-/usr/share/man/man5/journal-upload.conf.5
-/usr/share/man/man5/journal-upload.conf.d.5
 /usr/share/man/man5/journald.conf.5
 /usr/share/man/man5/journald.conf.d.5
 /usr/share/man/man5/loader.conf.5
@@ -1697,14 +1725,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man8/systemd-initctl.8
 /usr/share/man/man8/systemd-initctl.service.8
 /usr/share/man/man8/systemd-initctl.socket.8
-/usr/share/man/man8/systemd-journal-gatewayd.8
-/usr/share/man/man8/systemd-journal-gatewayd.service.8
-/usr/share/man/man8/systemd-journal-gatewayd.socket.8
-/usr/share/man/man8/systemd-journal-remote.8
-/usr/share/man/man8/systemd-journal-remote.service.8
-/usr/share/man/man8/systemd-journal-remote.socket.8
-/usr/share/man/man8/systemd-journal-upload.8
-/usr/share/man/man8/systemd-journal-upload.service.8
 /usr/share/man/man8/systemd-journald-audit.socket.8
 /usr/share/man/man8/systemd-journald-dev-log.socket.8
 /usr/share/man/man8/systemd-journald.8
