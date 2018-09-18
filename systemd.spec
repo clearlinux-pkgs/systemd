@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 192
+Release  : 194
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -15,9 +15,9 @@ Requires: systemd-config
 Requires: systemd-autostart
 Requires: systemd-lib
 Requires: systemd-data
-Requires: systemd-license
 Requires: systemd-locales
 Requires: systemd-man
+Requires: systemd-license
 Requires: libcap
 BuildRequires : Linux-PAM-dev
 BuildRequires : Linux-PAM-dev32
@@ -125,10 +125,10 @@ autostart components for the systemd package.
 %package bin
 Summary: bin components for the systemd package.
 Group: Binaries
-Requires: systemd-data
-Requires: systemd-config
-Requires: systemd-license
-Requires: systemd-man
+Requires: systemd-data = %{version}-%{release}
+Requires: systemd-config = %{version}-%{release}
+Requires: systemd-license = %{version}-%{release}
+Requires: systemd-man = %{version}-%{release}
 
 %description bin
 bin components for the systemd package.
@@ -153,10 +153,10 @@ data components for the systemd package.
 %package dev
 Summary: dev components for the systemd package.
 Group: Development
-Requires: systemd-lib
-Requires: systemd-bin
-Requires: systemd-data
-Provides: systemd-devel
+Requires: systemd-lib = %{version}-%{release}
+Requires: systemd-bin = %{version}-%{release}
+Requires: systemd-data = %{version}-%{release}
+Provides: systemd-devel = %{version}-%{release}
 
 %description dev
 dev components for the systemd package.
@@ -165,10 +165,10 @@ dev components for the systemd package.
 %package dev32
 Summary: dev32 components for the systemd package.
 Group: Default
-Requires: systemd-lib32
-Requires: systemd-bin
-Requires: systemd-data
-Requires: systemd-dev
+Requires: systemd-lib32 = %{version}-%{release}
+Requires: systemd-bin = %{version}-%{release}
+Requires: systemd-data = %{version}-%{release}
+Requires: systemd-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the systemd package.
@@ -177,7 +177,7 @@ dev32 components for the systemd package.
 %package doc
 Summary: doc components for the systemd package.
 Group: Documentation
-Requires: systemd-man
+Requires: systemd-man = %{version}-%{release}
 
 %description doc
 doc components for the systemd package.
@@ -194,8 +194,8 @@ extras components for the systemd package.
 %package lib
 Summary: lib components for the systemd package.
 Group: Libraries
-Requires: systemd-data
-Requires: systemd-license
+Requires: systemd-data = %{version}-%{release}
+Requires: systemd-license = %{version}-%{release}
 
 %description lib
 lib components for the systemd package.
@@ -204,8 +204,8 @@ lib components for the systemd package.
 %package lib32
 Summary: lib32 components for the systemd package.
 Group: Default
-Requires: systemd-data
-Requires: systemd-license
+Requires: systemd-data = %{version}-%{release}
+Requires: systemd-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the systemd package.
@@ -286,7 +286,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1534277673
+export SOURCE_DATE_EPOCH=1537818748
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -294,8 +294,8 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --b
 -Dsmack=false \
 -Dsysvinit-path= \
 -Dsysvrcnd_path= \
--Dxz=false \
--Dgcrypt=false \
+-Dxz=true \
+-Dgcrypt=true \
 -Dlz4=false \
 -Ddefault-kill-user-processes=false  builddir
 ninja -v -C builddir
@@ -308,22 +308,24 @@ CFLAGS="$CFLAGS -m32" CXXFLAGS="$CXXFLAGS -m32" LDFLAGS="$LDFLAGS -m32" PKG_CONF
 -Dsmack=false \
 -Dsysvinit-path= \
 -Dsysvrcnd_path= \
--Dxz=false \
--Dgcrypt=false \
+-Dxz=true \
+-Dgcrypt=true \
 -Dlz4=false \
 -Ddefault-kill-user-processes=false -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \
 -Dmicrohttpd=false \
--Dremote=false builddir
+-Dremote=false \
+-Dxz=false \
+-Dgcrypt=false builddir
 ninja -v -C builddir
 popd
 
 %install
-mkdir -p %{buildroot}/usr/share/doc/systemd
-cp LICENSE.GPL2 %{buildroot}/usr/share/doc/systemd/LICENSE.GPL2
-cp LICENSE.LGPL2.1 %{buildroot}/usr/share/doc/systemd/LICENSE.LGPL2.1
+mkdir -p %{buildroot}/usr/share/package-licenses/systemd
+cp LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.GPL2
+cp LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
 pushd ../build32
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -502,6 +504,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files config
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/import-pubring.gpg
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 %exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
 %exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
@@ -613,6 +616,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/cryptsetup.target
 /usr/lib/systemd/system/ctrl-alt-del.target
 /usr/lib/systemd/system/dbus-org.freedesktop.hostname1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.import1.service
 /usr/lib/systemd/system/dbus-org.freedesktop.locale1.service
 /usr/lib/systemd/system/dbus-org.freedesktop.login1.service
 /usr/lib/systemd/system/dbus-org.freedesktop.machine1.service
@@ -704,6 +708,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/systemd-hibernate.service
 /usr/lib/systemd/system/systemd-hostnamed.service
 /usr/lib/systemd/system/systemd-hybrid-sleep.service
+/usr/lib/systemd/system/systemd-importd.service
 /usr/lib/systemd/system/systemd-initctl.service
 /usr/lib/systemd/system/systemd-initctl.socket
 /usr/lib/systemd/system/systemd-journal-flush-msft.service
@@ -765,10 +770,13 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-coredump
 /usr/lib/systemd/systemd-cryptsetup
 /usr/lib/systemd/systemd-dissect
+/usr/lib/systemd/systemd-export
 /usr/lib/systemd/systemd-fsck
 /usr/lib/systemd/systemd-growfs
 /usr/lib/systemd/systemd-hibernate-resume
 /usr/lib/systemd/systemd-hostnamed
+/usr/lib/systemd/systemd-import
+/usr/lib/systemd/systemd-importd
 /usr/lib/systemd/systemd-initctl
 /usr/lib/systemd/systemd-journald
 /usr/lib/systemd/systemd-localed
@@ -779,6 +787,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-networkd
 /usr/lib/systemd/systemd-networkd-wait-online
 /usr/lib/systemd/systemd-portabled
+/usr/lib/systemd/systemd-pull
 /usr/lib/systemd/systemd-quotacheck
 /usr/lib/systemd/systemd-random-seed
 /usr/lib/systemd/systemd-remount-fs
@@ -893,6 +902,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/clr-service-restart/systemd-udevd.service
 /usr/share/dbus-1/services/org.freedesktop.systemd1.service
 /usr/share/dbus-1/system-services/org.freedesktop.hostname1.service
+/usr/share/dbus-1/system-services/org.freedesktop.import1.service
 /usr/share/dbus-1/system-services/org.freedesktop.locale1.service
 /usr/share/dbus-1/system-services/org.freedesktop.login1.service
 /usr/share/dbus-1/system-services/org.freedesktop.machine1.service
@@ -903,6 +913,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/dbus-1/system-services/org.freedesktop.timedate1.service
 /usr/share/dbus-1/system-services/org.freedesktop.timesync1.service
 /usr/share/dbus-1/system.d/org.freedesktop.hostname1.conf
+/usr/share/dbus-1/system.d/org.freedesktop.import1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.locale1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.login1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.machine1.conf
@@ -913,6 +924,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/dbus-1/system.d/org.freedesktop.timedate1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.timesync1.conf
 /usr/share/pam.d/systemd-user
+/usr/share/polkit-1/actions/org.freedesktop.import1.policy
 /usr/share/polkit-1/actions/org.freedesktop.portable1.policy
 /usr/share/polkit-1/actions/org.freedesktop.resolve1.policy
 /usr/share/systemd/gatewayd/browse.html
@@ -1549,8 +1561,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files license
 %defattr(-,root,root,-)
-/usr/share/doc/systemd/LICENSE.GPL2
-/usr/share/doc/systemd/LICENSE.LGPL2.1
+/usr/share/package-licenses/systemd/LICENSE.GPL2
+/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
 
 %files man
 %defattr(-,root,root,-)
@@ -1724,6 +1736,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man8/systemd-hostnamed.service.8
 /usr/share/man/man8/systemd-hwdb.8
 /usr/share/man/man8/systemd-hybrid-sleep.service.8
+/usr/share/man/man8/systemd-importd.8
+/usr/share/man/man8/systemd-importd.service.8
 /usr/share/man/man8/systemd-initctl.8
 /usr/share/man/man8/systemd-initctl.service.8
 /usr/share/man/man8/systemd-initctl.socket.8

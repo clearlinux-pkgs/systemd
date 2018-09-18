@@ -2,7 +2,7 @@
 -Dsmack=false
 -Dsysvinit-path=
 -Dsysvrcnd_path=
--Dxz=false
--Dgcrypt=false
+-Dxz=true
+-Dgcrypt=true
 -Dlz4=false
 -Ddefault-kill-user-processes=false

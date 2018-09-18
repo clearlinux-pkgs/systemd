@@ -4,3 +4,5 @@
 -Delfutils=false
 -Dmicrohttpd=false
 -Dremote=false
+-Dxz=false
+-Dgcrypt=false

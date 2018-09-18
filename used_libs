@@ -1,6 +1,7 @@
 ld-linux-x86-64.so.2
 libacl.so.1
 libblkid.so.1
+libbz2.so.0
 libc.so.6
 libcap.so.2
 libcryptsetup.so.12
@@ -8,9 +9,12 @@ libcurl.so.4
 libdw.so.1
 libelf.so.1
 libgcc_s.so.1
+libgcrypt.so.20
 libgnutls.so.30
+libgpg-error.so.0
 libip4tc.so.0
 libkmod.so.2
+liblzma.so.5
 libm.so.6
 libmicrohttpd.so.12
 libmount.so.1
@@ -18,3 +22,4 @@ libpam.so.0
 libpam_misc.so.0
 libpthread.so.0
 librt.so.1
+libz.so.1
