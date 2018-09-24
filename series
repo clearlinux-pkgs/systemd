@@ -38,3 +38,4 @@
 0038-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
 0039-build-sys-Detect-whether-struct-statx-is-defined-in-.patch
 0040-meson-rename-Ddebug-to-Ddebug-extra.patch
+0041-Make-bzip2-an-optional-dependency-for-systemd-import.patch

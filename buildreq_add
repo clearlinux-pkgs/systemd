@@ -18,7 +18,6 @@ libffi-dev
 libgcrypt-dev
 libgcrypt-dev32
 glib-bin
-bzip2-dev
 Linux-PAM-dev
 Linux-PAM-dev32
 readline-dev

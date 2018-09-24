@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 194
+Release  : 195
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -25,7 +25,6 @@ BuildRequires : acl-dev
 BuildRequires : acl-dev32
 BuildRequires : bash-completion-dev
 BuildRequires : buildreq-meson
-BuildRequires : bzip2-dev
 BuildRequires : cryptsetup-dev
 BuildRequires : curl-dev
 BuildRequires : dbus-dev
@@ -42,7 +41,6 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : gnu-efi
 BuildRequires : gnu-efi-dev
-BuildRequires : gnutls-dev
 BuildRequires : gperf
 BuildRequires : intltool
 BuildRequires : intltool-dev
@@ -67,6 +65,7 @@ BuildRequires : shadow
 BuildRequires : util-linux-dev
 BuildRequires : util-linux-dev32
 BuildRequires : util-linux-extras
+BuildRequires : xz-dev
 BuildRequires : zlib-dev32
 Patch1: 0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
 Patch2: 0002-journal-raise-compression-threshold.patch
@@ -108,6 +107,7 @@ Patch37: 0037-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
 Patch38: 0038-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
 Patch39: 0039-build-sys-Detect-whether-struct-statx-is-defined-in-.patch
 Patch40: 0040-meson-rename-Ddebug-to-Ddebug-extra.patch
+Patch41: 0041-Make-bzip2-an-optional-dependency-for-systemd-import.patch
 
 %description
 systemd System and Service Manager
@@ -277,6 +277,7 @@ man components for the systemd package.
 %patch38 -p1
 %patch39 -p1
 %patch40 -p1
+%patch41 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -286,7 +287,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1537818748
+export SOURCE_DATE_EPOCH=1537820958
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
