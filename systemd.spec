@@ -69,44 +69,45 @@ BuildRequires : util-linux-dev32
 BuildRequires : util-linux-extras
 BuildRequires : zlib-dev32
 Patch1: 0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
-Patch2: 0003-journal-raise-compression-threshold.patch
-Patch3: 0004-journal-clearout-drop-kmsg.patch
-Patch4: 0005-core-use-mmap-to-load-files.patch
-Patch5: 0006-Build-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
-Patch6: 0007-journal-flush-var-kmsg-after-starting.patch
-Patch7: 0008-logind-pam-fix-systemd-user-to-include-common-sessio.patch
-Patch8: 0009-analyze-increase-precision.patch
-Patch9: 0010-sd-event-return-malloc-memory-reserves-when-main-loo.patch
-Patch10: 0011-efi-boot-generator-Do-not-automount-boot-partition.patch
-Patch11: 0012-core-do-not-apply-presets.patch
-Patch12: 0013-locale-setup-set-default-locale-to-a-unicode-one.patch
-Patch13: 0014-mount-setup-mount-kernel-fs-by-default.patch
-Patch14: 0015-Ship-default-services-in-system-unit-dir.patch
-Patch15: 0016-bootctl-Add-force-option-to-enable-chroot-install-re.patch
-Patch16: 0017-kernel-install-Support-alternate-root-usage-via-SUBD.patch
-Patch17: 0018-bootctl-Handle-gummiboot-systemd-migration.patch
-Patch18: 0019-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
-Patch19: 0020-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
-Patch20: 0021-more-udev-children-workers.patch
-Patch21: 0022-not-load-iptables.patch
-Patch22: 0023-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
-Patch23: 0024-Disable-resolved-as-default-resolver-write-at-boot.patch
-Patch24: 0025-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
-Patch25: 0026-network-online-complete-once-one-link-is-online-not-.patch
-Patch26: 0027-DHCP-retry-faster.patch
-Patch27: 0028-Remove-libm-memory-overhead.patch
-Patch28: 0029-udev-log-also-device-path.patch
-Patch29: 0030-skip-not-present-ACPI-devices.patch
-Patch30: 0031-Ensure-var-run-is-never-a-directory.patch
-Patch31: 0032-Make-timesyncd-a-simple-service.patch
-Patch32: 0033-Compile-udev-with-O3.patch
-Patch33: 0034-Don-t-wait-for-utmp-at-shutdown.patch
-Patch34: 0035-Don-t-do-transient-hostnames-we-set-ours-already.patch
-Patch35: 0036-don-t-use-libm-just-for-integer-exp10.patch
-Patch36: 0037-Notify-systemd-earlier-that-resolved-is-ready.patch
-Patch37: 0038-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
-Patch38: 0039-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
-Patch39: 75720bff62a84896e9a0654afc7cf9408cf89a38.patch
+Patch2: 0002-journal-raise-compression-threshold.patch
+Patch3: 0003-journal-clearout-drop-kmsg.patch
+Patch4: 0004-core-use-mmap-to-load-files.patch
+Patch5: 0005-Build-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
+Patch6: 0006-journal-flush-var-kmsg-after-starting.patch
+Patch7: 0007-logind-pam-fix-systemd-user-to-include-common-sessio.patch
+Patch8: 0008-analyze-increase-precision.patch
+Patch9: 0009-sd-event-return-malloc-memory-reserves-when-main-loo.patch
+Patch10: 0010-efi-boot-generator-Do-not-automount-boot-partition.patch
+Patch11: 0011-core-do-not-apply-presets.patch
+Patch12: 0012-locale-setup-set-default-locale-to-a-unicode-one.patch
+Patch13: 0013-mount-setup-mount-kernel-fs-by-default.patch
+Patch14: 0014-Ship-default-services-in-system-unit-dir.patch
+Patch15: 0015-bootctl-Add-force-option-to-enable-chroot-install-re.patch
+Patch16: 0016-kernel-install-Support-alternate-root-usage-via-SUBD.patch
+Patch17: 0017-bootctl-Handle-gummiboot-systemd-migration.patch
+Patch18: 0018-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
+Patch19: 0019-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
+Patch20: 0020-more-udev-children-workers.patch
+Patch21: 0021-not-load-iptables.patch
+Patch22: 0022-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
+Patch23: 0023-Disable-resolved-as-default-resolver-write-at-boot.patch
+Patch24: 0024-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
+Patch25: 0025-network-online-complete-once-one-link-is-online-not-.patch
+Patch26: 0026-DHCP-retry-faster.patch
+Patch27: 0027-Remove-libm-memory-overhead.patch
+Patch28: 0028-udev-log-also-device-path.patch
+Patch29: 0029-skip-not-present-ACPI-devices.patch
+Patch30: 0030-Ensure-var-run-is-never-a-directory.patch
+Patch31: 0031-Make-timesyncd-a-simple-service.patch
+Patch32: 0032-Compile-udev-with-O3.patch
+Patch33: 0033-Don-t-wait-for-utmp-at-shutdown.patch
+Patch34: 0034-Don-t-do-transient-hostnames-we-set-ours-already.patch
+Patch35: 0035-don-t-use-libm-just-for-integer-exp10.patch
+Patch36: 0036-Notify-systemd-earlier-that-resolved-is-ready.patch
+Patch37: 0037-Do-not-crash-if-udev-hasn-t-initialized-one-link-yet.patch
+Patch38: 0038-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
+Patch39: 0039-build-sys-Detect-whether-struct-statx-is-defined-in-.patch
+Patch40: 0040-meson-rename-Ddebug-to-Ddebug-extra.patch
 
 %description
 systemd System and Service Manager
@@ -275,6 +276,7 @@ man components for the systemd package.
 %patch37 -p1
 %patch38 -p1
 %patch39 -p1
+%patch40 -p1
 pushd ..
 cp -a systemd-239 build32
 popd

@@ -1,8 +1,7 @@
-From 0d02983ee01dfc547f6763f4dd6f65572377a16e Mon Sep 17 00:00:00 2001
+From afbc9e26bd5beaebe1e38e92c0fe1c887930cf8b Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 4 Apr 2018 09:56:53 -0700
-Subject: [PATCH 01/38] Fix preprocessor issues with MS_MOVE not getting
- defined.
+Subject: [PATCH] Fix preprocessor issues with MS_MOVE not getting defined.
 
 ---
  src/basic/btrfs-util.c     | 1 +
@@ -175,5 +174,5 @@ index 927de35f3..689ab15ef 100644
  #include <stdbool.h>
  #include <stddef.h>
 -- 
-2.17.1
+2.19.0
 

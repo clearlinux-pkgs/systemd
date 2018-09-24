@@ -1,0 +1,31 @@
+From 35f559c5e484d095198001275628c37ae0b73f6d Mon Sep 17 00:00:00 2001
+From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
+Date: Mon, 18 Jul 2016 14:02:51 -0500
+Subject: [PATCH] Disable resolved as default resolver, write at boot
+
+Write the resolv.conf at boot immediately.
+
+Let docker, etc, use the direct nameserver information in
+/etc/resolv.conf, instead of redirecting to the stub resolver in
+systemd-resolved. The stub resolver fails on CNAME resolution and
+breaks various applications.
+
+Ref: https://github.com/coreos/coreos-overlay/pull/2129/commits/76830bedf02a8c54e1d2ce30796046b86bb00b94
+---
+ tmpfiles.d/etc.conf.m4 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tmpfiles.d/etc.conf.m4 b/tmpfiles.d/etc.conf.m4
+index ad55479bc..0e58e3133 100644
+--- a/tmpfiles.d/etc.conf.m4
++++ b/tmpfiles.d/etc.conf.m4
+@@ -12,5 +12,5 @@ m4_ifdef(`HAVE_SMACK_RUN_LABEL',
+ t /etc/mtab - - - - security.SMACK64=_
+ )m4_dnl
+ m4_ifdef(`ENABLE_RESOLVE',
+-L! /etc/resolv.conf - - - - ../run/systemd/resolve/stub-resolv.conf
++L+! /etc/resolv.conf - - - - ../run/systemd/resolve/resolv.conf
+ )m4_dnl
+-- 
+2.19.0
+

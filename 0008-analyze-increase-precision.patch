@@ -1,0 +1,97 @@
+From bedae46890bb8e3e3548f4af25c0e1df177206a0 Mon Sep 17 00:00:00 2001
+From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
+Date: Tue, 23 Jun 2015 11:41:17 +0100
+Subject: [PATCH] analyze: increase precision.
+
+---
+ src/analyze/analyze.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/src/analyze/analyze.c b/src/analyze/analyze.c
+index de0fe6eba..449eb70ce 100644
+--- a/src/analyze/analyze.c
++++ b/src/analyze/analyze.c
+@@ -41,6 +41,8 @@
+ #define SCALE_X (0.1 / 1000.0)   /* pixels per us */
+ #define SCALE_Y (20.0)
+ 
++#define USEC_PER_MSEC_DECIMAL (USEC_PER_MSEC/10)
++
+ #define compare(a, b) (((a) > (b))? 1 : (((b) > (a))? -1 : 0))
+ 
+ #define svg(...) printf(__VA_ARGS__)
+@@ -533,20 +535,20 @@ static int pretty_boot_time(sd_bus *bus, char **_buf) {
+ 
+         size = strpcpyf(&ptr, size, "Startup finished in ");
+         if (t->firmware_time > 0)
+-                size = strpcpyf(&ptr, size, "%s (firmware) + ", format_timespan(ts, sizeof(ts), t->firmware_time - t->loader_time, USEC_PER_MSEC));
++                size = strpcpyf(&ptr, size, "%s (firmware) + ", format_timespan(ts, sizeof(ts), t->firmware_time - t->loader_time, USEC_PER_MSEC_DECIMAL));
+         if (t->loader_time > 0)
+-                size = strpcpyf(&ptr, size, "%s (loader) + ", format_timespan(ts, sizeof(ts), t->loader_time, USEC_PER_MSEC));
++                size = strpcpyf(&ptr, size, "%s (loader) + ", format_timespan(ts, sizeof(ts), t->loader_time, USEC_PER_MSEC_DECIMAL));
+         if (t->kernel_time > 0)
+-                size = strpcpyf(&ptr, size, "%s (kernel) + ", format_timespan(ts, sizeof(ts), t->kernel_done_time, USEC_PER_MSEC));
++                size = strpcpyf(&ptr, size, "%s (kernel) + ", format_timespan(ts, sizeof(ts), t->kernel_done_time, USEC_PER_MSEC_DECIMAL));
+         if (t->initrd_time > 0)
+-                size = strpcpyf(&ptr, size, "%s (initrd) + ", format_timespan(ts, sizeof(ts), t->userspace_time - t->initrd_time, USEC_PER_MSEC));
++                size = strpcpyf(&ptr, size, "%s (initrd) + ", format_timespan(ts, sizeof(ts), t->userspace_time - t->initrd_time, USEC_PER_MSEC_DECIMAL));
+ 
+-        size = strpcpyf(&ptr, size, "%s (userspace) ", format_timespan(ts, sizeof(ts), t->finish_time - t->userspace_time, USEC_PER_MSEC));
++        size = strpcpyf(&ptr, size, "%s (userspace) ", format_timespan(ts, sizeof(ts), t->finish_time - t->userspace_time, USEC_PER_MSEC_DECIMAL));
+         if (t->kernel_time > 0)
+-                strpcpyf(&ptr, size, "= %s", format_timespan(ts, sizeof(ts), t->firmware_time + t->finish_time, USEC_PER_MSEC));
++                strpcpyf(&ptr, size, "= %s", format_timespan(ts, sizeof(ts), t->firmware_time + t->finish_time, USEC_PER_MSEC_DECIMAL));
+ 
+         if (unit_id && activated_time > 0 && activated_time != USEC_INFINITY)
+-                size = strpcpyf(&ptr, size, "\n%s reached after %s in userspace", unit_id, format_timespan(ts, sizeof(ts), activated_time - t->userspace_time, USEC_PER_MSEC));
++                size = strpcpyf(&ptr, size, "\n%s reached after %s in userspace", unit_id, format_timespan(ts, sizeof(ts), activated_time - t->userspace_time, USEC_PER_MSEC_DECIMAL));
+         else if (unit_id && activated_time == 0)
+                 size = strpcpyf(&ptr, size, "\n%s was never reached", unit_id);
+         else if (unit_id && activated_time == USEC_INFINITY)
+@@ -765,7 +767,7 @@ static int analyze_plot(int argc, char *argv[], void *userdata) {
+                 b = u->activating * SCALE_X < width / 2;
+                 if (u->time)
+                         svg_text(b, u->activating, y, "%s (%s)",
+-                                 u->name, format_timespan(ts, sizeof(ts), u->time, USEC_PER_MSEC));
++                                 u->name, format_timespan(ts, sizeof(ts), u->time, USEC_PER_MSEC_DECIMAL));
+                 else
+                         svg_text(b, u->activating, y, "%s", u->name);
+                 y++;
+@@ -815,10 +817,10 @@ static int list_dependencies_print(const char *name, unsigned int level, unsigne
+         if (times) {
+                 if (times->time > 0)
+                         printf("%s%s @%s +%s%s", ansi_highlight_red(), name,
+-                               format_timespan(ts, sizeof(ts), times->activating - boot->userspace_time, USEC_PER_MSEC),
+-                               format_timespan(ts2, sizeof(ts2), times->time, USEC_PER_MSEC), ansi_normal());
++                               format_timespan(ts, sizeof(ts), times->activating - boot->userspace_time, USEC_PER_MSEC_DECIMAL),
++                               format_timespan(ts2, sizeof(ts2), times->time, USEC_PER_MSEC_DECIMAL), ansi_normal());
+                 else if (times->activated > boot->userspace_time)
+-                        printf("%s @%s", name, format_timespan(ts, sizeof(ts), times->activated - boot->userspace_time, USEC_PER_MSEC));
++                        printf("%s @%s", name, format_timespan(ts, sizeof(ts), times->activated - boot->userspace_time, USEC_PER_MSEC_DECIMAL));
+                 else
+                         printf("%s", name);
+         } else
+@@ -985,9 +987,9 @@ static int list_dependencies(sd_bus *bus, const char *name) {
+         if (times) {
+                 if (times->time)
+                         printf("%s%s +%s%s\n", ansi_highlight_red(), id,
+-                               format_timespan(ts, sizeof(ts), times->time, USEC_PER_MSEC), ansi_normal());
++                               format_timespan(ts, sizeof(ts), times->time, USEC_PER_MSEC_DECIMAL), ansi_normal());
+                 else if (times->activated > boot->userspace_time)
+-                        printf("%s @%s\n", id, format_timespan(ts, sizeof(ts), times->activated - boot->userspace_time, USEC_PER_MSEC));
++                        printf("%s @%s\n", id, format_timespan(ts, sizeof(ts), times->activated - boot->userspace_time, USEC_PER_MSEC_DECIMAL));
+                 else
+                         printf("%s\n", id);
+         }
+@@ -1059,7 +1061,7 @@ static int analyze_blame(int argc, char *argv[], void *userdata) {
+                 char ts[FORMAT_TIMESPAN_MAX];
+ 
+                 if (u->time > 0)
+-                        printf("%16s %s\n", format_timespan(ts, sizeof(ts), u->time, USEC_PER_MSEC), u->name);
++                        printf("%16s %s\n", format_timespan(ts, sizeof(ts), u->time, USEC_PER_MSEC_DECIMAL), u->name);
+         }
+ 
+         return 0;
+-- 
+2.19.0
+

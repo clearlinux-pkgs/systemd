@@ -1,0 +1,64 @@
+From 48083bbfbcc5bf410c776f0885c1fc5974944d79 Mon Sep 17 00:00:00 2001
+From: Matthew Johnson <matthew.johnson@intel.com>
+Date: Tue, 20 Sep 2016 10:49:55 -0700
+Subject: [PATCH] Add journal flush service for Microsoft Azure VMs
+
+Removes "Before" clause when in a Microsoft VM.
+---
+ units/meson.build                                             | 2 ++
+ ...flush.service.in => systemd-journal-flush-msft.service.in} | 4 +---
+ units/systemd-journal-flush.service.in                        | 1 +
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+ copy units/{systemd-journal-flush.service.in => systemd-journal-flush-msft.service.in} (86%)
+
+diff --git a/units/meson.build b/units/meson.build
+index 4d9163226..f1e929f5d 100644
+--- a/units/meson.build
++++ b/units/meson.build
+@@ -144,6 +144,8 @@ in_units = [
+          'sysinit.target.wants/'],
+         ['systemd-journal-flush.service',         '',
+          'sysinit.target.wants/'],
++        ['systemd-journal-flush-msft.service',    '',
++         'sysinit.target.wants/'],
+         ['systemd-journal-gatewayd.service',     'ENABLE_REMOTE HAVE_MICROHTTPD'],
+         ['systemd-journal-remote.service',       'ENABLE_REMOTE HAVE_MICROHTTPD'],
+         ['systemd-journal-upload.service',       'ENABLE_REMOTE HAVE_LIBCURL'],
+diff --git a/units/systemd-journal-flush.service.in b/units/systemd-journal-flush-msft.service.in
+similarity index 86%
+copy from units/systemd-journal-flush.service.in
+copy to units/systemd-journal-flush-msft.service.in
+index 439f5f3f7..056da1f6e 100644
+--- a/units/systemd-journal-flush.service.in
++++ b/units/systemd-journal-flush-msft.service.in
+@@ -1,5 +1,3 @@
+-#  SPDX-License-Identifier: LGPL-2.1+
+-#
+ #  This file is part of systemd.
+ #
+ #  systemd is free software; you can redistribute it and/or modify it
+@@ -14,8 +12,8 @@ DefaultDependencies=no
+ Requires=systemd-journald.service
+ After=systemd-journald.service
+ After=systemd-remount-fs.service
+-Before=systemd-user-sessions.service systemd-tmpfiles-setup.service
+ RequiresMountsFor=/var/log/journal
++ConditionVirtualization=microsoft
+ 
+ [Service]
+ ExecStart=@rootbindir@/journalctl --flush
+diff --git a/units/systemd-journal-flush.service.in b/units/systemd-journal-flush.service.in
+index 439f5f3f7..09f5c9e85 100644
+--- a/units/systemd-journal-flush.service.in
++++ b/units/systemd-journal-flush.service.in
+@@ -16,6 +16,7 @@ After=systemd-journald.service
+ After=systemd-remount-fs.service
+ Before=systemd-user-sessions.service systemd-tmpfiles-setup.service
+ RequiresMountsFor=/var/log/journal
++ConditionVirtualization=!microsoft
+ 
+ [Service]
+ ExecStart=@rootbindir@/journalctl --flush
+-- 
+2.19.0
+
