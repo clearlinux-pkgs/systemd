@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 195
+Release  : 196
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -15,9 +15,9 @@ Requires: systemd-config
 Requires: systemd-autostart
 Requires: systemd-lib
 Requires: systemd-data
+Requires: systemd-license
 Requires: systemd-locales
 Requires: systemd-man
-Requires: systemd-license
 Requires: libcap
 BuildRequires : Linux-PAM-dev
 BuildRequires : Linux-PAM-dev32
@@ -287,7 +287,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1537820958
+export SOURCE_DATE_EPOCH=1537984213
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -324,9 +324,9 @@ ninja -v -C builddir
 popd
 
 %install
-mkdir -p %{buildroot}/usr/share/package-licenses/systemd
-cp LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.GPL2
-cp LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
+mkdir -p %{buildroot}/usr/share/doc/systemd
+cp LICENSE.GPL2 %{buildroot}/usr/share/doc/systemd/LICENSE.GPL2
+cp LICENSE.LGPL2.1 %{buildroot}/usr/share/doc/systemd/LICENSE.LGPL2.1
 pushd ../build32
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -509,6 +509,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
 %exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
 %exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
+%exclude /usr/lib/systemd/system/dbus-org.freedesktop.import1.service
 %exclude /usr/lib/systemd/system/ldconfig.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
@@ -552,6 +553,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/systemd/system/system-update.target
 %exclude /usr/lib/systemd/system/systemd-firstboot.service
 %exclude /usr/lib/systemd/system/systemd-hwdb-update.service
+%exclude /usr/lib/systemd/system/systemd-importd.service
 %exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
 %exclude /usr/lib/systemd/system/systemd-journal-gatewayd.service
 %exclude /usr/lib/systemd/system/systemd-journal-gatewayd.socket
@@ -563,6 +565,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/systemd/system/systemd-update-done.service
 %exclude /usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 %exclude /usr/lib/systemd/system/var-lib-machines.mount
+%exclude /usr/lib/systemd/systemd-import
+%exclude /usr/lib/systemd/systemd-importd
 %exclude /usr/lib/systemd/systemd-journal-gatewayd
 %exclude /usr/lib/systemd/systemd-journal-remote
 %exclude /usr/lib/systemd/systemd-journal-upload
@@ -617,7 +621,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/cryptsetup.target
 /usr/lib/systemd/system/ctrl-alt-del.target
 /usr/lib/systemd/system/dbus-org.freedesktop.hostname1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.import1.service
 /usr/lib/systemd/system/dbus-org.freedesktop.locale1.service
 /usr/lib/systemd/system/dbus-org.freedesktop.login1.service
 /usr/lib/systemd/system/dbus-org.freedesktop.machine1.service
@@ -709,7 +712,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/systemd-hibernate.service
 /usr/lib/systemd/system/systemd-hostnamed.service
 /usr/lib/systemd/system/systemd-hybrid-sleep.service
-/usr/lib/systemd/system/systemd-importd.service
 /usr/lib/systemd/system/systemd-initctl.service
 /usr/lib/systemd/system/systemd-initctl.socket
 /usr/lib/systemd/system/systemd-journal-flush-msft.service
@@ -776,8 +778,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-growfs
 /usr/lib/systemd/systemd-hibernate-resume
 /usr/lib/systemd/systemd-hostnamed
-/usr/lib/systemd/systemd-import
-/usr/lib/systemd/systemd-importd
 /usr/lib/systemd/systemd-initctl
 /usr/lib/systemd/systemd-journald
 /usr/lib/systemd/systemd-localed
@@ -865,7 +865,10 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %files data
 %defattr(-,root,root,-)
 %exclude /usr/share/bash-completion/completions/kernel-install
+%exclude /usr/share/dbus-1/system-services/org.freedesktop.import1.service
+%exclude /usr/share/dbus-1/system.d/org.freedesktop.import1.conf
 %exclude /usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
+%exclude /usr/share/polkit-1/actions/org.freedesktop.import1.policy
 %exclude /usr/share/polkit-1/actions/org.freedesktop.locale1.policy
 %exclude /usr/share/polkit-1/actions/org.freedesktop.login1.policy
 %exclude /usr/share/polkit-1/actions/org.freedesktop.machine1.policy
@@ -903,7 +906,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/clr-service-restart/systemd-udevd.service
 /usr/share/dbus-1/services/org.freedesktop.systemd1.service
 /usr/share/dbus-1/system-services/org.freedesktop.hostname1.service
-/usr/share/dbus-1/system-services/org.freedesktop.import1.service
 /usr/share/dbus-1/system-services/org.freedesktop.locale1.service
 /usr/share/dbus-1/system-services/org.freedesktop.login1.service
 /usr/share/dbus-1/system-services/org.freedesktop.machine1.service
@@ -914,7 +916,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/dbus-1/system-services/org.freedesktop.timedate1.service
 /usr/share/dbus-1/system-services/org.freedesktop.timesync1.service
 /usr/share/dbus-1/system.d/org.freedesktop.hostname1.conf
-/usr/share/dbus-1/system.d/org.freedesktop.import1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.locale1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.login1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.machine1.conf
@@ -925,7 +926,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/dbus-1/system.d/org.freedesktop.timedate1.conf
 /usr/share/dbus-1/system.d/org.freedesktop.timesync1.conf
 /usr/share/pam.d/systemd-user
-/usr/share/polkit-1/actions/org.freedesktop.import1.policy
 /usr/share/polkit-1/actions/org.freedesktop.portable1.policy
 /usr/share/polkit-1/actions/org.freedesktop.resolve1.policy
 /usr/share/systemd/gatewayd/browse.html
@@ -1481,6 +1481,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %defattr(-,root,root,-)
 /usr/bin/systemd-hwdb
 /usr/bin/systemd-sysusers
+/usr/lib/systemd/system/dbus-org.freedesktop.import1.service
+/usr/lib/systemd/system/systemd-importd.service
 /usr/lib/systemd/system/systemd-journal-gatewayd.service
 /usr/lib/systemd/system/systemd-journal-gatewayd.socket
 /usr/lib/systemd/system/systemd-journal-remote.service
@@ -1488,6 +1490,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/system/systemd-sysusers.service
 /usr/lib/systemd/system/var-lib-machines.mount
+/usr/lib/systemd/systemd-import
+/usr/lib/systemd/systemd-importd
 /usr/lib/systemd/systemd-journal-gatewayd
 /usr/lib/systemd/systemd-journal-remote
 /usr/lib/systemd/systemd-journal-upload
@@ -1516,6 +1520,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/rules.d/75-probe_mtd.rules
 /usr/lib/udev/rules.d/78-sound-card.rules
 /usr/lib/udev/v4l_id
+/usr/share/dbus-1/system-services/org.freedesktop.import1.service
+/usr/share/dbus-1/system.d/org.freedesktop.import1.conf
 /usr/share/man/man5/journal-remote.conf.5
 /usr/share/man/man5/journal-remote.conf.d.5
 /usr/share/man/man5/journal-upload.conf.5
@@ -1529,6 +1535,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man8/systemd-journal-upload.8
 /usr/share/man/man8/systemd-journal-upload.service.8
 /usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
+/usr/share/polkit-1/actions/org.freedesktop.import1.policy
 /usr/share/polkit-1/actions/org.freedesktop.locale1.policy
 /usr/share/polkit-1/actions/org.freedesktop.login1.policy
 /usr/share/polkit-1/actions/org.freedesktop.machine1.policy
@@ -1562,8 +1569,8 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files license
 %defattr(-,root,root,-)
-/usr/share/package-licenses/systemd/LICENSE.GPL2
-/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
+/usr/share/doc/systemd/LICENSE.GPL2
+/usr/share/doc/systemd/LICENSE.LGPL2.1
 
 %files man
 %defattr(-,root,root,-)
