@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 196
+Release  : 197
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -287,7 +287,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1537984213
+export SOURCE_DATE_EPOCH=1538141704
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -570,6 +570,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/systemd/systemd-journal-gatewayd
 %exclude /usr/lib/systemd/systemd-journal-remote
 %exclude /usr/lib/systemd/systemd-journal-upload
+%exclude /usr/lib/systemd/systemd-pull
 %exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/udev/rules.d/60-cdrom_id.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-alsa.rules
@@ -788,7 +789,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-networkd
 /usr/lib/systemd/systemd-networkd-wait-online
 /usr/lib/systemd/systemd-portabled
-/usr/lib/systemd/systemd-pull
 /usr/lib/systemd/systemd-quotacheck
 /usr/lib/systemd/systemd-random-seed
 /usr/lib/systemd/systemd-remount-fs
@@ -1475,7 +1475,16 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files doc
 %defattr(0644,root,root,0755)
-%doc /usr/share/doc/systemd/*
+/usr/share/doc/systemd/CODING_STYLE
+/usr/share/doc/systemd/DISTRO_PORTING
+/usr/share/doc/systemd/ENVIRONMENT.md
+/usr/share/doc/systemd/GVARIANT-SERIALIZATION
+/usr/share/doc/systemd/HACKING
+/usr/share/doc/systemd/NEWS
+/usr/share/doc/systemd/README
+/usr/share/doc/systemd/TRANSIENT-SETTINGS.md
+/usr/share/doc/systemd/TRANSLATORS
+/usr/share/doc/systemd/UIDS-GIDS.md
 
 %files extras
 %defattr(-,root,root,-)
@@ -1495,6 +1504,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/systemd-journal-gatewayd
 /usr/lib/systemd/systemd-journal-remote
 /usr/lib/systemd/systemd-journal-upload
+/usr/lib/systemd/systemd-pull
 /usr/lib/udev/cdrom_id
 /usr/lib/udev/collect
 /usr/lib/udev/hwdb.d/20-OUI.hwdb
@@ -1568,7 +1578,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib32/security/pam_systemd.so
 
 %files license
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 /usr/share/doc/systemd/LICENSE.GPL2
 /usr/share/doc/systemd/LICENSE.LGPL2.1
 

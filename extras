@@ -70,3 +70,6 @@
 /usr/share/man/man8/systemd-journal-remote.socket.8
 /usr/share/man/man8/systemd-journal-upload.8
 /usr/share/man/man8/systemd-journal-upload.service.8
+
+# network using bits
+/usr/lib/systemd/systemd-pull
