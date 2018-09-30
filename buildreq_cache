@@ -1,3 +1,5 @@
 239
 bash-completion-dev
 bzip2-dev
+kbd
+libxkbcommon-dev

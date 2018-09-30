@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 197
+Release  : 198
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -46,6 +46,7 @@ BuildRequires : intltool
 BuildRequires : intltool-dev
 BuildRequires : iptables-dev
 BuildRequires : iptables-dev32
+BuildRequires : kbd
 BuildRequires : kmod-dev
 BuildRequires : kmod-dev32
 BuildRequires : libcap-dev
@@ -56,6 +57,9 @@ BuildRequires : libgcrypt-dev
 BuildRequires : libgcrypt-dev32
 BuildRequires : libgpg-error-dev
 BuildRequires : libmicrohttpd-dev
+BuildRequires : libseccomp-dev
+BuildRequires : libseccomp-dev32
+BuildRequires : libxkbcommon-dev
 BuildRequires : libxslt-bin
 BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(zlib)
@@ -287,7 +291,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1538141704
+export SOURCE_DATE_EPOCH=1538267944
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -298,7 +302,8 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --b
 -Dxz=true \
 -Dgcrypt=true \
 -Dlz4=false \
--Ddefault-kill-user-processes=false  builddir
+-Ddefault-kill-user-processes=false \
+-Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org"  builddir
 ninja -v -C builddir
 pushd ../build32
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -312,7 +317,8 @@ CFLAGS="$CFLAGS -m32" CXXFLAGS="$CXXFLAGS -m32" LDFLAGS="$LDFLAGS -m32" PKG_CONF
 -Dxz=true \
 -Dgcrypt=true \
 -Dlz4=false \
--Ddefault-kill-user-processes=false -Dlibcryptsetup=false \
+-Ddefault-kill-user-processes=false \
+-Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org" -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \

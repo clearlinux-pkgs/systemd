@@ -5,6 +5,7 @@ libc.so.6
 libcap.so.2
 libcryptsetup.so.12
 libcurl.so.4
+libdl.so.2
 libdw.so.1
 libelf.so.1
 libgcc_s.so.1
@@ -21,4 +22,5 @@ libpam.so.0
 libpam_misc.so.0
 libpthread.so.0
 librt.so.1
+libseccomp.so.2
 libz.so.1

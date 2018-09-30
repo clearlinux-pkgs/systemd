@@ -45,3 +45,5 @@ glibc-libc32
 python3
 libmicrohttpd-dev
 xz-dev
+libseccomp-dev32
+libseccomp-dev
