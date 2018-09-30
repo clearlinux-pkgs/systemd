@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 198
+Release  : 199
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -291,7 +291,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1538267944
+export SOURCE_DATE_EPOCH=1538268952
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -303,7 +303,7 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --b
 -Dgcrypt=true \
 -Dlz4=false \
 -Ddefault-kill-user-processes=false \
--Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org"  builddir
+-Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com"  builddir
 ninja -v -C builddir
 pushd ../build32
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -318,7 +318,7 @@ CFLAGS="$CFLAGS -m32" CXXFLAGS="$CXXFLAGS -m32" LDFLAGS="$LDFLAGS -m32" PKG_CONF
 -Dgcrypt=true \
 -Dlz4=false \
 -Ddefault-kill-user-processes=false \
--Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org" -Dlibcryptsetup=false \
+-Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \
