@@ -39,3 +39,5 @@
 0039-build-sys-Detect-whether-struct-statx-is-defined-in-.patch
 0040-meson-rename-Ddebug-to-Ddebug-extra.patch
 0041-Make-bzip2-an-optional-dependency-for-systemd-import.patch
+cve-2018-15687.patch
+cve-2018-15686.patch

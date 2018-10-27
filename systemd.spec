@@ -4,20 +4,21 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 199
+Release  : 201
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
-Requires: systemd-bin
-Requires: systemd-config
-Requires: systemd-autostart
-Requires: systemd-lib
-Requires: systemd-data
-Requires: systemd-license
-Requires: systemd-locales
-Requires: systemd-man
+Requires: systemd-autostart = %{version}-%{release}
+Requires: systemd-bin = %{version}-%{release}
+Requires: systemd-config = %{version}-%{release}
+Requires: systemd-data = %{version}-%{release}
+Requires: systemd-lib = %{version}-%{release}
+Requires: systemd-license = %{version}-%{release}
+Requires: systemd-locales = %{version}-%{release}
+Requires: systemd-man = %{version}-%{release}
+Requires: systemd-services = %{version}-%{release}
 Requires: libcap
 BuildRequires : Linux-PAM-dev
 BuildRequires : Linux-PAM-dev32
@@ -37,6 +38,8 @@ BuildRequires : gcc-libstdc++32
 BuildRequires : gettext-bin
 BuildRequires : gettext-dev
 BuildRequires : glib-bin
+BuildRequires : glib-dev
+BuildRequires : glib-dev32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : gnu-efi
@@ -112,6 +115,8 @@ Patch38: 0038-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
 Patch39: 0039-build-sys-Detect-whether-struct-statx-is-defined-in-.patch
 Patch40: 0040-meson-rename-Ddebug-to-Ddebug-extra.patch
 Patch41: 0041-Make-bzip2-an-optional-dependency-for-systemd-import.patch
+Patch42: cve-2018-15687.patch
+Patch43: cve-2018-15686.patch
 
 %description
 systemd System and Service Manager
@@ -133,6 +138,7 @@ Requires: systemd-data = %{version}-%{release}
 Requires: systemd-config = %{version}-%{release}
 Requires: systemd-license = %{version}-%{release}
 Requires: systemd-man = %{version}-%{release}
+Requires: systemd-services = %{version}-%{release}
 
 %description bin
 bin components for the systemd package.
@@ -239,6 +245,14 @@ Group: Default
 man components for the systemd package.
 
 
+%package services
+Summary: services components for the systemd package.
+Group: Systemd services
+
+%description services
+services components for the systemd package.
+
+
 %prep
 %setup -q -n systemd-239
 %patch1 -p1
@@ -282,6 +296,8 @@ man components for the systemd package.
 %patch39 -p1
 %patch40 -p1
 %patch41 -p1
+%patch42 -p1
+%patch43 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -291,10 +307,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1538268952
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
+export SOURCE_DATE_EPOCH=1540672051
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
+export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Ddefault-hierarchy=legacy \
 -Dsmack=false \
 -Dsysvinit-path= \
@@ -307,10 +327,11 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --b
 ninja -v -C builddir
 pushd ../build32
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="$ASFLAGS --32"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
-CFLAGS="$CFLAGS -m32" CXXFLAGS="$CXXFLAGS -m32" LDFLAGS="$LDFLAGS -m32" PKG_CONFIG_PATH="/usr/lib32/pkgconfig" meson --libdir=/usr/lib32 --prefix /usr --buildtype=plain -Ddefault-hierarchy=legacy \
+meson --libdir=/usr/lib32 --prefix /usr --buildtype=plain -Ddefault-hierarchy=legacy \
 -Dsmack=false \
 -Dsysvinit-path= \
 -Dsysvrcnd_path= \
@@ -330,9 +351,9 @@ ninja -v -C builddir
 popd
 
 %install
-mkdir -p %{buildroot}/usr/share/doc/systemd
-cp LICENSE.GPL2 %{buildroot}/usr/share/doc/systemd/LICENSE.GPL2
-cp LICENSE.LGPL2.1 %{buildroot}/usr/share/doc/systemd/LICENSE.LGPL2.1
+mkdir -p %{buildroot}/usr/share/package-licenses/systemd
+cp LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.GPL2
+cp LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
 pushd ../build32
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -511,73 +532,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files config
 %defattr(-,root,root,-)
-%exclude /usr/lib/systemd/import-pubring.gpg
-%exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
-%exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
-%exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
-%exclude /usr/lib/systemd/system/dbus-org.freedesktop.import1.service
-%exclude /usr/lib/systemd/system/ldconfig.service
-%exclude /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
-%exclude /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
-%exclude /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
-%exclude /usr/lib/systemd/system/multi-user.target.wants/getty.target
-%exclude /usr/lib/systemd/system/multi-user.target.wants/remote-fs.target
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-logind.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-resolved.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-user-sessions.service
-%exclude /usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
-%exclude /usr/lib/systemd/system/remote-fs.target.wants/var-lib-machines.mount
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald-audit.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
-%exclude /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
-%exclude /usr/lib/systemd/system/sysinit.target.wants/kmod-static-nodes.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-ask-password-console.path
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-flush-msft.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-flush.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journald.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-machine-id-commit.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-modules-load.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-random-seed.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-sysctl.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-timesyncd.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup-dev.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udev-trigger.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udevd.service
-%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-utmp.service
-%exclude /usr/lib/systemd/system/system-update-cleanup.service
-%exclude /usr/lib/systemd/system/system-update.target
-%exclude /usr/lib/systemd/system/systemd-firstboot.service
-%exclude /usr/lib/systemd/system/systemd-hwdb-update.service
-%exclude /usr/lib/systemd/system/systemd-importd.service
-%exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
-%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.service
-%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.socket
-%exclude /usr/lib/systemd/system/systemd-journal-remote.service
-%exclude /usr/lib/systemd/system/systemd-journal-remote.socket
-%exclude /usr/lib/systemd/system/systemd-journal-upload.service
-%exclude /usr/lib/systemd/system/systemd-sysusers.service
-%exclude /usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
-%exclude /usr/lib/systemd/system/systemd-update-done.service
-%exclude /usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
-%exclude /usr/lib/systemd/system/var-lib-machines.mount
-%exclude /usr/lib/systemd/systemd-import
-%exclude /usr/lib/systemd/systemd-importd
-%exclude /usr/lib/systemd/systemd-journal-gatewayd
-%exclude /usr/lib/systemd/systemd-journal-remote
-%exclude /usr/lib/systemd/systemd-journal-upload
-%exclude /usr/lib/systemd/systemd-pull
-%exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/udev/rules.d/60-cdrom_id.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-alsa.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
@@ -587,254 +541,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/udev/rules.d/78-sound-card.rules
 /usr/lib/sysctl.d/50-coredump.conf
 /usr/lib/sysctl.d/50-default.conf
-/usr/lib/systemd/boot/efi/linuxx64.efi.stub
-/usr/lib/systemd/boot/efi/systemd-bootx64.efi
-/usr/lib/systemd/catalog/systemd.be.catalog
-/usr/lib/systemd/catalog/systemd.be@latin.catalog
-/usr/lib/systemd/catalog/systemd.bg.catalog
-/usr/lib/systemd/catalog/systemd.catalog
-/usr/lib/systemd/catalog/systemd.de.catalog
-/usr/lib/systemd/catalog/systemd.fr.catalog
-/usr/lib/systemd/catalog/systemd.it.catalog
-/usr/lib/systemd/catalog/systemd.pl.catalog
-/usr/lib/systemd/catalog/systemd.pt_BR.catalog
-/usr/lib/systemd/catalog/systemd.ru.catalog
-/usr/lib/systemd/catalog/systemd.zh_CN.catalog
-/usr/lib/systemd/catalog/systemd.zh_TW.catalog
-/usr/lib/systemd/coredump-wrapper
-/usr/lib/systemd/libsystemd-shared-239.so
-/usr/lib/systemd/network/80-container-host0.network
-/usr/lib/systemd/network/80-container-ve.network
-/usr/lib/systemd/network/80-container-vz.network
-/usr/lib/systemd/network/99-default.link
-/usr/lib/systemd/portable/profile/default/service.conf
-/usr/lib/systemd/portable/profile/nonetwork/service.conf
-/usr/lib/systemd/portable/profile/strict/service.conf
-/usr/lib/systemd/portable/profile/trusted/service.conf
-/usr/lib/systemd/portablectl
-/usr/lib/systemd/resolv.conf
-/usr/lib/systemd/system-generators/systemd-cryptsetup-generator
-/usr/lib/systemd/system-generators/systemd-debug-generator
-/usr/lib/systemd/system-generators/systemd-fstab-generator
-/usr/lib/systemd/system-generators/systemd-getty-generator
-/usr/lib/systemd/system-generators/systemd-gpt-auto-generator
-/usr/lib/systemd/system-preset/90-systemd.preset
-/usr/lib/systemd/system/autovt@.service
-/usr/lib/systemd/system/basic.target
-/usr/lib/systemd/system/bluetooth.target
-/usr/lib/systemd/system/console-getty.service
-/usr/lib/systemd/system/container-getty@.service
-/usr/lib/systemd/system/cryptsetup-pre.target
-/usr/lib/systemd/system/cryptsetup.target
-/usr/lib/systemd/system/ctrl-alt-del.target
-/usr/lib/systemd/system/dbus-org.freedesktop.hostname1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.locale1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.login1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.machine1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.network1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.portable1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.resolve1.service
-/usr/lib/systemd/system/dbus-org.freedesktop.timedate1.service
-/usr/lib/systemd/system/debug-shell.service
-/usr/lib/systemd/system/default.target
-/usr/lib/systemd/system/emergency.service
-/usr/lib/systemd/system/emergency.target
-/usr/lib/systemd/system/exit.target
-/usr/lib/systemd/system/final.target
-/usr/lib/systemd/system/getty-pre.target
-/usr/lib/systemd/system/getty.target
-/usr/lib/systemd/system/getty@.service
-/usr/lib/systemd/system/graphical.target
-/usr/lib/systemd/system/halt.target
-/usr/lib/systemd/system/hibernate.target
-/usr/lib/systemd/system/hybrid-sleep.target
-/usr/lib/systemd/system/initrd-cleanup.service
-/usr/lib/systemd/system/initrd-fs.target
-/usr/lib/systemd/system/initrd-parse-etc.service
-/usr/lib/systemd/system/initrd-root-device.target
-/usr/lib/systemd/system/initrd-root-fs.target
-/usr/lib/systemd/system/initrd-switch-root.service
-/usr/lib/systemd/system/initrd-switch-root.target
-/usr/lib/systemd/system/initrd-udevadm-cleanup-db.service
-/usr/lib/systemd/system/initrd.target
-/usr/lib/systemd/system/kexec.target
-/usr/lib/systemd/system/kmod-static-nodes.service
-/usr/lib/systemd/system/local-fs-pre.target
-/usr/lib/systemd/system/local-fs.target
-/usr/lib/systemd/system/machine.slice
-/usr/lib/systemd/system/machines.target
-/usr/lib/systemd/system/multi-user.target
-/usr/lib/systemd/system/network-online.target
-/usr/lib/systemd/system/network-pre.target
-/usr/lib/systemd/system/network.target
-/usr/lib/systemd/system/nss-lookup.target
-/usr/lib/systemd/system/nss-user-lookup.target
-/usr/lib/systemd/system/paths.target
-/usr/lib/systemd/system/poweroff.target
-/usr/lib/systemd/system/printer.target
-/usr/lib/systemd/system/proc-sys-fs-binfmt_misc.automount
-/usr/lib/systemd/system/proc-sys-fs-binfmt_misc.mount
-/usr/lib/systemd/system/quotaon.service
-/usr/lib/systemd/system/reboot.target
-/usr/lib/systemd/system/remote-cryptsetup.target
-/usr/lib/systemd/system/remote-fs-pre.target
-/usr/lib/systemd/system/remote-fs.target
-/usr/lib/systemd/system/rescue.service
-/usr/lib/systemd/system/rescue.target
-/usr/lib/systemd/system/rpcbind.target
-/usr/lib/systemd/system/runlevel0.target
-/usr/lib/systemd/system/runlevel1.target
-/usr/lib/systemd/system/runlevel2.target
-/usr/lib/systemd/system/runlevel3.target
-/usr/lib/systemd/system/runlevel4.target
-/usr/lib/systemd/system/runlevel5.target
-/usr/lib/systemd/system/runlevel6.target
-/usr/lib/systemd/system/serial-getty@.service
-/usr/lib/systemd/system/shutdown.target
-/usr/lib/systemd/system/sigpwr.target
-/usr/lib/systemd/system/sleep.target
-/usr/lib/systemd/system/slices.target
-/usr/lib/systemd/system/smartcard.target
-/usr/lib/systemd/system/sockets.target
-/usr/lib/systemd/system/sound.target
-/usr/lib/systemd/system/suspend-then-hibernate.target
-/usr/lib/systemd/system/suspend.target
-/usr/lib/systemd/system/swap.target
-/usr/lib/systemd/system/sysinit.target
-/usr/lib/systemd/system/syslog.socket
-/usr/lib/systemd/system/system-update-pre.target
-/usr/lib/systemd/system/systemd-ask-password-console.path
-/usr/lib/systemd/system/systemd-ask-password-console.service
-/usr/lib/systemd/system/systemd-ask-password-wall.path
-/usr/lib/systemd/system/systemd-ask-password-wall.service
-/usr/lib/systemd/system/systemd-backlight@.service
-/usr/lib/systemd/system/systemd-binfmt.service
-/usr/lib/systemd/system/systemd-coredump.socket
-/usr/lib/systemd/system/systemd-coredump@.service
-/usr/lib/systemd/system/systemd-exit.service
-/usr/lib/systemd/system/systemd-fsck-root.service
-/usr/lib/systemd/system/systemd-fsck@.service
-/usr/lib/systemd/system/systemd-halt.service
-/usr/lib/systemd/system/systemd-hibernate-resume@.service
-/usr/lib/systemd/system/systemd-hibernate.service
-/usr/lib/systemd/system/systemd-hostnamed.service
-/usr/lib/systemd/system/systemd-hybrid-sleep.service
-/usr/lib/systemd/system/systemd-initctl.service
-/usr/lib/systemd/system/systemd-initctl.socket
-/usr/lib/systemd/system/systemd-journal-flush-msft.service
-/usr/lib/systemd/system/systemd-journal-flush.service
-/usr/lib/systemd/system/systemd-journald-audit.socket
-/usr/lib/systemd/system/systemd-journald-dev-log.socket
-/usr/lib/systemd/system/systemd-journald.service
-/usr/lib/systemd/system/systemd-journald.socket
-/usr/lib/systemd/system/systemd-kexec.service
-/usr/lib/systemd/system/systemd-localed.service
-/usr/lib/systemd/system/systemd-logind.service
-/usr/lib/systemd/system/systemd-machine-id-commit.service
-/usr/lib/systemd/system/systemd-machined.service
-/usr/lib/systemd/system/systemd-modules-load.service
-/usr/lib/systemd/system/systemd-networkd-wait-online.service
-/usr/lib/systemd/system/systemd-networkd.service
-/usr/lib/systemd/system/systemd-networkd.socket
-/usr/lib/systemd/system/systemd-nspawn@.service
-/usr/lib/systemd/system/systemd-portabled.service
-/usr/lib/systemd/system/systemd-poweroff.service
-/usr/lib/systemd/system/systemd-quotacheck.service
-/usr/lib/systemd/system/systemd-random-seed.service
-/usr/lib/systemd/system/systemd-reboot.service
-/usr/lib/systemd/system/systemd-remount-fs.service
-/usr/lib/systemd/system/systemd-resolved.service
-/usr/lib/systemd/system/systemd-rfkill.service
-/usr/lib/systemd/system/systemd-rfkill.socket
-/usr/lib/systemd/system/systemd-suspend-then-hibernate.service
-/usr/lib/systemd/system/systemd-suspend.service
-/usr/lib/systemd/system/systemd-sysctl.service
-/usr/lib/systemd/system/systemd-time-wait-sync.service
-/usr/lib/systemd/system/systemd-timedated.service
-/usr/lib/systemd/system/systemd-timesyncd.service
-/usr/lib/systemd/system/systemd-tmpfiles-clean.service
-/usr/lib/systemd/system/systemd-tmpfiles-clean.timer
-/usr/lib/systemd/system/systemd-tmpfiles-setup.service
-/usr/lib/systemd/system/systemd-udev-settle.service
-/usr/lib/systemd/system/systemd-udev-trigger.service
-/usr/lib/systemd/system/systemd-udevd-control.socket
-/usr/lib/systemd/system/systemd-udevd-kernel.socket
-/usr/lib/systemd/system/systemd-udevd.service
-/usr/lib/systemd/system/systemd-update-utmp.service
-/usr/lib/systemd/system/systemd-user-sessions.service
-/usr/lib/systemd/system/systemd-vconsole-setup.service
-/usr/lib/systemd/system/systemd-volatile-root.service
-/usr/lib/systemd/system/time-sync.target
-/usr/lib/systemd/system/timers.target
-/usr/lib/systemd/system/tmp.mount
-/usr/lib/systemd/system/umount.target
-/usr/lib/systemd/system/user-.slice.d/10-defaults.conf
-/usr/lib/systemd/system/user-runtime-dir@.service
-/usr/lib/systemd/system/user.slice
-/usr/lib/systemd/system/user@.service
-/usr/lib/systemd/systemd
-/usr/lib/systemd/systemd-ac-power
-/usr/lib/systemd/systemd-backlight
-/usr/lib/systemd/systemd-binfmt
-/usr/lib/systemd/systemd-cgroups-agent
-/usr/lib/systemd/systemd-coredump
-/usr/lib/systemd/systemd-cryptsetup
-/usr/lib/systemd/systemd-dissect
-/usr/lib/systemd/systemd-export
-/usr/lib/systemd/systemd-fsck
-/usr/lib/systemd/systemd-growfs
-/usr/lib/systemd/systemd-hibernate-resume
-/usr/lib/systemd/systemd-hostnamed
-/usr/lib/systemd/systemd-initctl
-/usr/lib/systemd/systemd-journald
-/usr/lib/systemd/systemd-localed
-/usr/lib/systemd/systemd-logind
-/usr/lib/systemd/systemd-machined
-/usr/lib/systemd/systemd-makefs
-/usr/lib/systemd/systemd-modules-load
-/usr/lib/systemd/systemd-networkd
-/usr/lib/systemd/systemd-networkd-wait-online
-/usr/lib/systemd/systemd-portabled
-/usr/lib/systemd/systemd-quotacheck
-/usr/lib/systemd/systemd-random-seed
-/usr/lib/systemd/systemd-remount-fs
-/usr/lib/systemd/systemd-reply-password
-/usr/lib/systemd/systemd-resolved
-/usr/lib/systemd/systemd-rfkill
-/usr/lib/systemd/systemd-shutdown
-/usr/lib/systemd/systemd-sleep
-/usr/lib/systemd/systemd-socket-proxyd
-/usr/lib/systemd/systemd-sulogin-shell
-/usr/lib/systemd/systemd-sysctl
-/usr/lib/systemd/systemd-time-wait-sync
-/usr/lib/systemd/systemd-timedated
-/usr/lib/systemd/systemd-timesyncd
-/usr/lib/systemd/systemd-udevd
-/usr/lib/systemd/systemd-update-utmp
-/usr/lib/systemd/systemd-user-runtime-dir
-/usr/lib/systemd/systemd-user-sessions
-/usr/lib/systemd/systemd-vconsole-setup
-/usr/lib/systemd/systemd-veritysetup
-/usr/lib/systemd/systemd-volatile-root
-/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator
-/usr/lib/systemd/user-preset/90-systemd.preset
-/usr/lib/systemd/user/basic.target
-/usr/lib/systemd/user/bluetooth.target
-/usr/lib/systemd/user/default.target
-/usr/lib/systemd/user/exit.target
-/usr/lib/systemd/user/graphical-session-pre.target
-/usr/lib/systemd/user/graphical-session.target
-/usr/lib/systemd/user/paths.target
-/usr/lib/systemd/user/printer.target
-/usr/lib/systemd/user/shutdown.target
-/usr/lib/systemd/user/smartcard.target
-/usr/lib/systemd/user/sockets.target
-/usr/lib/systemd/user/sound.target
-/usr/lib/systemd/user/systemd-exit.service
-/usr/lib/systemd/user/systemd-tmpfiles-clean.service
-/usr/lib/systemd/user/systemd-tmpfiles-clean.timer
-/usr/lib/systemd/user/systemd-tmpfiles-setup.service
-/usr/lib/systemd/user/timers.target
 /usr/lib/tmpfiles.d/etc.conf
 /usr/lib/tmpfiles.d/home.conf
 /usr/lib/tmpfiles.d/journal-nocow.conf
@@ -1481,16 +1187,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files doc
 %defattr(0644,root,root,0755)
-/usr/share/doc/systemd/CODING_STYLE
-/usr/share/doc/systemd/DISTRO_PORTING
-/usr/share/doc/systemd/ENVIRONMENT.md
-/usr/share/doc/systemd/GVARIANT-SERIALIZATION
-/usr/share/doc/systemd/HACKING
-/usr/share/doc/systemd/NEWS
-/usr/share/doc/systemd/README
-/usr/share/doc/systemd/TRANSIENT-SETTINGS.md
-/usr/share/doc/systemd/TRANSLATORS
-/usr/share/doc/systemd/UIDS-GIDS.md
+%doc /usr/share/doc/systemd/*
 
 %files extras
 %defattr(-,root,root,-)
@@ -1585,11 +1282,11 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/doc/systemd/LICENSE.GPL2
-/usr/share/doc/systemd/LICENSE.LGPL2.1
+/usr/share/package-licenses/systemd/LICENSE.GPL2
+/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
 
 %files man
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 %exclude /usr/share/man/man5/journal-remote.conf.5
 %exclude /usr/share/man/man5/journal-remote.conf.d.5
 %exclude /usr/share/man/man5/journal-upload.conf.5
@@ -1844,6 +1541,324 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man8/systemd-volatile-root.service.8
 /usr/share/man/man8/telinit.8
 /usr/share/man/man8/udevadm.8
+
+%files services
+%defattr(-,root,root,-)
+%exclude /usr/lib/systemd/import-pubring.gpg
+%exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
+%exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
+%exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
+%exclude /usr/lib/systemd/system/dbus-org.freedesktop.import1.service
+%exclude /usr/lib/systemd/system/ldconfig.service
+%exclude /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
+%exclude /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
+%exclude /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
+%exclude /usr/lib/systemd/system/multi-user.target.wants/getty.target
+%exclude /usr/lib/systemd/system/multi-user.target.wants/remote-fs.target
+%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path
+%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-logind.service
+%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
+%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-resolved.service
+%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-user-sessions.service
+%exclude /usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+%exclude /usr/lib/systemd/system/remote-fs.target.wants/var-lib-machines.mount
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald-audit.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
+%exclude /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
+%exclude /usr/lib/systemd/system/sysinit.target.wants/kmod-static-nodes.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-ask-password-console.path
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-flush-msft.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-flush.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journald.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-machine-id-commit.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-modules-load.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-random-seed.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-sysctl.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-timesyncd.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup-dev.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udev-trigger.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udevd.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-utmp.service
+%exclude /usr/lib/systemd/system/system-update-cleanup.service
+%exclude /usr/lib/systemd/system/system-update.target
+%exclude /usr/lib/systemd/system/systemd-firstboot.service
+%exclude /usr/lib/systemd/system/systemd-hwdb-update.service
+%exclude /usr/lib/systemd/system/systemd-importd.service
+%exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
+%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.service
+%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.socket
+%exclude /usr/lib/systemd/system/systemd-journal-remote.service
+%exclude /usr/lib/systemd/system/systemd-journal-remote.socket
+%exclude /usr/lib/systemd/system/systemd-journal-upload.service
+%exclude /usr/lib/systemd/system/systemd-sysusers.service
+%exclude /usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
+%exclude /usr/lib/systemd/system/systemd-update-done.service
+%exclude /usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
+%exclude /usr/lib/systemd/system/var-lib-machines.mount
+%exclude /usr/lib/systemd/systemd-import
+%exclude /usr/lib/systemd/systemd-importd
+%exclude /usr/lib/systemd/systemd-journal-gatewayd
+%exclude /usr/lib/systemd/systemd-journal-remote
+%exclude /usr/lib/systemd/systemd-journal-upload
+%exclude /usr/lib/systemd/systemd-pull
+%exclude /usr/lib/systemd/systemd-update-done
+/usr/lib/systemd/boot/efi/linuxx64.efi.stub
+/usr/lib/systemd/boot/efi/systemd-bootx64.efi
+/usr/lib/systemd/catalog/systemd.be.catalog
+/usr/lib/systemd/catalog/systemd.be@latin.catalog
+/usr/lib/systemd/catalog/systemd.bg.catalog
+/usr/lib/systemd/catalog/systemd.catalog
+/usr/lib/systemd/catalog/systemd.de.catalog
+/usr/lib/systemd/catalog/systemd.fr.catalog
+/usr/lib/systemd/catalog/systemd.it.catalog
+/usr/lib/systemd/catalog/systemd.pl.catalog
+/usr/lib/systemd/catalog/systemd.pt_BR.catalog
+/usr/lib/systemd/catalog/systemd.ru.catalog
+/usr/lib/systemd/catalog/systemd.zh_CN.catalog
+/usr/lib/systemd/catalog/systemd.zh_TW.catalog
+/usr/lib/systemd/coredump-wrapper
+/usr/lib/systemd/libsystemd-shared-239.so
+/usr/lib/systemd/network/80-container-host0.network
+/usr/lib/systemd/network/80-container-ve.network
+/usr/lib/systemd/network/80-container-vz.network
+/usr/lib/systemd/network/99-default.link
+/usr/lib/systemd/portable/profile/default/service.conf
+/usr/lib/systemd/portable/profile/nonetwork/service.conf
+/usr/lib/systemd/portable/profile/strict/service.conf
+/usr/lib/systemd/portable/profile/trusted/service.conf
+/usr/lib/systemd/portablectl
+/usr/lib/systemd/resolv.conf
+/usr/lib/systemd/system-generators/systemd-cryptsetup-generator
+/usr/lib/systemd/system-generators/systemd-debug-generator
+/usr/lib/systemd/system-generators/systemd-fstab-generator
+/usr/lib/systemd/system-generators/systemd-getty-generator
+/usr/lib/systemd/system-generators/systemd-gpt-auto-generator
+/usr/lib/systemd/system-preset/90-systemd.preset
+/usr/lib/systemd/system/autovt@.service
+/usr/lib/systemd/system/basic.target
+/usr/lib/systemd/system/bluetooth.target
+/usr/lib/systemd/system/console-getty.service
+/usr/lib/systemd/system/container-getty@.service
+/usr/lib/systemd/system/cryptsetup-pre.target
+/usr/lib/systemd/system/cryptsetup.target
+/usr/lib/systemd/system/ctrl-alt-del.target
+/usr/lib/systemd/system/dbus-org.freedesktop.hostname1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.locale1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.login1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.machine1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.network1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.portable1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.resolve1.service
+/usr/lib/systemd/system/dbus-org.freedesktop.timedate1.service
+/usr/lib/systemd/system/debug-shell.service
+/usr/lib/systemd/system/default.target
+/usr/lib/systemd/system/emergency.service
+/usr/lib/systemd/system/emergency.target
+/usr/lib/systemd/system/exit.target
+/usr/lib/systemd/system/final.target
+/usr/lib/systemd/system/getty-pre.target
+/usr/lib/systemd/system/getty.target
+/usr/lib/systemd/system/getty@.service
+/usr/lib/systemd/system/graphical.target
+/usr/lib/systemd/system/halt.target
+/usr/lib/systemd/system/hibernate.target
+/usr/lib/systemd/system/hybrid-sleep.target
+/usr/lib/systemd/system/initrd-cleanup.service
+/usr/lib/systemd/system/initrd-fs.target
+/usr/lib/systemd/system/initrd-parse-etc.service
+/usr/lib/systemd/system/initrd-root-device.target
+/usr/lib/systemd/system/initrd-root-fs.target
+/usr/lib/systemd/system/initrd-switch-root.service
+/usr/lib/systemd/system/initrd-switch-root.target
+/usr/lib/systemd/system/initrd-udevadm-cleanup-db.service
+/usr/lib/systemd/system/initrd.target
+/usr/lib/systemd/system/kexec.target
+/usr/lib/systemd/system/kmod-static-nodes.service
+/usr/lib/systemd/system/local-fs-pre.target
+/usr/lib/systemd/system/local-fs.target
+/usr/lib/systemd/system/machine.slice
+/usr/lib/systemd/system/machines.target
+/usr/lib/systemd/system/multi-user.target
+/usr/lib/systemd/system/network-online.target
+/usr/lib/systemd/system/network-pre.target
+/usr/lib/systemd/system/network.target
+/usr/lib/systemd/system/nss-lookup.target
+/usr/lib/systemd/system/nss-user-lookup.target
+/usr/lib/systemd/system/paths.target
+/usr/lib/systemd/system/poweroff.target
+/usr/lib/systemd/system/printer.target
+/usr/lib/systemd/system/proc-sys-fs-binfmt_misc.automount
+/usr/lib/systemd/system/proc-sys-fs-binfmt_misc.mount
+/usr/lib/systemd/system/quotaon.service
+/usr/lib/systemd/system/reboot.target
+/usr/lib/systemd/system/remote-cryptsetup.target
+/usr/lib/systemd/system/remote-fs-pre.target
+/usr/lib/systemd/system/remote-fs.target
+/usr/lib/systemd/system/rescue.service
+/usr/lib/systemd/system/rescue.target
+/usr/lib/systemd/system/rpcbind.target
+/usr/lib/systemd/system/runlevel0.target
+/usr/lib/systemd/system/runlevel1.target
+/usr/lib/systemd/system/runlevel2.target
+/usr/lib/systemd/system/runlevel3.target
+/usr/lib/systemd/system/runlevel4.target
+/usr/lib/systemd/system/runlevel5.target
+/usr/lib/systemd/system/runlevel6.target
+/usr/lib/systemd/system/serial-getty@.service
+/usr/lib/systemd/system/shutdown.target
+/usr/lib/systemd/system/sigpwr.target
+/usr/lib/systemd/system/sleep.target
+/usr/lib/systemd/system/slices.target
+/usr/lib/systemd/system/smartcard.target
+/usr/lib/systemd/system/sockets.target
+/usr/lib/systemd/system/sound.target
+/usr/lib/systemd/system/suspend-then-hibernate.target
+/usr/lib/systemd/system/suspend.target
+/usr/lib/systemd/system/swap.target
+/usr/lib/systemd/system/sysinit.target
+/usr/lib/systemd/system/syslog.socket
+/usr/lib/systemd/system/system-update-pre.target
+/usr/lib/systemd/system/systemd-ask-password-console.path
+/usr/lib/systemd/system/systemd-ask-password-console.service
+/usr/lib/systemd/system/systemd-ask-password-wall.path
+/usr/lib/systemd/system/systemd-ask-password-wall.service
+/usr/lib/systemd/system/systemd-backlight@.service
+/usr/lib/systemd/system/systemd-binfmt.service
+/usr/lib/systemd/system/systemd-coredump.socket
+/usr/lib/systemd/system/systemd-coredump@.service
+/usr/lib/systemd/system/systemd-exit.service
+/usr/lib/systemd/system/systemd-fsck-root.service
+/usr/lib/systemd/system/systemd-fsck@.service
+/usr/lib/systemd/system/systemd-halt.service
+/usr/lib/systemd/system/systemd-hibernate-resume@.service
+/usr/lib/systemd/system/systemd-hibernate.service
+/usr/lib/systemd/system/systemd-hostnamed.service
+/usr/lib/systemd/system/systemd-hybrid-sleep.service
+/usr/lib/systemd/system/systemd-initctl.service
+/usr/lib/systemd/system/systemd-initctl.socket
+/usr/lib/systemd/system/systemd-journal-flush-msft.service
+/usr/lib/systemd/system/systemd-journal-flush.service
+/usr/lib/systemd/system/systemd-journald-audit.socket
+/usr/lib/systemd/system/systemd-journald-dev-log.socket
+/usr/lib/systemd/system/systemd-journald.service
+/usr/lib/systemd/system/systemd-journald.socket
+/usr/lib/systemd/system/systemd-kexec.service
+/usr/lib/systemd/system/systemd-localed.service
+/usr/lib/systemd/system/systemd-logind.service
+/usr/lib/systemd/system/systemd-machine-id-commit.service
+/usr/lib/systemd/system/systemd-machined.service
+/usr/lib/systemd/system/systemd-modules-load.service
+/usr/lib/systemd/system/systemd-networkd-wait-online.service
+/usr/lib/systemd/system/systemd-networkd.service
+/usr/lib/systemd/system/systemd-networkd.socket
+/usr/lib/systemd/system/systemd-nspawn@.service
+/usr/lib/systemd/system/systemd-portabled.service
+/usr/lib/systemd/system/systemd-poweroff.service
+/usr/lib/systemd/system/systemd-quotacheck.service
+/usr/lib/systemd/system/systemd-random-seed.service
+/usr/lib/systemd/system/systemd-reboot.service
+/usr/lib/systemd/system/systemd-remount-fs.service
+/usr/lib/systemd/system/systemd-resolved.service
+/usr/lib/systemd/system/systemd-rfkill.service
+/usr/lib/systemd/system/systemd-rfkill.socket
+/usr/lib/systemd/system/systemd-suspend-then-hibernate.service
+/usr/lib/systemd/system/systemd-suspend.service
+/usr/lib/systemd/system/systemd-sysctl.service
+/usr/lib/systemd/system/systemd-time-wait-sync.service
+/usr/lib/systemd/system/systemd-timedated.service
+/usr/lib/systemd/system/systemd-timesyncd.service
+/usr/lib/systemd/system/systemd-tmpfiles-clean.service
+/usr/lib/systemd/system/systemd-tmpfiles-clean.timer
+/usr/lib/systemd/system/systemd-tmpfiles-setup.service
+/usr/lib/systemd/system/systemd-udev-settle.service
+/usr/lib/systemd/system/systemd-udev-trigger.service
+/usr/lib/systemd/system/systemd-udevd-control.socket
+/usr/lib/systemd/system/systemd-udevd-kernel.socket
+/usr/lib/systemd/system/systemd-udevd.service
+/usr/lib/systemd/system/systemd-update-utmp.service
+/usr/lib/systemd/system/systemd-user-sessions.service
+/usr/lib/systemd/system/systemd-vconsole-setup.service
+/usr/lib/systemd/system/systemd-volatile-root.service
+/usr/lib/systemd/system/time-sync.target
+/usr/lib/systemd/system/timers.target
+/usr/lib/systemd/system/tmp.mount
+/usr/lib/systemd/system/umount.target
+/usr/lib/systemd/system/user-.slice.d/10-defaults.conf
+/usr/lib/systemd/system/user-runtime-dir@.service
+/usr/lib/systemd/system/user.slice
+/usr/lib/systemd/system/user@.service
+/usr/lib/systemd/systemd
+/usr/lib/systemd/systemd-ac-power
+/usr/lib/systemd/systemd-backlight
+/usr/lib/systemd/systemd-binfmt
+/usr/lib/systemd/systemd-cgroups-agent
+/usr/lib/systemd/systemd-coredump
+/usr/lib/systemd/systemd-cryptsetup
+/usr/lib/systemd/systemd-dissect
+/usr/lib/systemd/systemd-export
+/usr/lib/systemd/systemd-fsck
+/usr/lib/systemd/systemd-growfs
+/usr/lib/systemd/systemd-hibernate-resume
+/usr/lib/systemd/systemd-hostnamed
+/usr/lib/systemd/systemd-initctl
+/usr/lib/systemd/systemd-journald
+/usr/lib/systemd/systemd-localed
+/usr/lib/systemd/systemd-logind
+/usr/lib/systemd/systemd-machined
+/usr/lib/systemd/systemd-makefs
+/usr/lib/systemd/systemd-modules-load
+/usr/lib/systemd/systemd-networkd
+/usr/lib/systemd/systemd-networkd-wait-online
+/usr/lib/systemd/systemd-portabled
+/usr/lib/systemd/systemd-quotacheck
+/usr/lib/systemd/systemd-random-seed
+/usr/lib/systemd/systemd-remount-fs
+/usr/lib/systemd/systemd-reply-password
+/usr/lib/systemd/systemd-resolved
+/usr/lib/systemd/systemd-rfkill
+/usr/lib/systemd/systemd-shutdown
+/usr/lib/systemd/systemd-sleep
+/usr/lib/systemd/systemd-socket-proxyd
+/usr/lib/systemd/systemd-sulogin-shell
+/usr/lib/systemd/systemd-sysctl
+/usr/lib/systemd/systemd-time-wait-sync
+/usr/lib/systemd/systemd-timedated
+/usr/lib/systemd/systemd-timesyncd
+/usr/lib/systemd/systemd-udevd
+/usr/lib/systemd/systemd-update-utmp
+/usr/lib/systemd/systemd-user-runtime-dir
+/usr/lib/systemd/systemd-user-sessions
+/usr/lib/systemd/systemd-vconsole-setup
+/usr/lib/systemd/systemd-veritysetup
+/usr/lib/systemd/systemd-volatile-root
+/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator
+/usr/lib/systemd/user-preset/90-systemd.preset
+/usr/lib/systemd/user/basic.target
+/usr/lib/systemd/user/bluetooth.target
+/usr/lib/systemd/user/default.target
+/usr/lib/systemd/user/exit.target
+/usr/lib/systemd/user/graphical-session-pre.target
+/usr/lib/systemd/user/graphical-session.target
+/usr/lib/systemd/user/paths.target
+/usr/lib/systemd/user/printer.target
+/usr/lib/systemd/user/shutdown.target
+/usr/lib/systemd/user/smartcard.target
+/usr/lib/systemd/user/sockets.target
+/usr/lib/systemd/user/sound.target
+/usr/lib/systemd/user/systemd-exit.service
+/usr/lib/systemd/user/systemd-tmpfiles-clean.service
+/usr/lib/systemd/user/systemd-tmpfiles-clean.timer
+/usr/lib/systemd/user/systemd-tmpfiles-setup.service
+/usr/lib/systemd/user/timers.target
 
 %files locales -f systemd.lang
 %defattr(-,root,root,-)
