@@ -1,4 +1,4 @@
-From 12d69602bfcb631c1db27b9f63d9b392a3d4980c Mon Sep 17 00:00:00 2001
+From e6f07c5a9f255f1c12ea2dcdd30e38e728c77db8 Mon Sep 17 00:00:00 2001
 From: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@intel.com>
 Date: Fri, 26 Oct 2018 16:46:37 -0500
 Subject: [PATCH] add stateless for locale files locale.conf 00-keyboard.conf
@@ -8,116 +8,128 @@ there /usr/share/defaults/etc
 
 Signed-off-by: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@intel.com>
 ---
- src/locale/keymap-util.c | 41 ++++++++++++++++++++++++++++++----------
- 1 file changed, 31 insertions(+), 10 deletions(-)
+ src/locale/keymap-util.c | 47 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
 diff --git a/src/locale/keymap-util.c b/src/locale/keymap-util.c
-index 598b931..c925a37 100644
+index 598b931..58b2d39 100644
 --- a/src/locale/keymap-util.c
 +++ b/src/locale/keymap-util.c
 @@ -85,6 +85,7 @@ void locale_simplify(char *locale[_VARIABLE_LC_MAX]) {
  int locale_read_data(Context *c, sd_bus_message *m) {
          struct stat st;
          int r;
-+	int r2;
++        bool etc_conf = false;
  
          /* Do not try to re-read the file within single bus operation. */
          if (m && m == c->locale_cache)
-@@ -97,7 +98,11 @@ int locale_read_data(Context *c, sd_bus_message *m) {
+@@ -94,6 +95,11 @@ int locale_read_data(Context *c, sd_bus_message *m) {
+         c->locale_cache = m;
+ 
+         r = stat("/etc/locale.conf", &st);
++        if (r >= 0)
++                etc_conf = true;
++        else if (errno == ENOENT)
++                r = stat("/usr/share/defaults/etc/locale.conf", &st);
++
          if (r < 0 && errno != ENOENT)
                  return -errno;
  
--        if (r >= 0) {
-+        r2 = stat("/usr/share/defaults/etc/locale.conf", &st);
-+        if (r < 0 && errno != ENOENT)
-+                return -errno;
-+
-+        if (r >= 0 || r2 >= 0) {
-                 usec_t t;
- 
-                 /* If mtime is not changed, then we do not need to re-read the file. */
-@@ -108,7 +113,7 @@ int locale_read_data(Context *c, sd_bus_message *m) {
+@@ -108,7 +114,9 @@ int locale_read_data(Context *c, sd_bus_message *m) {
                  c->locale_mtime = t;
                  context_free_locale(c);
  
 -                r = parse_env_file(NULL, "/etc/locale.conf", NEWLINE,
-+                r = parse_env_file(NULL, ( r >= 0)?"/etc/locale.conf":"/usr/share/defauls/etc/locale.conf", NEWLINE,
++                r = parse_env_file(NULL,
++                                   (etc_conf)?"/etc/locale.conf":
++                                              "/usr/share/defauls/etc/locale.conf", NEWLINE,
                                     "LANG",              &c->locale[VARIABLE_LANG],
                                     "LANGUAGE",          &c->locale[VARIABLE_LANGUAGE],
                                     "LC_CTYPE",          &c->locale[VARIABLE_LC_CTYPE],
-@@ -153,6 +158,8 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+@@ -153,6 +161,7 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
          struct stat st;
          usec_t t;
          int r;
-+	int r_st;
-+	int r_st2;
++        bool etc_conf = false;
  
          /* Do not try to re-read the file within single bus operation. */
          if (m && m == c->vc_cache)
-@@ -161,10 +168,15 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+@@ -161,15 +170,20 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
          /* To suppress multiple call of stat(), store the message to cache here. */
          c->vc_cache = m;
  
 -        if (stat("/etc/vconsole.conf", &st) < 0) {
 -                if (errno != ENOENT)
 -                        return -errno;
-+        if ((r_st = stat("/etc/vconsole.conf", &st)) < 0 && errno != ENOENT) {
-+		return -errno;
-+	}
-+        
-+	if ((r_st2 = stat("/usr/share/defaults/etc/vconsole.conf", &st)) < 0 && errno != ENOENT) {
-+		return -errno;
-+	}
++        r = stat("/etc/vconsole.conf", &st);
++        if (r >= 0) {
++                etc_conf = true;
++        } else if (errno == ENOENT)
++                r = stat("/usr/share/defaults/etc/vconsole.conf", &st);
  
-+	if (r_st < 0 && r_st2 < 0) {
++        if (r < 0 && errno == ENOENT) {
                  c->vc_mtime = USEC_INFINITY;
                  context_free_vconsole(c);
                  return 0;
-@@ -178,7 +190,7 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+         }
+-
++        else if (r < 0)
++                return -errno;
++
+         /* If mtime is not changed, then we do not need to re-read */
+         t = timespec_load(&st.st_mtim);
+         if (c->vc_mtime != USEC_INFINITY && t == c->vc_mtime)
+@@ -178,7 +192,9 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
          c->vc_mtime = t;
          context_free_vconsole(c);
  
 -        r = parse_env_file(NULL, "/etc/vconsole.conf", NEWLINE,
-+        r = parse_env_file(NULL, (r_st >= 0)?"/etc/vconsole.conf":"/usr/share/defaults/etc/vconsole.conf", NEWLINE,
++        r = parse_env_file(NULL, (etc_conf)?
++                           "/etc/vconsole.conf":
++                               "/usr/share/defaults/etc/vconsole.conf", NEWLINE,
                             "KEYMAP",        &c->vc_keymap,
                             "KEYMAP_TOGGLE", &c->vc_keymap_toggle,
                             NULL);
-@@ -195,6 +207,8 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+@@ -195,6 +211,7 @@ int x11_read_data(Context *c, sd_bus_message *m) {
          struct stat st;
          usec_t t;
          int r;
-+	int r_st;
-+	int r_st2;
++        bool etc_conf = false;
  
          /* Do not try to re-read the file within single bus operation. */
          if (m && m == c->x11_cache)
-@@ -203,10 +217,17 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+@@ -203,14 +220,19 @@ int x11_read_data(Context *c, sd_bus_message *m) {
          /* To suppress multiple call of stat(), store the message to cache here. */
          c->x11_cache = m;
  
 -        if (stat("/etc/X11/xorg.conf.d/00-keyboard.conf", &st) < 0) {
 -                if (errno != ENOENT)
 -                        return -errno;
-+        if ((r_st = stat("/etc/X11/xorg.conf.d/00-keyboard.conf", &st)) < 0 && errno != ENOENT) {
-+		return -errno;
-+
-+	}
+-
++        r = stat("/etc/X11/xorg.conf.d/00-keyboard.conf", &st);
++        if (r >= 0) {
++                etc_conf = true;
++                return -errno;
++        } else if (errno == ENOENT)
++                r = stat("/usr/share/defaults/etc/X11/xorg.conf.d/00-keyboard.conf", &st);
 +        
-+	if ((r_st2 = stat("/usr/share/defaults/etc/X11/xorg.conf.d/00-keyboard.conf", &st)) < 0 && errno != ENOENT) {
-+		return -errno;
-+
-+	}
- 
-+	if (r_st < 0 && r_st2 < 0) {
++        if (r < 0 && errno == ENOENT) {
                  c->x11_mtime = USEC_INFINITY;
                  context_free_x11(c);
                  return 0;
-@@ -220,7 +241,7 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+-        }
++        } else if (r < 0)
++                return -errno;
+ 
+         /* If mtime is not changed, then we do not need to re-read */
+         t = timespec_load(&st.st_mtim);
+@@ -220,7 +242,8 @@ int x11_read_data(Context *c, sd_bus_message *m) {
          c->x11_mtime = t;
          context_free_x11(c);
  
 -        f = fopen("/etc/X11/xorg.conf.d/00-keyboard.conf", "re");
-+        f = fopen((r_st >= 0)?"/etc/X11/xorg.conf.d/00-keyboard.conf":"/usr/share/defaults/etc/X11/xorg.conf.d/00-keyboard.conf", "re");
++        f = fopen((etc_conf)?"/etc/X11/xorg.conf.d/00-keyboard.conf":
++                             "/usr/share/defaults/etc/X11/xorg.conf.d/00-keyboard.conf", "re");
          if (!f)
                  return -errno;
  
