@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 201
+Release  : 202
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -115,8 +115,9 @@ Patch38: 0038-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
 Patch39: 0039-build-sys-Detect-whether-struct-statx-is-defined-in-.patch
 Patch40: 0040-meson-rename-Ddebug-to-Ddebug-extra.patch
 Patch41: 0041-Make-bzip2-an-optional-dependency-for-systemd-import.patch
-Patch42: cve-2018-15687.patch
-Patch43: cve-2018-15686.patch
+Patch42: 0042-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
+Patch43: cve-2018-15687.patch
+Patch44: cve-2018-15686.patch
 
 %description
 systemd System and Service Manager
@@ -298,6 +299,7 @@ services components for the systemd package.
 %patch41 -p1
 %patch42 -p1
 %patch43 -p1
+%patch44 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -307,8 +309,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540672051
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
+export SOURCE_DATE_EPOCH=1540903149
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
