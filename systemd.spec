@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 204
+Release  : 205
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -118,6 +118,7 @@ Patch41: 0041-Make-bzip2-an-optional-dependency-for-systemd-import.patch
 Patch42: 0042-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
 Patch43: cve-2018-15687.patch
 Patch44: cve-2018-15686.patch
+Patch45: CVE-2018-15688.patch
 
 %description
 systemd System and Service Manager
@@ -300,6 +301,7 @@ services components for the systemd package.
 %patch42 -p1
 %patch43 -p1
 %patch44 -p1
+%patch45 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -309,8 +311,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541197077
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
+export SOURCE_DATE_EPOCH=1541447844
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -590,6 +592,14 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
 %exclude /usr/share/polkit-1/rules.d/systemd-networkd.rules
 %exclude /usr/share/zsh/site-functions/_kernel-install
+/usr/share/abi/libnss_myhostname.so.2.abi
+/usr/share/abi/libnss_mymachines.so.2.abi
+/usr/share/abi/libnss_resolve.so.2.abi
+/usr/share/abi/libnss_systemd.so.2.abi
+/usr/share/abi/libsystemd.so.0.23.0.abi
+/usr/share/abi/libsystemd.so.0.abi
+/usr/share/abi/libudev.so.1.6.11.abi
+/usr/share/abi/libudev.so.1.abi
 /usr/share/bash-completion/completions/bootctl
 /usr/share/bash-completion/completions/busctl
 /usr/share/bash-completion/completions/coredumpctl

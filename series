@@ -42,3 +42,4 @@
 0042-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
 cve-2018-15687.patch
 cve-2018-15686.patch
+CVE-2018-15688.patch
