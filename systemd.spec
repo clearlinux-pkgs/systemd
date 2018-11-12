@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 205
+Release  : 206
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -124,6 +124,14 @@ Patch45: CVE-2018-15688.patch
 systemd System and Service Manager
 DETAILS:
 http://0pointer.de/blog/projects/systemd.html
+
+%package abi
+Summary: abi components for the systemd package.
+Group: Default
+
+%description abi
+abi components for the systemd package.
+
 
 %package autostart
 Summary: autostart components for the systemd package.
@@ -311,8 +319,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541447844
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
+export SOURCE_DATE_EPOCH=1542062974
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -442,6 +450,15 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/hwdb.d/20-vmbus-class.hwdb
 /usr/lib/udev/hwdb.d/70-joystick.hwdb
 /usr/lib/udev/scsi_id
+
+%files abi
+%defattr(-,root,root,-)
+/usr/share/abi/libnss_myhostname.so.2.abi
+/usr/share/abi/libnss_mymachines.so.2.abi
+/usr/share/abi/libnss_resolve.so.2.abi
+/usr/share/abi/libnss_systemd.so.2.abi
+/usr/share/abi/libsystemd.so.0.23.0.abi
+/usr/share/abi/libudev.so.1.6.11.abi
 
 %files autostart
 %defattr(-,root,root,-)
@@ -592,14 +609,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
 %exclude /usr/share/polkit-1/rules.d/systemd-networkd.rules
 %exclude /usr/share/zsh/site-functions/_kernel-install
-/usr/share/abi/libnss_myhostname.so.2.abi
-/usr/share/abi/libnss_mymachines.so.2.abi
-/usr/share/abi/libnss_resolve.so.2.abi
-/usr/share/abi/libnss_systemd.so.2.abi
-/usr/share/abi/libsystemd.so.0.23.0.abi
-/usr/share/abi/libsystemd.so.0.abi
-/usr/share/abi/libudev.so.1.6.11.abi
-/usr/share/abi/libudev.so.1.abi
 /usr/share/bash-completion/completions/bootctl
 /usr/share/bash-completion/completions/busctl
 /usr/share/bash-completion/completions/coredumpctl
