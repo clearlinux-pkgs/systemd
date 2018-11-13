@@ -1,6 +1,6 @@
-From 131a2515284a776567a889a4789a659da6340ed7 Mon Sep 17 00:00:00 2001
+From 8321572db8d805e28462d9d654b4568077bd1501 Mon Sep 17 00:00:00 2001
 From: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@intel.com>
-Date: Tue, 30 Oct 2018 15:23:12 -0600
+Date: Fri, 26 Oct 2018 16:46:37 -0500
 Subject: [PATCH] add stateless for locale files locale.conf 00-keyboard.conf
 
 systemd must take this files from /etc and in case there are not files
@@ -12,7 +12,7 @@ Signed-off-by: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@inte
  1 file changed, 33 insertions(+), 11 deletions(-)
 
 diff --git a/src/locale/keymap-util.c b/src/locale/keymap-util.c
-index 598b931d0..3c21db5ba 100644
+index 598b931..a9a6465 100644
 --- a/src/locale/keymap-util.c
 +++ b/src/locale/keymap-util.c
 @@ -85,6 +85,7 @@ void locale_simplify(char *locale[_VARIABLE_LC_MAX]) {
@@ -54,7 +54,7 @@ index 598b931d0..3c21db5ba 100644
  
          /* Do not try to re-read the file within single bus operation. */
          if (m && m == c->vc_cache)
-@@ -161,14 +170,18 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+@@ -161,14 +170,19 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
          /* To suppress multiple call of stat(), store the message to cache here. */
          c->vc_cache = m;
  
@@ -71,13 +71,13 @@ index 598b931d0..3c21db5ba 100644
                  c->vc_mtime = USEC_INFINITY;
                  context_free_vconsole(c);
                  return 0;
--        }
-+        } else if (r < 0)
+         }
++        else if (r < 0)
 +                return -errno;
  
          /* If mtime is not changed, then we do not need to re-read */
          t = timespec_load(&st.st_mtim);
-@@ -178,7 +191,9 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+@@ -178,7 +192,9 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
          c->vc_mtime = t;
          context_free_vconsole(c);
  
@@ -88,7 +88,7 @@ index 598b931d0..3c21db5ba 100644
                             "KEYMAP",        &c->vc_keymap,
                             "KEYMAP_TOGGLE", &c->vc_keymap_toggle,
                             NULL);
-@@ -195,6 +210,7 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+@@ -195,6 +211,7 @@ int x11_read_data(Context *c, sd_bus_message *m) {
          struct stat st;
          usec_t t;
          int r;
@@ -96,20 +96,20 @@ index 598b931d0..3c21db5ba 100644
  
          /* Do not try to re-read the file within single bus operation. */
          if (m && m == c->x11_cache)
-@@ -203,14 +219,19 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+@@ -203,14 +220,18 @@ int x11_read_data(Context *c, sd_bus_message *m) {
          /* To suppress multiple call of stat(), store the message to cache here. */
          c->x11_cache = m;
  
 -        if (stat("/etc/X11/xorg.conf.d/00-keyboard.conf", &st) < 0) {
 -                if (errno != ENOENT)
 -                        return -errno;
+-
 +        r = stat("/etc/X11/xorg.conf.d/00-keyboard.conf", &st);
 +        if (r >= 0) {
 +                etc_conf = true;
-+                return -errno;
 +        } else if (errno == ENOENT)
 +                r = stat("/usr/share/defaults/etc/X11/xorg.conf.d/00-keyboard.conf", &st);
- 
++
 +        if (r < 0 && errno == ENOENT) {
                  c->x11_mtime = USEC_INFINITY;
                  context_free_x11(c);
