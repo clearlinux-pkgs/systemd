@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 208
+Release  : 209
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -119,19 +119,12 @@ Patch42: 0042-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
 Patch43: cve-2018-15687.patch
 Patch44: cve-2018-15686.patch
 Patch45: CVE-2018-15688.patch
+Patch46: CVE-2018-6954_2.patch
 
 %description
 systemd System and Service Manager
 DETAILS:
 http://0pointer.de/blog/projects/systemd.html
-
-%package abi
-Summary: abi components for the systemd package.
-Group: Default
-
-%description abi
-abi components for the systemd package.
-
 
 %package autostart
 Summary: autostart components for the systemd package.
@@ -310,6 +303,7 @@ services components for the systemd package.
 %patch43 -p1
 %patch44 -p1
 %patch45 -p1
+%patch46 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -319,8 +313,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542149896
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
+export SOURCE_DATE_EPOCH=1542735176
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -450,15 +444,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/hwdb.d/20-vmbus-class.hwdb
 /usr/lib/udev/hwdb.d/70-joystick.hwdb
 /usr/lib/udev/scsi_id
-
-%files abi
-%defattr(-,root,root,-)
-/usr/share/abi/libnss_myhostname.so.2.abi
-/usr/share/abi/libnss_mymachines.so.2.abi
-/usr/share/abi/libnss_resolve.so.2.abi
-/usr/share/abi/libnss_systemd.so.2.abi
-/usr/share/abi/libsystemd.so.0.abi
-/usr/share/abi/libudev.so.1.abi
 
 %files autostart
 %defattr(-,root,root,-)
