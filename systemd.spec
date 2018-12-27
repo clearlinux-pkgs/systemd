@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 210
+Release  : 211
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -120,6 +120,7 @@ Patch43: cve-2018-15687.patch
 Patch44: cve-2018-15686.patch
 Patch45: CVE-2018-15688.patch
 Patch46: CVE-2018-6954_2.patch
+Patch47: no-audit-by-default.patch
 
 %description
 systemd System and Service Manager
@@ -304,6 +305,7 @@ services components for the systemd package.
 %patch44 -p1
 %patch45 -p1
 %patch46 -p1
+%patch47 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -313,8 +315,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542757336
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error   -Wl,-z,max-page-size=0x1000 -m64 -march=westmere -mtune=haswell"
+export SOURCE_DATE_EPOCH=1545871526
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -417,6 +419,17 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %files
 %defattr(-,root,root,-)
 %exclude /usr/lib/rpm/macros.d/macros.systemd
+%exclude /usr/lib/systemd/import-pubring.gpg
+%exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
+%exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
+%exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
+%exclude /usr/lib/systemd/systemd-import
+%exclude /usr/lib/systemd/systemd-importd
+%exclude /usr/lib/systemd/systemd-journal-gatewayd
+%exclude /usr/lib/systemd/systemd-journal-remote
+%exclude /usr/lib/systemd/systemd-journal-upload
+%exclude /usr/lib/systemd/systemd-pull
+%exclude /usr/lib/systemd/systemd-update-done
 %exclude /usr/lib/udev/cdrom_id
 %exclude /usr/lib/udev/collect
 %exclude /usr/lib/udev/hwdb.d/20-OUI.hwdb
@@ -438,6 +451,83 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/udev/v4l_id
 %exclude /var/lib/systemd/catalog/database
 /usr/lib/modprobe.d/systemd.conf
+/usr/lib/systemd/boot/efi/linuxx64.efi.stub
+/usr/lib/systemd/boot/efi/systemd-bootx64.efi
+/usr/lib/systemd/catalog/systemd.be.catalog
+/usr/lib/systemd/catalog/systemd.be@latin.catalog
+/usr/lib/systemd/catalog/systemd.bg.catalog
+/usr/lib/systemd/catalog/systemd.catalog
+/usr/lib/systemd/catalog/systemd.de.catalog
+/usr/lib/systemd/catalog/systemd.fr.catalog
+/usr/lib/systemd/catalog/systemd.it.catalog
+/usr/lib/systemd/catalog/systemd.pl.catalog
+/usr/lib/systemd/catalog/systemd.pt_BR.catalog
+/usr/lib/systemd/catalog/systemd.ru.catalog
+/usr/lib/systemd/catalog/systemd.zh_CN.catalog
+/usr/lib/systemd/catalog/systemd.zh_TW.catalog
+/usr/lib/systemd/coredump-wrapper
+/usr/lib/systemd/network/80-container-host0.network
+/usr/lib/systemd/network/80-container-ve.network
+/usr/lib/systemd/network/80-container-vz.network
+/usr/lib/systemd/network/99-default.link
+/usr/lib/systemd/portable/profile/default/service.conf
+/usr/lib/systemd/portable/profile/nonetwork/service.conf
+/usr/lib/systemd/portable/profile/strict/service.conf
+/usr/lib/systemd/portable/profile/trusted/service.conf
+/usr/lib/systemd/portablectl
+/usr/lib/systemd/resolv.conf
+/usr/lib/systemd/system-generators/systemd-cryptsetup-generator
+/usr/lib/systemd/system-generators/systemd-debug-generator
+/usr/lib/systemd/system-generators/systemd-fstab-generator
+/usr/lib/systemd/system-generators/systemd-getty-generator
+/usr/lib/systemd/system-generators/systemd-gpt-auto-generator
+/usr/lib/systemd/system-preset/90-systemd.preset
+/usr/lib/systemd/systemd
+/usr/lib/systemd/systemd-ac-power
+/usr/lib/systemd/systemd-backlight
+/usr/lib/systemd/systemd-binfmt
+/usr/lib/systemd/systemd-cgroups-agent
+/usr/lib/systemd/systemd-coredump
+/usr/lib/systemd/systemd-cryptsetup
+/usr/lib/systemd/systemd-dissect
+/usr/lib/systemd/systemd-export
+/usr/lib/systemd/systemd-fsck
+/usr/lib/systemd/systemd-growfs
+/usr/lib/systemd/systemd-hibernate-resume
+/usr/lib/systemd/systemd-hostnamed
+/usr/lib/systemd/systemd-initctl
+/usr/lib/systemd/systemd-journald
+/usr/lib/systemd/systemd-localed
+/usr/lib/systemd/systemd-logind
+/usr/lib/systemd/systemd-machined
+/usr/lib/systemd/systemd-makefs
+/usr/lib/systemd/systemd-modules-load
+/usr/lib/systemd/systemd-networkd
+/usr/lib/systemd/systemd-networkd-wait-online
+/usr/lib/systemd/systemd-portabled
+/usr/lib/systemd/systemd-quotacheck
+/usr/lib/systemd/systemd-random-seed
+/usr/lib/systemd/systemd-remount-fs
+/usr/lib/systemd/systemd-reply-password
+/usr/lib/systemd/systemd-resolved
+/usr/lib/systemd/systemd-rfkill
+/usr/lib/systemd/systemd-shutdown
+/usr/lib/systemd/systemd-sleep
+/usr/lib/systemd/systemd-socket-proxyd
+/usr/lib/systemd/systemd-sulogin-shell
+/usr/lib/systemd/systemd-sysctl
+/usr/lib/systemd/systemd-time-wait-sync
+/usr/lib/systemd/systemd-timedated
+/usr/lib/systemd/systemd-timesyncd
+/usr/lib/systemd/systemd-udevd
+/usr/lib/systemd/systemd-update-utmp
+/usr/lib/systemd/systemd-user-runtime-dir
+/usr/lib/systemd/systemd-user-sessions
+/usr/lib/systemd/systemd-vconsole-setup
+/usr/lib/systemd/systemd-veritysetup
+/usr/lib/systemd/systemd-volatile-root
+/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator
+/usr/lib/systemd/user-preset/90-systemd.preset
 /usr/lib/udev/ata_id
 /usr/lib/udev/hwdb.bin
 /usr/lib/udev/hwdb.d/20-usb-vendor-model.hwdb
@@ -1264,6 +1354,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib/systemd/libsystemd-shared-239.so
 /usr/lib64/libnss_myhostname.so.2
 /usr/lib64/libnss_mymachines.so.2
 /usr/lib64/libnss_resolve.so.2
@@ -1550,10 +1641,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files services
 %defattr(-,root,root,-)
-%exclude /usr/lib/systemd/import-pubring.gpg
-%exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
-%exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
-%exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
 %exclude /usr/lib/systemd/system/dbus-org.freedesktop.import1.service
 %exclude /usr/lib/systemd/system/ldconfig.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
@@ -1610,45 +1697,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/systemd/system/systemd-update-done.service
 %exclude /usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
 %exclude /usr/lib/systemd/system/var-lib-machines.mount
-%exclude /usr/lib/systemd/systemd-import
-%exclude /usr/lib/systemd/systemd-importd
-%exclude /usr/lib/systemd/systemd-journal-gatewayd
-%exclude /usr/lib/systemd/systemd-journal-remote
-%exclude /usr/lib/systemd/systemd-journal-upload
-%exclude /usr/lib/systemd/systemd-pull
-%exclude /usr/lib/systemd/systemd-update-done
-/usr/lib/systemd/boot/efi/linuxx64.efi.stub
-/usr/lib/systemd/boot/efi/systemd-bootx64.efi
-/usr/lib/systemd/catalog/systemd.be.catalog
-/usr/lib/systemd/catalog/systemd.be@latin.catalog
-/usr/lib/systemd/catalog/systemd.bg.catalog
-/usr/lib/systemd/catalog/systemd.catalog
-/usr/lib/systemd/catalog/systemd.de.catalog
-/usr/lib/systemd/catalog/systemd.fr.catalog
-/usr/lib/systemd/catalog/systemd.it.catalog
-/usr/lib/systemd/catalog/systemd.pl.catalog
-/usr/lib/systemd/catalog/systemd.pt_BR.catalog
-/usr/lib/systemd/catalog/systemd.ru.catalog
-/usr/lib/systemd/catalog/systemd.zh_CN.catalog
-/usr/lib/systemd/catalog/systemd.zh_TW.catalog
-/usr/lib/systemd/coredump-wrapper
-/usr/lib/systemd/libsystemd-shared-239.so
-/usr/lib/systemd/network/80-container-host0.network
-/usr/lib/systemd/network/80-container-ve.network
-/usr/lib/systemd/network/80-container-vz.network
-/usr/lib/systemd/network/99-default.link
-/usr/lib/systemd/portable/profile/default/service.conf
-/usr/lib/systemd/portable/profile/nonetwork/service.conf
-/usr/lib/systemd/portable/profile/strict/service.conf
-/usr/lib/systemd/portable/profile/trusted/service.conf
-/usr/lib/systemd/portablectl
-/usr/lib/systemd/resolv.conf
-/usr/lib/systemd/system-generators/systemd-cryptsetup-generator
-/usr/lib/systemd/system-generators/systemd-debug-generator
-/usr/lib/systemd/system-generators/systemd-fstab-generator
-/usr/lib/systemd/system-generators/systemd-getty-generator
-/usr/lib/systemd/system-generators/systemd-gpt-auto-generator
-/usr/lib/systemd/system-preset/90-systemd.preset
 /usr/lib/systemd/system/autovt@.service
 /usr/lib/systemd/system/basic.target
 /usr/lib/systemd/system/bluetooth.target
@@ -1802,52 +1850,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/user-runtime-dir@.service
 /usr/lib/systemd/system/user.slice
 /usr/lib/systemd/system/user@.service
-/usr/lib/systemd/systemd
-/usr/lib/systemd/systemd-ac-power
-/usr/lib/systemd/systemd-backlight
-/usr/lib/systemd/systemd-binfmt
-/usr/lib/systemd/systemd-cgroups-agent
-/usr/lib/systemd/systemd-coredump
-/usr/lib/systemd/systemd-cryptsetup
-/usr/lib/systemd/systemd-dissect
-/usr/lib/systemd/systemd-export
-/usr/lib/systemd/systemd-fsck
-/usr/lib/systemd/systemd-growfs
-/usr/lib/systemd/systemd-hibernate-resume
-/usr/lib/systemd/systemd-hostnamed
-/usr/lib/systemd/systemd-initctl
-/usr/lib/systemd/systemd-journald
-/usr/lib/systemd/systemd-localed
-/usr/lib/systemd/systemd-logind
-/usr/lib/systemd/systemd-machined
-/usr/lib/systemd/systemd-makefs
-/usr/lib/systemd/systemd-modules-load
-/usr/lib/systemd/systemd-networkd
-/usr/lib/systemd/systemd-networkd-wait-online
-/usr/lib/systemd/systemd-portabled
-/usr/lib/systemd/systemd-quotacheck
-/usr/lib/systemd/systemd-random-seed
-/usr/lib/systemd/systemd-remount-fs
-/usr/lib/systemd/systemd-reply-password
-/usr/lib/systemd/systemd-resolved
-/usr/lib/systemd/systemd-rfkill
-/usr/lib/systemd/systemd-shutdown
-/usr/lib/systemd/systemd-sleep
-/usr/lib/systemd/systemd-socket-proxyd
-/usr/lib/systemd/systemd-sulogin-shell
-/usr/lib/systemd/systemd-sysctl
-/usr/lib/systemd/systemd-time-wait-sync
-/usr/lib/systemd/systemd-timedated
-/usr/lib/systemd/systemd-timesyncd
-/usr/lib/systemd/systemd-udevd
-/usr/lib/systemd/systemd-update-utmp
-/usr/lib/systemd/systemd-user-runtime-dir
-/usr/lib/systemd/systemd-user-sessions
-/usr/lib/systemd/systemd-vconsole-setup
-/usr/lib/systemd/systemd-veritysetup
-/usr/lib/systemd/systemd-volatile-root
-/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator
-/usr/lib/systemd/user-preset/90-systemd.preset
 /usr/lib/systemd/user/basic.target
 /usr/lib/systemd/user/bluetooth.target
 /usr/lib/systemd/user/default.target

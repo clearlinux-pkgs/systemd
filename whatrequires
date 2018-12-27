@@ -2,6 +2,5 @@
 clr-init
 libvirt
 linux-oracle
-mariadb
 pciutils
 sysstat

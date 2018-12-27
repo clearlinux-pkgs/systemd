@@ -1,0 +1,19 @@
+Audit by default is pretty expensive; leave it off by default
+
+The admin can turn it on using normal audit tools
+
+--- systemd-239/src/journal/journald-audit.c~	2018-06-22 11:11:49.000000000 +0000
++++ systemd-239/src/journal/journald-audit.c	2018-12-27 00:40:00.453801075 +0000
+@@ -536,10 +536,11 @@
+         if (r < 0)
+                 return log_error_errno(r, "Failed to add audit fd to event loop: %m");
+ 
++#if 0
+         /* We are listening now, try to enable audit */
+         r = enable_audit(s->audit_fd, true);
+         if (r < 0)
+                 log_warning_errno(r, "Failed to issue audit enable call: %m");
+-
++#endif
+         return 0;
+ }
