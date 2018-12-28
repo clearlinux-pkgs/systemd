@@ -33,6 +33,7 @@
 /usr/lib/udev/mtd_probe
 /usr/lib/udev/rules.d/60-cdrom_id.rules
 /usr/lib/udev/rules.d/60-persistent-alsa.rules
+/usr/lib/udev/rules.d/60-persistent-storage.rules
 /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
 /usr/lib/udev/rules.d/60-persistent-v4l.rules
 /usr/lib/udev/rules.d/70-joystick.rules

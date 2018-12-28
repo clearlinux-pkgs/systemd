@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 211
+Release  : 212
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -315,7 +315,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1545871526
+export SOURCE_DATE_EPOCH=1545956218
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -631,6 +631,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 %exclude /usr/lib/udev/rules.d/60-cdrom_id.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-alsa.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
+%exclude /usr/lib/udev/rules.d/60-persistent-storage.rules
 %exclude /usr/lib/udev/rules.d/60-persistent-v4l.rules
 %exclude /usr/lib/udev/rules.d/70-joystick.rules
 %exclude /usr/lib/udev/rules.d/75-probe_mtd.rules
@@ -654,7 +655,6 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/rules.d/60-evdev.rules
 /usr/lib/udev/rules.d/60-input-id.rules
 /usr/lib/udev/rules.d/60-persistent-input.rules
-/usr/lib/udev/rules.d/60-persistent-storage.rules
 /usr/lib/udev/rules.d/60-sensor.rules
 /usr/lib/udev/rules.d/60-serial.rules
 /usr/lib/udev/rules.d/64-btrfs.rules
@@ -1324,6 +1324,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/udev/rules.d/60-cdrom_id.rules
 /usr/lib/udev/rules.d/60-persistent-alsa.rules
 /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
+/usr/lib/udev/rules.d/60-persistent-storage.rules
 /usr/lib/udev/rules.d/60-persistent-v4l.rules
 /usr/lib/udev/rules.d/70-joystick.rules
 /usr/lib/udev/rules.d/75-probe_mtd.rules
