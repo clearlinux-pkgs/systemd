@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 213
+Release  : 214
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -121,11 +121,16 @@ Patch44: cve-2018-15686.patch
 Patch45: CVE-2018-15688.patch
 Patch46: CVE-2018-6954_2.patch
 Patch47: no-audit-by-default.patch
+Patch48: no-xz-for-libsystemd.patch
 
 %description
-systemd System and Service Manager
-DETAILS:
-http://0pointer.de/blog/projects/systemd.html
+# systemd - System and Service Manager
+<a href="https://in.waw.pl/systemd-github-state/systemd-systemd-issues.svg"><img align="right" src="https://in.waw.pl/systemd-github-state/systemd-systemd-issues-small.svg" alt="Count of open issues over time"></a>
+<a href="https://in.waw.pl/systemd-github-state/systemd-systemd-pull-requests.svg"><img align="right" src="https://in.waw.pl/systemd-github-state/systemd-systemd-pull-requests-small.svg" alt="Count of open pull requests over time"></a>
+[![Build Status](https://semaphoreci.com/api/v1/projects/28a5a3ca-3c56-4078-8b5e-7ed6ef912e14/443470/shields_badge.svg)](https://semaphoreci.com/systemd/systemd)<br/>
+[![Coverity Scan Status](https://scan.coverity.com/projects/350/badge.svg)](https://scan.coverity.com/projects/350)<br/>
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1369/badge)](https://bestpractices.coreinfrastructure.org/projects/1369)<br/>
+[![Build Status](https://travis-ci.org/systemd/systemd.svg?branch=master)](https://travis-ci.org/systemd/systemd)
 
 %package autostart
 Summary: autostart components for the systemd package.
@@ -306,6 +311,7 @@ services components for the systemd package.
 %patch45 -p1
 %patch46 -p1
 %patch47 -p1
+%patch48 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -315,7 +321,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546214491
+export SOURCE_DATE_EPOCH=1546465898
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
