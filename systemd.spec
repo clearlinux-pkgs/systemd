@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 219
+Release  : 220
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -122,6 +122,7 @@ Patch45: CVE-2018-15688.patch
 Patch46: CVE-2018-6954_2.patch
 Patch47: no-audit-by-default.patch
 Patch48: no-xz-for-libsystemd.patch
+Patch49: mq_getattr.patch
 
 %description
 # systemd - System and Service Manager
@@ -312,6 +313,7 @@ services components for the systemd package.
 %patch46 -p1
 %patch47 -p1
 %patch48 -p1
+%patch49 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -321,7 +323,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546612829
+export SOURCE_DATE_EPOCH=1546616604
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -367,7 +369,7 @@ popd
 %install
 ## install_prepend content
 pushd  builddir
-gcc  -o libsystemd.so.0.23.0  -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,libsystemd.so.0 -Wl,--whole-archive src/libsystemd/libsystemd_static.a src/journal/libjournal-client.a -Wl,--no-whole-archive -Wl,-z,relro -Wl,-z,now -pie -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used src/basic/libbasic.a src/basic/libbasic-gcrypt.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-239/src/libsystemd/libsystemd.sym -lrt /usr/lib64/liblzma.so //usr/lib64/libcap.a /usr/lib64/libblkid.a /usr/lib64/libmount.a -lgcrypt -lrt -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/basic' -Wl,-rpath-link,/builddir/build/BUILD/systemd-239/builddir/src/basic
+gcc  -o libsystemd.so.0.23.0  -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,libsystemd.so.0 -Wl,--whole-archive src/libsystemd/libsystemd_static.a src/journal/libjournal-client.a -Wl,--no-whole-archive -Wl,-z,relro -Wl,-z,now -pie -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used src/basic/libbasic.a src/basic/libbasic-gcrypt.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-239/src/libsystemd/libsystemd.sym /usr/lib64/liblzma.so //usr/lib64/libcap.a /usr/lib64/libblkid.a /usr/lib64/libmount.a -lgcrypt -lrt -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/basic' -Wl,-rpath-link,/builddir/build/BUILD/systemd-239/builddir/src/basic
 popd
 ## install_prepend end
 mkdir -p %{buildroot}/usr/share/package-licenses/systemd
