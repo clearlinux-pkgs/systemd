@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 221
+Release  : 222
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -323,7 +323,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546616975
+export SOURCE_DATE_EPOCH=1546619790
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -370,6 +370,7 @@ popd
 ## install_prepend content
 pushd  builddir
 gcc  -o libsystemd.so.0.23.0  -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,libsystemd.so.0 -Wl,--whole-archive src/libsystemd/libsystemd_static.a src/journal/libjournal-client.a -Wl,--no-whole-archive -Wl,-z,relro -Wl,-z,now -pie -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used src/basic/libbasic.a src/basic/libbasic-gcrypt.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-239/src/libsystemd/libsystemd.sym /usr/lib64/liblzma.so //usr/lib64/libcap.a /usr/lib64/libblkid.a /usr/lib64/libmount.a -lgcrypt  -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/basic' -Wl,-rpath-link,/builddir/build/BUILD/systemd-239/builddir/src/basic
+gcc  -o pam_systemd.so 'pam_systemd@sha/src_login_pam_systemd.c.o' -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,pam_systemd.so -Wl,-z,relro -Wl,-z,now -pie -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used src/libsystemd/libsystemd_static.a src/basic/libbasic.a src/shared/libsystemd-shared-239.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-239/src/login/pam_systemd.sym -lpam -lpam_misc -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/libsystemd:$ORIGIN/src/basic:$ORIGIN/src/shared' -Wl,-rpath-link,/builddir/build/BUILD/systemd-239/builddir/src/libsystemd:/builddir/build/BUILD/systemd-239/builddir/src/basic:/builddir/build/BUILD/systemd-239/builddir/src/shared
 popd
 ## install_prepend end
 mkdir -p %{buildroot}/usr/share/package-licenses/systemd
