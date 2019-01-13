@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 222
+Release  : 223
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -123,6 +123,7 @@ Patch46: CVE-2018-6954_2.patch
 Patch47: no-audit-by-default.patch
 Patch48: no-xz-for-libsystemd.patch
 Patch49: mq_getattr.patch
+Patch50: systemd-stack-1.patch
 
 %description
 # systemd - System and Service Manager
@@ -314,6 +315,7 @@ services components for the systemd package.
 %patch47 -p1
 %patch48 -p1
 %patch49 -p1
+%patch50 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -323,7 +325,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546619790
+export SOURCE_DATE_EPOCH=1547394780
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS

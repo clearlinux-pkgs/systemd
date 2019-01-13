@@ -47,3 +47,4 @@ CVE-2018-6954_2.patch
 no-audit-by-default.patch
 no-xz-for-libsystemd.patch
 mq_getattr.patch
+systemd-stack-1.patch
