@@ -48,3 +48,5 @@ no-audit-by-default.patch
 no-xz-for-libsystemd.patch
 mq_getattr.patch
 systemd-stack-1.patch
+CVE-2018-16864.patch
+CVE-2018-16866.patch
