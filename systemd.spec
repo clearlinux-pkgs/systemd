@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 224
+Release  : 225
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
