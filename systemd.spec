@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 239
-Release  : 225
+Release  : 226
 URL      : https://github.com/systemd/systemd/archive/v239.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v239.tar.gz
 Summary  : systemd Library
@@ -116,16 +116,17 @@ Patch39: 0039-build-sys-Detect-whether-struct-statx-is-defined-in-.patch
 Patch40: 0040-meson-rename-Ddebug-to-Ddebug-extra.patch
 Patch41: 0041-Make-bzip2-an-optional-dependency-for-systemd-import.patch
 Patch42: 0042-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
-Patch43: cve-2018-15687.patch
-Patch44: cve-2018-15686.patch
-Patch45: CVE-2018-15688.patch
-Patch46: CVE-2018-6954_2.patch
-Patch47: no-audit-by-default.patch
-Patch48: no-xz-for-libsystemd.patch
-Patch49: mq_getattr.patch
-Patch50: systemd-stack-1.patch
-Patch51: CVE-2018-16864.patch
-Patch52: CVE-2018-16866.patch
+Patch43: 0043-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
+Patch44: cve-2018-15687.patch
+Patch45: cve-2018-15686.patch
+Patch46: CVE-2018-15688.patch
+Patch47: CVE-2018-6954_2.patch
+Patch48: no-audit-by-default.patch
+Patch49: no-xz-for-libsystemd.patch
+Patch50: mq_getattr.patch
+Patch51: systemd-stack-1.patch
+Patch52: CVE-2018-16864.patch
+Patch53: CVE-2018-16866.patch
 
 %description
 systemd System and Service Manager
@@ -316,6 +317,7 @@ services components for the systemd package.
 %patch50 -p1
 %patch51 -p1
 %patch52 -p1
+%patch53 -p1
 pushd ..
 cp -a systemd-239 build32
 popd
@@ -325,7 +327,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1547669313
+export SOURCE_DATE_EPOCH=1551124879
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -341,7 +343,7 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --b
 -Dgcrypt=true \
 -Dlz4=false \
 -Ddefault-kill-user-processes=false \
--Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com"  builddir
+-Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com"  builddir
 ninja -v -C builddir
 pushd ../build32
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -357,7 +359,7 @@ meson --libdir=/usr/lib32 --prefix /usr --buildtype=plain -Ddefault-hierarchy=le
 -Dgcrypt=true \
 -Dlz4=false \
 -Ddefault-kill-user-processes=false \
--Dntp-servers="_gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" -Dlibcryptsetup=false \
+-Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \
