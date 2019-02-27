@@ -1,7 +1,7 @@
-From f378e6f14c7306dbe10a7c73ac1ac2a0515e5130 Mon Sep 17 00:00:00 2001
+From 821d876eecc44ad73c4ba3a0d8be3b93a02aab7e Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:33:26 -0700
-Subject: [PATCH] skip not-present ACPI devices
+Subject: [PATCH 29/42] skip not-present ACPI devices
 
 Xen and older Qemu expose a boatload (253) ACPI devices to the guest
 that are not present; these show up in sysfs but there's nothing
@@ -14,10 +14,10 @@ boot time
  1 file changed, 20 insertions(+)
 
 diff --git a/src/libsystemd/sd-device/device-enumerator.c b/src/libsystemd/sd-device/device-enumerator.c
-index ee71fa881..7fda4f492 100644
+index 20529aafd3..c1b0909507 100644
 --- a/src/libsystemd/sd-device/device-enumerator.c
 +++ b/src/libsystemd/sd-device/device-enumerator.c
-@@ -446,6 +446,23 @@ static bool match_sysname(sd_device_enumerator *enumerator, const char *sysname)
+@@ -434,6 +434,23 @@ static bool match_sysname(sd_device_enumerator *enumerator, const char *sysname)
          return false;
  }
  
@@ -41,9 +41,9 @@ index ee71fa881..7fda4f492 100644
  static int enumerator_scan_dir_and_add_devices(sd_device_enumerator *enumerator, const char *basedir, const char *subdir1, const char *subdir2) {
          _cleanup_closedir_ DIR *dir = NULL;
          char *path;
-@@ -481,6 +498,9 @@ static int enumerator_scan_dir_and_add_devices(sd_device_enumerator *enumerator,
+@@ -468,6 +485,9 @@ static int enumerator_scan_dir_and_add_devices(sd_device_enumerator *enumerator,
  
-                 (void)sprintf(syspath, "%s%s", path, dent->d_name);
+                 (void) sprintf(syspath, "%s%s", path, dent->d_name);
  
 +                if (acpi_status_disabled(syspath))
 +                        continue;
@@ -52,5 +52,5 @@ index ee71fa881..7fda4f492 100644
                  if (k < 0) {
                          if (k != -ENODEV)
 -- 
-2.19.0
+2.20.1
 

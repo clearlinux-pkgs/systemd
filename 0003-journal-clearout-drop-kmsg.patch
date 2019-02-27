@@ -1,17 +1,17 @@
-From 700fd2940eb028d7e5174bfe281af3462aa06244 Mon Sep 17 00:00:00 2001
+From be06e2a8cdd594e4f7becd22b1b011c62287dfb7 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:25:41 +0100
-Subject: [PATCH] journal: clearout & drop kmsg.
+Subject: [PATCH 03/42] journal: clearout & drop kmsg.
 
 ---
  src/journal/journald-kmsg.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
 diff --git a/src/journal/journald-kmsg.c b/src/journal/journald-kmsg.c
-index e9aff1316..97531c4a1 100644
+index ce82102eed..b7546129ff 100644
 --- a/src/journal/journald-kmsg.c
 +++ b/src/journal/journald-kmsg.c
-@@ -375,6 +375,7 @@ static int dispatch_dev_kmsg(sd_event_source *es, int fd, uint32_t revents, void
+@@ -366,6 +366,7 @@ static int dispatch_dev_kmsg(sd_event_source *es, int fd, uint32_t revents, void
  int server_open_dev_kmsg(Server *s) {
          mode_t mode;
          int r;
@@ -19,7 +19,7 @@ index e9aff1316..97531c4a1 100644
  
          assert(s);
  
-@@ -393,6 +394,14 @@ int server_open_dev_kmsg(Server *s) {
+@@ -384,6 +385,14 @@ int server_open_dev_kmsg(Server *s) {
          if (!s->read_kmsg)
                  return 0;
  
@@ -35,5 +35,5 @@ index e9aff1316..97531c4a1 100644
          if (r < 0) {
  
 -- 
-2.19.0
+2.20.1
 

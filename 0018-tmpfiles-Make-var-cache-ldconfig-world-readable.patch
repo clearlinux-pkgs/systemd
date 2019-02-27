@@ -1,7 +1,7 @@
-From c8b536308e70e8eb54db46784f00dba8015c7c2d Mon Sep 17 00:00:00 2001
+From 228491ae0ef9f570e0bc687abc9557f45b4534ce Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Fri, 27 Nov 2015 16:30:12 +0000
-Subject: [PATCH] tmpfiles: Make /var/cache/ldconfig world readable
+Subject: [PATCH 18/42] tmpfiles: Make /var/cache/ldconfig world readable
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/tmpfiles.d/var.conf.m4 b/tmpfiles.d/var.conf.m4
-index 0e2c50966..ea51397a4 100644
+index 0e2c50966d..ea51397a46 100644
 --- a/tmpfiles.d/var.conf.m4
 +++ b/tmpfiles.d/var.conf.m4
 @@ -19,6 +19,8 @@ f /var/log/lastlog 0664 root utmp -
@@ -22,5 +22,5 @@ index 0e2c50966..ea51397a4 100644
  d /var/lib 0755 - - -
  
 -- 
-2.19.0
+2.20.1
 

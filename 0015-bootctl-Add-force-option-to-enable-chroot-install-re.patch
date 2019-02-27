@@ -1,8 +1,8 @@
-From fa28bc90efa36f48f2a0f2baf5ff2b9148184d32 Mon Sep 17 00:00:00 2001
+From 07a569ae7e149664f18754ac224a504d533d449f Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH] bootctl: Add --force option to enable chroot install/remove
- of sd-boot
+Subject: [PATCH 15/42] bootctl: Add --force option to enable chroot
+ install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of
 the systemd EFI boot binaries and supporting assets, without requiring
@@ -26,36 +26,36 @@ configuration and layout.
  1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 2832a39dd..61fb0d7d5 100644
+index dc2fd96628..0cefa810a8 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -44,6 +44,8 @@ static char *arg_path = NULL;
- static bool arg_print_path = false;
- static bool arg_touch_variables = true;
+@@ -52,6 +52,8 @@ static PagerFlags arg_pager_flags = 0;
+ 
+ STATIC_DESTRUCTOR_REGISTER(arg_path, freep);
  
 +static bool arg_force = false;
 +
  static int acquire_esp(
                  bool unprivileged_mode,
                  uint32_t *ret_part,
-@@ -852,6 +854,7 @@ static int parse_argv(int argc, char *argv[]) {
-                 ARG_PATH = 0x100,
+@@ -886,6 +888,7 @@ static int parse_argv(int argc, char *argv[]) {
                  ARG_VERSION,
                  ARG_NO_VARIABLES,
+                 ARG_NO_PAGER,
 +                ARG_FORCE,
          };
  
          static const struct option options[] = {
-@@ -860,6 +863,7 @@ static int parse_argv(int argc, char *argv[]) {
-                 { "path",         required_argument, NULL, ARG_PATH         },
+@@ -895,6 +898,7 @@ static int parse_argv(int argc, char *argv[]) {
                  { "print-path",   no_argument,       NULL, 'p'              },
                  { "no-variables", no_argument,       NULL, ARG_NO_VARIABLES },
+                 { "no-pager",     no_argument,       NULL, ARG_NO_PAGER     },
 +                { "force",        no_argument,       NULL, ARG_FORCE        },
-                 { NULL,           0,                 NULL, 0                }
+                 {}
          };
  
-@@ -892,6 +896,10 @@ static int parse_argv(int argc, char *argv[]) {
-                         arg_touch_variables = false;
+@@ -931,6 +935,10 @@ static int parse_argv(int argc, char *argv[]) {
+                         arg_pager_flags |= PAGER_DISABLE;
                          break;
  
 +                case ARG_FORCE:
@@ -65,18 +65,18 @@ index 2832a39dd..61fb0d7d5 100644
                  case '?':
                          return -EINVAL;
  
-@@ -1093,7 +1101,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
-                 }
-         }
+@@ -1158,7 +1166,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+ 
+         (void) sync_esp();
  
 -        if (arg_touch_variables)
 +        if (arg_touch_variables && !arg_force)
                  r = install_variables(arg_path,
                                        part, pstart, psize, uuid,
                                        "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
-@@ -1112,7 +1120,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+@@ -1179,7 +1187,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
  
-         r = remove_binaries(arg_path);
+         (void) sync_esp();
  
 -        if (arg_touch_variables) {
 +        if (arg_touch_variables && !arg_force) {
@@ -84,5 +84,5 @@ index 2832a39dd..61fb0d7d5 100644
  
                  q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
 -- 
-2.19.0
+2.20.1
 

@@ -1,17 +1,17 @@
-From bb60269c650db3197cb514bc3ee1a3fb189da8de Mon Sep 17 00:00:00 2001
+From 895f8ea7e97994d8e96ed8a0f9a73e1e001d66b0 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH] Ship default services in system unit dir.
+Subject: [PATCH 14/42] Ship default services in system unit dir.
 
 ---
  units/meson.build | 16 ++++++++--------
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/units/meson.build b/units/meson.build
-index 545b63314..4d9163226 100644
+index cc75751c11..1ed0342638 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -51,7 +51,7 @@ units = [
+@@ -52,7 +52,7 @@ units = [
           join_paths(pkgsysconfdir, 'system/multi-user.target.wants/')],
          ['remote-fs-pre.target',                ''],
          ['remote-fs.target',                    '',
@@ -20,16 +20,16 @@ index 545b63314..4d9163226 100644
          ['rescue.target',                       '',
           'runlevel1.target'],
          ['rpcbind.target',                      ''],
-@@ -86,7 +86,7 @@ units = [
+@@ -88,7 +88,7 @@ units = [
          ['systemd-journald.socket',             '',
           'sockets.target.wants/'],
          ['systemd-networkd.socket',             'ENABLE_NETWORKD',
 -         join_paths(pkgsysconfdir, 'system/sockets.target.wants/')],
 +         'sockets.target.wants/'],
+         ['systemd-poweroff.service',             ''],
+         ['systemd-reboot.service',               ''],
          ['systemd-rfkill.socket',               'ENABLE_RFKILL'],
-         ['systemd-tmpfiles-clean.timer',        '',
-          'timers.target.wants/'],
-@@ -161,10 +161,10 @@ in_units = [
+@@ -166,10 +166,10 @@ in_units = [
          ['systemd-modules-load.service',         'HAVE_KMOD',
           'sysinit.target.wants/'],
          ['systemd-networkd.service',             'ENABLE_NETWORKD',
@@ -43,7 +43,7 @@ index 545b63314..4d9163226 100644
          ['systemd-nspawn@.service',              ''],
          ['systemd-portabled.service',            'ENABLE_PORTABLED',
           'dbus-org.freedesktop.portable1.service'],
-@@ -176,8 +176,8 @@ in_units = [
+@@ -179,8 +179,8 @@ in_units = [
          ['systemd-remount-fs.service',           '',
           'local-fs.target.wants/'],
          ['systemd-resolved.service',             'ENABLE_RESOLVE',
@@ -54,7 +54,7 @@ index 545b63314..4d9163226 100644
          ['systemd-rfkill.service',               'ENABLE_RFKILL'],
          ['systemd-suspend.service',              ''],
          ['systemd-sysctl.service',               '',
-@@ -187,7 +187,7 @@ in_units = [
+@@ -190,7 +190,7 @@ in_units = [
          ['systemd-timedated.service',            'ENABLE_TIMEDATED',
           'dbus-org.freedesktop.timedate1.service'],
          ['systemd-timesyncd.service',            'ENABLE_TIMESYNCD',
@@ -64,5 +64,5 @@ index 545b63314..4d9163226 100644
          ['systemd-tmpfiles-clean.service',       'ENABLE_TMPFILES'],
          ['systemd-tmpfiles-setup-dev.service',   'ENABLE_TMPFILES',
 -- 
-2.19.0
+2.20.1
 

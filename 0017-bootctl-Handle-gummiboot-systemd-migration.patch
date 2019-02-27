@@ -1,7 +1,7 @@
-From 2841eeb29ea3cb7d8d2418e866236a831e6e7aaa Mon Sep 17 00:00:00 2001
+From a7baceda337aac51b269ead7edf09e25599c2680 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 14 Oct 2015 17:40:56 +0100
-Subject: [PATCH] bootctl: Handle gummiboot -> systemd migration
+Subject: [PATCH 17/42] bootctl: Handle gummiboot -> systemd migration
 
 On Linux systems we may encounter cases where the legacy gummiboot binary
 is still present on the ESP. In these cases a `bootctl install` or even
@@ -12,26 +12,31 @@ To counteract this upgrade problem, we will always continue to replace the
 legacy gummiboot (<=48) with systemd's merged tree, to provide a valid upgrade
 route for distributions.
 ---
- src/boot/bootctl.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ src/boot/bootctl.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 61fb0d7d5..bfdacd4ff 100644
+index 0cefa810a8..9cd5e16bcd 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -361,8 +361,10 @@ static int version_check(int fd_from, const char *from, int fd_to, const char *t
+@@ -383,10 +383,13 @@ static int version_check(int fd_from, const char *from, int fd_to, const char *t
+         r = get_file_version(fd_to, &b);
          if (r < 0)
                  return r;
-         if (r == 0 || compare_product(a, b) != 0) {
--                log_notice("Skipping \"%s\", since it's owned by another boot loader.", to);
--                return -EEXIST;
-+                if (!compare_product(b, "gummiboot")) {
-+                        log_notice("Skipping \"%s\", since it's owned by another boot loader.", to);
-+                        return -EEXIST;
-+                }
-         }
+-        if (r == 0 || compare_product(a, b) != 0)
+-                return log_notice_errno(SYNTHETIC_ERRNO(EEXIST),
+-                                        "Skipping \"%s\", since it's owned by another boot loader.",
+-                                        to);
++
++        if (r == 0 || compare_product(a, b) != 0) {
++                if (!compare_product(b, "gummiboot"))
++                        return log_notice_errno(SYNTHETIC_ERRNO(EEXIST),
++                                                "Skipping \"%s\", since it's owned by another boot loader.",
++                                                to);
++        }
  
          if (compare_version(a, b) < 0) {
+                 log_warning("Skipping \"%s\", since a newer boot loader version exists already.", to);
 -- 
-2.19.0
+2.20.1
 

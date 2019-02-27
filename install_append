@@ -30,6 +30,8 @@ rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-upda
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-journal-catalog-update.service
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.service
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
+rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup-dev.service
+rm -f %{buildroot}/usr/lib/systemd/system/sockets.target.wants/systemd-journald-audit.socket
 
 # Do not ship broken symlinks
 rm -f %{buildroot}/etc/xdg/systemd/user

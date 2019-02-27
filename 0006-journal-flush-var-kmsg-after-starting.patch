@@ -1,14 +1,14 @@
-From 5ab9702b8364c026f20077b6e61c3da8f6c64a4d Mon Sep 17 00:00:00 2001
+From c9118c18b57acc9650ee0bf3173905bfddad0abc Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
-Subject: [PATCH] journal: flush var/kmsg after starting.
+Subject: [PATCH 06/42] journal: flush var/kmsg after starting.
 
 ---
  src/journal/journald.c | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/src/journal/journald.c b/src/journal/journald.c
-index 5e7b1dcb4..e7122ce6b 100644
+index 5e7b1dcb4a..e7122ce6b4 100644
 --- a/src/journal/journald.c
 +++ b/src/journal/journald.c
 @@ -37,8 +37,6 @@ int main(int argc, char *argv[]) {
@@ -31,5 +31,5 @@ index 5e7b1dcb4..e7122ce6b 100644
           * journal so entries from the runtime journals are ordered
           * before this message. See #4190 for some details. */
 -- 
-2.19.0
+2.20.1
 

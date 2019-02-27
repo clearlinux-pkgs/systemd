@@ -1,27 +1,33 @@
-From 2fd1bd15440eab0da0b94d6837d3b61ad5521627 Mon Sep 17 00:00:00 2001
+From e9ad78d7e2862b8f7f6a73761803f74287d7b2a6 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:32:54 -0700
-Subject: [PATCH] udev: log also device path.
+Subject: [PATCH 28/42] udev: log also device path.
 
 ---
- src/udev/udevd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ src/udev/udevd.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/src/udev/udevd.c b/src/udev/udevd.c
-index 34f6a9550..89b2063ba 100644
+index 0303f36b4f..944c0cd889 100644
 --- a/src/udev/udevd.c
 +++ b/src/udev/udevd.c
-@@ -605,8 +605,8 @@ static int event_queue_insert(Manager *manager, struct udev_device *dev) {
-         event->is_block = streq("block", udev_device_get_subsystem(dev));
-         event->ifindex = udev_device_get_ifindex(dev);
+@@ -647,7 +647,15 @@ static int event_queue_insert(Manager *manager, sd_device *dev) {
  
--        log_debug("seq %llu queued, '%s' '%s'", udev_device_get_seqnum(dev),
--             udev_device_get_action(dev), udev_device_get_subsystem(dev));
-+        log_debug("seq %llu queued, '%s' '%s' '%s'", udev_device_get_seqnum(dev),
-+             udev_device_get_action(dev), udev_device_get_subsystem(dev), udev_device_get_devpath(dev));
+         LIST_APPEND(event, manager->events, event);
  
-         event->state = EVENT_QUEUED;
+-        log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s) is queued", seqnum, action);
++        if (DEBUG_LOGGING) {
++                const char* devpath;
++                if (sd_device_get_property_value(dev, "ACTION", &val) < 0)
++                        val = NULL;
++                if (sd_device_get_devpath(event->dev, &devpath) < 0)
++                        devpath = NULL;
++
++                log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s, PATH=%s) is queued", seqnum, strnull(val), strnull(devpath));
++        }
  
+         return 0;
+ }
 -- 
-2.19.0
+2.20.1
 

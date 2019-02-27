@@ -6,3 +6,4 @@
 -Dremote=false
 -Dxz=false
 -Dgcrypt=false
+-Dopenssl=false

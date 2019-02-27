@@ -1,24 +1,30 @@
-From 358d102e0d782dad261d8eda0e56b54eeb58fe93 Mon Sep 17 00:00:00 2001
+From 2a4777ba32cbff5b9168c98e5e4f0bc9d0e6e2eb Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
-Subject: [PATCH] core: do not apply presets.
+Subject: [PATCH 11/42] core: do not apply presets.
 
 ---
- src/core/manager.c | 1 -
- 1 file changed, 1 deletion(-)
+ src/core/manager.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/src/core/manager.c b/src/core/manager.c
-index 930df4e23..53b392830 100644
+index 6086531bab..dfb6ba5642 100644
 --- a/src/core/manager.c
 +++ b/src/core/manager.c
-@@ -1564,7 +1564,6 @@ int manager_startup(Manager *m, FILE *serialization, FDSet *fds) {
+@@ -1651,12 +1651,11 @@ int manager_startup(Manager *m, FILE *serialization, FDSet *fds) {
          if (r < 0)
                  return r;
  
 -        manager_preset_all(m);
-         lookup_paths_reduce(&m->lookup_paths);
+-
+         r = lookup_paths_reduce(&m->lookup_paths);
+         if (r < 0)
+                 log_warning_errno(r, "Failed ot reduce unit file paths, ignoring: %m");
+ 
++        lookup_paths_reduce(&m->lookup_paths);
          manager_build_unit_path_cache(m);
  
+         {
 -- 
-2.19.0
+2.20.1
 

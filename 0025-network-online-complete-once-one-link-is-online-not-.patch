@@ -1,17 +1,18 @@
-From 7d4c86cfae417928667cedb1744f2733b68a2378 Mon Sep 17 00:00:00 2001
+From 79e796c1daeb731a2fd5807189cc9bfe1252deaf Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:15:52 -0700
-Subject: [PATCH] network-online: complete once one link is online, not all.
+Subject: [PATCH 25/42] network-online: complete once one link is online, not
+ all.
 
 ---
  src/network/wait-online/manager.c | 2 --
  1 file changed, 2 deletions(-)
 
 diff --git a/src/network/wait-online/manager.c b/src/network/wait-online/manager.c
-index ccda93bab..824f292c3 100644
+index 67218b6db3..776b886a73 100644
 --- a/src/network/wait-online/manager.c
 +++ b/src/network/wait-online/manager.c
-@@ -57,13 +57,11 @@ bool manager_all_configured(Manager *m) {
+@@ -58,13 +58,11 @@ bool manager_all_configured(Manager *m) {
                  if (!l->state) {
                          log_debug("link %s has not yet been processed by udev",
                                    l->ifname);
@@ -26,5 +27,5 @@ index ccda93bab..824f292c3 100644
  
                  if (l->operational_state &&
 -- 
-2.19.0
+2.20.1
 

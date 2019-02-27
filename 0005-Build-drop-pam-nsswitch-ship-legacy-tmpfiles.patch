@@ -1,20 +1,20 @@
-From 958f54d3f95cc1b1ba14a84b203240a49b6384cc Mon Sep 17 00:00:00 2001
+From 714db07c040dfd7e1b15b10b90d52f6e578b737f Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 10:02:14 -0700
-Subject: [PATCH] Build: drop pam/nsswitch, ship legacy tmpfiles.
+Subject: [PATCH 05/42] Build: drop pam/nsswitch, ship legacy tmpfiles.
 
 Adapted from Makefile.am patch by Dimitri John Ledkov.
 ---
- meson.build            | 3 ---
+ meson.build            | 5 ++---
  tmpfiles.d/etc.conf.m4 | 6 ------
  tmpfiles.d/meson.build | 2 +-
- 3 files changed, 1 insertion(+), 10 deletions(-)
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 04331dd41..c3260b2ba 100644
+index 56c98b9c1b..0123762851 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -130,7 +130,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
+@@ -140,7 +140,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
  udevhwdbdir = join_paths(udevlibexecdir, 'hwdb.d')
  catalogdir = join_paths(prefixdir, 'lib/systemd/catalog')
  kernelinstalldir = join_paths(prefixdir, 'lib/kernel/install.d')
@@ -22,17 +22,19 @@ index 04331dd41..c3260b2ba 100644
  bootlibdir = join_paths(prefixdir, 'lib/systemd/boot/efi')
  testsdir = join_paths(prefixdir, 'lib/systemd/tests')
  systemdstatedir = join_paths(localstatedir, 'lib/systemd')
-@@ -2688,8 +2687,6 @@ subdir('doc/var-log')
+@@ -2928,8 +2927,8 @@ subdir('shell-completion/zsh')
+ subdir('docs/sysvinit')
+ subdir('docs/var-log')
  
- # FIXME: figure out if the warning is true:
- # https://github.com/mesonbuild/meson/wiki/Reference-manual#install_subdir
 -install_subdir('factory/etc',
 -               install_dir : factorydir)
- 
++# FIXME: figure out if the warning is true:
++# https://github.com/mesonbuild/meson/wiki/Reference-manual#install_subdir
  
  install_data('xorg/50-systemd-user.sh',
+              install_dir : xinitrcdir)
 diff --git a/tmpfiles.d/etc.conf.m4 b/tmpfiles.d/etc.conf.m4
-index df8d42101..ad55479bc 100644
+index df8d42101c..ad55479bc5 100644
 --- a/tmpfiles.d/etc.conf.m4
 +++ b/tmpfiles.d/etc.conf.m4
 @@ -7,8 +7,6 @@
@@ -53,7 +55,7 @@ index df8d42101..ad55479bc 100644
 -C /etc/pam.d - - - -
 -)m4_dnl
 diff --git a/tmpfiles.d/meson.build b/tmpfiles.d/meson.build
-index 35eea2be5..0a246fef8 100644
+index 35eea2be5c..0a246fef8b 100644
 --- a/tmpfiles.d/meson.build
 +++ b/tmpfiles.d/meson.build
 @@ -9,7 +9,7 @@ tmpfiles = [['home.conf',            ''],
@@ -66,5 +68,5 @@ index 35eea2be5..0a246fef8 100644
  
  foreach pair : tmpfiles
 -- 
-2.19.0
+2.20.1
 

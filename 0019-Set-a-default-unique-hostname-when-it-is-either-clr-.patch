@@ -1,8 +1,8 @@
-From 0fff0a99a334842ccb42af94ffea990fa2392db0 Mon Sep 17 00:00:00 2001
+From 1342653fad771598b3476a666be39374516bc8a7 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
-Subject: [PATCH] Set a default, unique, hostname, when it is either 'clr' or
- 'localhost'
+Subject: [PATCH 19/42] Set a default, unique, hostname, when it is either
+ 'clr' or 'localhost'
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
@@ -12,7 +12,7 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  3 files changed, 43 insertions(+)
 
 diff --git a/src/core/hostname-setup.c b/src/core/hostname-setup.c
-index 83cce8813..981d9e443 100644
+index 83cce88131..981d9e443b 100644
 --- a/src/core/hostname-setup.c
 +++ b/src/core/hostname-setup.c
 @@ -3,6 +3,9 @@
@@ -67,7 +67,7 @@ index 83cce8813..981d9e443 100644
 +        return 0;
 +}
 diff --git a/src/core/hostname-setup.h b/src/core/hostname-setup.h
-index dc7b9a626..e62793e5c 100644
+index dc7b9a6262..e62793e5c5 100644
 --- a/src/core/hostname-setup.h
 +++ b/src/core/hostname-setup.h
 @@ -2,3 +2,5 @@
@@ -77,17 +77,17 @@ index dc7b9a626..e62793e5c 100644
 +
 +int set_first_hostname(void);
 diff --git a/src/core/main.c b/src/core/main.c
-index 44dd8348b..f0f2f78b3 100644
+index 561f956f0a..de0b5b9f78 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -1825,6 +1825,7 @@ static int initialize_runtime(
+@@ -2033,6 +2033,7 @@ static int initialize_runtime(
                          status_welcome();
                          hostname_setup();
                          machine_id_setup(NULL, arg_machine_id, NULL);
 +                        set_first_hostname();
                          loopback_setup();
                          bump_unix_max_dgram_qlen();
-                         test_usr();
+                         bump_file_max_and_nr_open();
 -- 
-2.19.0
+2.20.1
 

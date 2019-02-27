@@ -1,17 +1,17 @@
-From 06372a72309235636f619e1b31aeef86414895fd Mon Sep 17 00:00:00 2001
+From cbefa92d7fd0251c14767c97f629081ac94d9b06 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:44 +0100
-Subject: [PATCH] locale-setup: set default locale to a unicode one.
+Subject: [PATCH 12/42] locale-setup: set default locale to a unicode one.
 
 ---
- src/core/locale-setup.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ src/core/locale-setup.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/src/core/locale-setup.c b/src/core/locale-setup.c
-index c14523fee..bc80398a5 100644
+index aa4a89c17a..186fa12f05 100644
 --- a/src/core/locale-setup.c
 +++ b/src/core/locale-setup.c
-@@ -64,6 +64,11 @@ int locale_setup(char ***environment) {
+@@ -59,6 +59,12 @@ int locale_setup(char ***environment) {
                          log_warning_errno(r, "Failed to read /etc/locale.conf: %m");
          }
  
@@ -20,9 +20,10 @@ index c14523fee..bc80398a5 100644
 +                variables[VARIABLE_LANG] = strdup("en_US.UTF-8");
 +        }
 +
-         add = NULL;
++        add = NULL;
          for (i = 0; i < _VARIABLE_LC_MAX; i++) {
                  char *s;
+ 
 -- 
-2.19.0
+2.20.1
 
