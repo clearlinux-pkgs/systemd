@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 227
+Release  : 228
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -118,6 +118,7 @@ Patch40: 0040-Do-not-enable-audit-by-default-in-the-journal.patch
 Patch41: 0041-Disable-XZ-support-in-the-journal.patch
 Patch42: 0042-Localize-1-symbol.patch
 Patch43: 0043-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
+Patch44: CVE-2019-6454.patch
 
 %description
 systemd System and Service Manager
@@ -138,7 +139,6 @@ Group: Binaries
 Requires: systemd-data = %{version}-%{release}
 Requires: systemd-config = %{version}-%{release}
 Requires: systemd-license = %{version}-%{release}
-Requires: systemd-man = %{version}-%{release}
 Requires: systemd-services = %{version}-%{release}
 
 %description bin
@@ -299,6 +299,7 @@ services components for the systemd package.
 %patch41 -p1
 %patch42 -p1
 %patch43 -p1
+%patch44 -p1
 pushd ..
 cp -a systemd-241 build32
 popd
@@ -308,7 +309,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1551309263
+export SOURCE_DATE_EPOCH=1551915934
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
