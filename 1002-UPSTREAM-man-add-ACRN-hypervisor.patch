@@ -1,0 +1,43 @@
+From 0f0e30ad9cc8be1140fc43436c71549c2eafeac9 Mon Sep 17 00:00:00 2001
+From: Ross Burton <ross.burton@intel.com>
+Date: Thu, 28 Feb 2019 15:36:50 +0000
+Subject: [PATCH] man: add ACRN hypervisor
+
+---
+ man/systemd-detect-virt.xml | 5 +++++
+ man/systemd.unit.xml        | 3 ++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/man/systemd-detect-virt.xml b/man/systemd-detect-virt.xml
+index e4c2d9fd5f..5c5510eaf2 100644
+--- a/man/systemd-detect-virt.xml
++++ b/man/systemd-detect-virt.xml
+@@ -125,6 +125,11 @@
+             <entry>QNX hypervisor</entry>
+           </row>
+ 
++          <row>
++            <entry><varname>acrn</varname></entry>
++            <entry><ulink url="https://projectacrn.org">ACRN hypervisor</ulink></entry>
++          </row>
++
+           <row>
+             <entry valign="top" morerows="5">Container</entry>
+             <entry><varname>openvz</varname></entry>
+diff --git a/man/systemd.unit.xml b/man/systemd.unit.xml
+index f21f9eae44..82c63e1609 100644
+--- a/man/systemd.unit.xml
++++ b/man/systemd.unit.xml
+@@ -1093,7 +1093,8 @@
+         <varname>lxc-libvirt</varname>,
+         <varname>systemd-nspawn</varname>,
+         <varname>docker</varname>,
+-        <varname>rkt</varname> to test
++        <varname>rkt</varname>,
++        <varname>acrn</varname> to test
+         against a specific implementation, or
+         <varname>private-users</varname> to check whether we are running in a user namespace. See
+         <citerefentry><refentrytitle>systemd-detect-virt</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+-- 
+2.20.1
+

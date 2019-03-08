@@ -42,3 +42,5 @@
 0042-Localize-1-symbol.patch
 0043-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 CVE-2019-6454.patch
+1001-UPSTREAM-virt-detect-the-ACRN-hypervisor.patch
+1002-UPSTREAM-man-add-ACRN-hypervisor.patch
