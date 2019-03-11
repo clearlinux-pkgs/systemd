@@ -43,7 +43,7 @@ index 6b6b32a591..11dfb09c92 100644
 -                r = parse_env_file(NULL, "/etc/locale.conf",
 +                r = parse_env_file(NULL,
 +                                   (etc_conf)?"/etc/locale.conf":
-+                                              "/usr/share/defaults/etc/locale.conf", NEWLINE,
++                                              "/usr/share/defaults/etc/locale.conf",
                                     "LANG",              &c->locale[VARIABLE_LANG],
                                     "LANGUAGE",          &c->locale[VARIABLE_LANGUAGE],
                                     "LC_CTYPE",          &c->locale[VARIABLE_LC_CTYPE],
@@ -85,7 +85,7 @@ index 6b6b32a591..11dfb09c92 100644
 -        r = parse_env_file(NULL, "/etc/vconsole.conf",
 +        r = parse_env_file(NULL, (etc_conf)?
 +                           "/etc/vconsole.conf":
-+                               "/usr/share/defaults/etc/vconsole.conf", NEWLINE,
++                               "/usr/share/defaults/etc/vconsole.conf",
                             "KEYMAP",        &c->vc_keymap,
                             "KEYMAP_TOGGLE", &c->vc_keymap_toggle);
          if (r < 0)
