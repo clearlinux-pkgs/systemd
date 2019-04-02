@@ -1,2 +1,11 @@
 # This file contains pkgconfig build requirements that get picked up
 # but are undesirable. One entry per line, no whitespace.
+32audit
+32libapparmor
+32libpcre2-8
+32libqrencode
+32libselinux
+libapparmor
+libselinux
+32bash-completion
+32polkit-gobject-1

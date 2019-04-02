@@ -1,5 +1,12 @@
 241
 bash-completion-dev
-bzip2-dev
 kbd
 libxkbcommon-dev
+pkgconfig(32bash-completion)
+pkgconfig(32polkit-gobject-1)
+pkgconfig(32xkbcommon)
+pkgconfig(audit)
+pkgconfig(bash-completion)
+pkgconfig(polkit-gobject-1)
+pkgconfig(xkbcommon)
+polkit-dev

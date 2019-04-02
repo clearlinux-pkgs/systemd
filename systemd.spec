@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 230
+Release  : 231
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -66,7 +66,13 @@ BuildRequires : libxkbcommon-dev
 BuildRequires : libxslt-bin
 BuildRequires : openssl-dev
 BuildRequires : pkg-config-dev
+BuildRequires : pkgconfig(32xkbcommon)
+BuildRequires : pkgconfig(audit)
+BuildRequires : pkgconfig(bash-completion)
+BuildRequires : pkgconfig(polkit-gobject-1)
+BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(zlib)
+BuildRequires : polkit-dev
 BuildRequires : python3
 BuildRequires : readline-dev
 BuildRequires : shadow
@@ -170,6 +176,7 @@ Requires: systemd-lib = %{version}-%{release}
 Requires: systemd-bin = %{version}-%{release}
 Requires: systemd-data = %{version}-%{release}
 Provides: systemd-devel = %{version}-%{release}
+Requires: systemd = %{version}-%{release}
 
 %description dev
 dev components for the systemd package.
@@ -313,7 +320,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1552337440
+export SOURCE_DATE_EPOCH=1554847307
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -329,6 +336,10 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --b
 -Dxz=true \
 -Dgcrypt=true \
 -Dlz4=false \
+-Dqrencode=false \
+-Dpcre2=false \
+-Dlibidn=false \
+-Dlibidn2=false \
 -Ddefault-kill-user-processes=false \
 -Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com"  builddir
 ninja -v -C builddir
@@ -345,6 +356,10 @@ meson --libdir=/usr/lib32 --prefix /usr --buildtype=plain -Ddefault-hierarchy=le
 -Dxz=true \
 -Dgcrypt=true \
 -Dlz4=false \
+-Dqrencode=false \
+-Dpcre2=false \
+-Dlibidn=false \
+-Dlibidn2=false \
 -Ddefault-kill-user-processes=false \
 -Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" -Dlibcryptsetup=false \
 -Dgnutls=false \
@@ -354,7 +369,8 @@ meson --libdir=/usr/lib32 --prefix /usr --buildtype=plain -Ddefault-hierarchy=le
 -Dremote=false \
 -Dxz=false \
 -Dgcrypt=false \
--Dopenssl=false builddir
+-Dopenssl=false \
+-Daudit=false builddir
 ninja -v -C builddir
 popd
 
@@ -368,8 +384,8 @@ ninja -C builddir test ||:
 %install
 ## install_prepend content
 pushd  builddir
-gcc  -o libsystemd.so.0.25.0 'systemd@sha/src_libsystemd_disable-mempool.c.o' -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,libsystemd.so.0 -Wl,--whole-archive src/libsystemd/libsystemd_static.a src/journal/libjournal-client.a -Wl,--no-whole-archive -Wl,-z,relro -Wl,-z,now -pie -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used -fno-lto src/basic/libbasic.a src/basic/libbasic-gcrypt.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-241/src/libsystemd/libsystemd.sym -lrt /usr/lib64/liblzma.so //usr/lib64/libcap.a /usr/lib64/libblkid.a /usr/lib64/libmount.a -lm -lgcrypt -lrt -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/basic' -Wl,-rpath-link,/builddir/build/BUILD/systemd-241/builddir/src/basic
-gcc  -o pam_systemd.so 'pam_systemd@sha/src_login_pam_systemd.c.o' -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,pam_systemd.so -Wl,-z,relro -Wl,-z,now -pie -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used -fno-lto src/libsystemd/libsystemd_static.a src/basic/libbasic.a src/shared/libsystemd-shared-241.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-241/src/login/pam_systemd.sym -lpam -lpam_misc -lrt //usr/lib64/libcap.a -lm -lrt -lacl /usr/lib64/libcryptsetup.so -lgcrypt /usr/lib64/libip4tc.so /usr/lib64/libip6tc.so /usr/lib64/libkmod.so /usr/lib64/libmount.so /usr/lib64/libseccomp.so /usr/lib64/liblzma.so /usr/lib64/libblkid.so -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/libsystemd:$ORIGIN/src/basic:$ORIGIN/src/shared' -Wl,-rpath-link,/builddir/build/BUILD/systemd-241/builddir/src/libsystemd:/builddir/build/BUILD/systemd-241/builddir/src/basic:/builddir/build/BUILD/systemd-241/builddir/src/shared
+gcc  -o libsystemd.so.0.25.0 'systemd@sha/src_libsystemd_disable-mempool.c.o' -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,libsystemd.so.0 -Wl,--whole-archive src/libsystemd/libsystemd_static.a src/journal/libjournal-client.a -Wl,--no-whole-archive -Wl,-z,relro -Wl,-z,now -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used -fno-lto src/basic/libbasic.a src/basic/libbasic-gcrypt.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-241/src/libsystemd/libsystemd.sym -lrt /usr/lib64/liblzma.so //usr/lib64/libcap.a -lm -lgcrypt -lrt -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/basic' -Wl,-rpath-link,/builddir/build/BUILD/systemd-241/builddir/src/basic
+gcc  -o pam_systemd.so 'pam_systemd@sha/src_login_pam_systemd.c.o' -Wl,--no-undefined -Wl,--as-needed -shared -fPIC -Wl,--start-group -Wl,-soname,pam_systemd.so -Wl,-z,relro -Wl,-z,now -Wl,--gc-sections -O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell -fstack-protector-strong -mzero-caller-saved-regs=used -fno-lto src/libsystemd/libsystemd_static.a src/basic/libbasic.a src/shared/libsystemd-shared-241.a -shared -Wl,--version-script=/builddir/build/BUILD/systemd-241/src/login/pam_systemd.sym -lpam -lpam_misc -lrt //usr/lib64/libcap.a -lm -lrt -lacl /usr/lib64/libcryptsetup.so -lgcrypt /usr/lib64/libip4tc.so /usr/lib64/libip6tc.so /usr/lib64/libkmod.so /usr/lib64/libmount.so /usr/lib64/libseccomp.so /usr/lib64/liblzma.so /usr/lib64/libblkid.so -Wl,--end-group -pthread '-Wl,-rpath,$ORIGIN/src/libsystemd:$ORIGIN/src/basic:$ORIGIN/src/shared' -Wl,-rpath-link,/builddir/build/BUILD/systemd-241/builddir/src/libsystemd:/builddir/build/BUILD/systemd-241/builddir/src/basic:/builddir/build/BUILD/systemd-241/builddir/src/shared
 popd
 ## install_prepend end
 mkdir -p %{buildroot}/usr/share/package-licenses/systemd

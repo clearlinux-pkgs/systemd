@@ -7,3 +7,4 @@
 -Dxz=false
 -Dgcrypt=false
 -Dopenssl=false
+-Daudit=false
