@@ -44,3 +44,4 @@
 CVE-2019-6454.patch
 1001-UPSTREAM-virt-detect-the-ACRN-hypervisor.patch
 1002-UPSTREAM-man-add-ACRN-hypervisor.patch
+CVE-2019-3842.patch

@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 231
+Release  : 232
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -127,6 +127,7 @@ Patch43: 0043-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 Patch44: CVE-2019-6454.patch
 Patch45: 1001-UPSTREAM-virt-detect-the-ACRN-hypervisor.patch
 Patch46: 1002-UPSTREAM-man-add-ACRN-hypervisor.patch
+Patch47: CVE-2019-3842.patch
 
 %description
 systemd System and Service Manager
@@ -311,6 +312,7 @@ services components for the systemd package.
 %patch44 -p1
 %patch45 -p1
 %patch46 -p1
+%patch47 -p1
 pushd ..
 cp -a systemd-241 build32
 popd
@@ -320,7 +322,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554847307
+export SOURCE_DATE_EPOCH=1554848699
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
