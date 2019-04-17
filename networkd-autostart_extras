@@ -1,0 +1,4 @@
+files = [ '/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service',
+          '/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket',
+          '/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service' ]
+

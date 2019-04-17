@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 232
+Release  : 233
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -124,10 +124,11 @@ Patch40: 0040-Do-not-enable-audit-by-default-in-the-journal.patch
 Patch41: 0041-Disable-XZ-support-in-the-journal.patch
 Patch42: 0042-Localize-1-symbol.patch
 Patch43: 0043-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
-Patch44: CVE-2019-6454.patch
-Patch45: 1001-UPSTREAM-virt-detect-the-ACRN-hypervisor.patch
-Patch46: 1002-UPSTREAM-man-add-ACRN-hypervisor.patch
-Patch47: CVE-2019-3842.patch
+Patch44: 0044-Add-dependency-on-NetworkManager.patch
+Patch45: CVE-2019-6454.patch
+Patch46: 1001-UPSTREAM-virt-detect-the-ACRN-hypervisor.patch
+Patch47: 1002-UPSTREAM-man-add-ACRN-hypervisor.patch
+Patch48: CVE-2019-3842.patch
 
 %description
 systemd System and Service Manager
@@ -177,7 +178,6 @@ Requires: systemd-lib = %{version}-%{release}
 Requires: systemd-bin = %{version}-%{release}
 Requires: systemd-data = %{version}-%{release}
 Provides: systemd-devel = %{version}-%{release}
-Requires: systemd = %{version}-%{release}
 
 %description dev
 dev components for the systemd package.
@@ -256,6 +256,14 @@ Group: Default
 man components for the systemd package.
 
 
+%package networkd-autostart-extras
+Summary: networkd-autostart-extras components for the systemd package.
+Group: Default
+
+%description networkd-autostart-extras
+networkd-autostart-extras components for the systemd package.
+
+
 %package services
 Summary: services components for the systemd package.
 Group: Systemd services
@@ -313,6 +321,7 @@ services components for the systemd package.
 %patch45 -p1
 %patch46 -p1
 %patch47 -p1
+%patch48 -p1
 pushd ..
 cp -a systemd-241 build32
 popd
@@ -322,7 +331,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554848699
+export SOURCE_DATE_EPOCH=1555462416
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -573,6 +582,9 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 
 %files autostart
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
+%exclude /usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
 /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
@@ -580,16 +592,13 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/system/multi-user.target.wants/remote-fs.target
 /usr/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path
 /usr/lib/systemd/system/multi-user.target.wants/systemd-logind.service
-/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
 /usr/lib/systemd/system/multi-user.target.wants/systemd-resolved.service
 /usr/lib/systemd/system/multi-user.target.wants/systemd-user-sessions.service
-/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
 /usr/lib/systemd/system/remote-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
-/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
 /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
@@ -1756,6 +1765,12 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/share/man/man8/systemd-volatile-root.service.8
 /usr/share/man/man8/telinit.8
 /usr/share/man/man8/udevadm.8
+
+%files networkd-autostart-extras
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
+/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 
 %files services
 %defattr(-,root,root,-)
