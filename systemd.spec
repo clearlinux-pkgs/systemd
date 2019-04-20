@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 233
+Release  : 234
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
