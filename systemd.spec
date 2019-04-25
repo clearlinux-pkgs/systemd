@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 234
+Release  : 235
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -178,6 +178,7 @@ Requires: systemd-lib = %{version}-%{release}
 Requires: systemd-bin = %{version}-%{release}
 Requires: systemd-data = %{version}-%{release}
 Provides: systemd-devel = %{version}-%{release}
+Requires: systemd = %{version}-%{release}
 
 %description dev
 dev components for the systemd package.
@@ -331,7 +332,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1555462416
+export SOURCE_DATE_EPOCH=1556207554
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -352,7 +353,8 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --b
 -Dlibidn=false \
 -Dlibidn2=false \
 -Ddefault-kill-user-processes=false \
--Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com"  builddir
+-Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" \
+-Ddefault-dnssec=no  builddir
 ninja -v -C builddir
 pushd ../build32
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
@@ -372,7 +374,8 @@ meson --libdir=/usr/lib32 --prefix /usr --buildtype=plain -Ddefault-hierarchy=le
 -Dlibidn=false \
 -Dlibidn2=false \
 -Ddefault-kill-user-processes=false \
--Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" -Dlibcryptsetup=false \
+-Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" \
+-Ddefault-dnssec=no -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \
