@@ -74,3 +74,10 @@ ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/
 ln -sf /usr/lib/systemd/system/systemd-resolved.service %{buildroot}/usr/share/clr-service-restart/systemd-resolved.service
 ln -sf /usr/lib/systemd/system/systemd-udevd.service %{buildroot}/usr/share/clr-service-restart/systemd-udevd.service
 ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/clr-service-restart/systemd-journald.service
+
+# Disable the ability to hibernate, for now:
+mkdir -p %{buildroot}/usr/lib/systemd/sleep.conf.d/
+cat <<EOF > %{buildroot}/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
+[Sleep]
+AllowHibernate=no
+EOF
