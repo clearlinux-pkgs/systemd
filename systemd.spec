@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 235
+Release  : 236
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -332,7 +332,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1556207554
+export SOURCE_DATE_EPOCH=1556304706
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -459,6 +459,11 @@ ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/
 ln -sf /usr/lib/systemd/system/systemd-resolved.service %{buildroot}/usr/share/clr-service-restart/systemd-resolved.service
 ln -sf /usr/lib/systemd/system/systemd-udevd.service %{buildroot}/usr/share/clr-service-restart/systemd-udevd.service
 ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/clr-service-restart/systemd-journald.service
+mkdir -p %{buildroot}/usr/lib/systemd/sleep.conf.d/
+cat <<EOF > %{buildroot}/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
+[Sleep]
+AllowHibernate=no
+EOF
 ## install_append end
 
 %files
@@ -519,6 +524,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 /usr/lib/systemd/portable/profile/strict/service.conf
 /usr/lib/systemd/portable/profile/trusted/service.conf
 /usr/lib/systemd/resolv.conf
+/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
 /usr/lib/systemd/system-generators/systemd-bless-boot-generator
 /usr/lib/systemd/system-generators/systemd-cryptsetup-generator
 /usr/lib/systemd/system-generators/systemd-debug-generator
