@@ -1,0 +1,33 @@
+From 1aa10d1b19bfa2f17b132083a3acb8e3dc072882 Mon Sep 17 00:00:00 2001
+From: Yu Watanabe <watanabe.yu+github@gmail.com>
+Date: Sun, 10 Mar 2019 22:44:06 +0900
+Subject: [PATCH] timedate: fix emitted value when ntp client is
+ enabled/disabled
+
+This fixes a regression introduced by
+cf3872bd285350ef7c975d5eaba595bb2e71849d.
+
+Fixes #11944.
+---
+ src/timedate/timedated.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/timedate/timedated.c b/src/timedate/timedated.c
+index eeb17b6..324d4a4 100644
+--- a/src/timedate/timedated.c
++++ b/src/timedate/timedated.c
+@@ -377,9 +377,9 @@ static int match_job_removed(sd_bus_message *m, void *userdata, sd_bus_error *er
+                         n += !!u->path;
+ 
+         if (n == 0) {
+-                (void) sd_bus_emit_properties_changed(sd_bus_message_get_bus(m), "/org/freedesktop/timedate1", "org.freedesktop.timedate1", "NTP", NULL);
+-
+                 c->slot_job_removed = sd_bus_slot_unref(c->slot_job_removed);
++
++                (void) sd_bus_emit_properties_changed(sd_bus_message_get_bus(m), "/org/freedesktop/timedate1", "org.freedesktop.timedate1", "NTP", NULL);
+         }
+ 
+         return 0;
+-- 
+2.21.0
+
