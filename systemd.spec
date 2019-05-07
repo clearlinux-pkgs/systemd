@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 238
+Release  : 239
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -125,12 +125,13 @@ Patch41: 0041-Disable-XZ-support-in-the-journal.patch
 Patch42: 0042-Localize-1-symbol.patch
 Patch43: 0043-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 Patch44: 0044-Add-dependency-on-NetworkManager.patch
-Patch45: CVE-2019-6454.patch
-Patch46: 1001-UPSTREAM-virt-detect-the-ACRN-hypervisor.patch
-Patch47: 1002-UPSTREAM-man-add-ACRN-hypervisor.patch
-Patch48: CVE-2019-3842.patch
-Patch49: CVE-2019-3843.patch
-Patch50: CVE-2019-3844.patch
+Patch45: 0045-timedate-fix-emitted-value-when-ntp-client-is-enable.patch
+Patch46: CVE-2019-6454.patch
+Patch47: 1001-UPSTREAM-virt-detect-the-ACRN-hypervisor.patch
+Patch48: 1002-UPSTREAM-man-add-ACRN-hypervisor.patch
+Patch49: CVE-2019-3842.patch
+Patch50: CVE-2019-3843.patch
+Patch51: CVE-2019-3844.patch
 
 %description
 systemd System and Service Manager
@@ -327,6 +328,7 @@ services components for the systemd package.
 %patch48 -p1
 %patch49 -p1
 %patch50 -p1
+%patch51 -p1
 pushd ..
 cp -a systemd-241 build32
 popd
@@ -336,7 +338,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1556319546
+export SOURCE_DATE_EPOCH=1557187184
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
