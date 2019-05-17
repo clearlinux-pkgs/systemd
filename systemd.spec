@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 239
+Release  : 240
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -338,7 +338,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1557187184
+export SOURCE_DATE_EPOCH=1558117510
+export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -468,7 +469,7 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 mkdir -p %{buildroot}/usr/lib/systemd/sleep.conf.d/
 cat <<EOF > %{buildroot}/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
 [Sleep]
-AllowHibernate=no
+AllowHibernation=no
 EOF
 ## install_append end
 
