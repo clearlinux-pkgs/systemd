@@ -79,5 +79,5 @@ ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/c
 mkdir -p %{buildroot}/usr/lib/systemd/sleep.conf.d/
 cat <<EOF > %{buildroot}/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
 [Sleep]
-AllowHibernate=no
+AllowHibernation=no
 EOF
