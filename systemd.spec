@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 241
-Release  : 240
+Release  : 241
 URL      : https://github.com/systemd/systemd/archive/v241.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v241.tar.gz
 Summary  : systemd Library
@@ -52,6 +52,7 @@ BuildRequires : iptables-dev32
 BuildRequires : kbd
 BuildRequires : kmod-dev
 BuildRequires : kmod-dev32
+BuildRequires : libcap
 BuildRequires : libcap-dev
 BuildRequires : libcap-dev32
 BuildRequires : libcgroup-dev
@@ -132,6 +133,7 @@ Patch48: 1002-UPSTREAM-man-add-ACRN-hypervisor.patch
 Patch49: CVE-2019-3842.patch
 Patch50: CVE-2019-3843.patch
 Patch51: CVE-2019-3844.patch
+Patch52: CVE-2018-20839.patch
 
 %description
 systemd System and Service Manager
@@ -216,6 +218,14 @@ Group: Default
 extras components for the systemd package.
 
 
+%package extras-networkd-autostart
+Summary: extras-networkd-autostart components for the systemd package.
+Group: Default
+
+%description extras-networkd-autostart
+extras-networkd-autostart components for the systemd package.
+
+
 %package lib
 Summary: lib components for the systemd package.
 Group: Libraries
@@ -258,14 +268,6 @@ Group: Default
 
 %description man
 man components for the systemd package.
-
-
-%package networkd-autostart-extras
-Summary: networkd-autostart-extras components for the systemd package.
-Group: Default
-
-%description networkd-autostart-extras
-networkd-autostart-extras components for the systemd package.
 
 
 %package services
@@ -329,6 +331,7 @@ services components for the systemd package.
 %patch49 -p1
 %patch50 -p1
 %patch51 -p1
+%patch52 -p1
 pushd ..
 cp -a systemd-241 build32
 popd
@@ -338,16 +341,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1558117510
+export SOURCE_DATE_EPOCH=1559240273
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
-export LDFLAGS="${LDFLAGS} -fno-lto"
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Ddefault-hierarchy=legacy \
 -Dsmack=false \
 -Dsysvinit-path= \
@@ -1488,6 +1490,12 @@ EOF
 /usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
 /usr/share/polkit-1/rules.d/systemd-networkd.rules
 
+%files extras-networkd-autostart
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
+/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib/systemd/libsystemd-shared-241.so
@@ -1781,12 +1789,6 @@ EOF
 /usr/share/man/man8/systemd-volatile-root.service.8
 /usr/share/man/man8/telinit.8
 /usr/share/man/man8/udevadm.8
-
-%files networkd-autostart-extras
-%defattr(-,root,root,-)
-/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
-/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
-/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 
 %files services
 %defattr(-,root,root,-)
