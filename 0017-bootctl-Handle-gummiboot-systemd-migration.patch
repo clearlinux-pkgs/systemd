@@ -1,7 +1,7 @@
-From a7baceda337aac51b269ead7edf09e25599c2680 Mon Sep 17 00:00:00 2001
+From e503f457f370602d80cba45aa916da9889bc0aac Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 14 Oct 2015 17:40:56 +0100
-Subject: [PATCH 17/42] bootctl: Handle gummiboot -> systemd migration
+Subject: [PATCH 17/44] bootctl: Handle gummiboot -> systemd migration
 
 On Linux systems we may encounter cases where the legacy gummiboot binary
 is still present on the ESP. In these cases a `bootctl install` or even
@@ -16,10 +16,10 @@ route for distributions.
  1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 0cefa810a8..9cd5e16bcd 100644
+index 87b1a73c55..178c06d45b 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -383,10 +383,13 @@ static int version_check(int fd_from, const char *from, int fd_to, const char *t
+@@ -446,10 +446,13 @@ static int version_check(int fd_from, const char *from, int fd_to, const char *t
          r = get_file_version(fd_to, &b);
          if (r < 0)
                  return r;
@@ -35,8 +35,8 @@ index 0cefa810a8..9cd5e16bcd 100644
 +                                                to);
 +        }
  
-         if (compare_version(a, b) < 0) {
-                 log_warning("Skipping \"%s\", since a newer boot loader version exists already.", to);
+         if (compare_version(a, b) < 0)
+                 return log_warning_errno(SYNTHETIC_ERRNO(ESTALE), "Skipping \"%s\", since a newer boot loader version exists already.", to);
 -- 
-2.20.1
+2.21.0
 

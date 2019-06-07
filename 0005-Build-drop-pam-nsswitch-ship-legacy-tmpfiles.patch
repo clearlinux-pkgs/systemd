@@ -1,7 +1,7 @@
-From 714db07c040dfd7e1b15b10b90d52f6e578b737f Mon Sep 17 00:00:00 2001
+From 14e8bd1f1c375efca5c4b764121342259694d413 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 10:02:14 -0700
-Subject: [PATCH 05/42] Build: drop pam/nsswitch, ship legacy tmpfiles.
+Subject: [PATCH 05/44] Build: drop pam/nsswitch, ship legacy tmpfiles.
 
 Adapted from Makefile.am patch by Dimitri John Ledkov.
 ---
@@ -11,10 +11,10 @@ Adapted from Makefile.am patch by Dimitri John Ledkov.
  3 files changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 56c98b9c1b..0123762851 100644
+index 79195c9748..d8269d758b 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -140,7 +140,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
+@@ -144,7 +144,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
  udevhwdbdir = join_paths(udevlibexecdir, 'hwdb.d')
  catalogdir = join_paths(prefixdir, 'lib/systemd/catalog')
  kernelinstalldir = join_paths(prefixdir, 'lib/kernel/install.d')
@@ -22,7 +22,7 @@ index 56c98b9c1b..0123762851 100644
  bootlibdir = join_paths(prefixdir, 'lib/systemd/boot/efi')
  testsdir = join_paths(prefixdir, 'lib/systemd/tests')
  systemdstatedir = join_paths(localstatedir, 'lib/systemd')
-@@ -2928,8 +2927,8 @@ subdir('shell-completion/zsh')
+@@ -2953,8 +2952,8 @@ subdir('shell-completion/zsh')
  subdir('docs/sysvinit')
  subdir('docs/var-log')
  
@@ -68,5 +68,5 @@ index 35eea2be5c..0a246fef8b 100644
  
  foreach pair : tmpfiles
 -- 
-2.20.1
+2.21.0
 

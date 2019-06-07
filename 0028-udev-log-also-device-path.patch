@@ -1,33 +1,33 @@
-From e9ad78d7e2862b8f7f6a73761803f74287d7b2a6 Mon Sep 17 00:00:00 2001
+From 0b1b6ab11099d4417706199400959cf144446d20 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:32:54 -0700
-Subject: [PATCH 28/42] udev: log also device path.
+Subject: [PATCH 28/44] udev: log also device path.
 
 ---
- src/udev/udevd.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ src/udev/udevd.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/src/udev/udevd.c b/src/udev/udevd.c
-index 0303f36b4f..944c0cd889 100644
+index 140ec35293..e7283746da 100644
 --- a/src/udev/udevd.c
 +++ b/src/udev/udevd.c
-@@ -647,7 +647,15 @@ static int event_queue_insert(Manager *manager, sd_device *dev) {
+@@ -634,8 +634,14 @@ static int event_queue_insert(Manager *manager, sd_device *dev) {
  
          LIST_APPEND(event, manager->events, event);
  
--        log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s) is queued", seqnum, action);
+-        log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s) is queued",
+-                         seqnum, device_action_to_string(action));
 +        if (DEBUG_LOGGING) {
 +                const char* devpath;
-+                if (sd_device_get_property_value(dev, "ACTION", &val) < 0)
-+                        val = NULL;
 +                if (sd_device_get_devpath(event->dev, &devpath) < 0)
 +                        devpath = NULL;
 +
-+                log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s, PATH=%s) is queued", seqnum, strnull(val), strnull(devpath));
++                log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s, PATH=%s) is queued",
++                                 seqnum, device_action_to_string(action), strnull(devpath));
 +        }
  
          return 0;
  }
 -- 
-2.20.1
+2.21.0
 

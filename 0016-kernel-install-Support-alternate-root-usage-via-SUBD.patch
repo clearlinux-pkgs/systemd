@@ -1,7 +1,7 @@
-From f0fd0ca85a623a291f1dd5b048ba1863c477e58c Mon Sep 17 00:00:00 2001
+From 2407fb24fb46c462b8699cc832d53e3033fc6e75 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 24 Sep 2015 19:15:55 +0100
-Subject: [PATCH 16/42] kernel-install: Support alternate root usage via
+Subject: [PATCH 16/44] kernel-install: Support alternate root usage via
  SUBDIR/PLUGIN_SUBDIR
 
 This enables kernel-install to be used with an alternative root, by accepting a new
@@ -14,14 +14,14 @@ present on the host system, during image/filesystem generations.
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
- src/kernel-install/kernel-install | 52 +++++++++++++++++++++++++------
- 1 file changed, 42 insertions(+), 10 deletions(-)
+ src/kernel-install/kernel-install | 60 +++++++++++++++++++++++--------
+ 1 file changed, 46 insertions(+), 14 deletions(-)
 
 diff --git a/src/kernel-install/kernel-install b/src/kernel-install/kernel-install
-index b85c7c557e..47f2c9f807 100644
+index e7f2beb570..f7dda7f470 100644
 --- a/src/kernel-install/kernel-install
 +++ b/src/kernel-install/kernel-install
-@@ -26,8 +26,11 @@ usage()
+@@ -25,8 +25,11 @@ usage()
      echo "Usage:"
      echo "        $0 add KERNEL-VERSION KERNEL-IMAGE [INITRD-FILE ...]"
      echo "        $0 remove KERNEL-VERSION"
@@ -33,7 +33,7 @@ index b85c7c557e..47f2c9f807 100644
  dropindirs_sort()
  {
      local suffix=$1; shift
-@@ -56,12 +59,26 @@ dropindirs_sort()
+@@ -55,12 +58,26 @@ dropindirs_sort()
  
  export LC_COLLATE=C
  
@@ -61,9 +61,9 @@ index b85c7c557e..47f2c9f807 100644
 +    shift; shift;
 +fi
  
- if [[ "${0##*/}" == 'installkernel' ]]; then
-     COMMAND='add'
-@@ -76,8 +93,21 @@ fi
+ KERNEL_INSTALL_VERBOSE=0
+ if [ "$1" == "--verbose" -o "$1" == "-v" ]; then
+@@ -82,8 +99,21 @@ fi
  KERNEL_VERSION="$1"
  KERNEL_IMAGE="$2"
  
@@ -87,7 +87,7 @@ index b85c7c557e..47f2c9f807 100644
  fi
  
  if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
-@@ -108,8 +138,8 @@ ret=0
+@@ -114,8 +144,8 @@ ret=0
  
  readarray -t PLUGINS <<<"$(
      dropindirs_sort ".install" \
@@ -98,35 +98,44 @@ index b85c7c557e..47f2c9f807 100644
  )"
  
  case $COMMAND in
-@@ -126,7 +156,7 @@ case $COMMAND in
- 
+@@ -133,8 +163,8 @@ case $COMMAND in
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
--                "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE" "${INITRD_OPTIONS[@]}"
+                 [ "$KERNEL_INSTALL_VERBOSE" -gt 0 ] && \
+-                    echo "+$f add $KERNEL_VERSION $ENTRY_DIR_ABS $KERNEL_IMAGE ${INITRD_OPTIONS[@]}"
+-                "$f" add "$KERNEL_VERSION" "$ENTRY_DIR_ABS" "$KERNEL_IMAGE" "${INITRD_OPTIONS[@]}"
++                    echo "+PLUGIN_SUBDIR=${SUBDIR} $f add $KERNEL_VERSION $BOOT_DIR_ABS $KERNEL_IMAGE ${INITRD_OPTIONS[@]}"
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE" "${INITRD_OPTIONS[@]}"
                  x=$?
                  if [[ $x == $SKIP_REMAINING ]]; then
                      ret=0
-@@ -148,7 +178,7 @@ case $COMMAND in
-     remove)
+@@ -157,8 +187,8 @@ case $COMMAND in
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
--                "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
+                 [ "$KERNEL_INSTALL_VERBOSE" -gt 0 ] && \
+-                    echo "+$f remove $KERNEL_VERSION $ENTRY_DIR_ABS"
+-                "$f" remove "$KERNEL_VERSION" "$ENTRY_DIR_ABS"
++                    echo "+PLUGIN_SUBDIR={SUBDIR} $f remove $KERNEL_VERSION $ENTRY_DIR_ABS"
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
                  x=$?
                  if [[ $x == $SKIP_REMAINING ]]; then
                      ret=0
-@@ -158,7 +188,9 @@ case $COMMAND in
+@@ -168,10 +198,12 @@ case $COMMAND in
              fi
          done
  
--        rm -rf "$BOOT_DIR_ABS"
+-        [ "$KERNEL_INSTALL_VERBOSE" -gt 0 ] && \
+-            echo "Removing $ENTRY_DIR_ABS"
+ 
+-        rm -rf "$ENTRY_DIR_ABS"
 +        if [[ -z "${SUBDIR}" ]]; then
++            [ "$KERNEL_INSTALL_VERBOSE" -gt 0 ] && \
++                echo "Removing $ENTRY_DIR_ABS"
 +            rm -rf "$BOOT_DIR_ABS"
 +        fi
          ((ret+=$?))
          ;;
  
 -- 
-2.20.1
+2.21.0
 

@@ -1,17 +1,17 @@
-From b8ff5da76088b11c94dbb053f56d96653caff170 Mon Sep 17 00:00:00 2001
+From ee8f1c7006eac3e3f3b812929bbd2e566000c40b Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Fri, 11 May 2018 11:08:34 -0700
-Subject: [PATCH 34/42] Don't do transient hostnames; we set ours already
+Subject: [PATCH 34/44] Don't do transient hostnames; we set ours already
 
 ---
  src/network/networkd-manager.c | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/src/network/networkd-manager.c b/src/network/networkd-manager.c
-index c8d369e2a0..df497d58f6 100644
+index 9075b0a14b..a7c0718351 100644
 --- a/src/network/networkd-manager.c
 +++ b/src/network/networkd-manager.c
-@@ -1727,6 +1727,8 @@ static int set_hostname_handler(sd_bus_message *m, void *userdata, sd_bus_error
+@@ -1747,6 +1747,8 @@ static int set_hostname_handler(sd_bus_message *m, void *userdata, sd_bus_error
  }
  
  int manager_set_hostname(Manager *m, const char *hostname) {
@@ -21,5 +21,5 @@ index c8d369e2a0..df497d58f6 100644
  
          log_debug("Setting transient hostname: '%s'", strna(hostname));
 -- 
-2.20.1
+2.21.0
 

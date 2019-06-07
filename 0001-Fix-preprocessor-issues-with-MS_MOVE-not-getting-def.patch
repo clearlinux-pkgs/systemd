@@ -1,7 +1,7 @@
-From 24630ec9c3b5c23325a8a7e7e326a89b0dd99ec7 Mon Sep 17 00:00:00 2001
+From 40b951ab46a67deb5c858cf09d49b86b648db28e Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 4 Apr 2018 09:56:53 -0700
-Subject: [PATCH 01/42] Fix preprocessor issues with MS_MOVE not getting
+Subject: [PATCH 01/44] Fix preprocessor issues with MS_MOVE not getting
  defined.
 
 ---
@@ -20,7 +20,7 @@ Subject: [PATCH 01/42] Fix preprocessor issues with MS_MOVE not getting
  12 files changed, 12 insertions(+)
 
 diff --git a/src/basic/btrfs-util.c b/src/basic/btrfs-util.c
-index da4dd2a827..553ca98f24 100644
+index b1519cc4eb..e86bd1df6b 100644
 --- a/src/basic/btrfs-util.c
 +++ b/src/basic/btrfs-util.c
 @@ -3,6 +3,7 @@
@@ -44,7 +44,7 @@ index 235cfb9bd7..a6bbddbb98 100644
  
  #include "chattr-util.h"
 diff --git a/src/core/load-fragment.c b/src/core/load-fragment.c
-index 44f00a3046..098f8dd515 100644
+index 9b7c8cba67..9c74ac6f50 100644
 --- a/src/core/load-fragment.c
 +++ b/src/core/load-fragment.c
 @@ -5,6 +5,7 @@
@@ -56,7 +56,7 @@ index 44f00a3046..098f8dd515 100644
  #include <linux/oom.h>
  #if HAVE_SECCOMP
 diff --git a/src/core/namespace.c b/src/core/namespace.c
-index 7f553a42c2..29b8413a6f 100644
+index 8475145f06..c02ce2b300 100644
 --- a/src/core/namespace.c
 +++ b/src/core/namespace.c
 @@ -7,6 +7,7 @@
@@ -68,7 +68,7 @@ index 7f553a42c2..29b8413a6f 100644
  
  #include "alloc-util.h"
 diff --git a/src/import/import-raw.c b/src/import/import-raw.c
-index 4b1161557d..c6c191b92a 100644
+index b905832603..dbe35ca979 100644
 --- a/src/import/import-raw.c
 +++ b/src/import/import-raw.c
 @@ -1,5 +1,6 @@
@@ -90,7 +90,7 @@ index 4d0d9254d0..92c5a3f270 100644
  
  #include "sd-daemon.h"
 diff --git a/src/import/pull-raw.c b/src/import/pull-raw.c
-index 3a3e015df8..17e008f6ce 100644
+index 4f76421bc7..a03932d305 100644
 --- a/src/import/pull-raw.c
 +++ b/src/import/pull-raw.c
 @@ -1,6 +1,7 @@
@@ -102,7 +102,7 @@ index 3a3e015df8..17e008f6ce 100644
  #include <sys/xattr.h>
  
 diff --git a/src/journal/journal-file.c b/src/journal/journal-file.c
-index 56827f9f36..309fbb5af7 100644
+index 91d1c2921a..a81509a684 100644
 --- a/src/journal/journal-file.c
 +++ b/src/journal/journal-file.c
 @@ -2,6 +2,7 @@
@@ -114,7 +114,7 @@ index 56827f9f36..309fbb5af7 100644
  #include <pthread.h>
  #include <stddef.h>
 diff --git a/src/journal/journalctl.c b/src/journal/journalctl.c
-index 14a02eda74..778e88420c 100644
+index 00489098ee..dd755613bf 100644
 --- a/src/journal/journalctl.c
 +++ b/src/journal/journalctl.c
 @@ -4,6 +4,7 @@
@@ -126,7 +126,7 @@ index 14a02eda74..778e88420c 100644
  #include <locale.h>
  #include <poll.h>
 diff --git a/src/shared/machine-image.c b/src/shared/machine-image.c
-index af06ab22e8..ab1496e037 100644
+index 4ad112740d..7d78dd23b2 100644
 --- a/src/shared/machine-image.c
 +++ b/src/shared/machine-image.c
 @@ -10,6 +10,7 @@
@@ -138,19 +138,19 @@ index af06ab22e8..ab1496e037 100644
  
  #include "alloc-util.h"
 diff --git a/src/shared/sleep-config.c b/src/shared/sleep-config.c
-index 2e22bd0bbe..d72ba8f9c8 100644
+index 7f23e54102..744cb22980 100644
 --- a/src/shared/sleep-config.c
 +++ b/src/shared/sleep-config.c
-@@ -4,6 +4,7 @@
- ***/
+@@ -5,6 +5,7 @@
  
  #include <errno.h>
+ #include <fcntl.h>
 +#include <sys/mount.h>
  #include <linux/fs.h>
  #include <stdbool.h>
  #include <stddef.h>
 diff --git a/src/tmpfiles/tmpfiles.c b/src/tmpfiles/tmpfiles.c
-index b66765b407..f41a895ded 100644
+index d9d1cc1c1a..cd3a1d142a 100644
 --- a/src/tmpfiles/tmpfiles.c
 +++ b/src/tmpfiles/tmpfiles.c
 @@ -6,6 +6,7 @@
@@ -162,5 +162,5 @@ index b66765b407..f41a895ded 100644
  #include <stdbool.h>
  #include <stddef.h>
 -- 
-2.20.1
+2.21.0
 

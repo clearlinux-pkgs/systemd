@@ -1,7 +1,7 @@
-From 9b8c243601e3b5e8ff0c51c7d5c32edd3c61f6c7 Mon Sep 17 00:00:00 2001
+From 1e95ad464a5fc22989bc7dee6ffae36943fa51fb Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:40:24 +0100
-Subject: [PATCH 07/42] logind,pam: fix systemd-user to include common-session.
+Subject: [PATCH 07/44] logind,pam: fix systemd-user to include common-session.
 
 ---
  factory/etc/pam.d/other | 1 +
@@ -17,5 +17,5 @@ index c1f729659c..83408c327b 100644
  session  include system-auth
 +session  include common-session
 -- 
-2.20.1
+2.21.0
 

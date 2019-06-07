@@ -1,7 +1,8 @@
-From 866a3fd3e8f59383788e0234c884d68545ef2251 Mon Sep 17 00:00:00 2001
+From ccadbc5bb8a328da836b68a210b77905614fbd70 Mon Sep 17 00:00:00 2001
 From: Thiago Macieira <thiago.macieira@intel.com>
 Date: Fri, 22 Feb 2019 12:02:54 -0800
-Subject: [PATCH] mount-setup: Harden a bit the options for certan mountpoints
+Subject: [PATCH 42/44] mount-setup: Harden a bit the options for certan
+ mountpoints
 
 /dev/shm has no business with executable files. Since it is
 tmpfs, that implies someone is adding the after every boot.
@@ -10,7 +11,7 @@ tmpfs, that implies someone is adding the after every boot.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index f5ad6bf925..7b1a71447b 100644
+index 6b2dd89357..1b9702fa45 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
 @@ -73,7 +73,7 @@ static const MountPoint mount_table[] = {
@@ -23,5 +24,5 @@ index f5ad6bf925..7b1a71447b 100644
          { "devpts",      "/dev/pts",                  "devpts",     "mode=620,gid=" STRINGIFY(TTY_GID), MS_NOSUID|MS_NOEXEC,
            NULL,          MNT_IN_CONTAINER           },
 -- 
-2.20.1
+2.21.0
 

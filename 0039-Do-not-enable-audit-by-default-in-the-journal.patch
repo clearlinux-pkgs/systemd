@@ -1,7 +1,7 @@
-From 5b0649ca25bb9022e8898a6581599c80bbc96e74 Mon Sep 17 00:00:00 2001
+From 3ac0c2efc18912f7c565a796733c903cf62e4bc4 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:43:59 -0800
-Subject: [PATCH 40/42] Do not enable audit by default in the journal.
+Subject: [PATCH 39/44] Do not enable audit by default in the journal.
 
 ---
  src/journal/journald-audit.c | 3 ++-
@@ -25,5 +25,5 @@ index accbad4180..193dc64e47 100644
          return 0;
  }
 -- 
-2.20.1
+2.21.0
 

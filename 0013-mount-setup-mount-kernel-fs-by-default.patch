@@ -1,19 +1,19 @@
-From 852b9f1fd3a32fdd114452a9f3927ed9ad78057e Mon Sep 17 00:00:00 2001
+From 15f7974a002660abdfd8a2ce277974f4f6d7bf0d Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 13/42] mount-setup: mount kernel fs by default.
+Subject: [PATCH 13/44] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.
 ---
  src/core/mount-setup.c              | 10 ++++++++++
  units/dev-hugepages.mount           | 23 -----------------------
- units/dev-mqueue.mount              | 22 ----------------------
+ units/dev-mqueue.mount              | 23 -----------------------
  units/meson.build                   | 10 ----------
- units/sys-fs-fuse-connections.mount | 24 ------------------------
- units/sys-kernel-config.mount       | 23 -----------------------
- units/sys-kernel-debug.mount        | 22 ----------------------
- 7 files changed, 10 insertions(+), 124 deletions(-)
+ units/sys-fs-fuse-connections.mount | 25 -------------------------
+ units/sys-kernel-config.mount       | 24 ------------------------
+ units/sys-kernel-debug.mount        | 23 -----------------------
+ 7 files changed, 10 insertions(+), 128 deletions(-)
  delete mode 100644 units/dev-hugepages.mount
  delete mode 100644 units/dev-mqueue.mount
  delete mode 100644 units/sys-fs-fuse-connections.mount
@@ -21,7 +21,7 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index 3ce6164b06..4576a29845 100644
+index b97285e556..0fcd0a0c9b 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
 @@ -105,6 +105,16 @@ static const MountPoint mount_table[] = {
@@ -72,10 +72,10 @@ index 278ed9b610..0000000000
 -Type=hugetlbfs
 diff --git a/units/dev-mqueue.mount b/units/dev-mqueue.mount
 deleted file mode 100644
-index be32433d6c..0000000000
+index 0114ad31f0..0000000000
 --- a/units/dev-mqueue.mount
 +++ /dev/null
-@@ -1,22 +0,0 @@
+@@ -1,23 +0,0 @@
 -#  SPDX-License-Identifier: LGPL-2.1+
 -#
 -#  This file is part of systemd.
@@ -98,8 +98,9 @@ index be32433d6c..0000000000
 -What=mqueue
 -Where=/dev/mqueue
 -Type=mqueue
+-Options=nosuid,nodev,noexec
 diff --git a/units/meson.build b/units/meson.build
-index d69508467f..cc75751c11 100644
+index a5610506d5..3a0f02a68e 100644
 --- a/units/meson.build
 +++ b/units/meson.build
 @@ -7,10 +7,6 @@ units = [
@@ -113,7 +114,7 @@ index d69508467f..cc75751c11 100644
          ['emergency.target',                    ''],
          ['exit.target',                         ''],
          ['final.target',                        ''],
-@@ -69,12 +65,6 @@ units = [
+@@ -66,12 +62,6 @@ units = [
          ['sound.target',                        ''],
          ['suspend.target',                      ''],
          ['swap.target',                         ''],
@@ -128,10 +129,10 @@ index d69508467f..cc75751c11 100644
          ['system-update.target',                ''],
 diff --git a/units/sys-fs-fuse-connections.mount b/units/sys-fs-fuse-connections.mount
 deleted file mode 100644
-index 7e7b05c3a2..0000000000
+index 7bbc342be8..0000000000
 --- a/units/sys-fs-fuse-connections.mount
 +++ /dev/null
-@@ -1,24 +0,0 @@
+@@ -1,25 +0,0 @@
 -#  SPDX-License-Identifier: LGPL-2.1+
 -#
 -#  This file is part of systemd.
@@ -156,12 +157,13 @@ index 7e7b05c3a2..0000000000
 -What=fusectl
 -Where=/sys/fs/fuse/connections
 -Type=fusectl
+-Options=nosuid,nodev,noexec
 diff --git a/units/sys-kernel-config.mount b/units/sys-kernel-config.mount
 deleted file mode 100644
-index e213ca58b3..0000000000
+index e6997884dc..0000000000
 --- a/units/sys-kernel-config.mount
 +++ /dev/null
-@@ -1,23 +0,0 @@
+@@ -1,24 +0,0 @@
 -#  SPDX-License-Identifier: LGPL-2.1+
 -#
 -#  This file is part of systemd.
@@ -185,12 +187,13 @@ index e213ca58b3..0000000000
 -What=configfs
 -Where=/sys/kernel/config
 -Type=configfs
+-Options=nosuid,nodev,noexec
 diff --git a/units/sys-kernel-debug.mount b/units/sys-kernel-debug.mount
 deleted file mode 100644
-index 53ce820b87..0000000000
+index 618270ddae..0000000000
 --- a/units/sys-kernel-debug.mount
 +++ /dev/null
-@@ -1,22 +0,0 @@
+@@ -1,23 +0,0 @@
 -#  SPDX-License-Identifier: LGPL-2.1+
 -#
 -#  This file is part of systemd.
@@ -213,6 +216,7 @@ index 53ce820b87..0000000000
 -What=debugfs
 -Where=/sys/kernel/debug
 -Type=debugfs
+-Options=nosuid,nodev,noexec
 -- 
-2.20.1
+2.21.0
 

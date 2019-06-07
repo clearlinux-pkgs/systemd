@@ -1,31 +1,26 @@
-From 79e796c1daeb731a2fd5807189cc9bfe1252deaf Mon Sep 17 00:00:00 2001
+From ed73b775ee793c26347530a6614132e7ac2a6873 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:15:52 -0700
-Subject: [PATCH 25/42] network-online: complete once one link is online, not
+Subject: [PATCH 25/44] network-online: complete once one link is online, not
  all.
 
 ---
- src/network/wait-online/manager.c | 2 --
- 1 file changed, 2 deletions(-)
+ units/systemd-networkd-wait-online.service.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/network/wait-online/manager.c b/src/network/wait-online/manager.c
-index 67218b6db3..776b886a73 100644
---- a/src/network/wait-online/manager.c
-+++ b/src/network/wait-online/manager.c
-@@ -58,13 +58,11 @@ bool manager_all_configured(Manager *m) {
-                 if (!l->state) {
-                         log_debug("link %s has not yet been processed by udev",
-                                   l->ifname);
--                        return false;
-                 }
+diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
+index 7666e16669..0d4f09ef1e 100644
+--- a/units/systemd-networkd-wait-online.service.in
++++ b/units/systemd-networkd-wait-online.service.in
+@@ -18,7 +18,7 @@ Before=network-online.target shutdown.target
  
-                 if (STR_IN_SET(l->state, "configuring", "pending")) {
-                         log_debug("link %s is being processed by networkd",
-                                   l->ifname);
--                        return false;
-                 }
+ [Service]
+ Type=oneshot
+-ExecStart=@rootlibexecdir@/systemd-networkd-wait-online
++ExecStart=@rootlibexecdir@/systemd-networkd-wait-online --any
+ RemainAfterExit=yes
  
-                 if (l->operational_state &&
+ [Install]
 -- 
-2.20.1
+2.21.0
 

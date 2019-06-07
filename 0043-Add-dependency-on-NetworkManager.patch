@@ -1,7 +1,7 @@
-From 36eee81abc3c6b907d63354bf17a4ef9dddb6464 Mon Sep 17 00:00:00 2001
+From c62b3ab1609a013dd702c061bad226634621f7f4 Mon Sep 17 00:00:00 2001
 From: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
 Date: Tue, 16 Apr 2019 17:48:10 -0700
-Subject: [PATCH] Add dependency on NetworkManager.
+Subject: [PATCH 43/44] Add dependency on NetworkManager.
 
 Signed-off-by: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/units/systemd-resolved.service.in b/units/systemd-resolved.service.in
-index 3144b70063..d3fbb04a9b 100644
+index eee5d5ea8f..739292c7c3 100644
 --- a/units/systemd-resolved.service.in
 +++ b/units/systemd-resolved.service.in
 @@ -14,7 +14,7 @@ Documentation=https://www.freedesktop.org/wiki/Software/systemd/resolved

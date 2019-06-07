@@ -1,17 +1,17 @@
-From 4e8a061f55c1b8387f50ab347ae9dedbb7be43bb Mon Sep 17 00:00:00 2001
+From dea86ae980d859886a8eb1319cdbc43470ebf1cf Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:41:17 +0100
-Subject: [PATCH 08/42] analyze: increase precision.
+Subject: [PATCH 08/44] analyze: increase precision.
 
 ---
  src/analyze/analyze.c | 52 ++++++++++++++++++++++++++++++-------------
  1 file changed, 37 insertions(+), 15 deletions(-)
 
 diff --git a/src/analyze/analyze.c b/src/analyze/analyze.c
-index 3915b66739..6f0109f878 100644
+index ac7cb0da63..1cea52cd18 100644
 --- a/src/analyze/analyze.c
 +++ b/src/analyze/analyze.c
-@@ -48,6 +48,10 @@
+@@ -51,6 +51,10 @@
  #define SCALE_X (0.1 / 1000.0)   /* pixels per us */
  #define SCALE_Y (20.0)
  
@@ -22,7 +22,7 @@ index 3915b66739..6f0109f878 100644
  #define svg(...) printf(__VA_ARGS__)
  
  #define svg_bar(class, x1, x2, y)                                       \
-@@ -525,23 +529,23 @@ static int pretty_boot_time(sd_bus *bus, char **_buf) {
+@@ -529,23 +533,23 @@ static int pretty_boot_time(sd_bus *bus, char **_buf) {
  
          size = strpcpyf(&ptr, size, "Startup finished in ");
          if (t->firmware_time > 0)
@@ -53,7 +53,7 @@ index 3915b66739..6f0109f878 100644
          } else if (unit_id && activated_time == 0)
                  size = strpcpyf(&ptr, size, "\n%s was never reached", unit_id);
          else if (unit_id && activated_time == USEC_INFINITY)
-@@ -782,8 +786,26 @@ static int analyze_plot(int argc, char *argv[], void *userdata) {
+@@ -786,8 +790,26 @@ static int analyze_plot(int argc, char *argv[], void *userdata) {
          svg_text(true, boot->userspace_time, y, "systemd");
          y++;
  
@@ -82,7 +82,7 @@ index 3915b66739..6f0109f878 100644
  
          svg("</g>\n");
  
-@@ -831,10 +853,10 @@ static int list_dependencies_print(const char *name, unsigned level, unsigned br
+@@ -835,10 +857,10 @@ static int list_dependencies_print(const char *name, unsigned level, unsigned br
          if (times) {
                  if (times->time > 0)
                          printf("%s%s @%s +%s%s", ansi_highlight_red(), name,
@@ -96,7 +96,7 @@ index 3915b66739..6f0109f878 100644
                  else
                          printf("%s", name);
          } else
-@@ -995,9 +1017,9 @@ static int list_dependencies(sd_bus *bus, const char *name) {
+@@ -999,9 +1021,9 @@ static int list_dependencies(sd_bus *bus, const char *name) {
          if (times) {
                  if (times->time)
                          printf("%s%s +%s%s\n", ansi_highlight_red(), id,
@@ -108,7 +108,7 @@ index 3915b66739..6f0109f878 100644
                  else
                          printf("%s\n", id);
          }
-@@ -1069,7 +1091,7 @@ static int analyze_blame(int argc, char *argv[], void *userdata) {
+@@ -1073,7 +1095,7 @@ static int analyze_blame(int argc, char *argv[], void *userdata) {
                  char ts[FORMAT_TIMESPAN_MAX];
  
                  if (u->time > 0)
@@ -118,5 +118,5 @@ index 3915b66739..6f0109f878 100644
  
          return 0;
 -- 
-2.20.1
+2.21.0
 

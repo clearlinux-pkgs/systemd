@@ -1,7 +1,7 @@
-From 1342653fad771598b3476a666be39374516bc8a7 Mon Sep 17 00:00:00 2001
+From d37f8cda8e485117e7d52f7357ff83eee1c8b37b Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
-Subject: [PATCH 19/42] Set a default, unique, hostname, when it is either
+Subject: [PATCH 19/44] Set a default, unique, hostname, when it is either
  'clr' or 'localhost'
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
@@ -77,7 +77,7 @@ index dc7b9a6262..e62793e5c5 100644
 +
 +int set_first_hostname(void);
 diff --git a/src/core/main.c b/src/core/main.c
-index 561f956f0a..de0b5b9f78 100644
+index 46db47126c..df452faf92 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
 @@ -2033,6 +2033,7 @@ static int initialize_runtime(
@@ -89,5 +89,5 @@ index 561f956f0a..de0b5b9f78 100644
                          bump_unix_max_dgram_qlen();
                          bump_file_max_and_nr_open();
 -- 
-2.20.1
+2.21.0
 

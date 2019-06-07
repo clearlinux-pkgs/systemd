@@ -1,7 +1,7 @@
-From 2896053168ca0aaef4d1ae87854b925f8346eec3 Mon Sep 17 00:00:00 2001
+From 878e5047feb67053061d06b67cfff78e3f0dffb4 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:47:18 +0100
-Subject: [PATCH 09/42] sd-event: return malloc() memory reserves when main
+Subject: [PATCH 09/44] sd-event: return malloc() memory reserves when main
  loop is idle.
 
 ---
@@ -9,7 +9,7 @@ Subject: [PATCH 09/42] sd-event: return malloc() memory reserves when main
  1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/src/libsystemd/sd-event/sd-event.c b/src/libsystemd/sd-event/sd-event.c
-index 04ba7e2574..62b2f1a745 100644
+index 1987f279eb..96db6b8858 100644
 --- a/src/libsystemd/sd-event/sd-event.c
 +++ b/src/libsystemd/sd-event/sd-event.c
 @@ -3,6 +3,7 @@
@@ -41,5 +41,5 @@ index 04ba7e2574..62b2f1a745 100644
          if (e->profile_delays)
                  e->last_run = now(CLOCK_MONOTONIC);
 -- 
-2.20.1
+2.21.0
 

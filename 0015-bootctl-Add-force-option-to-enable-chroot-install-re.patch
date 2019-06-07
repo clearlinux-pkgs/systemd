@@ -1,7 +1,7 @@
-From 07a569ae7e149664f18754ac224a504d533d449f Mon Sep 17 00:00:00 2001
+From 7facf4c0d5e798a40997bfc3ebd90b61f52b57c4 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH 15/42] bootctl: Add --force option to enable chroot
+Subject: [PATCH 15/44] bootctl: Add --force option to enable chroot
  install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of
@@ -26,35 +26,35 @@ configuration and layout.
  1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index dc2fd96628..0cefa810a8 100644
+index a7de3800fc..87b1a73c55 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -52,6 +52,8 @@ static PagerFlags arg_pager_flags = 0;
- 
- STATIC_DESTRUCTOR_REGISTER(arg_path, freep);
+@@ -61,6 +61,8 @@ static const char *arg_dollar_boot_path(void) {
+         return arg_xbootldr_path ?: arg_esp_path;
+ }
  
 +static bool arg_force = false;
 +
  static int acquire_esp(
                  bool unprivileged_mode,
                  uint32_t *ret_part,
-@@ -886,6 +888,7 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -981,6 +983,7 @@ static int parse_argv(int argc, char *argv[]) {
+                 ARG_ESP_PATH = 0x100,
+                 ARG_BOOT_PATH,
+                 ARG_PRINT_BOOT_PATH,
++                ARG_FORCE,
                  ARG_VERSION,
                  ARG_NO_VARIABLES,
                  ARG_NO_PAGER,
-+                ARG_FORCE,
-         };
- 
+@@ -989,6 +992,7 @@ static int parse_argv(int argc, char *argv[]) {
          static const struct option options[] = {
-@@ -895,6 +898,7 @@ static int parse_argv(int argc, char *argv[]) {
-                 { "print-path",   no_argument,       NULL, 'p'              },
-                 { "no-variables", no_argument,       NULL, ARG_NO_VARIABLES },
-                 { "no-pager",     no_argument,       NULL, ARG_NO_PAGER     },
-+                { "force",        no_argument,       NULL, ARG_FORCE        },
-                 {}
-         };
- 
-@@ -931,6 +935,10 @@ static int parse_argv(int argc, char *argv[]) {
+                 { "help",            no_argument,       NULL, 'h'                 },
+                 { "version",         no_argument,       NULL, ARG_VERSION         },
++                { "force",           no_argument,       NULL, ARG_FORCE           },
+                 { "esp-path",        required_argument, NULL, ARG_ESP_PATH        },
+                 { "path",            required_argument, NULL, ARG_ESP_PATH        }, /* Compatibility alias */
+                 { "boot-path",       required_argument, NULL, ARG_BOOT_PATH       },
+@@ -1043,6 +1047,10 @@ static int parse_argv(int argc, char *argv[]) {
                          arg_pager_flags |= PAGER_DISABLE;
                          break;
  
@@ -65,24 +65,24 @@ index dc2fd96628..0cefa810a8 100644
                  case '?':
                          return -EINVAL;
  
-@@ -1158,7 +1166,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+@@ -1295,7 +1303,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
  
-         (void) sync_esp();
+         (void) sync_everything();
  
 -        if (arg_touch_variables)
 +        if (arg_touch_variables && !arg_force)
-                 r = install_variables(arg_path,
+                 r = install_variables(arg_esp_path,
                                        part, pstart, psize, uuid,
                                        "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
-@@ -1179,7 +1187,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+@@ -1332,7 +1340,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
  
-         (void) sync_esp();
+         (void) sync_everything();
  
 -        if (arg_touch_variables) {
 +        if (arg_touch_variables && !arg_force) {
-                 int q;
- 
                  q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
+                 if (q < 0 && r >= 0)
+                         r = q;
 -- 
-2.20.1
+2.21.0
 
