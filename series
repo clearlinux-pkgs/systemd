@@ -42,3 +42,5 @@
 0042-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 0043-Add-dependency-on-NetworkManager.patch
 0044-network-remove-redunant-link-name-in-message.patch
+
+CVE-2018-20839.patch

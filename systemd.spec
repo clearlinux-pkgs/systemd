@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 245
+Release  : 246
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Summary  : systemd Library
@@ -126,6 +126,7 @@ Patch41: 0041-Localize-1-symbol.patch
 Patch42: 0042-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 Patch43: 0043-Add-dependency-on-NetworkManager.patch
 Patch44: 0044-network-remove-redunant-link-name-in-message.patch
+Patch45: CVE-2018-20839.patch
 
 %description
 systemd System and Service Manager
@@ -316,6 +317,7 @@ services components for the systemd package.
 %patch42 -p1
 %patch43 -p1
 %patch44 -p1
+%patch45 -p1
 pushd ..
 cp -a systemd-242 build32
 popd
@@ -325,7 +327,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1559933879
+export SOURCE_DATE_EPOCH=1560300454
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
