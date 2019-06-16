@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 247
+Release  : 248
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Summary  : systemd Library
@@ -219,6 +219,14 @@ Group: Default
 extras components for the systemd package.
 
 
+%package extras-networkd-autostart
+Summary: extras-networkd-autostart components for the systemd package.
+Group: Default
+
+%description extras-networkd-autostart
+extras-networkd-autostart components for the systemd package.
+
+
 %package lib
 Summary: lib components for the systemd package.
 Group: Libraries
@@ -328,7 +336,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1560707311
+export SOURCE_DATE_EPOCH=1560711015
+export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
@@ -580,6 +589,9 @@ EOF
 
 %files autostart
 %defattr(-,root,root,-)
+%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
+%exclude /usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
 /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
@@ -587,16 +599,13 @@ EOF
 /usr/lib/systemd/system/multi-user.target.wants/remote-fs.target
 /usr/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path
 /usr/lib/systemd/system/multi-user.target.wants/systemd-logind.service
-/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
 /usr/lib/systemd/system/multi-user.target.wants/systemd-resolved.service
 /usr/lib/systemd/system/multi-user.target.wants/systemd-user-sessions.service
-/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
 /usr/lib/systemd/system/remote-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
-/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
 /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
@@ -1471,6 +1480,12 @@ EOF
 /usr/share/polkit-1/actions/org.freedesktop.systemd1.policy
 /usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
 /usr/share/polkit-1/rules.d/systemd-networkd.rules
+
+%files extras-networkd-autostart
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
+/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
+/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 
 %files lib
 %defattr(-,root,root,-)
