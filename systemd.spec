@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 246
+Release  : 247
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Summary  : systemd Library
@@ -127,11 +127,18 @@ Patch42: 0042-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 Patch43: 0043-Add-dependency-on-NetworkManager.patch
 Patch44: 0044-network-remove-redunant-link-name-in-message.patch
 Patch45: CVE-2018-20839.patch
+Patch46: locale-archive.patch
 
 %description
-systemd System and Service Manager
-DETAILS:
-http://0pointer.de/blog/projects/systemd.html
+# systemd - System and Service Manager
+<a href="https://in.waw.pl/systemd-github-state/systemd-systemd-issues.svg"><img align="right" src="https://in.waw.pl/systemd-github-state/systemd-systemd-issues-small.svg" alt="Count of open issues over time"></a>
+<a href="https://in.waw.pl/systemd-github-state/systemd-systemd-pull-requests.svg"><img align="right" src="https://in.waw.pl/systemd-github-state/systemd-systemd-pull-requests-small.svg" alt="Count of open pull requests over time"></a>
+[![Semaphore CI Build Status](https://semaphoreci.com/api/v1/projects/28a5a3ca-3c56-4078-8b5e-7ed6ef912e14/443470/shields_badge.svg)](https://semaphoreci.com/systemd/systemd)<br/>
+[![Coverity Scan Status](https://scan.coverity.com/projects/350/badge.svg)](https://scan.coverity.com/projects/350)<br/>
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1369/badge)](https://bestpractices.coreinfrastructure.org/projects/1369)<br/>
+[![Travis CI Build Status](https://travis-ci.org/systemd/systemd.svg?branch=master)](https://travis-ci.org/systemd/systemd)<br/>
+[![Language Grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/systemd/systemd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/systemd/systemd/context:cpp)<br/>
+[![CentOS CI Build Status](https://ci.centos.org/buildStatus/icon?job=systemd-pr-build)](https://ci.centos.org/job/systemd-pr-build/)
 
 %package autostart
 Summary: autostart components for the systemd package.
@@ -177,6 +184,7 @@ Requires: systemd-bin = %{version}-%{release}
 Requires: systemd-data = %{version}-%{release}
 Provides: systemd-devel = %{version}-%{release}
 Requires: systemd = %{version}-%{release}
+Requires: systemd = %{version}-%{release}
 
 %description dev
 dev components for the systemd package.
@@ -209,14 +217,6 @@ Group: Default
 
 %description extras
 extras components for the systemd package.
-
-
-%package extras-networkd-autostart
-Summary: extras-networkd-autostart components for the systemd package.
-Group: Default
-
-%description extras-networkd-autostart
-extras-networkd-autostart components for the systemd package.
 
 
 %package lib
@@ -318,6 +318,7 @@ services components for the systemd package.
 %patch43 -p1
 %patch44 -p1
 %patch45 -p1
+%patch46 -p1
 pushd ..
 cp -a systemd-242 build32
 popd
@@ -327,15 +328,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1560300454
-export GCC_IGNORE_WERROR=1
+export SOURCE_DATE_EPOCH=1560707311
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
-export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
+export FCFLAGS="$CFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
+export FFLAGS="$CFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
+export CXXFLAGS="$CXXFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Ddefault-hierarchy=legacy \
 -Dsmack=false \
 -Dsysvinit-path= \
@@ -580,9 +580,6 @@ EOF
 
 %files autostart
 %defattr(-,root,root,-)
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
-%exclude /usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
 /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
@@ -590,13 +587,16 @@ EOF
 /usr/lib/systemd/system/multi-user.target.wants/remote-fs.target
 /usr/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path
 /usr/lib/systemd/system/multi-user.target.wants/systemd-logind.service
+/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
 /usr/lib/systemd/system/multi-user.target.wants/systemd-resolved.service
 /usr/lib/systemd/system/multi-user.target.wants/systemd-user-sessions.service
+/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
 /usr/lib/systemd/system/remote-fs.target.wants/var-lib-machines.mount
 /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
+/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
 /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
@@ -1471,12 +1471,6 @@ EOF
 /usr/share/polkit-1/actions/org.freedesktop.systemd1.policy
 /usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
 /usr/share/polkit-1/rules.d/systemd-networkd.rules
-
-%files extras-networkd-autostart
-%defattr(-,root,root,-)
-/usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
-/usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
-/usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 
 %files lib
 %defattr(-,root,root,-)

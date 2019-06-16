@@ -44,3 +44,4 @@
 0044-network-remove-redunant-link-name-in-message.patch
 
 CVE-2018-20839.patch
+locale-archive.patch
