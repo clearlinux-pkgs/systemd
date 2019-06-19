@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 248
+Release  : 249
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Summary  : systemd Library
@@ -82,52 +82,53 @@ BuildRequires : util-linux-dev32
 BuildRequires : util-linux-extras
 BuildRequires : xz-dev
 BuildRequires : zlib-dev32
-Patch1: 0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
-Patch2: 0002-journal-raise-compression-threshold.patch
-Patch3: 0003-journal-clearout-drop-kmsg.patch
-Patch4: 0004-core-use-mmap-to-load-files.patch
-Patch5: 0005-Build-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
-Patch6: 0006-journal-flush-var-kmsg-after-starting.patch
-Patch7: 0007-logind-pam-fix-systemd-user-to-include-common-sessio.patch
-Patch8: 0008-analyze-increase-precision.patch
-Patch9: 0009-sd-event-return-malloc-memory-reserves-when-main-loo.patch
-Patch10: 0010-efi-boot-generator-Do-not-automount-boot-partition.patch
-Patch11: 0011-core-do-not-apply-presets.patch
-Patch12: 0012-locale-setup-set-default-locale-to-a-unicode-one.patch
-Patch13: 0013-mount-setup-mount-kernel-fs-by-default.patch
-Patch14: 0014-Ship-default-services-in-system-unit-dir.patch
-Patch15: 0015-bootctl-Add-force-option-to-enable-chroot-install-re.patch
-Patch16: 0016-kernel-install-Support-alternate-root-usage-via-SUBD.patch
-Patch17: 0017-bootctl-Handle-gummiboot-systemd-migration.patch
-Patch18: 0018-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
-Patch19: 0019-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
-Patch20: 0020-more-udev-children-workers.patch
-Patch21: 0021-not-load-iptables.patch
-Patch22: 0022-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
-Patch23: 0023-Disable-resolved-as-default-resolver-write-at-boot.patch
-Patch24: 0024-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
-Patch25: 0025-network-online-complete-once-one-link-is-online-not-.patch
-Patch26: 0026-DHCP-retry-faster.patch
-Patch27: 0027-Remove-libm-memory-overhead.patch
-Patch28: 0028-udev-log-also-device-path.patch
-Patch29: 0029-skip-not-present-ACPI-devices.patch
-Patch30: 0030-Ensure-var-run-is-never-a-directory.patch
-Patch31: 0031-Make-timesyncd-a-simple-service.patch
-Patch32: 0032-Compile-udev-with-O3.patch
-Patch33: 0033-Don-t-wait-for-utmp-at-shutdown.patch
-Patch34: 0034-Don-t-do-transient-hostnames-we-set-ours-already.patch
-Patch35: 0035-don-t-use-libm-just-for-integer-exp10.patch
-Patch36: 0036-Notify-systemd-earlier-that-resolved-is-ready.patch
-Patch37: 0037-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
-Patch38: 0038-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
-Patch39: 0039-Do-not-enable-audit-by-default-in-the-journal.patch
-Patch40: 0040-Disable-XZ-support-in-the-journal.patch
-Patch41: 0041-Localize-1-symbol.patch
-Patch42: 0042-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
-Patch43: 0043-Add-dependency-on-NetworkManager.patch
-Patch44: 0044-network-remove-redunant-link-name-in-message.patch
-Patch45: CVE-2018-20839.patch
-Patch46: locale-archive.patch
+Patch1: systemd-stable.patch
+Patch2: 0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
+Patch3: 0002-journal-raise-compression-threshold.patch
+Patch4: 0003-journal-clearout-drop-kmsg.patch
+Patch5: 0004-core-use-mmap-to-load-files.patch
+Patch6: 0005-Build-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
+Patch7: 0006-journal-flush-var-kmsg-after-starting.patch
+Patch8: 0007-logind-pam-fix-systemd-user-to-include-common-sessio.patch
+Patch9: 0008-analyze-increase-precision.patch
+Patch10: 0009-sd-event-return-malloc-memory-reserves-when-main-loo.patch
+Patch11: 0010-efi-boot-generator-Do-not-automount-boot-partition.patch
+Patch12: 0011-core-do-not-apply-presets.patch
+Patch13: 0012-locale-setup-set-default-locale-to-a-unicode-one.patch
+Patch14: 0013-mount-setup-mount-kernel-fs-by-default.patch
+Patch15: 0014-Ship-default-services-in-system-unit-dir.patch
+Patch16: 0015-bootctl-Add-force-option-to-enable-chroot-install-re.patch
+Patch17: 0016-kernel-install-Support-alternate-root-usage-via-SUBD.patch
+Patch18: 0017-bootctl-Handle-gummiboot-systemd-migration.patch
+Patch19: 0018-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
+Patch20: 0019-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
+Patch21: 0020-more-udev-children-workers.patch
+Patch22: 0021-not-load-iptables.patch
+Patch23: 0022-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
+Patch24: 0023-Disable-resolved-as-default-resolver-write-at-boot.patch
+Patch25: 0024-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
+Patch26: 0025-network-online-complete-once-one-link-is-online-not-.patch
+Patch27: 0026-DHCP-retry-faster.patch
+Patch28: 0027-Remove-libm-memory-overhead.patch
+Patch29: 0028-udev-log-also-device-path.patch
+Patch30: 0029-skip-not-present-ACPI-devices.patch
+Patch31: 0030-Ensure-var-run-is-never-a-directory.patch
+Patch32: 0031-Make-timesyncd-a-simple-service.patch
+Patch33: 0032-Compile-udev-with-O3.patch
+Patch34: 0033-Don-t-wait-for-utmp-at-shutdown.patch
+Patch35: 0034-Don-t-do-transient-hostnames-we-set-ours-already.patch
+Patch36: 0035-don-t-use-libm-just-for-integer-exp10.patch
+Patch37: 0036-Notify-systemd-earlier-that-resolved-is-ready.patch
+Patch38: 0037-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
+Patch39: 0038-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
+Patch40: 0039-Do-not-enable-audit-by-default-in-the-journal.patch
+Patch41: 0040-Disable-XZ-support-in-the-journal.patch
+Patch42: 0041-Localize-1-symbol.patch
+Patch43: 0042-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
+Patch44: 0043-Add-dependency-on-NetworkManager.patch
+Patch45: 0044-network-remove-redunant-link-name-in-message.patch
+Patch46: CVE-2018-20839.patch
+Patch47: locale-archive.patch
 
 %description
 # systemd - System and Service Manager
@@ -327,6 +328,7 @@ services components for the systemd package.
 %patch44 -p1
 %patch45 -p1
 %patch46 -p1
+%patch47 -p1
 pushd ..
 cp -a systemd-242 build32
 popd
@@ -336,7 +338,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1560711015
+export SOURCE_DATE_EPOCH=1560910161
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS

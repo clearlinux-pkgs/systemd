@@ -1,3 +1,5 @@
+systemd-stable.patch
+
 0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
 0002-journal-raise-compression-threshold.patch
 0003-journal-clearout-drop-kmsg.patch
