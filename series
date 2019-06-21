@@ -47,3 +47,4 @@ systemd-stable.patch
 
 CVE-2018-20839.patch
 locale-archive.patch
+hot-fix-network-do-not-use-ordered_set_printf.patch

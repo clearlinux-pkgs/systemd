@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 250
+Release  : 251
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Summary  : systemd Library
@@ -129,20 +129,12 @@ Patch44: 0043-Add-dependency-on-NetworkManager.patch
 Patch45: 0044-network-remove-redunant-link-name-in-message.patch
 Patch46: CVE-2018-20839.patch
 Patch47: locale-archive.patch
-
-# Remove with the next update
 Patch48: hot-fix-network-do-not-use-ordered_set_printf.patch
 
 %description
-# systemd - System and Service Manager
-<a href="https://in.waw.pl/systemd-github-state/systemd-systemd-issues.svg"><img align="right" src="https://in.waw.pl/systemd-github-state/systemd-systemd-issues-small.svg" alt="Count of open issues over time"></a>
-<a href="https://in.waw.pl/systemd-github-state/systemd-systemd-pull-requests.svg"><img align="right" src="https://in.waw.pl/systemd-github-state/systemd-systemd-pull-requests-small.svg" alt="Count of open pull requests over time"></a>
-[![Semaphore CI Build Status](https://semaphoreci.com/api/v1/projects/28a5a3ca-3c56-4078-8b5e-7ed6ef912e14/443470/shields_badge.svg)](https://semaphoreci.com/systemd/systemd)<br/>
-[![Coverity Scan Status](https://scan.coverity.com/projects/350/badge.svg)](https://scan.coverity.com/projects/350)<br/>
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1369/badge)](https://bestpractices.coreinfrastructure.org/projects/1369)<br/>
-[![Travis CI Build Status](https://travis-ci.org/systemd/systemd.svg?branch=master)](https://travis-ci.org/systemd/systemd)<br/>
-[![Language Grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/systemd/systemd.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/systemd/systemd/context:cpp)<br/>
-[![CentOS CI Build Status](https://ci.centos.org/buildStatus/icon?job=systemd-pr-build)](https://ci.centos.org/job/systemd-pr-build/)
+systemd System and Service Manager
+DETAILS:
+http://0pointer.de/blog/projects/systemd.html
 
 %package autostart
 Summary: autostart components for the systemd package.
@@ -187,7 +179,6 @@ Requires: systemd-lib = %{version}-%{release}
 Requires: systemd-bin = %{version}-%{release}
 Requires: systemd-data = %{version}-%{release}
 Provides: systemd-devel = %{version}-%{release}
-Requires: systemd = %{version}-%{release}
 Requires: systemd = %{version}-%{release}
 
 %description dev
@@ -342,15 +333,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1560910161
+export SOURCE_DATE_EPOCH=1561136032
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
 unset LDFLAGS
-export CFLAGS="$CFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
-export FCFLAGS="$CFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
-export FFLAGS="$CFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
-export CXXFLAGS="$CXXFLAGS -fcf-protection=full -fno-lto -fstack-protector-strong "
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain -Ddefault-hierarchy=legacy \
 -Dsmack=false \
 -Dsysvinit-path= \
