@@ -81,3 +81,7 @@ cat <<EOF > %{buildroot}/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
 [Sleep]
 AllowHibernation=no
 EOF
+
+# fix systemd-timesyncd v242 - dir expected, was symlink before in /var/state/timesync
+mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
+ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/systemd-timesyncd-fix-localstatedir.service

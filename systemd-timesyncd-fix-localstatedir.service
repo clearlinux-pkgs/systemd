@@ -1,0 +1,10 @@
+[Unit]
+Description=Correct timesyncd local state dir being a symlink from older versions
+ConditionPathIsSymbolicLink=/var/lib/systemd/timesync
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rm -f /var/lib/systemd/timesync
+
+[Install]
+WantedBy=update-triggers.target
