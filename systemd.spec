@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 249
+Release  : 250
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Summary  : systemd Library
@@ -129,6 +129,9 @@ Patch44: 0043-Add-dependency-on-NetworkManager.patch
 Patch45: 0044-network-remove-redunant-link-name-in-message.patch
 Patch46: CVE-2018-20839.patch
 Patch47: locale-archive.patch
+
+# Remove with the next update
+Patch48: hot-fix-network-do-not-use-ordered_set_printf.patch
 
 %description
 # systemd - System and Service Manager
@@ -329,6 +332,7 @@ services components for the systemd package.
 %patch45 -p1
 %patch46 -p1
 %patch47 -p1
+%patch48 -p1
 pushd ..
 cp -a systemd-242 build32
 popd
