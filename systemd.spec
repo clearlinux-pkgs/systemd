@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 252
+Release  : 253
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -333,8 +333,8 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1561150435
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1562882352
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -391,7 +391,7 @@ ninja -v -C builddir
 popd
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
