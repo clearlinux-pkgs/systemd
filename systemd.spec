@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 253
+Release  : 254
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -66,6 +66,7 @@ BuildRequires : libseccomp-dev
 BuildRequires : libseccomp-dev32
 BuildRequires : libxkbcommon-dev
 BuildRequires : libxslt-bin
+BuildRequires : lxml
 BuildRequires : openssl-dev
 BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(32xkbcommon)
@@ -334,7 +335,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1562882352
+export SOURCE_DATE_EPOCH=1563316143
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -1637,8 +1638,10 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 /usr/share/man/man7/kernel-command-line.7
 /usr/share/man/man7/sd-boot.7
 /usr/share/man/man7/systemd-boot.7
+/usr/share/man/man7/systemd.directives.7
 /usr/share/man/man7/systemd.environment-generator.7
 /usr/share/man/man7/systemd.generator.7
+/usr/share/man/man7/systemd.index.7
 /usr/share/man/man7/systemd.journal-fields.7
 /usr/share/man/man7/systemd.offline-updates.7
 /usr/share/man/man7/systemd.special.7

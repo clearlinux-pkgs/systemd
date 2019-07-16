@@ -50,3 +50,4 @@ xz-dev
 libseccomp-dev32
 libseccomp-dev
 openssl-dev
+lxml
