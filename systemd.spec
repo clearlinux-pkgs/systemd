@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 254
+Release  : 255
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -132,6 +132,7 @@ Patch45: 0044-network-remove-redunant-link-name-in-message.patch
 Patch46: CVE-2018-20839.patch
 Patch47: locale-archive.patch
 Patch48: hot-fix-network-do-not-use-ordered_set_printf.patch
+Patch49: UPSTREAM-fix-interface-bring-up-on-kernels-5-2.patch
 
 %description
 systemd System and Service Manager
@@ -326,6 +327,7 @@ services components for the systemd package.
 %patch46 -p1
 %patch47 -p1
 %patch48 -p1
+%patch49 -p1
 pushd ..
 cp -a systemd-242 build32
 popd
@@ -335,7 +337,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1563316143
+export SOURCE_DATE_EPOCH=1563554893
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
