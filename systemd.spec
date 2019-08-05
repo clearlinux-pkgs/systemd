@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 242
-Release  : 255
+Release  : 256
 URL      : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v242.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -133,6 +133,7 @@ Patch46: CVE-2018-20839.patch
 Patch47: locale-archive.patch
 Patch48: hot-fix-network-do-not-use-ordered_set_printf.patch
 Patch49: UPSTREAM-fix-interface-bring-up-on-kernels-5-2.patch
+Patch50: UPSTREAM-fix-listenport-in-wireguard-section.patch
 
 %description
 systemd System and Service Manager
@@ -328,6 +329,7 @@ services components for the systemd package.
 %patch47 -p1
 %patch48 -p1
 %patch49 -p1
+%patch50 -p1
 pushd ..
 cp -a systemd-242 build32
 popd
@@ -337,7 +339,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1563554893
+export SOURCE_DATE_EPOCH=1565026049
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -417,6 +419,29 @@ DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang systemd
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/systemd-timesyncd-fix-localstatedir.service
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/kernel-install
+rm -f %{buildroot}/usr/bin/systemd-firstboot
+rm -f %{buildroot}/usr/lib/rpm/macros.d/macros.systemd
+rm -f %{buildroot}/usr/lib/systemd/import-pubring.gpg
+rm -f %{buildroot}/usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
+rm -f %{buildroot}/usr/lib/systemd/system-generators/systemd-system-update-generator
+rm -f %{buildroot}/usr/lib/systemd/system-generators/systemd-veritysetup-generator
+rm -f %{buildroot}/usr/lib/systemd/system/ldconfig.service
+rm -f %{buildroot}/usr/lib/systemd/system/system-update-cleanup.service
+rm -f %{buildroot}/usr/lib/systemd/system/system-update.target
+rm -f %{buildroot}/usr/lib/systemd/system/systemd-firstboot.service
+rm -f %{buildroot}/usr/lib/systemd/system/systemd-hwdb-update.service
+rm -f %{buildroot}/usr/lib/systemd/system/systemd-journal-catalog-update.service
+rm -f %{buildroot}/usr/lib/systemd/system/systemd-sysusers.service
+rm -f %{buildroot}/usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
+rm -f %{buildroot}/usr/lib/systemd/system/systemd-update-done.service
+rm -f %{buildroot}/usr/lib/systemd/systemd-update-done
+rm -f %{buildroot}/usr/lib/udev/hwdb.d/20-pci-vendor-model.hwdb
+rm -f %{buildroot}/usr/share/bash-completion/completions/kernel-install
+rm -f %{buildroot}/usr/share/zsh/site-functions/_kernel-install
+rm -f %{buildroot}/var/lib/systemd/catalog/database
+rm -f %{buildroot}/var/log/README
 ## install_append content
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
@@ -467,41 +492,11 @@ AllowHibernation=no
 EOF
 mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
 ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/systemd-timesyncd-fix-localstatedir.service
+rm -rvf %{buildroot}/var/lib/systemd
 ## install_append end
 
 %files
 %defattr(-,root,root,-)
-%exclude /usr/lib/rpm/macros.d/macros.systemd
-%exclude /usr/lib/systemd/import-pubring.gpg
-%exclude /usr/lib/systemd/system-generators/systemd-hibernate-resume-generator
-%exclude /usr/lib/systemd/system-generators/systemd-system-update-generator
-%exclude /usr/lib/systemd/system-generators/systemd-veritysetup-generator
-%exclude /usr/lib/systemd/systemd-import
-%exclude /usr/lib/systemd/systemd-importd
-%exclude /usr/lib/systemd/systemd-journal-gatewayd
-%exclude /usr/lib/systemd/systemd-journal-remote
-%exclude /usr/lib/systemd/systemd-journal-upload
-%exclude /usr/lib/systemd/systemd-pull
-%exclude /usr/lib/systemd/systemd-update-done
-%exclude /usr/lib/udev/cdrom_id
-%exclude /usr/lib/udev/hwdb.d/20-OUI.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-acpi-vendor.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-bluetooth-vendor-product.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-net-ifname.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-pci-classes.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-pci-vendor-model.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-sdio-classes.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-sdio-vendor-model.hwdb
-%exclude /usr/lib/udev/hwdb.d/20-usb-classes.hwdb
-%exclude /usr/lib/udev/hwdb.d/60-evdev.hwdb
-%exclude /usr/lib/udev/hwdb.d/60-keyboard.hwdb
-%exclude /usr/lib/udev/hwdb.d/60-sensor.hwdb
-%exclude /usr/lib/udev/hwdb.d/70-mouse.hwdb
-%exclude /usr/lib/udev/hwdb.d/70-pointingstick.hwdb
-%exclude /usr/lib/udev/hwdb.d/70-touchpad.hwdb
-%exclude /usr/lib/udev/mtd_probe
-%exclude /usr/lib/udev/v4l_id
-%exclude /var/lib/systemd/catalog/database
 /usr/lib/modprobe.d/systemd.conf
 /usr/lib/systemd/boot/efi/linuxx64.efi.stub
 /usr/lib/systemd/boot/efi/systemd-bootx64.efi
@@ -594,9 +589,6 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 
 %files autostart
 %defattr(-,root,root,-)
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
-%exclude /usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
 /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
@@ -634,10 +626,6 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 
 %files bin
 %defattr(-,root,root,-)
-%exclude /usr/bin/kernel-install
-%exclude /usr/bin/systemd-firstboot
-%exclude /usr/bin/systemd-hwdb
-%exclude /usr/bin/systemd-sysusers
 /usr/bin/bootctl
 /usr/bin/busctl
 /usr/bin/coredumpctl
@@ -685,13 +673,6 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 
 %files config
 %defattr(-,root,root,-)
-%exclude /usr/lib/udev/rules.d/60-cdrom_id.rules
-%exclude /usr/lib/udev/rules.d/60-persistent-alsa.rules
-%exclude /usr/lib/udev/rules.d/60-persistent-storage-tape.rules
-%exclude /usr/lib/udev/rules.d/60-persistent-v4l.rules
-%exclude /usr/lib/udev/rules.d/70-joystick.rules
-%exclude /usr/lib/udev/rules.d/75-probe_mtd.rules
-%exclude /usr/lib/udev/rules.d/78-sound-card.rules
 /usr/lib/sysctl.d/50-coredump.conf
 /usr/lib/sysctl.d/50-default.conf
 /usr/lib/tmpfiles.d/etc.conf
@@ -729,18 +710,6 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 
 %files data
 %defattr(-,root,root,-)
-%exclude /usr/share/bash-completion/completions/kernel-install
-%exclude /usr/share/dbus-1/system-services/org.freedesktop.import1.service
-%exclude /usr/share/dbus-1/system.d/org.freedesktop.import1.conf
-%exclude /usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
-%exclude /usr/share/polkit-1/actions/org.freedesktop.import1.policy
-%exclude /usr/share/polkit-1/actions/org.freedesktop.locale1.policy
-%exclude /usr/share/polkit-1/actions/org.freedesktop.login1.policy
-%exclude /usr/share/polkit-1/actions/org.freedesktop.machine1.policy
-%exclude /usr/share/polkit-1/actions/org.freedesktop.systemd1.policy
-%exclude /usr/share/polkit-1/actions/org.freedesktop.timedate1.policy
-%exclude /usr/share/polkit-1/rules.d/systemd-networkd.rules
-%exclude /usr/share/zsh/site-functions/_kernel-install
 /usr/share/bash-completion/completions/bootctl
 /usr/share/bash-completion/completions/busctl
 /usr/share/bash-completion/completions/coredumpctl
@@ -1431,7 +1400,6 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 /usr/lib/systemd/system/systemd-journal-remote.service
 /usr/lib/systemd/system/systemd-journal-remote.socket
 /usr/lib/systemd/system/systemd-journal-upload.service
-/usr/lib/systemd/system/systemd-sysusers.service
 /usr/lib/systemd/system/var-lib-machines.mount
 /usr/lib/systemd/systemd-import
 /usr/lib/systemd/systemd-importd
@@ -1524,18 +1492,6 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 
 %files man
 %defattr(0644,root,root,0755)
-%exclude /usr/share/man/man5/journal-remote.conf.5
-%exclude /usr/share/man/man5/journal-remote.conf.d.5
-%exclude /usr/share/man/man5/journal-upload.conf.5
-%exclude /usr/share/man/man5/journal-upload.conf.d.5
-%exclude /usr/share/man/man8/systemd-journal-gatewayd.8
-%exclude /usr/share/man/man8/systemd-journal-gatewayd.service.8
-%exclude /usr/share/man/man8/systemd-journal-gatewayd.socket.8
-%exclude /usr/share/man/man8/systemd-journal-remote.8
-%exclude /usr/share/man/man8/systemd-journal-remote.service.8
-%exclude /usr/share/man/man8/systemd-journal-remote.socket.8
-%exclude /usr/share/man/man8/systemd-journal-upload.8
-%exclude /usr/share/man/man8/systemd-journal-upload.service.8
 /usr/share/man/man1/bootctl.1
 /usr/share/man/man1/busctl.1
 /usr/share/man/man1/coredumpctl.1
@@ -1790,8 +1746,6 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 
 %files services
 %defattr(-,root,root,-)
-%exclude /usr/lib/systemd/system/dbus-org.freedesktop.import1.service
-%exclude /usr/lib/systemd/system/ldconfig.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
 %exclude /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
@@ -1799,16 +1753,13 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 %exclude /usr/lib/systemd/system/multi-user.target.wants/remote-fs.target
 %exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path
 %exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-logind.service
-%exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-networkd.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-resolved.service
 %exclude /usr/lib/systemd/system/multi-user.target.wants/systemd-user-sessions.service
-%exclude /usr/lib/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
 %exclude /usr/lib/systemd/system/remote-fs.target.wants/var-lib-machines.mount
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-initctl.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
-%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-networkd.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
 %exclude /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
@@ -1828,22 +1779,7 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udev-trigger.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udevd.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-utmp.service
-%exclude /usr/lib/systemd/system/system-update-cleanup.service
-%exclude /usr/lib/systemd/system/system-update.target
-%exclude /usr/lib/systemd/system/systemd-firstboot.service
-%exclude /usr/lib/systemd/system/systemd-hwdb-update.service
-%exclude /usr/lib/systemd/system/systemd-importd.service
-%exclude /usr/lib/systemd/system/systemd-journal-catalog-update.service
-%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.service
-%exclude /usr/lib/systemd/system/systemd-journal-gatewayd.socket
-%exclude /usr/lib/systemd/system/systemd-journal-remote.service
-%exclude /usr/lib/systemd/system/systemd-journal-remote.socket
-%exclude /usr/lib/systemd/system/systemd-journal-upload.service
-%exclude /usr/lib/systemd/system/systemd-sysusers.service
-%exclude /usr/lib/systemd/system/systemd-tmpfiles-setup-dev.service
-%exclude /usr/lib/systemd/system/systemd-update-done.service
 %exclude /usr/lib/systemd/system/timers.target.wants/systemd-tmpfiles-clean.timer
-%exclude /usr/lib/systemd/system/var-lib-machines.mount
 /usr/lib/systemd/system/autovt@.service
 /usr/lib/systemd/system/basic.target
 /usr/lib/systemd/system/bluetooth.target

@@ -49,3 +49,4 @@ CVE-2018-20839.patch
 locale-archive.patch
 hot-fix-network-do-not-use-ordered_set_printf.patch
 UPSTREAM-fix-interface-bring-up-on-kernels-5-2.patch
+UPSTREAM-fix-listenport-in-wireguard-section.patch
