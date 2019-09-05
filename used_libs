@@ -4,7 +4,6 @@ libaudit.so.1
 libblkid.so.1
 libc.so.6
 libcryptsetup.so.12
-libcurl.so.4
 libdl.so.2
 libdw.so.1
 libelf.so.1
@@ -14,9 +13,9 @@ libgnutls.so.30
 libgpg-error.so.0
 libip4tc.so.2
 libkmod.so.2
+liblz4.so.1
 liblzma.so.5
 libm.so.6
-libmicrohttpd.so.12
 libmount.so.1
 libpam.so.0
 libpam_misc.so.0

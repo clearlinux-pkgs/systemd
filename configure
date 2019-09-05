@@ -4,7 +4,7 @@
 -Dsysvrcnd_path=
 -Dxz=true
 -Dgcrypt=true
--Dlz4=false
+-Dlz4=true
 -Dqrencode=false
 -Dpcre2=false
 -Dlibidn=false

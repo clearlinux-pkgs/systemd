@@ -2,7 +2,7 @@ ld-linux.so.2
 libc.so.6
 libcap.so.2
 libgcc_s.so.1
+liblz4.so.1
 libpam.so.0
 libpam_misc.so.0
 libpthread.so.0
-librt.so.1
