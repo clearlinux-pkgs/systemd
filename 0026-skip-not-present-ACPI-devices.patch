@@ -1,7 +1,7 @@
-From 7ddd2adcbf44c3351a0ecb99c9fde6de9a7a2810 Mon Sep 17 00:00:00 2001
+From cd1374e0fc552cc1534ca2a50a1e89e309f45200 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:33:26 -0700
-Subject: [PATCH 27/41] skip not-present ACPI devices
+Subject: [PATCH 26/40] skip not-present ACPI devices
 
 Xen and older Qemu expose a boatload (253) ACPI devices to the guest
 that are not present; these show up in sysfs but there's nothing

@@ -1,7 +1,7 @@
-From 27ff0030d7434723daa037061314df12bf872648 Mon Sep 17 00:00:00 2001
+From ca5c7904c5c2071a58749e7d26102ff4b97e3dc9 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
-Subject: [PATCH 09/41] core: do not apply presets.
+Subject: [PATCH 09/40] core: do not apply presets.
 
 ---
  src/core/manager.c | 2 --

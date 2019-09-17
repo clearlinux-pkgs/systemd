@@ -1,7 +1,7 @@
-From 5e8fa3ab9ad7666d7af57a59951e4d4fff319ce0 Mon Sep 17 00:00:00 2001
+From 47bc3d9f800976cfc4f175517287a8f4959c10e5 Mon Sep 17 00:00:00 2001
 From: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
 Date: Tue, 16 Apr 2019 17:48:10 -0700
-Subject: [PATCH 41/41] Add dependency on NetworkManager.
+Subject: [PATCH 40/40] Add dependency on NetworkManager.
 
 Signed-off-by: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
 ---

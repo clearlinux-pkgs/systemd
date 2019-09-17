@@ -1,7 +1,7 @@
-From 19c018e773776a72f888927850cb3bf5c3a17f97 Mon Sep 17 00:00:00 2001
+From 294b16fb3fd29b7b2bb765ecaaaa3d6b9d83d11d Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH 13/41] bootctl: Add --force option to enable chroot
+Subject: [PATCH 13/40] bootctl: Add --force option to enable chroot
  install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of

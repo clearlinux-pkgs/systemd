@@ -1,14 +1,24 @@
-From fe41899bd98994d0d3e1ad99682ff3ad748f30e0 Mon Sep 17 00:00:00 2001
+From 3dca54ebf36cbd362ac13a6005e1615b59d85d5d Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 10:02:14 -0700
-Subject: [PATCH 04/41] Build: drop pam/nsswitch, ship legacy tmpfiles.
+Subject: [PATCH 04/40] Build: drop pam/nsswitch, ship legacy tmpfiles, disable
+ resolved as default resolver at boot.
 
 Adapted from Makefile.am patch by Dimitri John Ledkov.
+
+Write the resolv.conf at boot immediately.
+
+Let docker, etc, use the direct nameserver information in
+/etc/resolv.conf, instead of redirecting to the stub resolver in
+systemd-resolved. The stub resolver fails on CNAME resolution and
+breaks various applications.
+
+Ref: https://github.com/coreos/coreos-overlay/pull/2129/commits/76830bedf02a8c54e1d2ce30796046b86bb00b94
 ---
  meson.build            | 5 ++---
- tmpfiles.d/etc.conf.m4 | 5 -----
+ tmpfiles.d/etc.conf.m4 | 8 +-------
  tmpfiles.d/meson.build | 2 +-
- 3 files changed, 3 insertions(+), 9 deletions(-)
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
 diff --git a/meson.build b/meson.build
 index e5ceb1e169..edd1ba5913 100644
@@ -34,10 +44,10 @@ index e5ceb1e169..edd1ba5913 100644
  install_data('xorg/50-systemd-user.sh',
               install_dir : xinitrcdir)
 diff --git a/tmpfiles.d/etc.conf.m4 b/tmpfiles.d/etc.conf.m4
-index f82e0b82ce..0f30d37d2d 100644
+index f82e0b82ce..0e58e3133a 100644
 --- a/tmpfiles.d/etc.conf.m4
 +++ b/tmpfiles.d/etc.conf.m4
-@@ -7,7 +7,6 @@
+@@ -7,16 +7,10 @@
  
  # See tmpfiles.d(5) for details
  
@@ -45,15 +55,16 @@ index f82e0b82ce..0f30d37d2d 100644
  L+ /etc/mtab - - - - ../proc/self/mounts
  m4_ifdef(`HAVE_SMACK_RUN_LABEL',
  t /etc/mtab - - - - security.SMACK64=_
-@@ -15,8 +14,4 @@ t /etc/mtab - - - - security.SMACK64=_
+ )m4_dnl
  m4_ifdef(`ENABLE_RESOLVE',
- L! /etc/resolv.conf - - - - ../run/systemd/resolve/stub-resolv.conf
+-L! /etc/resolv.conf - - - - ../run/systemd/resolve/stub-resolv.conf
++L+! /etc/resolv.conf - - - - ../run/systemd/resolve/resolv.conf
  )m4_dnl
 -C! /etc/nsswitch.conf - - - -
 -m4_ifdef(`HAVE_PAM',
 -C! /etc/pam.d - - - -
 -)m4_dnl
- C! /etc/issue - - - -
+-C! /etc/issue - - - -
 diff --git a/tmpfiles.d/meson.build b/tmpfiles.d/meson.build
 index e77f46d06b..47d1597ef3 100644
 --- a/tmpfiles.d/meson.build

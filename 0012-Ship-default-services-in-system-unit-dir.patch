@@ -1,7 +1,7 @@
-From 96972a8956251588463ace173f75caf3cb73e3d9 Mon Sep 17 00:00:00 2001
+From d8a0a191bd6bc39e7001a98558f7ca806ad3547a Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 12/41] Ship default services in system unit dir.
+Subject: [PATCH 12/40] Ship default services in system unit dir.
 
 ---
  units/meson.build | 23 ++++++++++++++++-------

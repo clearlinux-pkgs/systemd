@@ -1,7 +1,7 @@
-From 7c87ea29c62ddf87ae06c82244e3b1beba69aa36 Mon Sep 17 00:00:00 2001
+From 21daf1dc04793cd3ea9683468fa40b4cc0cdbaee Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:35:13 -0700
-Subject: [PATCH 30/41] Compile udev with -O3
+Subject: [PATCH 29/40] Compile udev with -O3
 
 udevd benefits from -O3 as it heavily affects boot time.
 ---

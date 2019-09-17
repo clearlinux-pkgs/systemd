@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 243
-Release  : 258
+Release  : 259
 URL      : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -91,7 +91,7 @@ BuildRequires : zlib-dev32
 Patch1: 0001-journal-raise-compression-threshold.patch
 Patch2: 0002-journal-clearout-drop-kmsg.patch
 Patch3: 0003-core-use-mmap-to-load-files.patch
-Patch4: 0004-Build-drop-pam-nsswitch-ship-legacy-tmpfiles.patch
+Patch4: 0004-Build-drop-pam-nsswitch-ship-legacy-tmpfiles-disable.patch
 Patch5: 0005-journal-flush-var-kmsg-after-starting.patch
 Patch6: 0006-logind-pam-fix-systemd-user-to-include-common-sessio.patch
 Patch7: 0007-sd-event-return-malloc-memory-reserves-when-main-loo.patch
@@ -108,27 +108,26 @@ Patch17: 0017-Set-a-default-unique-hostname-when-it-is-either-clr-.patch
 Patch18: 0018-more-udev-children-workers.patch
 Patch19: 0019-not-load-iptables.patch
 Patch20: 0020-Add-journal-flush-service-for-Microsoft-Azure-VMs.patch
-Patch21: 0021-Disable-resolved-as-default-resolver-write-at-boot.patch
-Patch22: 0022-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
-Patch23: 0023-network-online-complete-once-one-link-is-online-not-.patch
-Patch24: 0024-DHCP-retry-faster.patch
-Patch25: 0025-Remove-libm-memory-overhead.patch
-Patch26: 0026-udev-log-also-device-path.patch
-Patch27: 0027-skip-not-present-ACPI-devices.patch
-Patch28: 0028-Ensure-var-run-is-never-a-directory.patch
-Patch29: 0029-Make-timesyncd-a-simple-service.patch
-Patch30: 0030-Compile-udev-with-O3.patch
-Patch31: 0031-Don-t-wait-for-utmp-at-shutdown.patch
-Patch32: 0032-Don-t-do-transient-hostnames-we-set-ours-already.patch
-Patch33: 0033-don-t-use-libm-just-for-integer-exp10.patch
-Patch34: 0034-Notify-systemd-earlier-that-resolved-is-ready.patch
-Patch35: 0035-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
-Patch36: 0036-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
-Patch37: 0037-Do-not-enable-audit-by-default-in-the-journal.patch
-Patch38: 0038-Disable-XZ-support-in-the-journal.patch
-Patch39: 0039-Localize-1-symbol.patch
-Patch40: 0040-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
-Patch41: 0041-Add-dependency-on-NetworkManager.patch
+Patch21: 0021-Enable-BBR-Bottleneck-Bandwidth-and-RTT.patch
+Patch22: 0022-network-online-complete-once-one-link-is-online-not-.patch
+Patch23: 0023-DHCP-retry-faster.patch
+Patch24: 0024-Remove-libm-memory-overhead.patch
+Patch25: 0025-udev-log-also-device-path.patch
+Patch26: 0026-skip-not-present-ACPI-devices.patch
+Patch27: 0027-Ensure-var-run-is-never-a-directory.patch
+Patch28: 0028-Make-timesyncd-a-simple-service.patch
+Patch29: 0029-Compile-udev-with-O3.patch
+Patch30: 0030-Don-t-wait-for-utmp-at-shutdown.patch
+Patch31: 0031-Don-t-do-transient-hostnames-we-set-ours-already.patch
+Patch32: 0032-don-t-use-libm-just-for-integer-exp10.patch
+Patch33: 0033-Notify-systemd-earlier-that-resolved-is-ready.patch
+Patch34: 0034-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
+Patch35: 0035-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
+Patch36: 0036-Do-not-enable-audit-by-default-in-the-journal.patch
+Patch37: 0037-Disable-XZ-support-in-the-journal.patch
+Patch38: 0038-Localize-1-symbol.patch
+Patch39: 0039-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
+Patch40: 0040-Add-dependency-on-NetworkManager.patch
 
 %description
 systemd System and Service Manager
@@ -306,7 +305,6 @@ services components for the systemd package.
 %patch38 -p1
 %patch39 -p1
 %patch40 -p1
-%patch41 -p1
 pushd ..
 cp -a systemd-243 build32
 popd
@@ -316,7 +314,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568747241
+export SOURCE_DATE_EPOCH=1568753702
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS

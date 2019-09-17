@@ -1,7 +1,7 @@
-From a13a2fd2091f0ae9390bd8016bf38ca4b0e38569 Mon Sep 17 00:00:00 2001
+From 7c99493d01d985ba49ba81d64ec8017693f9dc95 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sun, 19 Jun 2016 00:51:22 +0000
-Subject: [PATCH 19/41] not load iptables
+Subject: [PATCH 19/40] not load iptables
 
 ---
  src/core/kmod-setup.c | 4 ----

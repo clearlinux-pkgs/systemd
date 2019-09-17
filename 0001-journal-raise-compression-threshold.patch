@@ -1,7 +1,7 @@
 From e1ba9e15b408ddf757d0f1523c082d3d9cddfa39 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:23:57 +0100
-Subject: [PATCH 01/41] journal: raise compression threshold.
+Subject: [PATCH 01/40] journal: raise compression threshold.
 
 ---
  src/journal/journal-file.c | 2 +-

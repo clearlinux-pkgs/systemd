@@ -1,7 +1,7 @@
-From d6f2f08ddfb0ebe29da10cbac7fe6b92cfd55fd8 Mon Sep 17 00:00:00 2001
+From d3b66deb1a4f2d67168873871c54c4c3cec12b06 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:16:21 -0700
-Subject: [PATCH 24/41] DHCP: retry faster.
+Subject: [PATCH 23/40] DHCP: retry faster.
 
 ---
  src/libsystemd-network/sd-dhcp-client.c | 2 +-

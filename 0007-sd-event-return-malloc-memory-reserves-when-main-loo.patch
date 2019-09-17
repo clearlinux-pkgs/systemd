@@ -1,7 +1,7 @@
-From c941d27d2576b6a45877eebcc0c6d897bb51782b Mon Sep 17 00:00:00 2001
+From de4ec1dc648b46c0c92b2ab538e7cf7949939855 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:47:18 +0100
-Subject: [PATCH 07/41] sd-event: return malloc() memory reserves when main
+Subject: [PATCH 07/40] sd-event: return malloc() memory reserves when main
  loop is idle.
 
 ---

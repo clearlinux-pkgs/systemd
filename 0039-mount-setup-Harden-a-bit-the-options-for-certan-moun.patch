@@ -1,7 +1,7 @@
-From a781c4e6adeb87e05e54ece28d3e80ab7c0fd330 Mon Sep 17 00:00:00 2001
+From c95402170c7d88f01c5136af38fc3dc1c0fd5ca9 Mon Sep 17 00:00:00 2001
 From: Thiago Macieira <thiago.macieira@intel.com>
 Date: Fri, 22 Feb 2019 12:02:54 -0800
-Subject: [PATCH 40/41] mount-setup: Harden a bit the options for certan
+Subject: [PATCH 39/40] mount-setup: Harden a bit the options for certan
  mountpoints
 
 /dev/shm has no business with executable files. Since it is

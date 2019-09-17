@@ -1,7 +1,7 @@
-From 2aecd45d9e1107478d4b8607ac6e041d3c33b047 Mon Sep 17 00:00:00 2001
+From 540524459d4361cae606026e6885c6219f50066a Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 13 Jun 2018 13:42:12 -0700
-Subject: [PATCH 34/41] Notify systemd earlier that resolved is ready.
+Subject: [PATCH 33/40] Notify systemd earlier that resolved is ready.
 
 ---
  src/resolve/resolved.c | 4 ++--

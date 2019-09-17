@@ -1,7 +1,7 @@
-From 5bf368d97907ffe24b52006973fbb9c639ccdb72 Mon Sep 17 00:00:00 2001
+From 69a655678725013d11ea090f2dcc07aa034d95de Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:46:32 -0800
-Subject: [PATCH 38/41] Disable XZ support in the journal.
+Subject: [PATCH 37/40] Disable XZ support in the journal.
 
 ---
  src/coredump/coredump.c | 3 +++
