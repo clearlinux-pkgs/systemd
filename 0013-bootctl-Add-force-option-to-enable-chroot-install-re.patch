@@ -1,0 +1,96 @@
+From 19c018e773776a72f888927850cb3bf5c3a17f97 Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Wed, 23 Sep 2015 03:36:36 +0100
+Subject: [PATCH 13/41] bootctl: Add --force option to enable chroot
+ install/remove of sd-boot
+
+This change enables the force-installation, removal, and update of
+the systemd EFI boot binaries and supporting assets, without requiring
+verification of the ESP.
+
+Prior to this change it is assumed the target path is an ESP that can
+be probed, however this requires several virtual filesystems to be
+present and mounted, which may not be possible during filesystem image
+generation, or even for use within eltorito alt sections of an ISO.
+
+Given that an image invocation of bootctl may involve a host that has
+older, or even absent files required by bootctl (such as EFI files),
+it is not always safe to assume one can use the --path option. This
+change ensures that the utility can be used in a consistent manner,
+in a bare chroot (no virtual filesystems), without the need for custom
+systemd-boot installation routines currently seen in many places;
+i.e bootctl both sets and enforces the standard for its installation,
+configuration and layout.
+---
+ src/boot/bootctl.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
+index ddc267401f..f43088d313 100644
+--- a/src/boot/bootctl.c
++++ b/src/boot/bootctl.c
+@@ -64,6 +64,8 @@ static const char *arg_dollar_boot_path(void) {
+         return arg_xbootldr_path ?: arg_esp_path;
+ }
+ 
++static bool arg_force = false;
++
+ static int acquire_esp(
+                 bool unprivileged_mode,
+                 uint32_t *ret_part,
+@@ -1068,6 +1070,8 @@ static int parse_argv(int argc, char *argv[]) {
+         enum {
+                 ARG_ESP_PATH = 0x100,
+                 ARG_BOOT_PATH,
++                ARG_PRINT_BOOT_PATH,
++                ARG_FORCE,
+                 ARG_VERSION,
+                 ARG_NO_VARIABLES,
+                 ARG_NO_PAGER,
+@@ -1076,6 +1080,7 @@ static int parse_argv(int argc, char *argv[]) {
+         static const struct option options[] = {
+                 { "help",            no_argument,       NULL, 'h'                 },
+                 { "version",         no_argument,       NULL, ARG_VERSION         },
++                { "force",           no_argument,       NULL, ARG_FORCE           },
+                 { "esp-path",        required_argument, NULL, ARG_ESP_PATH        },
+                 { "path",            required_argument, NULL, ARG_ESP_PATH        }, /* Compatibility alias */
+                 { "boot-path",       required_argument, NULL, ARG_BOOT_PATH       },
+@@ -1136,6 +1141,10 @@ static int parse_argv(int argc, char *argv[]) {
+                         arg_pager_flags |= PAGER_DISABLE;
+                         break;
+ 
++                case ARG_FORCE:
++                        arg_force = true;
++                        break;
++
+                 case '?':
+                         return -EINVAL;
+ 
+@@ -1534,7 +1543,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+ 
+         (void) sync_everything();
+ 
+-        if (arg_touch_variables)
++        if (arg_touch_variables && !arg_force)
+                 r = install_variables(arg_esp_path,
+                                       part, pstart, psize, uuid,
+                                       "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
+@@ -1588,13 +1597,14 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+                         r = q;
+ 
+                 q = remove_machine_id_directory(arg_xbootldr_path, machine_id);
++
+                 if (q < 0 && r >= 0)
+                         r = q;
+         }
+ 
+         (void) sync_everything();
+ 
+-        if (!arg_touch_variables)
++        if (!arg_touch_variables || arg_force)
+                 return r;
+ 
+         q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
+-- 
+2.23.0
+

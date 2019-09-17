@@ -3,6 +3,7 @@ libacl.so.1
 libaudit.so.1
 libblkid.so.1
 libc.so.6
+libcap.so.2
 libcryptsetup.so.12
 libdl.so.2
 libdw.so.1

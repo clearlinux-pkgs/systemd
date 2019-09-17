@@ -1,0 +1,33 @@
+From 520f5c64a18aea674ae1b850160636b71a067fec Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Fri, 14 Jul 2017 11:32:54 -0700
+Subject: [PATCH 26/41] udev: log also device path.
+
+---
+ src/udev/udevd.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/udev/udevd.c b/src/udev/udevd.c
+index cb5123042a..e9e6a7fdaa 100644
+--- a/src/udev/udevd.c
++++ b/src/udev/udevd.c
+@@ -648,8 +648,14 @@ static int event_queue_insert(Manager *manager, sd_device *dev) {
+ 
+         LIST_APPEND(event, manager->events, event);
+ 
+-        log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s) is queued",
+-                         seqnum, device_action_to_string(action));
++        if (DEBUG_LOGGING) {
++                const char* devpath;
++                if (sd_device_get_devpath(event->dev, &devpath) < 0)
++                        devpath = NULL;
++
++                log_device_debug(dev, "Device (SEQNUM=%"PRIu64", ACTION=%s, PATH=%s) is queued",
++                                 seqnum, device_action_to_string(action), strnull(devpath));
++        }
+ 
+         return 0;
+ }
+-- 
+2.23.0
+

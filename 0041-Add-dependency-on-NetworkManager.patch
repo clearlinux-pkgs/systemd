@@ -1,0 +1,26 @@
+From 5e8fa3ab9ad7666d7af57a59951e4d4fff319ce0 Mon Sep 17 00:00:00 2001
+From: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
+Date: Tue, 16 Apr 2019 17:48:10 -0700
+Subject: [PATCH 41/41] Add dependency on NetworkManager.
+
+Signed-off-by: Arzhan Kinzhalin <arzhan.i.kinzhalin@intel.com>
+---
+ units/systemd-resolved.service.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/units/systemd-resolved.service.in b/units/systemd-resolved.service.in
+index eee5d5ea8f..739292c7c3 100644
+--- a/units/systemd-resolved.service.in
++++ b/units/systemd-resolved.service.in
+@@ -14,7 +14,7 @@ Documentation=https://www.freedesktop.org/wiki/Software/systemd/resolved
+ Documentation=https://www.freedesktop.org/wiki/Software/systemd/writing-network-configuration-managers
+ Documentation=https://www.freedesktop.org/wiki/Software/systemd/writing-resolver-clients
+ DefaultDependencies=no
+-After=systemd-sysusers.service systemd-networkd.service
++After=systemd-sysusers.service systemd-networkd.service NetworkManager.service
+ Before=network.target nss-lookup.target shutdown.target
+ Conflicts=shutdown.target
+ Wants=nss-lookup.target
+-- 
+2.23.0
+

@@ -52,6 +52,7 @@ libsystemd.so.0:LIBSYSTEMD_238
 libsystemd.so.0:LIBSYSTEMD_239
 libsystemd.so.0:LIBSYSTEMD_240
 libsystemd.so.0:LIBSYSTEMD_241
+libsystemd.so.0:LIBSYSTEMD_243
 libsystemd.so.0:sd_booted
 libsystemd.so.0:sd_bus_add_fallback
 libsystemd.so.0:sd_bus_add_fallback_vtable
@@ -418,6 +419,7 @@ libsystemd.so.0:sd_event_prepare
 libsystemd.so.0:sd_event_ref
 libsystemd.so.0:sd_event_run
 libsystemd.so.0:sd_event_set_watchdog
+libsystemd.so.0:sd_event_source_disable_unref
 libsystemd.so.0:sd_event_source_get_child_pid
 libsystemd.so.0:sd_event_source_get_description
 libsystemd.so.0:sd_event_source_get_destroy_callback

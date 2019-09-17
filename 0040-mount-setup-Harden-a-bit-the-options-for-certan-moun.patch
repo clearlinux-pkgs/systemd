@@ -1,0 +1,28 @@
+From a781c4e6adeb87e05e54ece28d3e80ab7c0fd330 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Fri, 22 Feb 2019 12:02:54 -0800
+Subject: [PATCH 40/41] mount-setup: Harden a bit the options for certan
+ mountpoints
+
+/dev/shm has no business with executable files. Since it is
+tmpfs, that implies someone is adding the after every boot.
+---
+ src/core/mount-setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
+index 301db4abc4..2396c26ded 100644
+--- a/src/core/mount-setup.c
++++ b/src/core/mount-setup.c
+@@ -73,7 +73,7 @@ static const MountPoint mount_table[] = {
+         { "tmpfs",       "/dev/shm",                  "tmpfs",      "mode=1777,smackfsroot=*", MS_NOSUID|MS_NODEV|MS_STRICTATIME,
+           mac_smack_use, MNT_FATAL                  },
+ #endif
+-        { "tmpfs",       "/dev/shm",                  "tmpfs",      "mode=1777",               MS_NOSUID|MS_NODEV|MS_STRICTATIME,
++        { "tmpfs",       "/dev/shm",                  "tmpfs",      "mode=1777",               MS_NOSUID|MS_NODEV|MS_NOEXEC|MS_STRICTATIME,
+           NULL,          MNT_FATAL|MNT_IN_CONTAINER },
+         { "devpts",      "/dev/pts",                  "devpts",     "mode=620,gid=" STRINGIFY(TTY_GID), MS_NOSUID|MS_NOEXEC,
+           NULL,          MNT_IN_CONTAINER           },
+-- 
+2.23.0
+

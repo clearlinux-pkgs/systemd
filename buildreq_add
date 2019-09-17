@@ -36,6 +36,7 @@ curl-dev
 libgpg-error-dev
 gnu-efi
 gnu-efi-dev
+gnu-efi-staticdev
 elfutils-dev
 iptables-dev
 iptables-dev32

@@ -1,0 +1,72 @@
+From fe41899bd98994d0d3e1ad99682ff3ad748f30e0 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Thu, 5 Apr 2018 10:02:14 -0700
+Subject: [PATCH 04/41] Build: drop pam/nsswitch, ship legacy tmpfiles.
+
+Adapted from Makefile.am patch by Dimitri John Ledkov.
+---
+ meson.build            | 5 ++---
+ tmpfiles.d/etc.conf.m4 | 5 -----
+ tmpfiles.d/meson.build | 2 +-
+ 3 files changed, 3 insertions(+), 9 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index e5ceb1e169..edd1ba5913 100644
+--- a/meson.build
++++ b/meson.build
+@@ -150,7 +150,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
+ udevhwdbdir = join_paths(udevlibexecdir, 'hwdb.d')
+ catalogdir = join_paths(prefixdir, 'lib/systemd/catalog')
+ kernelinstalldir = join_paths(prefixdir, 'lib/kernel/install.d')
+-factorydir = join_paths(datadir, 'factory')
+ bootlibdir = join_paths(prefixdir, 'lib/systemd/boot/efi')
+ testsdir = join_paths(prefixdir, 'lib/systemd/tests')
+ systemdstatedir = join_paths(localstatedir, 'lib/systemd')
+@@ -2922,8 +2921,8 @@ subdir('shell-completion/zsh')
+ subdir('docs/sysvinit')
+ subdir('docs/var-log')
+ 
+-install_subdir('factory/etc',
+-               install_dir : factorydir)
++# FIXME: figure out if the warning is true:
++# https://github.com/mesonbuild/meson/wiki/Reference-manual#install_subdir
+ 
+ install_data('xorg/50-systemd-user.sh',
+              install_dir : xinitrcdir)
+diff --git a/tmpfiles.d/etc.conf.m4 b/tmpfiles.d/etc.conf.m4
+index f82e0b82ce..0f30d37d2d 100644
+--- a/tmpfiles.d/etc.conf.m4
++++ b/tmpfiles.d/etc.conf.m4
+@@ -7,7 +7,6 @@
+ 
+ # See tmpfiles.d(5) for details
+ 
+-L /etc/os-release - - - - ../usr/lib/os-release
+ L+ /etc/mtab - - - - ../proc/self/mounts
+ m4_ifdef(`HAVE_SMACK_RUN_LABEL',
+ t /etc/mtab - - - - security.SMACK64=_
+@@ -15,8 +14,4 @@ t /etc/mtab - - - - security.SMACK64=_
+ m4_ifdef(`ENABLE_RESOLVE',
+ L! /etc/resolv.conf - - - - ../run/systemd/resolve/stub-resolv.conf
+ )m4_dnl
+-C! /etc/nsswitch.conf - - - -
+-m4_ifdef(`HAVE_PAM',
+-C! /etc/pam.d - - - -
+-)m4_dnl
+ C! /etc/issue - - - -
+diff --git a/tmpfiles.d/meson.build b/tmpfiles.d/meson.build
+index e77f46d06b..47d1597ef3 100644
+--- a/tmpfiles.d/meson.build
++++ b/tmpfiles.d/meson.build
+@@ -10,7 +10,7 @@ tmpfiles = [['home.conf',            ''],
+             ['portables.conf',       'ENABLE_PORTABLED'],
+             ['tmp.conf',             ''],
+             ['x11.conf',             ''],
+-            ['legacy.conf',          'HAVE_SYSV_COMPAT'],
++            ['legacy.conf',          ''],
+            ]
+ 
+ foreach pair : tmpfiles
+-- 
+2.23.0
+

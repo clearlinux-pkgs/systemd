@@ -1,0 +1,36 @@
+From e38787e9a64caccf84e1f74b2d8d9d666d4ff751 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Fri, 14 Jul 2017 11:34:00 -0700
+Subject: [PATCH 28/41] Ensure /var/run is never a directory.
+
+---
+ src/core/mount-setup.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
+index 068bfbd18c..301db4abc4 100644
+--- a/src/core/mount-setup.c
++++ b/src/core/mount-setup.c
+@@ -514,11 +514,19 @@ static int relabel_extra(void) {
+ 
+ int mount_setup(bool loaded_policy) {
+         int r = 0;
++        struct stat sb;
+ 
+         r = mount_points_setup(ELEMENTSOF(mount_table), loaded_policy);
+         if (r < 0)
+                 return r;
+ 
++        r = lstat("/var/run", &sb);
++        if (r == 0 && sb.st_mode & S_IFDIR) {
++                char path[256];
++                sprintf(path, "/var/run.%i", (int)time(NULL));
++                rename("/var/run", path);
++        }
++
+ #if HAVE_SELINUX || ENABLE_SMACK
+         /* Nodes in devtmpfs and /run need to be manually updated for
+          * the appropriate labels, after mounting. The other virtual
+-- 
+2.23.0
+
