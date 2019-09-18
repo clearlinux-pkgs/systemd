@@ -3,3 +3,4 @@
 meson
 dnf-plugins-core
 python
+perl
