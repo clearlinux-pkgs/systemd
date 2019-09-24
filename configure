@@ -1,4 +1,4 @@
--Ddefault-hierarchy=legacy
+-Ddefault-hierarchy=hybrid
 -Dsmack=false
 -Dsysvinit-path=
 -Dsysvrcnd_path=
