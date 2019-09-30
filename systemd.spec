@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 243
-Release  : 262
+Release  : 263
 URL      : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -324,7 +324,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569522244
+export SOURCE_DATE_EPOCH=1569868078
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -333,7 +333,7 @@ export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-reg
 export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=legacy \
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid \
 -Dsmack=false \
 -Dsysvinit-path= \
 -Dsysvrcnd_path= \
@@ -355,7 +355,7 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=legacy \
+meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid \
 -Dsmack=false \
 -Dsysvinit-path= \
 -Dsysvrcnd_path= \
