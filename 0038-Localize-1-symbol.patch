@@ -1,7 +1,7 @@
-From 7e731dbd7d66a57bccd2863c2892d7e3c63678fb Mon Sep 17 00:00:00 2001
+From 26daca3ecefcd220834fdcb2b40c86c991879059 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:50:38 -0800
-Subject: [PATCH 38/40] Localize 1 symbol.
+Subject: [PATCH 38/42] Localize 1 symbol.
 
 Otherwise we pull in an entire library.
 ---

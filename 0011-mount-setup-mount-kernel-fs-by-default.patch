@@ -1,7 +1,7 @@
-From e0335984bc4fbcaf80e4131ec52d8e22430a0fd8 Mon Sep 17 00:00:00 2001
+From ab0a770ce8df54ab63e143f0dea5a9c2f4ded172 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 11/40] mount-setup: mount kernel fs by default.
+Subject: [PATCH 11/42] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.

@@ -1,7 +1,7 @@
-From 70ec535e9a857e137ee4d1936db4270be50ab230 Mon Sep 17 00:00:00 2001
+From f522cc91dfef26d6feea9b76c961463fda8556ce Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 18 Jun 2016 17:33:33 +0000
-Subject: [PATCH 18/40] more udev children workers
+Subject: [PATCH 18/42] more udev children workers
 
 ---
  units/systemd-udevd.service.in | 2 +-

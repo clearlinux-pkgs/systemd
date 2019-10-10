@@ -39,3 +39,4 @@
 0039-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 0040-Add-dependency-on-NetworkManager.patch
 0041-boot-efi-comment-out-success-validation-message.patch
+0042-Exempt-gdm-and-a-few-others-from-default-to-locked-a.patch
