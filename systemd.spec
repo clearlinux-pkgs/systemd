@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 243
-Release  : 265
+Release  : 266
 URL      : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
