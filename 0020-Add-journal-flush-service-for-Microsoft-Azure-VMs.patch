@@ -1,7 +1,7 @@
 From d655d4c251d395798310911125b6aade1466c5a9 Mon Sep 17 00:00:00 2001
 From: Matthew Johnson <matthew.johnson@intel.com>
 Date: Tue, 20 Sep 2016 10:49:55 -0700
-Subject: [PATCH 20/42] Add journal flush service for Microsoft Azure VMs
+Subject: [PATCH 20/43] Add journal flush service for Microsoft Azure VMs
 
 Removes "Before" clause when in a Microsoft VM.
 ---

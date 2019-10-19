@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 243
-Release  : 266
+Release  : 267
 URL      : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -129,6 +129,7 @@ Patch39: 0039-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 Patch40: 0040-Add-dependency-on-NetworkManager.patch
 Patch41: 0041-boot-efi-comment-out-success-validation-message.patch
 Patch42: 0042-Exempt-gdm-and-a-few-others-from-default-to-locked-a.patch
+Patch43: 0043-Disable-LLDP-listening-by-default.patch
 
 %description
 systemd System and Service Manager
@@ -317,6 +318,7 @@ services components for the systemd package.
 %patch40 -p1
 %patch41 -p1
 %patch42 -p1
+%patch43 -p1
 pushd ..
 cp -a systemd-243 build32
 popd
@@ -326,7 +328,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570744141
+export SOURCE_DATE_EPOCH=1571460697
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -393,8 +395,8 @@ ninja -C builddir test ||:
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/systemd
-cp LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.GPL2
-cp LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
+cp %{_builddir}/systemd-243/LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
+cp %{_builddir}/systemd-243/LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/01a6b4bf79aca9b556822601186afab86e8c4fbf
 pushd ../build32
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -1498,8 +1500,8 @@ rm -rvf %{buildroot}/var/lib/systemd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/systemd/LICENSE.GPL2
-/usr/share/package-licenses/systemd/LICENSE.LGPL2.1
+/usr/share/package-licenses/systemd/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/systemd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
 
 %files man
 %defattr(0644,root,root,0755)

@@ -1,7 +1,7 @@
 From 3dbc55b649374709221f66c09af11da346137b85 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 24 Sep 2015 19:15:55 +0100
-Subject: [PATCH 14/42] kernel-install: Support alternate root usage via
+Subject: [PATCH 14/43] kernel-install: Support alternate root usage via
  SUBDIR/PLUGIN_SUBDIR
 
 This enables kernel-install to be used with an alternative root, by accepting a new

@@ -1,7 +1,7 @@
 From 65ae1b8e09543e09dd2d64f69d0a5ea8b32124ef Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:44 +0100
-Subject: [PATCH 10/42] locale-setup: set default locale to a unicode one.
+Subject: [PATCH 10/43] locale-setup: set default locale to a unicode one.
 
 ---
  src/core/locale-setup.c | 6 ++++++

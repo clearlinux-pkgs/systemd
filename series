@@ -40,3 +40,4 @@
 0040-Add-dependency-on-NetworkManager.patch
 0041-boot-efi-comment-out-success-validation-message.patch
 0042-Exempt-gdm-and-a-few-others-from-default-to-locked-a.patch
+0043-Disable-LLDP-listening-by-default.patch
