@@ -1,0 +1,1 @@
+no-hibernate.conf       -m644 /usr/lib/systemd/sleep.conf.d/

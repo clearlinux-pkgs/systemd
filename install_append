@@ -1,4 +1,4 @@
-
+#!rpm
 
 # All users should be defined in the systemd-config package
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
@@ -74,13 +74,6 @@ ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/
 ln -sf /usr/lib/systemd/system/systemd-resolved.service %{buildroot}/usr/share/clr-service-restart/systemd-resolved.service
 ln -sf /usr/lib/systemd/system/systemd-udevd.service %{buildroot}/usr/share/clr-service-restart/systemd-udevd.service
 ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/clr-service-restart/systemd-journald.service
-
-# Disable the ability to hibernate, for now:
-mkdir -p %{buildroot}/usr/lib/systemd/sleep.conf.d/
-cat <<EOF > %{buildroot}/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
-[Sleep]
-AllowHibernation=no
-EOF
 
 # fix systemd-timesyncd v242 - dir expected, was symlink before in /var/state/timesync
 mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants

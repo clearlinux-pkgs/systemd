@@ -4,10 +4,11 @@
 #
 Name     : systemd
 Version  : 243
-Release  : 267
+Release  : 268
 URL      : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v243.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
+Source2  : no-hibernate.conf
 Summary  : systemd Library
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -276,6 +277,7 @@ services components for the systemd package.
 
 %prep
 %setup -q -n systemd-243
+cd %{_builddir}/systemd-243
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -328,7 +330,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1571460697
+export SOURCE_DATE_EPOCH=1575426738
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -410,6 +412,8 @@ DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang systemd
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/systemd-timesyncd-fix-localstatedir.service
+mkdir -p %{buildroot}/usr/lib/systemd/sleep.conf.d
+install -m644 %{_sourcedir}/no-hibernate.conf %{buildroot}/usr/lib/systemd/sleep.conf.d/
 ## Remove excluded files
 rm -f %{buildroot}/usr/bin/kernel-install
 rm -f %{buildroot}/usr/bin/systemd-firstboot
@@ -434,11 +438,18 @@ rm -f %{buildroot}/usr/share/zsh/site-functions/_kernel-install
 rm -f %{buildroot}/var/lib/systemd/catalog/database
 rm -f %{buildroot}/var/log/README
 ## install_append content
+
+# All users should be defined in the systemd-config package
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd-remote.conf
 rmdir %{buildroot}/usr/lib/sysusers.d
+
+# No external linking of this shared object should happen
 rm -f %{buildroot}/usr/lib/systemd/libsystemd-shared.so
+
+# These configuration files, are actually documentation only
+# We have manpages for that
 rm -f %{buildroot}/etc/systemd/journald.conf
 rm -f %{buildroot}/etc/systemd/logind.conf
 rm -f %{buildroot}/etc/systemd/resolved.conf
@@ -449,6 +460,9 @@ rm -f %{buildroot}/etc/udev/udev.conf
 rmdir %{buildroot}/etc/udev/hwdb.d
 rmdir %{buildroot}/etc/udev/rules.d
 rmdir %{buildroot}/etc/udev
+
+# These are unwanted and would end up in -autostart, because %exclude isn't
+# honored by -autostart auto subrpm
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/ldconfig.service
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-firstboot.service
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-hwdb-update.service
@@ -457,32 +471,54 @@ rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-sysusers.
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-update-done.service
 rm -f %{buildroot}/usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup-dev.service
 rm -f %{buildroot}/usr/lib/systemd/system/sockets.target.wants/systemd-journald-audit.socket
+
+# Do not ship broken symlinks
 rm -f %{buildroot}/etc/xdg/systemd/user
 rm -f %{buildroot}/usr/lib/environment.d/99-environment.conf
+
+# Move config file into system PAM location
 mv %{buildroot}/etc/pam.d %{buildroot}/usr/share/.
+
+# Move pc files to default pkgconfig dir
 mv %{buildroot}/usr/share/pkgconfig/* %{buildroot}/usr/lib64/pkgconfig/
 rmdir %{buildroot}/usr/share/pkgconfig/
+
+# exclude hwdb for pci device id vendors - we don't want this in containers
+# or VMs. An update trigger will remake the full hwdb for non-vm cases.
 mkdir -p %{buildroot}/usr/lib/udev/hwdb.d/20
 mv %{buildroot}/usr/lib/udev/hwdb.d/20-* %{buildroot}/usr/lib/udev/hwdb.d/20
+
+# Pre-generate and pre-ship hwdb, to speed up first boot
 builddir/udevadm hwdb --root %{buildroot} --update --usr
+
+# restore 20-* hwdb files
 mv %{buildroot}/usr/lib/udev/hwdb.d/20/* %{buildroot}/usr/lib/udev/hwdb.d/
 rmdir %{buildroot}/usr/lib/udev/hwdb.d/20
+
+# Compute catalog
 builddir/journalctl --root %{buildroot} --update-catalog
+
+# Add a hook to integrate telemetrics crashprobe with systemd-coredump
 cp src/coredump/coredump-wrapper %{buildroot}/usr/lib/systemd/
+
+# only supported plugin is "clear.install"
 rm -rvf %{buildroot}/usr/lib/kernel
+
+# Remove unused systemd plka
 rm -rvf %{buildroot}/var/lib/polkit-1
+
+# Services that are OK to restart after software update
 mkdir -p %{buildroot}/usr/share/clr-service-restart
 ln -sf /usr/lib/systemd/system/systemd-timesyncd.service %{buildroot}/usr/share/clr-service-restart/systemd-timesyncd.service
 ln -sf /usr/lib/systemd/system/systemd-resolved.service %{buildroot}/usr/share/clr-service-restart/systemd-resolved.service
 ln -sf /usr/lib/systemd/system/systemd-udevd.service %{buildroot}/usr/share/clr-service-restart/systemd-udevd.service
 ln -sf /usr/lib/systemd/system/systemd-journald.service %{buildroot}/usr/share/clr-service-restart/systemd-journald.service
-mkdir -p %{buildroot}/usr/lib/systemd/sleep.conf.d/
-cat <<EOF > %{buildroot}/usr/lib/systemd/sleep.conf.d/no-hibernate.conf
-[Sleep]
-AllowHibernation=no
-EOF
+
+# fix systemd-timesyncd v242 - dir expected, was symlink before in /var/state/timesync
 mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
 ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/systemd-timesyncd-fix-localstatedir.service
+
+# remove catalog
 rm -rvf %{buildroot}/var/lib/systemd
 ## install_append end
 
