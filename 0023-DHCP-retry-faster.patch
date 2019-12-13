@@ -1,4 +1,4 @@
-From 870aea874c43916003fc753a737068838c88f518 Mon Sep 17 00:00:00 2001
+From 3e3ba0e9c033c40822765197d1763cbde00b6512 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:16:21 -0700
 Subject: [PATCH 23/43] DHCP: retry faster.
@@ -8,10 +8,10 @@ Subject: [PATCH 23/43] DHCP: retry faster.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/libsystemd-network/sd-dhcp-client.c b/src/libsystemd-network/sd-dhcp-client.c
-index 85238c21d1..92e644446e 100644
+index 901985fc1b..289a556e9d 100644
 --- a/src/libsystemd-network/sd-dhcp-client.c
 +++ b/src/libsystemd-network/sd-dhcp-client.c
-@@ -1101,7 +1101,7 @@ static int client_timeout_resend(
+@@ -1113,7 +1113,7 @@ static int client_timeout_resend(
                  else
                          goto error;
  
@@ -21,5 +21,5 @@ index 85238c21d1..92e644446e 100644
                  break;
  
 -- 
-2.23.0
+2.24.0
 

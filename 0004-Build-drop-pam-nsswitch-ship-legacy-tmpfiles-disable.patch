@@ -1,4 +1,4 @@
-From f698edc65b3d08edc33997fe12ab24fd74c70a7c Mon Sep 17 00:00:00 2001
+From 803442fdbeded9ab05cfe98327d1248394caa263 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 10:02:14 -0700
 Subject: [PATCH 04/43] Build: drop pam/nsswitch, ship legacy tmpfiles, disable
@@ -21,10 +21,10 @@ Ref: https://github.com/coreos/coreos-overlay/pull/2129/commits/76830bedf02a8c54
  3 files changed, 4 insertions(+), 11 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index e5ceb1e169..edd1ba5913 100644
+index 21d6968abd..df8dd5fd8c 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -150,7 +150,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
+@@ -151,7 +151,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
  udevhwdbdir = join_paths(udevlibexecdir, 'hwdb.d')
  catalogdir = join_paths(prefixdir, 'lib/systemd/catalog')
  kernelinstalldir = join_paths(prefixdir, 'lib/kernel/install.d')
@@ -32,7 +32,7 @@ index e5ceb1e169..edd1ba5913 100644
  bootlibdir = join_paths(prefixdir, 'lib/systemd/boot/efi')
  testsdir = join_paths(prefixdir, 'lib/systemd/tests')
  systemdstatedir = join_paths(localstatedir, 'lib/systemd')
-@@ -2922,8 +2921,8 @@ subdir('shell-completion/zsh')
+@@ -2945,8 +2944,8 @@ subdir('shell-completion/zsh')
  subdir('docs/sysvinit')
  subdir('docs/var-log')
  
@@ -79,5 +79,5 @@ index e77f46d06b..47d1597ef3 100644
  
  foreach pair : tmpfiles
 -- 
-2.23.0
+2.24.0
 

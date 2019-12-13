@@ -1,4 +1,4 @@
-From acc0a58077320eac7ca6ac5047aaa2dcf02cd1ef Mon Sep 17 00:00:00 2001
+From 64e1a40f8197ddf946c7abb5011d3854fa897ef0 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:33:26 -0700
 Subject: [PATCH 26/43] skip not-present ACPI devices
@@ -14,7 +14,7 @@ boot time
  1 file changed, 20 insertions(+)
 
 diff --git a/src/libsystemd/sd-device/device-enumerator.c b/src/libsystemd/sd-device/device-enumerator.c
-index 5b54641213..3a718ff329 100644
+index a1932f41f9..7568ae7420 100644
 --- a/src/libsystemd/sd-device/device-enumerator.c
 +++ b/src/libsystemd/sd-device/device-enumerator.c
 @@ -461,6 +461,23 @@ static bool match_sysname(sd_device_enumerator *enumerator, const char *sysname)
@@ -52,5 +52,5 @@ index 5b54641213..3a718ff329 100644
                  if (k < 0) {
                          if (k != -ENODEV)
 -- 
-2.23.0
+2.24.0
 

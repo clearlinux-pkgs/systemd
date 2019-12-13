@@ -1,4 +1,4 @@
-From 9edb3d0343f87a7eac409c6a66b81fce1393c611 Mon Sep 17 00:00:00 2001
+From d46cbbfb6efc40bd0fe3391fd62a5e588ccf9087 Mon Sep 17 00:00:00 2001
 From: William Douglas <william.douglas@intel.com>
 Date: Fri, 27 Jul 2018 17:50:48 +0000
 Subject: [PATCH 34/43] Hand off coredumps to a wrapper that will optionally
@@ -47,5 +47,5 @@ index 47bf847693..2df3f40891 100644
 -kernel.core_pattern=|@rootlibexecdir@/systemd-coredump %P %u %g %s %t %c %h
 +kernel.core_pattern=|@rootlibexecdir@/coredump-wrapper %E %P %u %g %s %t %c %h %e
 -- 
-2.23.0
+2.24.0
 

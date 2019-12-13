@@ -1,4 +1,4 @@
-From 9eaffe52733cf339217b8fd96c0e634502d192db Mon Sep 17 00:00:00 2001
+From 129f52a2fc2a4fcfedad1f493a53e602fa9ea26f Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 13 Jun 2018 13:42:12 -0700
 Subject: [PATCH 33/43] Notify systemd earlier that resolved is ready.
@@ -30,5 +30,5 @@ index 2ca9fbdc72..01b0f41a85 100644
          if (r < 0)
                  return log_error_errno(r, "Event loop failed: %m");
 -- 
-2.23.0
+2.24.0
 

@@ -1,4 +1,4 @@
-From 13f6d231fb654711994be215f2e53f73b3fcac93 Mon Sep 17 00:00:00 2001
+From 3dcdfa04905741d4ef95e5f73c8bf2046be99729 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:35:13 -0700
 Subject: [PATCH 29/43] Compile udev with -O3
@@ -9,10 +9,10 @@ udevd benefits from -O3 as it heavily affects boot time.
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index edd1ba5913..302b075d03 100644
+index df8dd5fd8c..73b53e404d 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2610,7 +2610,7 @@ public_programs += exe
+@@ -2632,7 +2632,7 @@ public_programs += exe
  exe = executable('systemd-udevd',
                   systemd_udevd_sources,
                   include_directories : includes,
@@ -21,7 +21,7 @@ index edd1ba5913..302b075d03 100644
                   link_with : [libudev_core,
                                libsystemd_network,
                                libudev_static],
-@@ -2627,7 +2627,7 @@ public_programs += exe
+@@ -2649,7 +2649,7 @@ public_programs += exe
  
  exe = executable('udevadm',
                   udevadm_sources,
@@ -31,5 +31,5 @@ index edd1ba5913..302b075d03 100644
                   link_with : [libudev_core,
                                libsystemd_network,
 -- 
-2.23.0
+2.24.0
 

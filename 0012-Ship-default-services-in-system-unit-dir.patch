@@ -1,4 +1,4 @@
-From f820b12e59999ed0c2f784101630b46e56526a29 Mon Sep 17 00:00:00 2001
+From d396b0a36cba1c2197375a7feb52694aba61141e Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
 Subject: [PATCH 12/43] Ship default services in system unit dir.
@@ -8,7 +8,7 @@ Subject: [PATCH 12/43] Ship default services in system unit dir.
  1 file changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/units/meson.build b/units/meson.build
-index c3d5c559fc..17ec344225 100644
+index 028a87e5b2..8ab0bbdb22 100644
 --- a/units/meson.build
 +++ b/units/meson.build
 @@ -49,7 +49,8 @@ units = [
@@ -69,5 +69,5 @@ index c3d5c559fc..17ec344225 100644
          ['systemd-tmpfiles-clean.service',       'ENABLE_TMPFILES'],
          ['systemd-tmpfiles-setup-dev.service',   'ENABLE_TMPFILES',
 -- 
-2.23.0
+2.24.0
 

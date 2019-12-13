@@ -1,4 +1,4 @@
-From ab0a770ce8df54ab63e143f0dea5a9c2f4ded172 Mon Sep 17 00:00:00 2001
+From ee2020898e4a28e7026766d4a59cff41adbb4f2c Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
 Subject: [PATCH 11/43] mount-setup: mount kernel fs by default.
@@ -21,10 +21,10 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index ea7b0a80cb..068bfbd18c 100644
+index 7ef5b127ad..d9030c5576 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
-@@ -105,6 +105,16 @@ static const MountPoint mount_table[] = {
+@@ -106,6 +106,16 @@ static const MountPoint mount_table[] = {
  #endif
          { "bpf",         "/sys/fs/bpf",               "bpf",        "mode=700",                MS_NOSUID|MS_NOEXEC|MS_NODEV,
            NULL,          MNT_NONE,                  },
@@ -100,7 +100,7 @@ index 0114ad31f0..0000000000
 -Type=mqueue
 -Options=nosuid,nodev,noexec
 diff --git a/units/meson.build b/units/meson.build
-index e1ee9f86c3..c3d5c559fc 100644
+index 6a3a0d0dea..028a87e5b2 100644
 --- a/units/meson.build
 +++ b/units/meson.build
 @@ -7,10 +7,6 @@ units = [
@@ -218,5 +218,5 @@ index 618270ddae..0000000000
 -Type=debugfs
 -Options=nosuid,nodev,noexec
 -- 
-2.23.0
+2.24.0
 

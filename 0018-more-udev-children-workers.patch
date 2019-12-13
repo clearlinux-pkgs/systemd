@@ -1,4 +1,4 @@
-From f522cc91dfef26d6feea9b76c961463fda8556ce Mon Sep 17 00:00:00 2001
+From ddd9393918bc9138d992d7075b0aaf462299f700 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 18 Jun 2016 17:33:33 +0000
 Subject: [PATCH 18/43] more udev children workers
@@ -8,7 +8,7 @@ Subject: [PATCH 18/43] more udev children workers
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/units/systemd-udevd.service.in b/units/systemd-udevd.service.in
-index dbb678ae69..27d8a73a85 100644
+index 8b1dd0efc7..8ff4ed1557 100644
 --- a/units/systemd-udevd.service.in
 +++ b/units/systemd-udevd.service.in
 @@ -22,7 +22,7 @@ OOMScoreAdjust=-1000
@@ -16,10 +16,10 @@ index dbb678ae69..27d8a73a85 100644
  Restart=always
  RestartSec=0
 -ExecStart=@rootlibexecdir@/systemd-udevd
-+ExecStart=@rootlibexecdir@/systemd-udevd  --children-max=16
++ExecStart=@rootlibexecdir@/systemd-udevd --children-max=16
+ ExecReload=@rootbindir@/udevadm control --reload --timeout 0
  KillMode=mixed
- WatchdogSec=3min
  TasksMax=infinity
 -- 
-2.23.0
+2.24.0
 

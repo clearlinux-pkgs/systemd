@@ -1,4 +1,4 @@
-From 0dc9fca132f281431446d5df57e821ef4a815271 Mon Sep 17 00:00:00 2001
+From 0eeb07371b247795362c68e10782dd01ea3d1fc1 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:34:00 -0700
 Subject: [PATCH 27/43] Ensure /var/run is never a directory.
@@ -8,10 +8,10 @@ Subject: [PATCH 27/43] Ensure /var/run is never a directory.
  1 file changed, 8 insertions(+)
 
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index 068bfbd18c..301db4abc4 100644
+index d9030c5576..6770ecd284 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
-@@ -514,11 +514,19 @@ static int relabel_extra(void) {
+@@ -490,11 +490,19 @@ static int relabel_extra(void) {
  
  int mount_setup(bool loaded_policy) {
          int r = 0;
@@ -32,5 +32,5 @@ index 068bfbd18c..301db4abc4 100644
          /* Nodes in devtmpfs and /run need to be manually updated for
           * the appropriate labels, after mounting. The other virtual
 -- 
-2.23.0
+2.24.0
 

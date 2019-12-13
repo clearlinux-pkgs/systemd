@@ -1,4 +1,4 @@
-From eaaf575bba99fe354a57eff8e1d0b1b7b74ec9da Mon Sep 17 00:00:00 2001
+From 5ab953595f02fda52e7fbae93a2069b52f332339 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
 Subject: [PATCH 05/43] journal: flush var/kmsg after starting.
@@ -31,5 +31,5 @@ index 5e7b1dcb4a..e7122ce6b4 100644
           * journal so entries from the runtime journals are ordered
           * before this message. See #4190 for some details. */
 -- 
-2.23.0
+2.24.0
 

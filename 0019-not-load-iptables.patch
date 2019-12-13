@@ -1,4 +1,4 @@
-From bf762ba548bdfa44e18ba48310ace26e8f48e6bf Mon Sep 17 00:00:00 2001
+From 9d9ec82cad0e9d7cca6fb50cf4cba77ad9127a59 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sun, 19 Jun 2016 00:51:22 +0000
 Subject: [PATCH 19/43] not load iptables
@@ -8,10 +8,10 @@ Subject: [PATCH 19/43] not load iptables
  1 file changed, 4 deletions(-)
 
 diff --git a/src/core/kmod-setup.c b/src/core/kmod-setup.c
-index a91cfebc67..bfb5377202 100644
+index 1286743273..a356da013d 100644
 --- a/src/core/kmod-setup.c
 +++ b/src/core/kmod-setup.c
-@@ -87,10 +87,6 @@ int kmod_setup(void) {
+@@ -85,10 +85,6 @@ int kmod_setup(void) {
                  /* This should never be a module */
                  { "unix",      "/proc/net/unix",            true,   true,    NULL      },
  
@@ -23,5 +23,5 @@ index a91cfebc67..bfb5377202 100644
                  { "virtio_rng", NULL,                       false,  false,   has_virtio_rng },
          };
 -- 
-2.23.0
+2.24.0
 

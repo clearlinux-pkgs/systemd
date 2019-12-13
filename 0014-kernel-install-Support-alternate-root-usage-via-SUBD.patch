@@ -1,4 +1,4 @@
-From 3dbc55b649374709221f66c09af11da346137b85 Mon Sep 17 00:00:00 2001
+From fa42fa5958113e096cf5514db0959c73d4a59acc Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 24 Sep 2015 19:15:55 +0100
 Subject: [PATCH 14/43] kernel-install: Support alternate root usage via
@@ -137,5 +137,5 @@ index e7f2beb570..f7dda7f470 100644
          ;;
  
 -- 
-2.23.0
+2.24.0
 

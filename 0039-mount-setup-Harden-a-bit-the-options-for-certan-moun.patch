@@ -1,4 +1,4 @@
-From 4bf2a5f4d998c7e4be862a24981eea594cd5a388 Mon Sep 17 00:00:00 2001
+From dc4d3e40b62694d8fb967f7790489410e1c73d22 Mon Sep 17 00:00:00 2001
 From: Thiago Macieira <thiago.macieira@intel.com>
 Date: Fri, 22 Feb 2019 12:02:54 -0800
 Subject: [PATCH 39/43] mount-setup: Harden a bit the options for certan
@@ -11,10 +11,10 @@ tmpfs, that implies someone is adding the after every boot.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index 301db4abc4..2396c26ded 100644
+index 6770ecd284..f32884a7be 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
-@@ -73,7 +73,7 @@ static const MountPoint mount_table[] = {
+@@ -74,7 +74,7 @@ static const MountPoint mount_table[] = {
          { "tmpfs",       "/dev/shm",                  "tmpfs",      "mode=1777,smackfsroot=*", MS_NOSUID|MS_NODEV|MS_STRICTATIME,
            mac_smack_use, MNT_FATAL                  },
  #endif
@@ -24,5 +24,5 @@ index 301db4abc4..2396c26ded 100644
          { "devpts",      "/dev/pts",                  "devpts",     "mode=620,gid=" STRINGIFY(TTY_GID), MS_NOSUID|MS_NOEXEC,
            NULL,          MNT_IN_CONTAINER           },
 -- 
-2.23.0
+2.24.0
 

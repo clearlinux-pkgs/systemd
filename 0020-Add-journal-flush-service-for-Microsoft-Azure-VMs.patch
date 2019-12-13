@@ -1,4 +1,4 @@
-From d655d4c251d395798310911125b6aade1466c5a9 Mon Sep 17 00:00:00 2001
+From cc8a970fe752bd07cbaac582563008f34f35ca67 Mon Sep 17 00:00:00 2001
 From: Matthew Johnson <matthew.johnson@intel.com>
 Date: Tue, 20 Sep 2016 10:49:55 -0700
 Subject: [PATCH 20/43] Add journal flush service for Microsoft Azure VMs
@@ -12,7 +12,7 @@ Removes "Before" clause when in a Microsoft VM.
  create mode 100644 units/systemd-journal-flush-msft.service.in
 
 diff --git a/units/meson.build b/units/meson.build
-index 17ec344225..10a5cb5920 100644
+index 8ab0bbdb22..853629b2cf 100644
 --- a/units/meson.build
 +++ b/units/meson.build
 @@ -150,6 +150,8 @@ in_units = [
@@ -65,5 +65,5 @@ index 29b006cba5..953d55d284 100644
  [Service]
  ExecStart=@rootbindir@/journalctl --flush
 -- 
-2.23.0
+2.24.0
 

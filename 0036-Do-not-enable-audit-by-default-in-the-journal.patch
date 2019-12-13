@@ -1,4 +1,4 @@
-From b7e51544dab6c64c842fa6c13eb62ff16c87748c Mon Sep 17 00:00:00 2001
+From 6ffc69e77fb8aaa2582744cdf64aa3a9015a5404 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:43:59 -0800
 Subject: [PATCH 36/43] Do not enable audit by default in the journal.
@@ -8,7 +8,7 @@ Subject: [PATCH 36/43] Do not enable audit by default in the journal.
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/src/journal/journald-audit.c b/src/journal/journald-audit.c
-index fae9138ecb..f30de12e84 100644
+index 339e091dfd..f52158b292 100644
 --- a/src/journal/journald-audit.c
 +++ b/src/journal/journald-audit.c
 @@ -539,10 +539,11 @@ int server_open_audit(Server *s) {
@@ -25,5 +25,5 @@ index fae9138ecb..f30de12e84 100644
          return 0;
  }
 -- 
-2.23.0
+2.24.0
 

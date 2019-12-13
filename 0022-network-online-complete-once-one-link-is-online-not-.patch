@@ -1,4 +1,4 @@
-From 5577fff08ef1f251b41542bc0a976864ebdc6991 Mon Sep 17 00:00:00 2001
+From 67e7274531af9f290ea6359795856ce1e293431e Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:15:52 -0700
 Subject: [PATCH 22/43] network-online: complete once one link is online, not
@@ -22,5 +22,5 @@ index 7666e16669..0d4f09ef1e 100644
  
  [Install]
 -- 
-2.23.0
+2.24.0
 

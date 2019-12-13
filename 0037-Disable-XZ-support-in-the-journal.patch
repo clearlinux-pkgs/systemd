@@ -1,4 +1,4 @@
-From ebe86ffe28c0c920cc01467103d467992e22ba7e Mon Sep 17 00:00:00 2001
+From 19b560a9b3194095470a21216ad3823d2938cff9 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:46:32 -0800
 Subject: [PATCH 37/43] Disable XZ support in the journal.
@@ -9,10 +9,10 @@ Subject: [PATCH 37/43] Disable XZ support in the journal.
  2 files changed, 5 insertions(+)
 
 diff --git a/src/coredump/coredump.c b/src/coredump/coredump.c
-index d4052f69db..57dbd176db 100644
+index 0e9a3c023c..de5d284cf9 100644
 --- a/src/coredump/coredump.c
 +++ b/src/coredump/coredump.c
-@@ -49,6 +49,9 @@
+@@ -48,6 +48,9 @@
  #include "tmpfile-util.h"
  #include "user-util.h"
  
@@ -23,10 +23,10 @@ index d4052f69db..57dbd176db 100644
  #define PROCESS_SIZE_MAX ((uint64_t) (2LLU*1024LLU*1024LLU*1024LLU))
  
 diff --git a/src/journal/compress.c b/src/journal/compress.c
-index bfb75ae8c9..40a6b3518a 100644
+index 4e00e4fc5e..569b7d47b8 100644
 --- a/src/journal/compress.c
 +++ b/src/journal/compress.c
-@@ -29,6 +29,8 @@
+@@ -28,6 +28,8 @@
  #include "unaligned.h"
  #include "util.h"
  
@@ -36,5 +36,5 @@ index bfb75ae8c9..40a6b3518a 100644
  DEFINE_TRIVIAL_CLEANUP_FUNC(LZ4F_compressionContext_t, LZ4F_freeCompressionContext);
  DEFINE_TRIVIAL_CLEANUP_FUNC(LZ4F_decompressionContext_t, LZ4F_freeDecompressionContext);
 -- 
-2.23.0
+2.24.0
 

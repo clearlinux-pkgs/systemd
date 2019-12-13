@@ -1,4 +1,4 @@
-From 74a227a0703607509a254d613863215c079c8a27 Mon Sep 17 00:00:00 2001
+From cda5fd7ca930b01d747943d8f6737d0feb73704d Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:32:54 -0700
 Subject: [PATCH 25/43] udev: log also device path.
@@ -8,10 +8,10 @@ Subject: [PATCH 25/43] udev: log also device path.
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/src/udev/udevd.c b/src/udev/udevd.c
-index cb5123042a..e9e6a7fdaa 100644
+index 7678331897..9498f98d15 100644
 --- a/src/udev/udevd.c
 +++ b/src/udev/udevd.c
-@@ -648,8 +648,14 @@ static int event_queue_insert(Manager *manager, sd_device *dev) {
+@@ -645,8 +645,14 @@ static int event_queue_insert(Manager *manager, sd_device *dev) {
  
          LIST_APPEND(event, manager->events, event);
  
@@ -29,5 +29,5 @@ index cb5123042a..e9e6a7fdaa 100644
          return 0;
  }
 -- 
-2.23.0
+2.24.0
 

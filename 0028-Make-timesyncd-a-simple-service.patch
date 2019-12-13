@@ -1,4 +1,4 @@
-From ad678247b36460104b7435ebaaba40c8e2c76bb8 Mon Sep 17 00:00:00 2001
+From 09b6c92ca4b93835a18049b5ce45dd129c405fef Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:34:36 -0700
 Subject: [PATCH 28/43] Make timesyncd a "simple" service
@@ -10,18 +10,18 @@ that it is done, even though that's really not relevant
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/units/systemd-timesyncd.service.in b/units/systemd-timesyncd.service.in
-index 2d8d14f6de..ab90bc08d0 100644
+index f0486a70ab..f3b02abd24 100644
 --- a/units/systemd-timesyncd.service.in
 +++ b/units/systemd-timesyncd.service.in
-@@ -44,7 +44,7 @@ StateDirectory=systemd/timesync
+@@ -45,7 +45,7 @@ StateDirectory=systemd/timesync
  SystemCallArchitectures=native
  SystemCallErrorNumber=EPERM
  SystemCallFilter=@system-service @clock
 -Type=notify
 +Type=simple
  User=systemd-timesync
- WatchdogSec=3min
+ @SERVICE_WATCHDOG@
  
 -- 
-2.23.0
+2.24.0
 
