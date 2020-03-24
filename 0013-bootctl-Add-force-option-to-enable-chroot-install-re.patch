@@ -1,7 +1,7 @@
-From faad9aae29a8fb3e0c21878a3416aa036b8731d4 Mon Sep 17 00:00:00 2001
+From e31118c407099b2157854a35a24c45ebf68730bc Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH 13/43] bootctl: Add --force option to enable chroot
+Subject: [PATCH 13/44] bootctl: Add --force option to enable chroot
  install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of
@@ -26,7 +26,7 @@ configuration and layout.
  1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index a90502b4c3..356345540f 100644
+index 5874b9ec68..27cab3bce6 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
 @@ -61,6 +61,8 @@ static const char *arg_dollar_boot_path(void) {
@@ -66,7 +66,7 @@ index a90502b4c3..356345540f 100644
                  case ARG_NO_VARIABLES:
                          arg_touch_variables = false;
                          break;
-@@ -1557,7 +1566,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+@@ -1563,7 +1572,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
  
          (void) sync_everything();
  
@@ -75,7 +75,7 @@ index a90502b4c3..356345540f 100644
                  r = install_variables(arg_esp_path,
                                        part, pstart, psize, uuid,
                                        "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
-@@ -1611,13 +1620,14 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+@@ -1617,13 +1626,14 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
                          r = q;
  
                  q = remove_machine_id_directory(arg_xbootldr_path, machine_id);
@@ -92,5 +92,5 @@ index a90502b4c3..356345540f 100644
  
          q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
 -- 
-2.24.0
+2.26.0
 

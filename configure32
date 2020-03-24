@@ -8,3 +8,4 @@
 -Dgcrypt=false
 -Dopenssl=false
 -Daudit=false
+-Dpolkit=false

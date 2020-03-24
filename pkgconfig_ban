@@ -9,3 +9,4 @@ libapparmor
 libselinux
 32bash-completion
 32polkit-gobject-1
+32pwquality

@@ -1,17 +1,17 @@
-From 5fe2d382d749149855a9fbf99ecbd5b529d7654a Mon Sep 17 00:00:00 2001
+From e925478a1944e42fceb64cba37b24103976c47ee Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
-Subject: [PATCH 09/43] core: do not apply presets.
+Subject: [PATCH 09/44] core: do not apply presets.
 
 ---
  src/core/manager.c | 2 --
  1 file changed, 2 deletions(-)
 
 diff --git a/src/core/manager.c b/src/core/manager.c
-index 13a6b49a8f..513c587dff 100644
+index 25afdbea04..71d7e9f03b 100644
 --- a/src/core/manager.c
 +++ b/src/core/manager.c
-@@ -1642,8 +1642,6 @@ int manager_startup(Manager *m, FILE *serialization, FDSet *fds) {
+@@ -1658,8 +1658,6 @@ int manager_startup(Manager *m, FILE *serialization, FDSet *fds) {
          if (r < 0)
                  return r;
  
@@ -21,5 +21,5 @@ index 13a6b49a8f..513c587dff 100644
  
          {
 -- 
-2.24.0
+2.26.0
 

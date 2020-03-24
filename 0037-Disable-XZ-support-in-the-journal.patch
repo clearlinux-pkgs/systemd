@@ -1,7 +1,7 @@
-From 19b560a9b3194095470a21216ad3823d2938cff9 Mon Sep 17 00:00:00 2001
+From 2f5e857371f484005bbb923139d172c7163a45a2 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:46:32 -0800
-Subject: [PATCH 37/43] Disable XZ support in the journal.
+Subject: [PATCH 37/44] Disable XZ support in the journal.
 
 ---
  src/coredump/coredump.c | 3 +++
@@ -36,5 +36,5 @@ index 4e00e4fc5e..569b7d47b8 100644
  DEFINE_TRIVIAL_CLEANUP_FUNC(LZ4F_compressionContext_t, LZ4F_freeCompressionContext);
  DEFINE_TRIVIAL_CLEANUP_FUNC(LZ4F_decompressionContext_t, LZ4F_freeDecompressionContext);
 -- 
-2.24.0
+2.26.0
 

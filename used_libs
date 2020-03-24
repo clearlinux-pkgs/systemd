@@ -4,10 +4,13 @@ libaudit.so.1
 libblkid.so.1
 libc.so.6
 libcap.so.2
+libcrypt.so.1
+libcrypto.so.1.1
 libcryptsetup.so.12
 libdl.so.2
 libdw.so.1
 libelf.so.1
+libfdisk.so.1
 libgcc_s.so.1
 libgcrypt.so.20
 libgnutls.so.30
@@ -18,9 +21,11 @@ liblz4.so.1
 liblzma.so.5
 libm.so.6
 libmount.so.1
+libp11-kit.so.0
 libpam.so.0
 libpam_misc.so.0
 libpthread.so.0
+libpwquality.so.1
 librt.so.1
 libseccomp.so.2
 libz.so.1

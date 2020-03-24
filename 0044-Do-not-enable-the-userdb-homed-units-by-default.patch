@@ -1,0 +1,36 @@
+From f8f223df9300197c8473bbc3f8263f3167896f70 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Tue, 24 Mar 2020 13:27:44 -0700
+Subject: [PATCH 44/44] Do not enable the userdb/homed units by default.
+
+---
+ units/meson.build | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/units/meson.build b/units/meson.build
+index 8326f30efa..50fa205e96 100644
+--- a/units/meson.build
++++ b/units/meson.build
+@@ -131,8 +131,7 @@ units = [
+          'sysinit.target.wants/'],
+         ['systemd-udevd-kernel.socket',         '',
+          'sockets.target.wants/'],
+-        ['systemd-userdbd.socket',              'ENABLE_USERDB',
+-         'sockets.target.wants/'],
++        ['systemd-userdbd.socket',              'ENABLE_USERDB'],
+         ['time-set.target',                     ''],
+         ['time-sync.target',                    ''],
+         ['timers.target',                       ''],
+@@ -198,8 +197,7 @@ in_units = [
+         ['systemd-portabled.service',            'ENABLE_PORTABLED',
+          'dbus-org.freedesktop.portable1.service'],
+         ['systemd-userdbd.service',              'ENABLE_USERDB'],
+-        ['systemd-homed.service',                'ENABLE_HOMED',
+-         'multi-user.target.wants/ dbus-org.freedesktop.home1.service'],
++        ['systemd-homed.service',                'ENABLE_HOMED'],
+         ['systemd-quotacheck.service',           'ENABLE_QUOTACHECK'],
+         ['systemd-random-seed.service',          'ENABLE_RANDOMSEED',
+          'sysinit.target.wants/'],
+-- 
+2.26.0
+

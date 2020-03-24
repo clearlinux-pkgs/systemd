@@ -1,7 +1,7 @@
-From 3395312cef6c73958886e66ad148d69c3e232c2a Mon Sep 17 00:00:00 2001
+From 1eb6c146d7e7a59f7283e8d0ed85e9bd4f074b47 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 13 Jun 2018 11:49:55 -0700
-Subject: [PATCH 32/43] don't use libm just for integer exp10()
+Subject: [PATCH 32/44] don't use libm just for integer exp10()
 
 ---
  src/resolve/resolved-dns-rr.c | 7 ++++---
@@ -33,5 +33,5 @@ index 6ba26a24b2..aee332b67a 100644
          if (asprintf(&s, "%d %d %.3f %c %d %d %.3f %c %.2fm %.2fm %.2fm %.2fm",
                       (lat / 60000 / 60),
 -- 
-2.24.0
+2.26.0
 
