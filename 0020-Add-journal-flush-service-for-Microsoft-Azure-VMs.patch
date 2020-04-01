@@ -1,4 +1,4 @@
-From 4447f312733c283931d81c7e3584811e581fb815 Mon Sep 17 00:00:00 2001
+From b169e247c42f00f0fb359fac85c4003c3e482ef3 Mon Sep 17 00:00:00 2001
 From: Matthew Johnson <matthew.johnson@intel.com>
 Date: Tue, 20 Sep 2016 10:49:55 -0700
 Subject: [PATCH 20/44] Add journal flush service for Microsoft Azure VMs

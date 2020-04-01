@@ -1,4 +1,4 @@
-From 95bc5421bd91366586fb2c750372b12b874c7e28 Mon Sep 17 00:00:00 2001
+From cd072886994e810d391a9a1bf2ee0f2a21491bfb Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:50:38 -0800
 Subject: [PATCH 38/44] Localize 1 symbol.

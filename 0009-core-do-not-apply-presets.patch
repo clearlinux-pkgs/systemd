@@ -1,4 +1,4 @@
-From e925478a1944e42fceb64cba37b24103976c47ee Mon Sep 17 00:00:00 2001
+From d0a11eff96b873b90b34de2a1a8e2b6cd7c7328e Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:50:13 +0100
 Subject: [PATCH 09/44] core: do not apply presets.

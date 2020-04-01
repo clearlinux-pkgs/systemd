@@ -1,4 +1,4 @@
-From c8c1b28d2ba4043c9bd45a53484cb113ec4ebfc6 Mon Sep 17 00:00:00 2001
+From f3ac56d3de5eb66226d943b7c64b2660fdeeecca Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:37:58 -0700
 Subject: [PATCH 30/44] Don't wait for utmp at shutdown.

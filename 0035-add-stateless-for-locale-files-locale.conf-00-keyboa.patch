@@ -1,4 +1,4 @@
-From d55290ca76dc78ab8dcafa6ae43aedf70d148a68 Mon Sep 17 00:00:00 2001
+From c440aebd7ac378c1eea1cab1c50a2792d93ac39e Mon Sep 17 00:00:00 2001
 From: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@intel.com>
 Date: Fri, 26 Oct 2018 16:46:37 -0500
 Subject: [PATCH 35/44] add stateless for locale files locale.conf

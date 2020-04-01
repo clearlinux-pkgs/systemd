@@ -1,4 +1,4 @@
-From 3af8641d2330c58135978bcad95ae3da6adf3f15 Mon Sep 17 00:00:00 2001
+From a32f8c31b9e03fc2c08b191bb74b63349f19f2be Mon Sep 17 00:00:00 2001
 From: Thiago Macieira <thiago.macieira@intel.com>
 Date: Fri, 22 Feb 2019 12:02:54 -0800
 Subject: [PATCH 39/44] mount-setup: Harden a bit the options for certan

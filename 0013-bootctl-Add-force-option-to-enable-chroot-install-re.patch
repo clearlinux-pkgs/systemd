@@ -1,4 +1,4 @@
-From e31118c407099b2157854a35a24c45ebf68730bc Mon Sep 17 00:00:00 2001
+From 0b81ef30ae0f576bf615054fcc9e89f3a0960984 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
 Subject: [PATCH 13/44] bootctl: Add --force option to enable chroot

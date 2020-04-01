@@ -1,4 +1,4 @@
-From cc0f531bc8269daa24a76a11ab07c4b3baf5fafc Mon Sep 17 00:00:00 2001
+From d53e8bc34944c931bb707e694bd1729e53fb8551 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:35:13 -0700
 Subject: [PATCH 29/44] Compile udev with -O3

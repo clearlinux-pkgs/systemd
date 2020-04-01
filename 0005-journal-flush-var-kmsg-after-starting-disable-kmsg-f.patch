@@ -1,12 +1,29 @@
-From 8ce4c2b21ca3082bee2047df7d8718c6893dae05 Mon Sep 17 00:00:00 2001
+From 884bbfa77f2fb689e3189a8a6ce7373c8cfe4776 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
-Subject: [PATCH 05/44] journal: flush var/kmsg after starting.
+Subject: [PATCH 05/44] journal: flush var/kmsg after starting, disable kmsg
+ from boot.
 
 ---
- src/journal/journald.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ src/journal/journald-server.c | 4 +++-
+ src/journal/journald.c        | 5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
+index 1399e01fd5..b1f5f67f97 100644
+--- a/src/journal/journald-server.c
++++ b/src/journal/journald-server.c
+@@ -2237,7 +2237,9 @@ int server_init(Server *s, const char *namespace) {
+                 return r;
+ 
+         /* By default, only read from /dev/kmsg if are the main namespace */
+-        s->boot_kmsg = s->read_kmsg = !s->namespace;
++        s->read_kmsg = !s->namespace;
++        /* default in clearlinux is to not read kmsg from boot at all. Use BootKMsg=true in journald.conf instead if you need this */
++        s->boot_kmsg = false;
+         s->storage = s->namespace ? STORAGE_PERSISTENT : STORAGE_AUTO;
+ 
+         journal_reset_metrics(&s->system_storage.metrics);
 diff --git a/src/journal/journald.c b/src/journal/journald.c
 index 9a7cb3e1fc..019952fd2a 100644
 --- a/src/journal/journald.c

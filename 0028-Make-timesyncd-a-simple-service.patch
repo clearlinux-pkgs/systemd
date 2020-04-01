@@ -1,4 +1,4 @@
-From 0bf059aa907123b87d08c108452e1d78b853bc72 Mon Sep 17 00:00:00 2001
+From 90a810f2770da48e91c14c6caed12f8021a050da Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:34:36 -0700
 Subject: [PATCH 28/44] Make timesyncd a "simple" service

@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 245
-Release  : 276
+Release  : 277
 URL      : https://github.com/systemd/systemd/archive/v245.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v245.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -92,10 +92,10 @@ BuildRequires : util-linux-extras
 BuildRequires : xz-dev
 BuildRequires : zlib-dev32
 Patch1: 0001-journal-raise-compression-threshold.patch
-Patch2: 0002-journal-clearout-drop-kmsg.patch
+Patch2: 0002-journal-Add-option-to-skip-boot-kmsg-events.patch
 Patch3: 0003-core-use-mmap-to-load-files.patch
 Patch4: 0004-Build-drop-pam-nsswitch-ship-legacy-tmpfiles-disable.patch
-Patch5: 0005-journal-flush-var-kmsg-after-starting.patch
+Patch5: 0005-journal-flush-var-kmsg-after-starting-disable-kmsg-f.patch
 Patch6: 0006-logind-pam-fix-systemd-user-to-include-common-sessio.patch
 Patch7: 0007-sd-event-return-malloc-memory-reserves-when-main-loo.patch
 Patch8: 0008-efi-boot-generator-Do-not-automount-boot-partition.patch
@@ -335,7 +335,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1585089294
+export SOURCE_DATE_EPOCH=1585780944
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS

@@ -1,4 +1,4 @@
-From 9e9d8334b7caf9495b04152bfe8faa9df8ebce9a Mon Sep 17 00:00:00 2001
+From 352300d57291598fd9f5c4bd1d1a7dedcd44e7aa Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
 Subject: [PATCH 17/44] Set a default, unique, hostname, when it is either

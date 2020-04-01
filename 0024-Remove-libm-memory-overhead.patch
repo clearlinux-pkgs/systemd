@@ -1,4 +1,4 @@
-From 9c83c219d16109d4dca30c53db7908a43a3552ba Mon Sep 17 00:00:00 2001
+From 8cab71d0aa9fa8656dbe1a41d12ac5b7a9b9395b Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:31:38 -0700
 Subject: [PATCH 24/44] Remove libm memory overhead.

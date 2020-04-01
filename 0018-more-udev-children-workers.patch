@@ -1,4 +1,4 @@
-From 594304b87678592cf8994223fda9b2e978bbdd90 Mon Sep 17 00:00:00 2001
+From 5397f3320cd366c36c682619baf303ae5e5b28cc Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 18 Jun 2016 17:33:33 +0000
 Subject: [PATCH 18/44] more udev children workers
