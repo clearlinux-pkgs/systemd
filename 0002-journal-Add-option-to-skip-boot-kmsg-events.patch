@@ -1,7 +1,7 @@
 From 4186cb11ddf3c731d0c365bb819a4479ecf6b299 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:25:41 +0100
-Subject: [PATCH 02/44] journal: Add option to skip boot kmsg events
+Subject: [PATCH 02/45] journal: Add option to skip boot kmsg events
 
 The `BootKMsg` boolean is added. It defaults to `true` in the default
 system namespace, and doesn't change the default behavior of the

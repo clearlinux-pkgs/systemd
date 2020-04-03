@@ -1,7 +1,7 @@
 From 387e9906beb725491f3b1430d3c68d27830ae93f Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 18 Oct 2019 21:42:12 -0700
-Subject: [PATCH 43/44] Disable LLDP listening by default.
+Subject: [PATCH 43/45] Disable LLDP listening by default.
 
 Do not listen on a raw socket by default for this. Let the
 local admin explicitly enable it instead.

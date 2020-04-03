@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 245
-Release  : 277
+Release  : 278
 URL      : https://github.com/systemd/systemd/archive/v245.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v245.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -135,6 +135,7 @@ Patch41: 0041-boot-efi-comment-out-success-validation-message.patch
 Patch42: 0042-Exempt-gdm-and-a-few-others-from-default-to-locked-a.patch
 Patch43: 0043-Disable-LLDP-listening-by-default.patch
 Patch44: 0044-Do-not-enable-the-userdb-homed-units-by-default.patch
+Patch45: 0045-units-use-var-swapfile-if-found.patch
 
 %description
 systemd System and Service Manager
@@ -326,6 +327,7 @@ cd %{_builddir}/systemd-245
 %patch42 -p1
 %patch43 -p1
 %patch44 -p1
+%patch45 -p1
 pushd ..
 cp -a systemd-245 build32
 popd
@@ -335,7 +337,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1585780944
+export SOURCE_DATE_EPOCH=1585953953
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -652,6 +654,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
+/usr/lib/systemd/system/swap.target.wants/var-swapfile.swap
 /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
 /usr/lib/systemd/system/sysinit.target.wants/kmod-static-nodes.service
 /usr/lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
@@ -1883,6 +1886,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
+%exclude /usr/lib/systemd/system/swap.target.wants/var-swapfile.swap
 %exclude /usr/lib/systemd/system/sysinit.target.wants/cryptsetup.target
 %exclude /usr/lib/systemd/system/sysinit.target.wants/kmod-static-nodes.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
@@ -2077,6 +2081,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/user-runtime-dir@.service
 /usr/lib/systemd/system/user.slice
 /usr/lib/systemd/system/user@.service
+/usr/lib/systemd/system/var-swapfile.swap
 /usr/lib/systemd/user/basic.target
 /usr/lib/systemd/user/bluetooth.target
 /usr/lib/systemd/user/default.target

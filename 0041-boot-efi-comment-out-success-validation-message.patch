@@ -1,7 +1,7 @@
 From c35059ce36dcc9a7db67a83a16b6b7b0b0feb50b Mon Sep 17 00:00:00 2001
 From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
 Date: Thu, 26 Sep 2019 12:31:15 -0500
-Subject: [PATCH 41/44] boot: efi: comment out success validation message
+Subject: [PATCH 41/45] boot: efi: comment out success validation message
 
 When booting with sd-boot the message "SHA256 validated" is displayed,
 this is useful when debugging, but for end user could cause uncertainty.

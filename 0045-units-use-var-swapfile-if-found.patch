@@ -1,0 +1,56 @@
+From 751be8962e4f706ef10ea0425da6b7970ca2010d Mon Sep 17 00:00:00 2001
+From: Mark D Horn <mark.d.horn@intel.com>
+Date: Fri, 3 Apr 2020 11:37:22 -0700
+Subject: [PATCH 45/45] units: use /var/swapfile if found
+
+New unit to automatically make use of a swapfile if
+it exists, not a symlink, and /var is writable.
+
+Signed-off-by: Mark D Horn <mark.d.horn@intel.com>
+---
+ units/meson.build       |  2 ++
+ units/var-swapfile.swap | 19 +++++++++++++++++++
+ 2 files changed, 21 insertions(+)
+ create mode 100644 units/var-swapfile.swap
+
+diff --git a/units/meson.build b/units/meson.build
+index 50fa205e96..afbfd4d120 100644
+--- a/units/meson.build
++++ b/units/meson.build
+@@ -141,6 +141,8 @@ units = [
+         ['user.slice',                          ''],
+         ['var-lib-machines.mount',              'ENABLE_MACHINED',
+          'remote-fs.target.wants/ machines.target.wants/'],
++        ['var-swapfile.swap',                   '',
++         'swap.target.wants/'],
+ ]
+ 
+ in_units = [
+diff --git a/units/var-swapfile.swap b/units/var-swapfile.swap
+new file mode 100644
+index 0000000000..6c61cf8ca4
+--- /dev/null
++++ b/units/var-swapfile.swap
+@@ -0,0 +1,19 @@
++#  SPDX-License-Identifier: LGPL-2.1+
++#
++#  This file is part of systemd.
++#
++#  systemd is free software; you can redistribute it and/or modify it
++#  under the terms of the GNU Lesser General Public License as published by
++#  the Free Software Foundation; either version 2.1 of the License, or
++#  (at your option) any later version.
++
++[Unit]
++Description=Default Swap File (/var/swapfile)
++Documentation=man:systemd.swap(5)
++ConditionPathExists=/var/swapfile
++ConditionPathIsSymbolicLink=!/var/swapfile
++ConditionPathIsReadWrite=/var/swapfile
++
++[Swap]
++What=/var/swapfile
++Options=discard,fixpgsz
+-- 
+2.26.0
+

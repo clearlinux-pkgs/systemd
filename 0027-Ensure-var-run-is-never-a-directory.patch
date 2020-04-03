@@ -1,7 +1,7 @@
 From 7a099b381c1a48b9aa86d07d76a6b03b91bd7375 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:34:00 -0700
-Subject: [PATCH 27/44] Ensure /var/run is never a directory.
+Subject: [PATCH 27/45] Ensure /var/run is never a directory.
 
 ---
  src/core/mount-setup.c | 8 ++++++++

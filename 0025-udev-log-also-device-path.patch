@@ -1,7 +1,7 @@
 From 0e21da80aa08c54f435c12f39461486a9cb2f322 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:32:54 -0700
-Subject: [PATCH 25/44] udev: log also device path.
+Subject: [PATCH 25/45] udev: log also device path.
 
 ---
  src/udev/udevd.c | 10 ++++++++--

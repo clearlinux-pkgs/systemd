@@ -1,7 +1,7 @@
 From 884bbfa77f2fb689e3189a8a6ce7373c8cfe4776 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
-Subject: [PATCH 05/44] journal: flush var/kmsg after starting, disable kmsg
+Subject: [PATCH 05/45] journal: flush var/kmsg after starting, disable kmsg
  from boot.
 
 ---

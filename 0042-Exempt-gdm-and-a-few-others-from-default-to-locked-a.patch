@@ -1,7 +1,7 @@
 From a11cf99ea4049f8a1c69830cb66e1329e727a15c Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 10 Oct 2019 14:40:49 -0700
-Subject: [PATCH 42/44] Exempt gdm and a few others from default to locked
+Subject: [PATCH 42/45] Exempt gdm and a few others from default to locked
  account.
 
 ---

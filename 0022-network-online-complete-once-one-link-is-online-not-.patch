@@ -1,7 +1,7 @@
 From 93ba67825be6f7e69f6b053d1f72159cafb9a323 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:15:52 -0700
-Subject: [PATCH 22/44] network-online: complete once one link is online, not
+Subject: [PATCH 22/45] network-online: complete once one link is online, not
  all.
 
 ---
