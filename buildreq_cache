@@ -4,7 +4,6 @@ kbd
 libpwquality-dev
 libxkbcommon-dev
 pkgconfig(32liblz4)
-pkgconfig(32pwquality)
 pkgconfig(32xkbcommon)
 pkgconfig(audit)
 pkgconfig(bash-completion)

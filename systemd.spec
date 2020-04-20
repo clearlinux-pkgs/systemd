@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 245
-Release  : 278
+Release  : 279
 URL      : https://github.com/systemd/systemd/archive/v245.tar.gz
 Source0  : https://github.com/systemd/systemd/archive/v245.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -337,14 +337,16 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1585953953
+export SOURCE_DATE_EPOCH=1587410497
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
+export FFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
+export FCFLAGS=$FFLAGS
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid \
 -Dsmack=false \
@@ -719,6 +721,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/bin/systemd-run
 /usr/bin/systemd-socket-activate
 /usr/bin/systemd-stdio-bridge
+/usr/bin/systemd-sysusers
 /usr/bin/systemd-tmpfiles
 /usr/bin/systemd-tty-ask-password-agent
 /usr/bin/systemd-umount
@@ -1488,7 +1491,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 %files extras
 %defattr(-,root,root,-)
 /usr/bin/systemd-hwdb
-/usr/bin/systemd-sysusers
 /usr/lib/systemd/system/dbus-org.freedesktop.import1.service
 /usr/lib/systemd/system/systemd-importd.service
 /usr/lib/systemd/system/systemd-journal-gatewayd.service
