@@ -1,7 +1,7 @@
-From 4186cb11ddf3c731d0c365bb819a4479ecf6b299 Mon Sep 17 00:00:00 2001
+From 1de7f6b4c666f36464a7a6b3033fc6afa24f537a Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:25:41 +0100
-Subject: [PATCH 02/45] journal: Add option to skip boot kmsg events
+Subject: [PATCH 02/44] journal: Add option to skip boot kmsg events
 
 The `BootKMsg` boolean is added. It defaults to `true` in the default
 system namespace, and doesn't change the default behavior of the
@@ -29,11 +29,11 @@ Cc: Dimitri John Ledkov <xnox@ubuntu.com>
  5 files changed, 23 insertions(+), 1 deletion(-)
 
 diff --git a/man/journald.conf.xml b/man/journald.conf.xml
-index e24c420ab0..cedeec9c1a 100644
+index bfd359a903..e809da5f72 100644
 --- a/man/journald.conf.xml
 +++ b/man/journald.conf.xml
-@@ -402,6 +402,15 @@
-         this option is enabled by default, it is disabled in all others.</para></listitem>
+@@ -414,6 +414,15 @@
+         messages. Defaults to on.</para></listitem>
        </varlistentry>
  
 +      <varlistentry>
@@ -49,19 +49,19 @@ index e24c420ab0..cedeec9c1a 100644
          <term><varname>TTYPath=</varname></term>
  
 diff --git a/src/journal/journald-gperf.gperf b/src/journal/journald-gperf.gperf
-index 0774444e8d..f56f9021be 100644
+index c70ac9a5b6..91f4ea65a2 100644
 --- a/src/journal/journald-gperf.gperf
 +++ b/src/journal/journald-gperf.gperf
-@@ -22,6 +22,7 @@ Journal.Storage,            config_parse_storage,    0, offsetof(Server, storage
- Journal.Compress,           config_parse_compress,   0, offsetof(Server, compress)
+@@ -23,6 +23,7 @@ Journal.Compress,           config_parse_compress,   0, offsetof(Server, compres
  Journal.Seal,               config_parse_bool,       0, offsetof(Server, seal)
  Journal.ReadKMsg,           config_parse_bool,       0, offsetof(Server, read_kmsg)
+ Journal.Audit,              config_parse_tristate,   0, offsetof(Server, set_audit)
 +Journal.BootKMsg,           config_parse_bool,       0, offsetof(Server, boot_kmsg)
  Journal.SyncIntervalSec,    config_parse_sec,        0, offsetof(Server, sync_interval_usec)
  # The following is a legacy name for compatibility
  Journal.RateLimitInterval,  config_parse_sec,        0, offsetof(Server, ratelimit_interval)
 diff --git a/src/journal/journald-kmsg.c b/src/journal/journald-kmsg.c
-index ec404145ee..fd4b6f48a8 100644
+index 6e7c806fd8..3f93c6ce10 100644
 --- a/src/journal/journald-kmsg.c
 +++ b/src/journal/journald-kmsg.c
 @@ -384,6 +384,17 @@ int server_open_dev_kmsg(Server *s) {
@@ -83,10 +83,10 @@ index ec404145ee..fd4b6f48a8 100644
          if (r < 0) {
  
 diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
-index 489730df8f..1399e01fd5 100644
+index 5865bf9809..938cac85f6 100644
 --- a/src/journal/journald-server.c
 +++ b/src/journal/journald-server.c
-@@ -2237,7 +2237,7 @@ int server_init(Server *s, const char *namespace) {
+@@ -2239,7 +2239,7 @@ int server_init(Server *s, const char *namespace) {
                  return r;
  
          /* By default, only read from /dev/kmsg if are the main namespace */
@@ -96,17 +96,17 @@ index 489730df8f..1399e01fd5 100644
  
          journal_reset_metrics(&s->system_storage.metrics);
 diff --git a/src/journal/journald-server.h b/src/journal/journald-server.h
-index f3405e967c..cff555ee98 100644
+index b01ade5aee..a346c87e0f 100644
 --- a/src/journal/journald-server.h
 +++ b/src/journal/journald-server.h
-@@ -108,6 +108,7 @@ struct Server {
-         JournalCompressOptions compress;
+@@ -109,6 +109,7 @@ struct Server {
          bool seal;
          bool read_kmsg;
+         int set_audit;
 +        bool boot_kmsg;
  
          bool forward_to_kmsg;
          bool forward_to_syslog;
 -- 
-2.26.0
+2.28.0
 

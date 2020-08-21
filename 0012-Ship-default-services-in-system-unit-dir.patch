@@ -1,27 +1,27 @@
-From 41581074ffd6d557d5fecf9c6a27b1bf7a120181 Mon Sep 17 00:00:00 2001
+From ac1e3b9595f9a8d31b9ca438b6aa4dd38a77a58b Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 12/45] Ship default services in system unit dir.
+Subject: [PATCH 12/44] Ship default services in system unit dir.
 
 ---
  units/meson.build | 23 ++++++++++++++++-------
  1 file changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/units/meson.build b/units/meson.build
-index 6add4fba6e..9901a0ae23 100644
+index 5522eb6d6b..21dedf06a2 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -55,7 +55,8 @@ units = [
-          'runlevel6.target ctrl-alt-del.target'],
+@@ -57,7 +57,8 @@ units = [
+          (with_runlevels ? 'runlevel6.target ctrl-alt-del.target' : 'ctrl-alt-del.target')],
          ['remote-cryptsetup.target',            'HAVE_LIBCRYPTSETUP'],
          ['remote-fs-pre.target',                ''],
 -        ['remote-fs.target',                    ''],
 +        ['remote-fs.target',                    '',
 +         'multi-user.target.wants/'],
          ['rescue.target',                       '',
-          'runlevel1.target'],
+          (with_runlevels ? 'runlevel1.target' : '')],
          ['rpcbind.target',                      ''],
-@@ -109,7 +110,8 @@ units = [
+@@ -111,7 +112,8 @@ units = [
           'sysinit.target.wants/'],
          ['systemd-journald@.socket',            ''],
          ['systemd-journald-varlink@.socket',    ''],
@@ -31,7 +31,7 @@ index 6add4fba6e..9901a0ae23 100644
          ['systemd-poweroff.service',            ''],
          ['systemd-reboot.service',              ''],
          ['systemd-rfkill.socket',               'ENABLE_RFKILL'],
-@@ -185,8 +187,11 @@ in_units = [
+@@ -186,8 +188,11 @@ in_units = [
          ['systemd-modules-load.service',         'HAVE_KMOD',
           'sysinit.target.wants/'],
          ['systemd-network-generator.service',    'ENABLE_NETWORKD'],
@@ -69,5 +69,5 @@ index 6add4fba6e..9901a0ae23 100644
          ['systemd-udevd.service',                '',
           'sysinit.target.wants/'],
 -- 
-2.26.0
+2.28.0
 

@@ -1,7 +1,7 @@
-From 884bbfa77f2fb689e3189a8a6ce7373c8cfe4776 Mon Sep 17 00:00:00 2001
+From 6d3ab3d3f7dd9690f279d99fb436f5b6a9c700ce Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
-Subject: [PATCH 05/45] journal: flush var/kmsg after starting, disable kmsg
+Subject: [PATCH 05/44] journal: flush var/kmsg after starting, disable kmsg
  from boot.
 
 ---
@@ -10,10 +10,10 @@ Subject: [PATCH 05/45] journal: flush var/kmsg after starting, disable kmsg
  2 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
-index 1399e01fd5..b1f5f67f97 100644
+index 938cac85f6..575e807a6d 100644
 --- a/src/journal/journald-server.c
 +++ b/src/journal/journald-server.c
-@@ -2237,7 +2237,9 @@ int server_init(Server *s, const char *namespace) {
+@@ -2239,7 +2239,9 @@ int server_init(Server *s, const char *namespace) {
                  return r;
  
          /* By default, only read from /dev/kmsg if are the main namespace */
@@ -48,5 +48,5 @@ index 9a7cb3e1fc..019952fd2a 100644
           * journal so entries from the runtime journals are ordered
           * before this message. See #4190 for some details. */
 -- 
-2.26.0
+2.28.0
 

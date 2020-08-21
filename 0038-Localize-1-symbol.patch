@@ -1,7 +1,7 @@
-From cd072886994e810d391a9a1bf2ee0f2a21491bfb Mon Sep 17 00:00:00 2001
+From e88ea4450561a7f151e4e978c15a326f09a1ef44 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:50:38 -0800
-Subject: [PATCH 38/45] Localize 1 symbol.
+Subject: [PATCH 38/44] Localize 1 symbol.
 
 Otherwise we pull in an entire library.
 ---
@@ -9,10 +9,10 @@ Otherwise we pull in an entire library.
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/src/libsystemd/sd-daemon/sd-daemon.c b/src/libsystemd/sd-daemon/sd-daemon.c
-index 4cd71cb2d3..68594dcb3c 100644
+index bbe7cd76d5..e47470c072 100644
 --- a/src/libsystemd/sd-daemon/sd-daemon.c
 +++ b/src/libsystemd/sd-daemon/sd-daemon.c
-@@ -400,13 +400,18 @@ _public_ int sd_is_socket_unix(int fd, int type, int listening, const char *path
+@@ -402,13 +402,18 @@ _public_ int sd_is_socket_unix(int fd, int type, int listening, const char *path
          return 1;
  }
  
@@ -33,5 +33,5 @@ index 4cd71cb2d3..68594dcb3c 100644
                          /* A non-mq fd (or an invalid one, but we ruled that out above) */
                          return 0;
 -- 
-2.26.0
+2.28.0
 

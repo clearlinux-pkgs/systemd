@@ -1,29 +1,39 @@
-From dd6612a9c97465a871a745e8de49eea5e0958af4 Mon Sep 17 00:00:00 2001
+From 7215ba5ffb0df719b9434c3b35f4eabca88e7669 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:43:59 -0800
-Subject: [PATCH 36/45] Do not enable audit by default in the journal.
+Subject: [PATCH 36/44] Do not enable audit by default in the journal.
 
 ---
- src/journal/journald-audit.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ man/journald.conf.xml         | 2 +-
+ src/journal/journald-server.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/journal/journald-audit.c b/src/journal/journald-audit.c
-index 339e091dfd..f52158b292 100644
---- a/src/journal/journald-audit.c
-+++ b/src/journal/journald-audit.c
-@@ -539,10 +539,11 @@ int server_open_audit(Server *s) {
-         if (r < 0)
-                 return log_error_errno(r, "Failed to add audit fd to event loop: %m");
+diff --git a/man/journald.conf.xml b/man/journald.conf.xml
+index e809da5f72..b2246372ec 100644
+--- a/man/journald.conf.xml
++++ b/man/journald.conf.xml
+@@ -411,7 +411,7 @@
+         <command>systemd-journald</command> collects generated audit records, it just controls whether it
+         tells the kernel to generate them. This means if another tool turns on auditing even if
+         <command>systemd-journald</command> left it off, it will still collect the generated
+-        messages. Defaults to on.</para></listitem>
++        messages. Defaults to off.</para></listitem>
+       </varlistentry>
  
-+#if 0
-         /* We are listening now, try to enable audit */
-         r = enable_audit(s->audit_fd, true);
-         if (r < 0)
-                 log_warning_errno(r, "Failed to issue audit enable call: %m");
--
-+#endif
-         return 0;
- }
+       <varlistentry>
+diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
+index 575e807a6d..9a8dd7fa7d 100644
+--- a/src/journal/journald-server.c
++++ b/src/journal/journald-server.c
+@@ -2208,7 +2208,7 @@ int server_init(Server *s, const char *namespace) {
+                 .compress.threshold_bytes = (uint64_t) -1,
+                 .seal = true,
+ 
+-                .set_audit = true,
++                .set_audit = false,
+ 
+                 .watchdog_usec = USEC_INFINITY,
+ 
 -- 
-2.26.0
+2.28.0
 

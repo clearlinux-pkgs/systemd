@@ -1,7 +1,7 @@
-From f3ac56d3de5eb66226d943b7c64b2660fdeeecca Mon Sep 17 00:00:00 2001
+From 17e48ab8f5174bfffbaf5b3896adf95a21b640ae Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:37:58 -0700
-Subject: [PATCH 30/45] Don't wait for utmp at shutdown.
+Subject: [PATCH 30/44] Don't wait for utmp at shutdown.
 
 ---
  units/systemd-update-utmp.service.in | 2 +-
@@ -21,5 +21,5 @@ index b9a668faeb..ed9eb04178 100644
  [Service]
  Type=oneshot
 -- 
-2.26.0
+2.28.0
 

@@ -1,13 +1,14 @@
-245
+246
 bash-completion-dev
-kbd
 libpwquality-dev
 libxkbcommon-dev
 pkgconfig(32liblz4)
+pkgconfig(32libzstd)
 pkgconfig(32xkbcommon)
 pkgconfig(audit)
 pkgconfig(bash-completion)
 pkgconfig(liblz4)
+pkgconfig(libzstd)
 pkgconfig(polkit-gobject-1)
 pkgconfig(pwquality)
 pkgconfig(xkbcommon)

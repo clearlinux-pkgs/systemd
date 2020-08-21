@@ -1,35 +1,26 @@
-From d53e8bc34944c931bb707e694bd1729e53fb8551 Mon Sep 17 00:00:00 2001
+From fe0d8b94f83feb2219d59ef855e4cb9a46e1a15d Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:35:13 -0700
-Subject: [PATCH 29/45] Compile udev with -O3
+Subject: [PATCH 29/44] Compile udev with -O3
 
 udevd benefits from -O3 as it heavily affects boot time.
 ---
- meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/meson.build b/meson.build
-index 14e90060e1..8ade3409d3 100644
+index dbb2b6a943..db225c3554 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2842,7 +2842,7 @@ public_programs += exe
- exe = executable('systemd-udevd',
-                  systemd_udevd_sources,
-                  include_directories : includes,
--                 c_args : '-DLOG_REALM=LOG_REALM_UDEV',
-+                 c_args : ['-DLOG_REALM=LOG_REALM_UDEV', '-O3'],
-                  link_with : [libudev_core,
-                               libsystemd_network,
-                               libudev_static],
-@@ -2859,7 +2859,7 @@ public_programs += exe
- 
- exe = executable('udevadm',
-                  udevadm_sources,
--                 c_args : '-DLOG_REALM=LOG_REALM_UDEV',
-+                 c_args : ['-DLOG_REALM=LOG_REALM_UDEV', '-O3'],
-                  include_directories : includes,
-                  link_with : [libudev_core,
-                               libsystemd_network,
+@@ -3041,7 +3041,7 @@ public_programs += executable(
+ public_programs += executable(
+         'udevadm',
+         udevadm_sources,
+-        c_args : '-DLOG_REALM=LOG_REALM_UDEV',
++        c_args : ['-DLOG_REALM=LOG_REALM_UDEV', '-O3'],
+         include_directories : includes,
+         link_with : [libudev_core,
+                      libsystemd_network,
 -- 
-2.26.0
+2.28.0
 

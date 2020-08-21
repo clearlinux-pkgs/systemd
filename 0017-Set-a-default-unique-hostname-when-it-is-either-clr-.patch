@@ -1,7 +1,7 @@
-From 352300d57291598fd9f5c4bd1d1a7dedcd44e7aa Mon Sep 17 00:00:00 2001
+From f24d59ed82c0a90af81bdd23ec08fd57496afdd6 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
-Subject: [PATCH 17/45] Set a default, unique, hostname, when it is either
+Subject: [PATCH 17/44] Set a default, unique, hostname, when it is either
  'clr' or 'localhost'
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
@@ -12,7 +12,7 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  3 files changed, 43 insertions(+)
 
 diff --git a/src/core/hostname-setup.c b/src/core/hostname-setup.c
-index 83cce88131..981d9e443b 100644
+index 6d047db838..02f073cdf4 100644
 --- a/src/core/hostname-setup.c
 +++ b/src/core/hostname-setup.c
 @@ -3,6 +3,9 @@
@@ -25,7 +25,7 @@ index 83cce88131..981d9e443b 100644
  
  #include "alloc-util.h"
  #include "fileio.h"
-@@ -49,3 +52,40 @@ int hostname_setup(void) {
+@@ -61,3 +64,40 @@ int hostname_setup(void) {
          log_info("Set hostname to <%s>.", hn);
          return 0;
  }
@@ -77,10 +77,10 @@ index dc7b9a6262..e62793e5c5 100644
 +
 +int set_first_hostname(void);
 diff --git a/src/core/main.c b/src/core/main.c
-index 3c6b66e89c..7463728ee4 100644
+index 4a376976e9..c3103e251e 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -1930,6 +1930,7 @@ static int initialize_runtime(
+@@ -2061,6 +2061,7 @@ static int initialize_runtime(
                          status_welcome();
                          hostname_setup();
                          machine_id_setup(NULL, arg_machine_id, NULL);
@@ -89,5 +89,5 @@ index 3c6b66e89c..7463728ee4 100644
                          bump_unix_max_dgram_qlen();
                          bump_file_max_and_nr_open();
 -- 
-2.26.0
+2.28.0
 

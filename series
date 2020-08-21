@@ -41,5 +41,4 @@
 0041-boot-efi-comment-out-success-validation-message.patch
 0042-Exempt-gdm-and-a-few-others-from-default-to-locked-a.patch
 0043-Disable-LLDP-listening-by-default.patch
-0044-Do-not-enable-the-userdb-homed-units-by-default.patch
-0045-units-use-var-swapfile-if-found.patch
+0044-units-use-var-swapfile-if-found.patch

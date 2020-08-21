@@ -1,7 +1,7 @@
-From c440aebd7ac378c1eea1cab1c50a2792d93ac39e Mon Sep 17 00:00:00 2001
+From 7507709fce738a6633eda6d2f391c664ee151c18 Mon Sep 17 00:00:00 2001
 From: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@intel.com>
 Date: Fri, 26 Oct 2018 16:46:37 -0500
-Subject: [PATCH 35/45] add stateless for locale files locale.conf
+Subject: [PATCH 35/44] add stateless for locale files locale.conf
  00-keyboard.conf
 
 systemd must take this files from /etc and in case there are not files
@@ -13,7 +13,7 @@ Signed-off-by: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@inte
  1 file changed, 32 insertions(+), 10 deletions(-)
 
 diff --git a/src/locale/keymap-util.c b/src/locale/keymap-util.c
-index 30669a9359..e556ca6db1 100644
+index 233d081300..5c28e60895 100644
 --- a/src/locale/keymap-util.c
 +++ b/src/locale/keymap-util.c
 @@ -92,6 +92,7 @@ void locale_simplify(char *locale[_VARIABLE_LC_MAX]) {
@@ -131,5 +131,5 @@ index 30669a9359..e556ca6db1 100644
                  return -errno;
  
 -- 
-2.26.0
+2.28.0
 

@@ -1,7 +1,7 @@
-From 95bad5e2fbd98183f36f9e80aab205b2f099819a Mon Sep 17 00:00:00 2001
+From 5726f8196a566844c8efef9ed8eb4ca3748c0b4a Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 11/45] mount-setup: mount kernel fs by default.
+Subject: [PATCH 11/44] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.
@@ -21,12 +21,12 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index 5dfcb6158a..54cba4198a 100644
+index feb88f3e6e..aa73b30afc 100644
 --- a/src/core/mount-setup.c
 +++ b/src/core/mount-setup.c
-@@ -106,6 +106,16 @@ static const MountPoint mount_table[] = {
+@@ -107,6 +107,16 @@ static const MountPoint mount_table[] = {
  #endif
-         { "bpf",         "/sys/fs/bpf",               "bpf",        "mode=700",                MS_NOSUID|MS_NOEXEC|MS_NODEV,
+         { "bpf",         "/sys/fs/bpf",               "bpf",        "mode=700",                                MS_NOSUID|MS_NOEXEC|MS_NODEV,
            NULL,          MNT_NONE,                  },
 +        { "hugetlbfs",   "/dev/hugepages",            "hugetlbfs",  NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
 +	  NULL,          MNT_NONE                   },
@@ -100,10 +100,10 @@ index 0114ad31f0..0000000000
 -Type=mqueue
 -Options=nosuid,nodev,noexec
 diff --git a/units/meson.build b/units/meson.build
-index ea91f0cc9e..6add4fba6e 100644
+index aa2ed115ea..5522eb6d6b 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -8,10 +8,6 @@ units = [
+@@ -10,10 +10,6 @@ units = [
          ['cryptsetup-pre.target',               'HAVE_LIBCRYPTSETUP'],
          ['cryptsetup.target',                   'HAVE_LIBCRYPTSETUP',
           'sysinit.target.wants/'],
@@ -114,7 +114,7 @@ index ea91f0cc9e..6add4fba6e 100644
          ['emergency.target',                    ''],
          ['exit.target',                         ''],
          ['final.target',                        ''],
-@@ -72,12 +68,6 @@ units = [
+@@ -74,12 +70,6 @@ units = [
          ['sound.target',                        ''],
          ['suspend.target',                      ''],
          ['swap.target',                         ''],
@@ -218,5 +218,5 @@ index 618270ddae..0000000000
 -Type=debugfs
 -Options=nosuid,nodev,noexec
 -- 
-2.26.0
+2.28.0
 

@@ -1,7 +1,7 @@
-From 751be8962e4f706ef10ea0425da6b7970ca2010d Mon Sep 17 00:00:00 2001
+From aac38e5448dedaf9e587052abc26d73629699795 Mon Sep 17 00:00:00 2001
 From: Mark D Horn <mark.d.horn@intel.com>
 Date: Fri, 3 Apr 2020 11:37:22 -0700
-Subject: [PATCH 45/45] units: use /var/swapfile if found
+Subject: [PATCH 44/44] units: use /var/swapfile if found
 
 New unit to automatically make use of a swapfile if
 it exists, not a symlink, and /var is writable.
@@ -14,10 +14,10 @@ Signed-off-by: Mark D Horn <mark.d.horn@intel.com>
  create mode 100644 units/var-swapfile.swap
 
 diff --git a/units/meson.build b/units/meson.build
-index 50fa205e96..afbfd4d120 100644
+index 57f70477b3..0ca27ee3cf 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -141,6 +141,8 @@ units = [
+@@ -143,6 +143,8 @@ units = [
          ['user.slice',                          ''],
          ['var-lib-machines.mount',              'ENABLE_MACHINED',
           'remote-fs.target.wants/ machines.target.wants/'],
@@ -52,5 +52,5 @@ index 0000000000..6c61cf8ca4
 +What=/var/swapfile
 +Options=discard,fixpgsz
 -- 
-2.26.0
+2.28.0
 

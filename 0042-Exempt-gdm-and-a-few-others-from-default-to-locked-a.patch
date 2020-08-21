@@ -1,7 +1,7 @@
-From a11cf99ea4049f8a1c69830cb66e1329e727a15c Mon Sep 17 00:00:00 2001
+From 8204d577605175a4e7d93b7a99b80a13b684750b Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 10 Oct 2019 14:40:49 -0700
-Subject: [PATCH 42/45] Exempt gdm and a few others from default to locked
+Subject: [PATCH 42/44] Exempt gdm and a few others from default to locked
  account.
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 42/45] Exempt gdm and a few others from default to locked
  1 file changed, 5 insertions(+)
 
 diff --git a/src/sysusers/sysusers.c b/src/sysusers/sysusers.c
-index f7cc7e0900..0f46038c5f 100644
+index b5e7e08eee..4481edf981 100644
 --- a/src/sysusers/sysusers.c
 +++ b/src/sysusers/sysusers.c
-@@ -539,6 +539,11 @@ static int write_temporary_shadow(const char *shadow_path, FILE **tmpfile, char
+@@ -517,6 +517,11 @@ static int write_temporary_shadow(const char *shadow_path, FILE **tmpfile, char
                          .sp_flag = (unsigned long) -1, /* this appears to be what everybody does ... */
                  };
  
@@ -25,5 +25,5 @@ index f7cc7e0900..0f46038c5f 100644
                  if (r < 0)
                          return r;
 -- 
-2.26.0
+2.28.0
 

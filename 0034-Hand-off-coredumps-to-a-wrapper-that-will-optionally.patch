@@ -1,7 +1,7 @@
-From f098d07415a3aadca523e5a0ebdcdcc82e9d8adf Mon Sep 17 00:00:00 2001
+From 90ac3c4980b4541ab92c5a02c8f03adca0154f03 Mon Sep 17 00:00:00 2001
 From: William Douglas <william.douglas@intel.com>
 Date: Fri, 27 Jul 2018 17:50:48 +0000
-Subject: [PATCH 34/45] Hand off coredumps to a wrapper that will optionally
+Subject: [PATCH 34/44] Hand off coredumps to a wrapper that will optionally
  use telemetry
 
 Send core files to a wrapper script that will try and send the coredumps to the
@@ -9,8 +9,8 @@ telemetry core handler if it exists and also send the coredumps to systemd's
 core file handler.
 ---
  src/coredump/coredump-wrapper | 17 +++++++++++++++++
- sysctl.d/50-coredump.conf.in  |  2 +-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ sysctl.d/50-coredump.conf.in  |  3 ++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
  create mode 100755 src/coredump/coredump-wrapper
 
 diff --git a/src/coredump/coredump-wrapper b/src/coredump/coredump-wrapper
@@ -37,15 +37,19 @@ index 0000000000..1a74a5d6ed
 +        /usr/lib/systemd/systemd-coredump "$@"
 +fi
 diff --git a/sysctl.d/50-coredump.conf.in b/sysctl.d/50-coredump.conf.in
-index 47bf847693..2df3f40891 100644
+index da76fd71d6..248ac4e8e5 100644
 --- a/sysctl.d/50-coredump.conf.in
 +++ b/sysctl.d/50-coredump.conf.in
-@@ -9,4 +9,4 @@
- # and systemd-coredump(8) and core(5) for the explanation of the
- # setting below.
- 
+@@ -13,7 +13,8 @@
+ # the core dump.
+ #
+ # See systemd-coredump(8) and core(5).
 -kernel.core_pattern=|@rootlibexecdir@/systemd-coredump %P %u %g %s %t %c %h
++## kernel.core_pattern=|@rootlibexecdir@/systemd-coredump %P %u %g %s %t %c %h
 +kernel.core_pattern=|@rootlibexecdir@/coredump-wrapper %E %P %u %g %s %t %c %h %e
+ 
+ # Also dump processes executing a set-user-ID/set-group-ID program that is
+ # owned by a user/group other than the real user/group ID of the process, or
 -- 
-2.26.0
+2.28.0
 

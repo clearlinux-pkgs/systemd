@@ -29,3 +29,4 @@ libpwquality.so.1
 librt.so.1
 libseccomp.so.2
 libz.so.1
+libzstd.so.1

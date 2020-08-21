@@ -1,7 +1,7 @@
-From 387e9906beb725491f3b1430d3c68d27830ae93f Mon Sep 17 00:00:00 2001
+From a7e367739aee018ae2223118a860bb5aaff4f6ad Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 18 Oct 2019 21:42:12 -0700
-Subject: [PATCH 43/45] Disable LLDP listening by default.
+Subject: [PATCH 43/44] Disable LLDP listening by default.
 
 Do not listen on a raw socket by default for this. Let the
 local admin explicitly enable it instead.
@@ -12,10 +12,10 @@ https://github.com/clearlinux/distribution/issues/1368
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/network/networkd-network.c b/src/network/networkd-network.c
-index 2e716b291e..af150e8152 100644
+index d34155b19f..06f968c904 100644
 --- a/src/network/networkd-network.c
 +++ b/src/network/networkd-network.c
-@@ -425,7 +425,7 @@ int network_load_one(Manager *manager, OrderedHashmap **networks, const char *fi
+@@ -447,7 +447,7 @@ int network_load_one(Manager *manager, OrderedHashmap **networks, const char *fi
                  .priority = LINK_BRIDGE_PORT_PRIORITY_INVALID,
                  .multicast_router = _MULTICAST_ROUTER_INVALID,
  
@@ -25,5 +25,5 @@ index 2e716b291e..af150e8152 100644
                  .dns_default_route = -1,
                  .llmnr = RESOLVE_SUPPORT_YES,
 -- 
-2.26.0
+2.28.0
 

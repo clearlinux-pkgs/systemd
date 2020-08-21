@@ -1,7 +1,7 @@
-From b017a5c293142b43f65142c42e9f18f1d0419f9f Mon Sep 17 00:00:00 2001
+From 73185094d4a58f7dd0461983ca3c634d1c6c266d Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 10:02:14 -0700
-Subject: [PATCH 04/45] Build: drop pam/nsswitch, ship legacy tmpfiles, disable
+Subject: [PATCH 04/44] Build: drop pam/nsswitch, ship legacy tmpfiles, disable
  resolved as default resolver at boot.
 
 Adapted from Makefile.am patch by Dimitri John Ledkov.
@@ -21,10 +21,10 @@ Ref: https://github.com/coreos/coreos-overlay/pull/2129/commits/76830bedf02a8c54
  3 files changed, 4 insertions(+), 11 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index fc216d22da..14e90060e1 100644
+index dbbddb68e2..dbb2b6a943 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -153,7 +153,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
+@@ -162,7 +162,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
  udevhwdbdir = join_paths(udevlibexecdir, 'hwdb.d')
  catalogdir = join_paths(prefixdir, 'lib/systemd/catalog')
  kernelinstalldir = join_paths(prefixdir, 'lib/kernel/install.d')
@@ -32,7 +32,7 @@ index fc216d22da..14e90060e1 100644
  bootlibdir = join_paths(prefixdir, 'lib/systemd/boot/efi')
  testsdir = join_paths(prefixdir, 'lib/systemd/tests')
  systemdstatedir = join_paths(localstatedir, 'lib/systemd')
-@@ -3155,8 +3154,8 @@ subdir('shell-completion/zsh')
+@@ -3348,8 +3347,8 @@ subdir('shell-completion/zsh')
  subdir('docs/sysvinit')
  subdir('docs/var-log')
  
@@ -66,11 +66,11 @@ index f82e0b82ce..0e58e3133a 100644
 -)m4_dnl
 -C! /etc/issue - - - -
 diff --git a/tmpfiles.d/meson.build b/tmpfiles.d/meson.build
-index e77f46d06b..47d1597ef3 100644
+index 0a9582d8b9..b18c5593cf 100644
 --- a/tmpfiles.d/meson.build
 +++ b/tmpfiles.d/meson.build
-@@ -10,7 +10,7 @@ tmpfiles = [['home.conf',            ''],
-             ['portables.conf',       'ENABLE_PORTABLED'],
+@@ -11,7 +11,7 @@ tmpfiles = [['home.conf',            ''],
+             ['systemd-pstore.conf',  'ENABLE_PSTORE'],
              ['tmp.conf',             ''],
              ['x11.conf',             ''],
 -            ['legacy.conf',          'HAVE_SYSV_COMPAT'],
@@ -79,5 +79,5 @@ index e77f46d06b..47d1597ef3 100644
  
  foreach pair : tmpfiles
 -- 
-2.26.0
+2.28.0
 

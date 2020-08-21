@@ -1,7 +1,7 @@
-From 8cab71d0aa9fa8656dbe1a41d12ac5b7a9b9395b Mon Sep 17 00:00:00 2001
+From 879f982f5afd9b07b2829f9e1d6615d5fc6b7b52 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:31:38 -0700
-Subject: [PATCH 24/45] Remove libm memory overhead.
+Subject: [PATCH 24/44] Remove libm memory overhead.
 
 timesyncd pulls in libm, only for one single exp2() in a debug log
 statement save the memory by not logging this little bit of info.
@@ -10,10 +10,10 @@ statement save the memory by not logging this little bit of info.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/timesync/timesyncd-manager.c b/src/timesync/timesyncd-manager.c
-index e18e1e6c04..f58a148ab9 100644
+index 5570408fa1..7fefe8ec88 100644
 --- a/src/timesync/timesyncd-manager.c
 +++ b/src/timesync/timesyncd-manager.c
-@@ -577,7 +577,7 @@ static int manager_receive_response(sd_event_source *source, int fd, uint32_t re
+@@ -572,7 +572,7 @@ static int manager_receive_response(sd_event_source *source, int fd, uint32_t re
                    NTP_FIELD_VERSION(ntpmsg.field),
                    NTP_FIELD_MODE(ntpmsg.field),
                    ntpmsg.stratum,
@@ -23,5 +23,5 @@ index e18e1e6c04..f58a148ab9 100644
                    ntpmsg.stratum == 1 ? ntpmsg.refid : "n/a",
                    origin - OFFSET_1900_1970,
 -- 
-2.26.0
+2.28.0
 
