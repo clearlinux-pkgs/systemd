@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 246.4
-Release  : 281
+Release  : 282
 URL      : https://github.com/systemd/systemd-stable/archive/v246.4.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v246.4.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -136,6 +136,7 @@ Patch41: 0041-boot-efi-comment-out-success-validation-message.patch
 Patch42: 0042-Exempt-gdm-and-a-few-others-from-default-to-locked-a.patch
 Patch43: 0043-Disable-LLDP-listening-by-default.patch
 Patch44: 0044-units-use-var-swapfile-if-found.patch
+Patch45: 0045-core-socket-when-may-get-ENOTCONN-from-socket_instan.patch
 
 %description
 systemd System and Service Manager
@@ -327,6 +328,7 @@ cd %{_builddir}/systemd-stable-246.4
 %patch42 -p1
 %patch43 -p1
 %patch44 -p1
+%patch45 -p1
 pushd ..
 cp -a systemd-stable-246.4 build32
 popd
@@ -336,7 +338,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1599160563
+export SOURCE_DATE_EPOCH=1599241292
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS

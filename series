@@ -42,3 +42,4 @@
 0042-Exempt-gdm-and-a-few-others-from-default-to-locked-a.patch
 0043-Disable-LLDP-listening-by-default.patch
 0044-units-use-var-swapfile-if-found.patch
+0045-core-socket-when-may-get-ENOTCONN-from-socket_instan.patch

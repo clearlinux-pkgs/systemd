@@ -1,0 +1,39 @@
+From 5fb9b4d588f0afa0ed01bad9f77d1cbda86c5aa9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>
+Date: Tue, 1 Sep 2020 23:50:01 +0200
+Subject: [PATCH] core/socket: when may get ENOTCONN from
+ socket_instantiate_service()
+
+This means that the connection was aborted before we even got to
+figure out what the service name will be. Let's treat this as a non-event
+and close the connection fd.
+
+Issue introduced in 934ef6a5.
+Reported-by: Thiago Macieira <thiago.macieira@intel.com>
+---
+ src/core/socket.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/core/socket.c b/src/core/socket.c
+index ac8d1e7aea..818dbb6c59 100644
+--- a/src/core/socket.c
++++ b/src/core/socket.c
+@@ -2408,6 +2408,9 @@ static void socket_enter_running(Socket *s, int cfd) {
+                 }
+ 
+                 r = socket_instantiate_service(s, cfd);
++                if (r == -ENOTCONN)
++                        goto notconn;
++
+                 if (r < 0)
+                         goto fail;
+ 
+@@ -2441,6 +2444,8 @@ static void socket_enter_running(Socket *s, int cfd) {
+ 
+ refuse:
+         s->n_refused++;
++
++notconn:
+         safe_close(cfd);
+         return;
+ 
