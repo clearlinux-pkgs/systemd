@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 246.4
-Release  : 283
+Release  : 284
 URL      : https://github.com/systemd/systemd-stable/archive/v246.4.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v246.4.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -347,10 +347,10 @@ export CXXFLAGS=$CFLAGS
 export FFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export FCFLAGS=$FFLAGS
 unset LDFLAGS
-export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid \
 -Dsmack=false \
 -Dsysvinit-path= \
