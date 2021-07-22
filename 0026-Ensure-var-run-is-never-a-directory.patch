@@ -1,20 +1,20 @@
-From ba970909395570478d2100a79b2d9a76f90d0a60 Mon Sep 17 00:00:00 2001
+From 79cafb74955bb0006ddda840b4233bdaf11b6a07 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:34:00 -0700
-Subject: [PATCH 27/44] Ensure /var/run is never a directory.
+Subject: [PATCH 26/42] Ensure /var/run is never a directory.
 
 ---
- src/core/mount-setup.c | 8 ++++++++
+ src/shared/mount-setup.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index aa73b30afc..fdd28b842a 100644
---- a/src/core/mount-setup.c
-+++ b/src/core/mount-setup.c
-@@ -491,11 +491,19 @@ static int relabel_extra(void) {
+diff --git a/src/shared/mount-setup.c b/src/shared/mount-setup.c
+index c14fc1671d..a1327acf98 100644
+--- a/src/shared/mount-setup.c
++++ b/src/shared/mount-setup.c
+@@ -497,11 +497,19 @@ static int relabel_extra(void) {
  
  int mount_setup(bool loaded_policy, bool leave_propagation) {
-         int r = 0;
+         int r;
 +        struct stat sb;
  
          r = mount_points_setup(ELEMENTSOF(mount_table), loaded_policy);
@@ -32,5 +32,5 @@ index aa73b30afc..fdd28b842a 100644
          /* Nodes in devtmpfs and /run need to be manually updated for
           * the appropriate labels, after mounting. The other virtual
 -- 
-2.28.0
+2.32.0
 

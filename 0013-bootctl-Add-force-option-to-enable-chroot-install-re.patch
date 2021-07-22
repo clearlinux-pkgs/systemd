@@ -1,7 +1,7 @@
-From 01b5af98211abe7716f2deab3c96d7f339f0207c Mon Sep 17 00:00:00 2001
+From 11ae692c920839ccb38db171eddde98339bfdce3 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Wed, 23 Sep 2015 03:36:36 +0100
-Subject: [PATCH 13/44] bootctl: Add --force option to enable chroot
+Subject: [PATCH 13/42] bootctl: Add --force option to enable chroot
  install/remove of sd-boot
 
 This change enables the force-installation, removal, and update of
@@ -26,10 +26,10 @@ configuration and layout.
  1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index a663fc5c2d..f77bc0f73f 100644
+index fa8c600321..ddce8260ef 100644
 --- a/src/boot/bootctl.c
 +++ b/src/boot/bootctl.c
-@@ -61,6 +61,8 @@ static const char *arg_dollar_boot_path(void) {
+@@ -63,6 +63,8 @@ static const char *arg_dollar_boot_path(void) {
          return arg_xbootldr_path ?: arg_esp_path;
  }
  
@@ -38,7 +38,7 @@ index a663fc5c2d..f77bc0f73f 100644
  static int acquire_esp(
                  bool unprivileged_mode,
                  uint32_t *ret_part,
-@@ -1073,6 +1075,8 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -1124,6 +1126,8 @@ static int parse_argv(int argc, char *argv[]) {
          enum {
                  ARG_ESP_PATH = 0x100,
                  ARG_BOOT_PATH,
@@ -47,15 +47,15 @@ index a663fc5c2d..f77bc0f73f 100644
                  ARG_VERSION,
                  ARG_NO_VARIABLES,
                  ARG_NO_PAGER,
-@@ -1082,6 +1086,7 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -1134,6 +1138,7 @@ static int parse_argv(int argc, char *argv[]) {
          static const struct option options[] = {
-                 { "help",            no_argument,       NULL, 'h'                 },
-                 { "version",         no_argument,       NULL, ARG_VERSION         },
-+                { "force",           no_argument,       NULL, ARG_FORCE           },
-                 { "esp-path",        required_argument, NULL, ARG_ESP_PATH        },
-                 { "path",            required_argument, NULL, ARG_ESP_PATH        }, /* Compatibility alias */
-                 { "boot-path",       required_argument, NULL, ARG_BOOT_PATH       },
-@@ -1135,6 +1140,10 @@ static int parse_argv(int argc, char *argv[]) {
+                 { "help",                      no_argument,       NULL, 'h'                           },
+                 { "version",                   no_argument,       NULL, ARG_VERSION                   },
++                { "force",                     no_argument,       NULL, ARG_FORCE                     },
+                 { "esp-path",                  required_argument, NULL, ARG_ESP_PATH                  },
+                 { "path",                      required_argument, NULL, ARG_ESP_PATH                  }, /* Compatibility alias */
+                 { "boot-path",                 required_argument, NULL, ARG_BOOT_PATH                 },
+@@ -1189,6 +1194,10 @@ static int parse_argv(int argc, char *argv[]) {
                          arg_print_dollar_boot_path = true;
                          break;
  
@@ -66,7 +66,7 @@ index a663fc5c2d..f77bc0f73f 100644
                  case ARG_NO_VARIABLES:
                          arg_touch_variables = false;
                          break;
-@@ -1584,7 +1593,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+@@ -1650,7 +1659,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
  
          (void) sync_everything();
  
@@ -75,10 +75,10 @@ index a663fc5c2d..f77bc0f73f 100644
                  r = install_variables(arg_esp_path,
                                        part, pstart, psize, uuid,
                                        "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi",
-@@ -1638,13 +1647,14 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+@@ -1702,13 +1711,14 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
                          r = q;
  
-                 q = remove_machine_id_directory(arg_xbootldr_path, machine_id);
+                 q = remove_machine_id_directory(arg_xbootldr_path);
 +
                  if (q < 0 && r >= 0)
                          r = q;
@@ -92,5 +92,5 @@ index a663fc5c2d..f77bc0f73f 100644
  
          q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
 -- 
-2.28.0
+2.32.0
 

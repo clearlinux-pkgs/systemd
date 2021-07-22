@@ -1,7 +1,7 @@
-From 423b13d9c73dd05193d54854f3a65bd7daa7fbb3 Mon Sep 17 00:00:00 2001
+From c9a09cebe1abc6d1123b93cb219bb685b1fe3926 Mon Sep 17 00:00:00 2001
 From: Matthew Johnson <matthew.johnson@intel.com>
 Date: Tue, 20 Sep 2016 10:49:55 -0700
-Subject: [PATCH 20/44] Add journal flush service for Microsoft Azure VMs
+Subject: [PATCH 20/42] Add journal flush service for Microsoft Azure VMs
 
 Removes "Before" clause when in a Microsoft VM.
 ---
@@ -12,10 +12,10 @@ Removes "Before" clause when in a Microsoft VM.
  create mode 100644 units/systemd-journal-flush-msft.service.in
 
 diff --git a/units/meson.build b/units/meson.build
-index 21dedf06a2..57f70477b3 100644
+index 515da122d8..6c12c932a5 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -172,7 +172,9 @@ in_units = [
+@@ -187,7 +187,9 @@ in_units = [
           'sysinit.target.wants/'],
          ['systemd-importd.service',              'ENABLE_IMPORTD',
           'dbus-org.freedesktop.import1.service'],
@@ -28,7 +28,7 @@ index 21dedf06a2..57f70477b3 100644
          ['systemd-journal-upload.service',       'ENABLE_REMOTE HAVE_LIBCURL'],
 diff --git a/units/systemd-journal-flush-msft.service.in b/units/systemd-journal-flush-msft.service.in
 new file mode 100644
-index 0000000000..056da1f6e2
+index 0000000000..091d50c9fa
 --- /dev/null
 +++ b/units/systemd-journal-flush-msft.service.in
 @@ -0,0 +1,22 @@
@@ -50,22 +50,22 @@ index 0000000000..056da1f6e2
 +ConditionVirtualization=microsoft
 +
 +[Service]
-+ExecStart=@rootbindir@/journalctl --flush
++ExecStart=journalctl --flush
 +Type=oneshot
 +RemainAfterExit=yes
 +TimeoutSec=90s
 diff --git a/units/systemd-journal-flush.service b/units/systemd-journal-flush.service
-index 0f45743fa0..1a2f224ecf 100644
+index 6423f6ea80..8d61454bb4 100644
 --- a/units/systemd-journal-flush.service
 +++ b/units/systemd-journal-flush.service
-@@ -15,6 +15,7 @@ Requires=systemd-journald.service
- After=systemd-journald.service systemd-remount-fs.service
+@@ -16,6 +16,7 @@ After=systemd-journald.service systemd-remount-fs.service
  Before=systemd-tmpfiles-setup.service
  RequiresMountsFor=/var/log/journal
+ ConditionPathExists=!/etc/initrd-release
 +ConditionVirtualization=!microsoft
  
  [Service]
  ExecStart=journalctl --flush
 -- 
-2.28.0
+2.32.0
 

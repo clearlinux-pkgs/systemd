@@ -4,6 +4,7 @@
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd-remote.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/README
 rmdir %{buildroot}/usr/lib/sysusers.d
 
 # No external linking of this shared object should happen
@@ -38,7 +39,7 @@ rm -f %{buildroot}/etc/xdg/systemd/user
 rm -f %{buildroot}/usr/lib/environment.d/99-environment.conf
 
 # Move config file into system PAM location
-mv %{buildroot}/etc/pam.d %{buildroot}/usr/share/.
+mv %{buildroot}/usr/lib/pam.d %{buildroot}/usr/share/.
 
 # Move pc files to default pkgconfig dir
 mv %{buildroot}/usr/share/pkgconfig/* %{buildroot}/usr/lib64/pkgconfig/

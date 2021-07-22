@@ -1,14 +1,14 @@
-From 9983bf1daca2db39d07a1eb2a64aed53c8fed05c Mon Sep 17 00:00:00 2001
+From 0a2d0b41b15012d0514ec4e5a20100c29d7b285e Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 13 Jun 2018 13:42:12 -0700
-Subject: [PATCH 33/44] Notify systemd earlier that resolved is ready.
+Subject: [PATCH 32/42] Notify systemd earlier that resolved is ready.
 
 ---
  src/resolve/resolved.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/resolve/resolved.c b/src/resolve/resolved.c
-index 16477f28d6..1e4f9671c3 100644
+index aabaa266e9..d2db72e9af 100644
 --- a/src/resolve/resolved.c
 +++ b/src/resolve/resolved.c
 @@ -69,6 +69,8 @@ static int run(int argc, char *argv[]) {
@@ -30,5 +30,5 @@ index 16477f28d6..1e4f9671c3 100644
          if (r < 0)
                  return log_error_errno(r, "Event loop failed: %m");
 -- 
-2.28.0
+2.32.0
 

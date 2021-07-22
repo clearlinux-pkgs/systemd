@@ -1,7 +1,7 @@
-From cbfdd411768af91c8448fd96f0e4c3cc50145547 Mon Sep 17 00:00:00 2001
+From e4293905ab7efd3f310144e2e2b3d27a3b5ea7db Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 31 Mar 2017 10:15:52 -0700
-Subject: [PATCH 22/44] network-online: complete once one link is online, not
+Subject: [PATCH 22/42] network-online: complete once one link is online, not
  all.
 
 ---
@@ -9,18 +9,18 @@ Subject: [PATCH 22/44] network-online: complete once one link is online, not
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
-index 7666e16669..0d4f09ef1e 100644
+index 10d8b08c8e..6dd5f79377 100644
 --- a/units/systemd-networkd-wait-online.service.in
 +++ b/units/systemd-networkd-wait-online.service.in
 @@ -18,7 +18,7 @@ Before=network-online.target shutdown.target
  
  [Service]
  Type=oneshot
--ExecStart=@rootlibexecdir@/systemd-networkd-wait-online
-+ExecStart=@rootlibexecdir@/systemd-networkd-wait-online --any
+-ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
++ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online --any
  RemainAfterExit=yes
  
  [Install]
 -- 
-2.28.0
+2.32.0
 

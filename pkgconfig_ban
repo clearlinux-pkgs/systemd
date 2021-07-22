@@ -12,3 +12,8 @@ libselinux
 32pwquality
 32libfido2
 libfido2
+32libbpf
+32tss2-esys
+tss2-esys
+tss2-mu
+tss2-rc

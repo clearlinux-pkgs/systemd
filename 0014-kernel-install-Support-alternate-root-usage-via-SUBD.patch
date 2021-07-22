@@ -1,7 +1,7 @@
-From 5df18061f45164499e765679413d9e0e11f2331f Mon Sep 17 00:00:00 2001
+From cea50042f6d697a668ed8c00934dd597905a05c9 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 24 Sep 2015 19:15:55 +0100
-Subject: [PATCH 14/44] kernel-install: Support alternate root usage via
+Subject: [PATCH 14/42] kernel-install: Support alternate root usage via
  SUBDIR/PLUGIN_SUBDIR
 
 This enables kernel-install to be used with an alternative root, by accepting a new
@@ -14,11 +14,11 @@ present on the host system, during image/filesystem generations.
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
- src/kernel-install/kernel-install | 60 +++++++++++++++++++++++--------
- 1 file changed, 46 insertions(+), 14 deletions(-)
+ src/kernel-install/kernel-install | 61 +++++++++++++++++++++++--------
+ 1 file changed, 46 insertions(+), 15 deletions(-)
 
 diff --git a/src/kernel-install/kernel-install b/src/kernel-install/kernel-install
-index e2590c434c..b2ad69c9be 100755
+index c9a80b2e3d..06b1f3a860 100755
 --- a/src/kernel-install/kernel-install
 +++ b/src/kernel-install/kernel-install
 @@ -28,8 +28,11 @@ usage()
@@ -63,14 +63,17 @@ index e2590c434c..b2ad69c9be 100755
  
  KERNEL_INSTALL_VERBOSE=0
  if [ "$1" == "--verbose" -o "$1" == "-v" ]; then
-@@ -85,8 +102,21 @@ fi
- KERNEL_VERSION="$1"
+@@ -86,12 +103,24 @@ KERNEL_VERSION="$1"
  KERNEL_IMAGE="$2"
  
--if [[ -f /etc/machine-id ]]; then
+ # Reuse directory created without a machine ID present if it exists.
+-if [[ -d /efi/Default ]] || [[ -d /boot/Default ]] || [[ -d /boot/efi/Default ]]; then
++if [[ -d ${SUBDIR}/efi/Default ]] || [[ -d ${SUBDIR}/boot/Default ]] || [[ -d ${SUBDIR}/boot/efi/Default ]]; then
+     MACHINE_ID="Default"
+-elif [[ -f /etc/machine-id ]]; then
 -    read MACHINE_ID < /etc/machine-id
-+if [[ -f "${SUBDIR}/etc/machine-id" ]]; then
-+    read MACHINE_ID < "${SUBDIR}/etc/machine-id"
++elif [[ -f ${SUBDIR}/etc/machine-id ]]; then
++    read MACHINE_ID < ${SUBDIR}/etc/machine-id
 +fi
 +
 +if ! [[ $MACHINE_ID ]]; then
@@ -82,12 +85,13 @@ index e2590c434c..b2ad69c9be 100755
 +        # Enable bare-chroot usage.
 +        BOOT_DIR_ABS="${SUBDIR}/boot"
 +    fi
-+else
+ else
+     MACHINE_ID="Default"
 +    BOOT_DIR_ABS="${SUBDIR}/boot/$MACHINE_ID/$KERNEL_VERSION"
  fi
  
  if [[ ! $COMMAND ]] || [[ ! $KERNEL_VERSION ]]; then
-@@ -117,8 +147,8 @@ ret=0
+@@ -119,8 +148,8 @@ ret=0
  
  readarray -t PLUGINS <<<"$(
      dropindirs_sort ".install" \
@@ -98,7 +102,7 @@ index e2590c434c..b2ad69c9be 100755
  )"
  
  case $COMMAND in
-@@ -136,8 +166,8 @@ case $COMMAND in
+@@ -138,8 +167,8 @@ case $COMMAND in
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
                  [ "$KERNEL_INSTALL_VERBOSE" -gt 0 ] && \
@@ -108,8 +112,8 @@ index e2590c434c..b2ad69c9be 100755
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" add "$KERNEL_VERSION" "$BOOT_DIR_ABS" "$KERNEL_IMAGE" "${INITRD_OPTIONS[@]}"
                  x=$?
                  if [[ $x == $SKIP_REMAINING ]]; then
-                     ret=0
-@@ -160,8 +190,8 @@ case $COMMAND in
+                     break
+@@ -153,8 +182,8 @@ case $COMMAND in
          for f in "${PLUGINS[@]}"; do
              if [[ -x $f ]]; then
                  [ "$KERNEL_INSTALL_VERBOSE" -gt 0 ] && \
@@ -119,8 +123,8 @@ index e2590c434c..b2ad69c9be 100755
 +                PLUGIN_SUBDIR="${SUBDIR}" "$f" remove "$KERNEL_VERSION" "$BOOT_DIR_ABS"
                  x=$?
                  if [[ $x == $SKIP_REMAINING ]]; then
-                     ret=0
-@@ -171,10 +201,12 @@ case $COMMAND in
+                     break
+@@ -163,10 +192,12 @@ case $COMMAND in
              fi
          done
  
@@ -137,5 +141,5 @@ index e2590c434c..b2ad69c9be 100755
          ;;
  
 -- 
-2.28.0
+2.32.0
 

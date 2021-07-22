@@ -1,7 +1,7 @@
-From 7215ba5ffb0df719b9434c3b35f4eabca88e7669 Mon Sep 17 00:00:00 2001
+From 83a6d515834ebb508b87735b0035f79bb0b20ab3 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:43:59 -0800
-Subject: [PATCH 36/44] Do not enable audit by default in the journal.
+Subject: [PATCH 35/42] Do not enable audit by default in the journal.
 
 ---
  man/journald.conf.xml         | 2 +-
@@ -9,10 +9,10 @@ Subject: [PATCH 36/44] Do not enable audit by default in the journal.
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/man/journald.conf.xml b/man/journald.conf.xml
-index e809da5f72..b2246372ec 100644
+index e602f80541..4e840afe0b 100644
 --- a/man/journald.conf.xml
 +++ b/man/journald.conf.xml
-@@ -411,7 +411,7 @@
+@@ -426,7 +426,7 @@
          <command>systemd-journald</command> collects generated audit records, it just controls whether it
          tells the kernel to generate them. This means if another tool turns on auditing even if
          <command>systemd-journald</command> left it off, it will still collect the generated
@@ -22,11 +22,11 @@ index e809da5f72..b2246372ec 100644
  
        <varlistentry>
 diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
-index 575e807a6d..9a8dd7fa7d 100644
+index 87099b0ded..dfca63a1f7 100644
 --- a/src/journal/journald-server.c
 +++ b/src/journal/journald-server.c
-@@ -2208,7 +2208,7 @@ int server_init(Server *s, const char *namespace) {
-                 .compress.threshold_bytes = (uint64_t) -1,
+@@ -2190,7 +2190,7 @@ int server_init(Server *s, const char *namespace) {
+                 .compress.threshold_bytes = UINT64_MAX,
                  .seal = true,
  
 -                .set_audit = true,
@@ -35,5 +35,5 @@ index 575e807a6d..9a8dd7fa7d 100644
                  .watchdog_usec = USEC_INFINITY,
  
 -- 
-2.28.0
+2.32.0
 

@@ -1,17 +1,17 @@
-From e8c809475e606b5cf97f6ca028ab6eba9f21cc09 Mon Sep 17 00:00:00 2001
+From 6d2978561ffb8b78844a125f38198452e883bed7 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:48:36 +0100
-Subject: [PATCH 08/44] efi-boot-generator: Do not automount boot partition.
+Subject: [PATCH 08/42] efi-boot-generator: Do not automount boot partition.
 
 ---
  src/gpt-auto-generator/gpt-auto-generator.c | 3 +++
  1 file changed, 3 insertions(+)
 
 diff --git a/src/gpt-auto-generator/gpt-auto-generator.c b/src/gpt-auto-generator/gpt-auto-generator.c
-index a9478b9dbd..9d08481ed7 100644
+index 10aa2d98a1..5d081cf66a 100644
 --- a/src/gpt-auto-generator/gpt-auto-generator.c
 +++ b/src/gpt-auto-generator/gpt-auto-generator.c
-@@ -433,6 +433,9 @@ static int add_automount(
+@@ -451,6 +451,9 @@ static int add_automount(
          if (r < 0)
                  return log_error_errno(r, "Failed to write unit file %s: %m", p);
  
@@ -22,5 +22,5 @@ index a9478b9dbd..9d08481ed7 100644
  }
  
 -- 
-2.28.0
+2.32.0
 

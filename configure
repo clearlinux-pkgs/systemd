@@ -1,7 +1,7 @@
 -Ddefault-hierarchy=hybrid
 -Dsmack=false
 -Dsysvinit-path=
--Dsysvrcnd_path=
+-Dsysvrcnd-path=
 -Dxz=true
 -Dgcrypt=true
 -Dlz4=true

@@ -1,7 +1,7 @@
-From 7507709fce738a6633eda6d2f391c664ee151c18 Mon Sep 17 00:00:00 2001
+From 83f441e575379e32a3e4f599b60da4bd1a0cd5f1 Mon Sep 17 00:00:00 2001
 From: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@intel.com>
 Date: Fri, 26 Oct 2018 16:46:37 -0500
-Subject: [PATCH 35/44] add stateless for locale files locale.conf
+Subject: [PATCH 34/42] add stateless for locale files locale.conf
  00-keyboard.conf
 
 systemd must take this files from /etc and in case there are not files
@@ -13,10 +13,10 @@ Signed-off-by: Josue David Hernandez Gutierrez <josue.d.hernandez.gutierrez@inte
  1 file changed, 32 insertions(+), 10 deletions(-)
 
 diff --git a/src/locale/keymap-util.c b/src/locale/keymap-util.c
-index 233d081300..5c28e60895 100644
+index d2f0566dbc..c13a79eb21 100644
 --- a/src/locale/keymap-util.c
 +++ b/src/locale/keymap-util.c
-@@ -92,6 +92,7 @@ void locale_simplify(char *locale[_VARIABLE_LC_MAX]) {
+@@ -91,6 +91,7 @@ void locale_simplify(char *locale[_VARIABLE_LC_MAX]) {
  int locale_read_data(Context *c, sd_bus_message *m) {
          struct stat st;
          int r;
@@ -24,7 +24,7 @@ index 233d081300..5c28e60895 100644
  
          /* Do not try to re-read the file within single bus operation. */
          if (m) {
-@@ -103,6 +104,11 @@ int locale_read_data(Context *c, sd_bus_message *m) {
+@@ -102,6 +103,11 @@ int locale_read_data(Context *c, sd_bus_message *m) {
          }
  
          r = stat("/etc/locale.conf", &st);
@@ -36,7 +36,7 @@ index 233d081300..5c28e60895 100644
          if (r < 0 && errno != ENOENT)
                  return -errno;
  
-@@ -117,7 +123,9 @@ int locale_read_data(Context *c, sd_bus_message *m) {
+@@ -116,7 +122,9 @@ int locale_read_data(Context *c, sd_bus_message *m) {
                  c->locale_mtime = t;
                  context_free_locale(c);
  
@@ -47,7 +47,7 @@ index 233d081300..5c28e60895 100644
                                     "LANG",              &c->locale[VARIABLE_LANG],
                                     "LANGUAGE",          &c->locale[VARIABLE_LANGUAGE],
                                     "LC_CTYPE",          &c->locale[VARIABLE_LC_CTYPE],
-@@ -161,6 +169,7 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+@@ -158,6 +166,7 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
          struct stat st;
          usec_t t;
          int r;
@@ -55,7 +55,7 @@ index 233d081300..5c28e60895 100644
  
          /* Do not try to re-read the file within single bus operation. */
          if (m) {
-@@ -171,14 +180,19 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+@@ -168,14 +177,19 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
                  c->vc_cache = sd_bus_message_ref(m);
          }
  
@@ -78,7 +78,7 @@ index 233d081300..5c28e60895 100644
  
          /* If mtime is not changed, then we do not need to re-read */
          t = timespec_load(&st.st_mtim);
-@@ -188,7 +202,9 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
+@@ -185,7 +199,9 @@ int vconsole_read_data(Context *c, sd_bus_message *m) {
          c->vc_mtime = t;
          context_free_vconsole(c);
  
@@ -89,7 +89,7 @@ index 233d081300..5c28e60895 100644
                             "KEYMAP",        &c->vc_keymap,
                             "KEYMAP_TOGGLE", &c->vc_keymap_toggle);
          if (r < 0)
-@@ -203,6 +219,7 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+@@ -200,6 +216,7 @@ int x11_read_data(Context *c, sd_bus_message *m) {
          struct stat st;
          usec_t t;
          int r;
@@ -97,7 +97,7 @@ index 233d081300..5c28e60895 100644
  
          /* Do not try to re-read the file within single bus operation. */
          if (m) {
-@@ -213,14 +230,18 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+@@ -210,14 +227,18 @@ int x11_read_data(Context *c, sd_bus_message *m) {
                  c->x11_cache = sd_bus_message_ref(m);
          }
  
@@ -120,7 +120,7 @@ index 233d081300..5c28e60895 100644
  
          /* If mtime is not changed, then we do not need to re-read */
          t = timespec_load(&st.st_mtim);
-@@ -230,7 +251,8 @@ int x11_read_data(Context *c, sd_bus_message *m) {
+@@ -227,7 +248,8 @@ int x11_read_data(Context *c, sd_bus_message *m) {
          c->x11_mtime = t;
          context_free_x11(c);
  
@@ -131,5 +131,5 @@ index 233d081300..5c28e60895 100644
                  return -errno;
  
 -- 
-2.28.0
+2.32.0
 

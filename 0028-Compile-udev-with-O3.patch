@@ -1,0 +1,25 @@
+From cd499d14663b6807c742e0a5979c786a70f9c2a9 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Fri, 14 Jul 2017 11:35:13 -0700
+Subject: [PATCH 28/42] Compile udev with -O3
+
+udevd benefits from -O3 as it heavily affects boot time.
+---
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/meson.build b/meson.build
+index 45d6161119..868bce1345 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3194,6 +3194,7 @@ public_programs += executable(
+ public_programs += executable(
+         'udevadm',
+         udevadm_sources,
++        c_args : ['-O3'],
+         include_directories : includes,
+         link_with : [libudevd_core],
+         dependencies : [versiondep,
+-- 
+2.32.0
+

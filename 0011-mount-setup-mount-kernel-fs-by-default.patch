@@ -1,53 +1,53 @@
-From 5726f8196a566844c8efef9ed8eb4ca3748c0b4a Mon Sep 17 00:00:00 2001
+From 18ba9e2eefb77b1f534e6cbf04be38fe76f1ec11 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 11/44] mount-setup: mount kernel fs by default.
+Subject: [PATCH 11/42] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.
 ---
- src/core/mount-setup.c              | 10 ++++++++++
- units/dev-hugepages.mount           | 23 -----------------------
- units/dev-mqueue.mount              | 23 -----------------------
- units/meson.build                   | 10 ----------
- units/sys-fs-fuse-connections.mount | 25 -------------------------
- units/sys-kernel-config.mount       | 24 ------------------------
- units/sys-kernel-debug.mount        | 23 -----------------------
- 7 files changed, 10 insertions(+), 128 deletions(-)
+ src/shared/mount-setup.c            | 10 +++++++++
+ units/dev-hugepages.mount           | 23 ---------------------
+ units/dev-mqueue.mount              | 23 ---------------------
+ units/meson.build                   | 13 +-----------
+ units/sys-fs-fuse-connections.mount | 32 -----------------------------
+ units/sys-kernel-config.mount       | 31 ----------------------------
+ units/sys-kernel-debug.mount        | 23 ---------------------
+ 7 files changed, 11 insertions(+), 144 deletions(-)
  delete mode 100644 units/dev-hugepages.mount
  delete mode 100644 units/dev-mqueue.mount
  delete mode 100644 units/sys-fs-fuse-connections.mount
  delete mode 100644 units/sys-kernel-config.mount
  delete mode 100644 units/sys-kernel-debug.mount
 
-diff --git a/src/core/mount-setup.c b/src/core/mount-setup.c
-index feb88f3e6e..aa73b30afc 100644
---- a/src/core/mount-setup.c
-+++ b/src/core/mount-setup.c
-@@ -107,6 +107,16 @@ static const MountPoint mount_table[] = {
+diff --git a/src/shared/mount-setup.c b/src/shared/mount-setup.c
+index ef3527e9a7..c14fc1671d 100644
+--- a/src/shared/mount-setup.c
++++ b/src/shared/mount-setup.c
+@@ -110,6 +110,16 @@ static const MountPoint mount_table[] = {
  #endif
          { "bpf",         "/sys/fs/bpf",               "bpf",        "mode=700",                                MS_NOSUID|MS_NOEXEC|MS_NODEV,
            NULL,          MNT_NONE,                  },
-+        { "hugetlbfs",   "/dev/hugepages",            "hugetlbfs",  NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
-+	  NULL,          MNT_NONE                   },
-+        { "mqueue",      "/dev/mqueue",               "mqueue",     NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
-+	  NULL,          MNT_NONE                   },
-+        { "fusectl",     "/sys/fs/fuse/connections",  "fusectl",    NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
-+	  NULL,          MNT_NONE                   },
-+        { "configfs",    "/sys/kernel/config",        "configfs",   NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
-+	  NULL,          MNT_NONE                   },
-+        { "debugfs",     "/sys/kernel/debug",         "debugfs",    NULL,                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
-+	  NULL,          MNT_NONE                   },
++        { "hugetlbfs",   "/dev/hugepages",            "hugetlbfs",  NULL,                                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++          NULL,          MNT_NONE                   },
++        { "mqueue",      "/dev/mqueue",               "mqueue",     NULL,                                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++          NULL,          MNT_NONE                   },
++        { "fusectl",     "/sys/fs/fuse/connections",  "fusectl",    NULL,                                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++          NULL,          MNT_NONE                   },
++        { "configfs",    "/sys/kernel/config",        "configfs",   NULL,                                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++          NULL,          MNT_NONE                   },
++        { "debugfs",     "/sys/kernel/debug",         "debugfs",    NULL,                                      MS_NOSUID|MS_NOEXEC|MS_NODEV,
++          NULL,          MNT_NONE                   },
  };
  
- /* These are API file systems that might be mounted by other software,
+ bool mount_point_is_api(const char *path) {
 diff --git a/units/dev-hugepages.mount b/units/dev-hugepages.mount
 deleted file mode 100644
-index 278ed9b610..0000000000
+index 517437784c..0000000000
 --- a/units/dev-hugepages.mount
 +++ /dev/null
 @@ -1,23 +0,0 @@
--#  SPDX-License-Identifier: LGPL-2.1+
+-#  SPDX-License-Identifier: LGPL-2.1-or-later
 -#
 -#  This file is part of systemd.
 -#
@@ -72,11 +72,11 @@ index 278ed9b610..0000000000
 -Type=hugetlbfs
 diff --git a/units/dev-mqueue.mount b/units/dev-mqueue.mount
 deleted file mode 100644
-index 0114ad31f0..0000000000
+index 02683a9e1e..0000000000
 --- a/units/dev-mqueue.mount
 +++ /dev/null
 @@ -1,23 +0,0 @@
--#  SPDX-License-Identifier: LGPL-2.1+
+-#  SPDX-License-Identifier: LGPL-2.1-or-later
 -#
 -#  This file is part of systemd.
 -#
@@ -100,21 +100,24 @@ index 0114ad31f0..0000000000
 -Type=mqueue
 -Options=nosuid,nodev,noexec
 diff --git a/units/meson.build b/units/meson.build
-index aa2ed115ea..5522eb6d6b 100644
+index 17e9ead9c1..82760f9113 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -10,10 +10,6 @@ units = [
-         ['cryptsetup-pre.target',               'HAVE_LIBCRYPTSETUP'],
+@@ -11,12 +11,7 @@ units = [
          ['cryptsetup.target',                   'HAVE_LIBCRYPTSETUP',
           'sysinit.target.wants/'],
+         ['veritysetup-pre.target',              'HAVE_LIBCRYPTSETUP'],
+-        ['veritysetup.target',                  'HAVE_LIBCRYPTSETUP',
+-         'sysinit.target.wants/'],
 -        ['dev-hugepages.mount',                 '',
 -         'sysinit.target.wants/'],
 -        ['dev-mqueue.mount',                    '',
 -         'sysinit.target.wants/'],
++        ['veritysetup.target',                  'HAVE_LIBCRYPTSETUP'],
          ['emergency.target',                    ''],
          ['exit.target',                         ''],
          ['final.target',                        ''],
-@@ -74,12 +70,6 @@ units = [
+@@ -82,12 +77,6 @@ units = [
          ['sound.target',                        ''],
          ['suspend.target',                      ''],
          ['swap.target',                         ''],
@@ -129,11 +132,11 @@ index aa2ed115ea..5522eb6d6b 100644
          ['sysinit.target',                      ''],
 diff --git a/units/sys-fs-fuse-connections.mount b/units/sys-fs-fuse-connections.mount
 deleted file mode 100644
-index 7bbc342be8..0000000000
+index ca48fd5f4f..0000000000
 --- a/units/sys-fs-fuse-connections.mount
 +++ /dev/null
-@@ -1,25 +0,0 @@
--#  SPDX-License-Identifier: LGPL-2.1+
+@@ -1,32 +0,0 @@
+-#  SPDX-License-Identifier: LGPL-2.1-or-later
 -#
 -#  This file is part of systemd.
 -#
@@ -150,8 +153,15 @@ index 7bbc342be8..0000000000
 -ConditionPathExists=/sys/fs/fuse/connections
 -ConditionCapability=CAP_SYS_ADMIN
 -ConditionVirtualization=!private-users
--After=systemd-modules-load.service
 -Before=sysinit.target
+-
+-# These dependencies are used to make certain that the module is fully
+-# loaded. Indeed udev starts this unit when it receives an uevent for the
+-# module but the kernel sends it too early, ie before the init() of the module
+-# is fully operational and /sys/fs/fuse/connections is created, see issue#17586.
+-
+-After=modprobe@fuse.service
+-Requires=modprobe@fuse.service
 -
 -[Mount]
 -What=fusectl
@@ -160,11 +170,11 @@ index 7bbc342be8..0000000000
 -Options=nosuid,nodev,noexec
 diff --git a/units/sys-kernel-config.mount b/units/sys-kernel-config.mount
 deleted file mode 100644
-index e6997884dc..0000000000
+index b99b4f4b7e..0000000000
 --- a/units/sys-kernel-config.mount
 +++ /dev/null
-@@ -1,24 +0,0 @@
--#  SPDX-License-Identifier: LGPL-2.1+
+@@ -1,31 +0,0 @@
+-#  SPDX-License-Identifier: LGPL-2.1-or-later
 -#
 -#  This file is part of systemd.
 -#
@@ -180,8 +190,15 @@ index e6997884dc..0000000000
 -DefaultDependencies=no
 -ConditionPathExists=/sys/kernel/config
 -ConditionCapability=CAP_SYS_RAWIO
--After=systemd-modules-load.service
 -Before=sysinit.target
+-
+-# These dependencies are used to make certain that the module is fully
+-# loaded. Indeed udev starts this unit when it receives an uevent for the
+-# module but the kernel sends it too early, ie before the init() of the module
+-# is fully operational and /sys/kernel/config is created, see issue#17586.
+-
+-After=modprobe@configfs.service
+-Requires=modprobe@configfs.service
 -
 -[Mount]
 -What=configfs
@@ -190,11 +207,11 @@ index e6997884dc..0000000000
 -Options=nosuid,nodev,noexec
 diff --git a/units/sys-kernel-debug.mount b/units/sys-kernel-debug.mount
 deleted file mode 100644
-index 618270ddae..0000000000
+index d03837bafb..0000000000
 --- a/units/sys-kernel-debug.mount
 +++ /dev/null
 @@ -1,23 +0,0 @@
--#  SPDX-License-Identifier: LGPL-2.1+
+-#  SPDX-License-Identifier: LGPL-2.1-or-later
 -#
 -#  This file is part of systemd.
 -#
@@ -218,5 +235,5 @@ index 618270ddae..0000000000
 -Type=debugfs
 -Options=nosuid,nodev,noexec
 -- 
-2.28.0
+2.32.0
 

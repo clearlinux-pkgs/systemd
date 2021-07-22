@@ -1,19 +1,19 @@
-From ac1e3b9595f9a8d31b9ca438b6aa4dd38a77a58b Mon Sep 17 00:00:00 2001
+From a84b00dfa3f421bd9ba3cadf9c48d185cf4feade Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 12/44] Ship default services in system unit dir.
+Subject: [PATCH 12/42] Ship default services in system unit dir.
 
 ---
  units/meson.build | 23 ++++++++++++++++-------
  1 file changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/units/meson.build b/units/meson.build
-index 5522eb6d6b..21dedf06a2 100644
+index 82760f9113..515da122d8 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -57,7 +57,8 @@ units = [
-          (with_runlevels ? 'runlevel6.target ctrl-alt-del.target' : 'ctrl-alt-del.target')],
-         ['remote-cryptsetup.target',            'HAVE_LIBCRYPTSETUP'],
+@@ -64,7 +64,8 @@ units = [
+         ['remote-veritysetup.target',           'HAVE_LIBCRYPTSETUP',
+          'initrd-root-device.target.wants/'],
          ['remote-fs-pre.target',                ''],
 -        ['remote-fs.target',                    ''],
 +        ['remote-fs.target',                    '',
@@ -21,7 +21,7 @@ index 5522eb6d6b..21dedf06a2 100644
          ['rescue.target',                       '',
           (with_runlevels ? 'runlevel1.target' : '')],
          ['rpcbind.target',                      ''],
-@@ -111,7 +112,8 @@ units = [
+@@ -119,7 +120,8 @@ units = [
           'sysinit.target.wants/'],
          ['systemd-journald@.socket',            ''],
          ['systemd-journald-varlink@.socket',    ''],
@@ -31,7 +31,7 @@ index 5522eb6d6b..21dedf06a2 100644
          ['systemd-poweroff.service',            ''],
          ['systemd-reboot.service',              ''],
          ['systemd-rfkill.socket',               'ENABLE_RFKILL'],
-@@ -186,8 +188,11 @@ in_units = [
+@@ -201,8 +203,11 @@ in_units = [
          ['systemd-modules-load.service',         'HAVE_KMOD',
           'sysinit.target.wants/'],
          ['systemd-network-generator.service',    'ENABLE_NETWORKD'],
@@ -43,9 +43,9 @@ index 5522eb6d6b..21dedf06a2 100644
 +        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD',
 +         'network-online.target.wants/'],
          ['systemd-nspawn@.service',              ''],
-         ['systemd-portabled.service',            'ENABLE_PORTABLED',
-          'dbus-org.freedesktop.portable1.service'],
-@@ -196,15 +201,19 @@ in_units = [
+         ['systemd-oomd.service',                 'ENABLE_OOMD',
+          'dbus-org.freedesktop.oom1.service'],
+@@ -213,15 +218,19 @@ in_units = [
          ['systemd-quotacheck.service',           'ENABLE_QUOTACHECK'],
          ['systemd-random-seed.service',          'ENABLE_RANDOMSEED',
           'sysinit.target.wants/'],
@@ -69,5 +69,5 @@ index 5522eb6d6b..21dedf06a2 100644
          ['systemd-udevd.service',                '',
           'sysinit.target.wants/'],
 -- 
-2.28.0
+2.32.0
 

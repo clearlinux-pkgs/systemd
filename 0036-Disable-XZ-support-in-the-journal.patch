@@ -1,0 +1,40 @@
+From 67633cb55acbc94b0074c741df1778db5619514a Mon Sep 17 00:00:00 2001
+From: Arjan van de Ven <arjan@linux.intel.com>
+Date: Mon, 14 Jan 2019 09:46:32 -0800
+Subject: [PATCH 36/42] Disable XZ support in the journal.
+
+---
+ src/coredump/coredump.c              | 3 +++
+ src/libsystemd/sd-journal/compress.c | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/src/coredump/coredump.c b/src/coredump/coredump.c
+index 444b9ec374..c3da0aabe6 100644
+--- a/src/coredump/coredump.c
++++ b/src/coredump/coredump.c
+@@ -52,6 +52,9 @@
+ #include "user-record.h"
+ #include "user-util.h"
+ 
++#undef HAVE_XZ
++#define HAVE_XZ 0
++
+ /* The maximum size up to which we process coredumps */
+ #define PROCESS_SIZE_MAX ((uint64_t) (2LLU*1024LLU*1024LLU*1024LLU))
+ 
+diff --git a/src/libsystemd/sd-journal/compress.c b/src/libsystemd/sd-journal/compress.c
+index 837abab76c..99dd128c5c 100644
+--- a/src/libsystemd/sd-journal/compress.c
++++ b/src/libsystemd/sd-journal/compress.c
+@@ -34,6 +34,8 @@
+ #include "unaligned.h"
+ #include "util.h"
+ 
++#undef HAVE_XZ
++#define HAVE_XZ 0
+ #if HAVE_LZ4
+ DEFINE_TRIVIAL_CLEANUP_FUNC_FULL(LZ4F_compressionContext_t, LZ4F_freeCompressionContext, NULL);
+ DEFINE_TRIVIAL_CLEANUP_FUNC_FULL(LZ4F_decompressionContext_t, LZ4F_freeDecompressionContext, NULL);
+-- 
+2.32.0
+

@@ -1,7 +1,7 @@
-From 6d3ab3d3f7dd9690f279d99fb436f5b6a9c700ce Mon Sep 17 00:00:00 2001
+From 5d6510811bf03a9eded5269d95fbf7ebd2482e5a Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:38:31 +0100
-Subject: [PATCH 05/44] journal: flush var/kmsg after starting, disable kmsg
+Subject: [PATCH 05/42] journal: flush var/kmsg after starting, disable kmsg
  from boot.
 
 ---
@@ -10,10 +10,10 @@ Subject: [PATCH 05/44] journal: flush var/kmsg after starting, disable kmsg
  2 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
-index 938cac85f6..575e807a6d 100644
+index 5614642389..87099b0ded 100644
 --- a/src/journal/journald-server.c
 +++ b/src/journal/journald-server.c
-@@ -2239,7 +2239,9 @@ int server_init(Server *s, const char *namespace) {
+@@ -2221,7 +2221,9 @@ int server_init(Server *s, const char *namespace) {
                  return r;
  
          /* By default, only read from /dev/kmsg if are the main namespace */
@@ -25,10 +25,10 @@ index 938cac85f6..575e807a6d 100644
  
          journal_reset_metrics(&s->system_storage.metrics);
 diff --git a/src/journal/journald.c b/src/journal/journald.c
-index 9a7cb3e1fc..019952fd2a 100644
+index 536717ce0a..9cdbba5124 100644
 --- a/src/journal/journald.c
 +++ b/src/journal/journald.c
-@@ -40,8 +40,6 @@ int main(int argc, char *argv[]) {
+@@ -53,8 +53,6 @@ int main(int argc, char *argv[]) {
                  goto finish;
  
          server_vacuum(&server, false);
@@ -37,7 +37,7 @@ index 9a7cb3e1fc..019952fd2a 100644
  
          if (server.namespace)
                  log_debug("systemd-journald running as PID "PID_FMT" for namespace '%s'.", getpid_cached(), server.namespace);
-@@ -53,6 +51,9 @@ int main(int argc, char *argv[]) {
+@@ -66,6 +64,9 @@ int main(int argc, char *argv[]) {
                                LOG_MESSAGE("Journal started"),
                                NULL);
  
@@ -48,5 +48,5 @@ index 9a7cb3e1fc..019952fd2a 100644
           * journal so entries from the runtime journals are ordered
           * before this message. See #4190 for some details. */
 -- 
-2.28.0
+2.32.0
 
