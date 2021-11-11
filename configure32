@@ -9,3 +9,4 @@
 -Dopenssl=false
 -Daudit=false
 -Dpolkit=false
+-Dzstd=false
