@@ -53,3 +53,5 @@ libseccomp-dev
 openssl-dev
 lxml
 Jinja2-python3
+zstd-dev
+zstd-dev32

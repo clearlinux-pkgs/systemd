@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 249.6
-Release  : 287
+Release  : 288
 URL      : https://github.com/systemd/systemd-stable/archive/v249.6.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v249.6.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -92,6 +92,8 @@ BuildRequires : util-linux-dev32
 BuildRequires : util-linux-extras
 BuildRequires : xz-dev
 BuildRequires : zlib-dev32
+BuildRequires : zstd-dev
+BuildRequires : zstd-dev32
 Patch1: 0001-journal-raise-compression-threshold.patch
 Patch2: 0002-journal-Add-option-to-skip-boot-kmsg-events.patch
 Patch3: 0003-core-use-mmap-to-load-files.patch
@@ -332,7 +334,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1636655768
+export SOURCE_DATE_EPOCH=1636657059
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -357,7 +359,8 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --
 -Dman=true \
 -Ddefault-kill-user-processes=false \
 -Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" \
--Ddefault-dnssec=no  builddir
+-Ddefault-dnssec=no \
+-Dzstd=true  builddir
 ninja -v -C builddir
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
@@ -379,7 +382,8 @@ meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid 
 -Dman=true \
 -Ddefault-kill-user-processes=false \
 -Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" \
--Ddefault-dnssec=no -Dlibcryptsetup=false \
+-Ddefault-dnssec=no \
+-Dzstd=true -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \
