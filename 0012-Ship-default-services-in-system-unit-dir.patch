@@ -34,7 +34,7 @@ index 82760f9113..515da122d8 100644
 @@ -201,8 +203,11 @@ in_units = [
          ['systemd-modules-load.service',         'HAVE_KMOD',
           'sysinit.target.wants/'],
-         ['systemd-network-generator.service',    'ENABLE_NETWORKD'],
+         ['systemd-network-generator.service',    ''],
 -        ['systemd-networkd.service',             'ENABLE_NETWORKD'],
 -        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD'],
 +        ['systemd-networkd.service',             'ENABLE_NETWORKD',
