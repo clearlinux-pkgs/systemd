@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 249.11
-Release  : 291
+Release  : 292
 URL      : https://github.com/systemd/systemd-stable/archive/v249.11.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v249.11.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -67,7 +67,6 @@ BuildRequires : libseccomp-dev
 BuildRequires : libseccomp-dev32
 BuildRequires : libxkbcommon-dev
 BuildRequires : libxslt-bin
-BuildRequires : lxml
 BuildRequires : openssl-dev
 BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(32liblz4)
@@ -83,6 +82,7 @@ BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(zlib)
 BuildRequires : polkit-dev
 BuildRequires : pypi(jinja2)
+BuildRequires : pypi-lxml
 BuildRequires : python3
 BuildRequires : readline-dev
 BuildRequires : shadow
@@ -336,7 +336,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1648157649
+export SOURCE_DATE_EPOCH=1649788561
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS

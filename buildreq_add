@@ -51,7 +51,7 @@ xz-dev
 libseccomp-dev32
 libseccomp-dev
 openssl-dev
-lxml
+pypi-lxml
 pypi(jinja2)
 zstd-dev
 zstd-dev32
