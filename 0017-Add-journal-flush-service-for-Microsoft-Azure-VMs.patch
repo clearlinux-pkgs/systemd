@@ -1,7 +1,7 @@
-From c9a09cebe1abc6d1123b93cb219bb685b1fe3926 Mon Sep 17 00:00:00 2001
+From 0628c6cd77457aff4b3dbd04e838d67195e8e481 Mon Sep 17 00:00:00 2001
 From: Matthew Johnson <matthew.johnson@intel.com>
 Date: Tue, 20 Sep 2016 10:49:55 -0700
-Subject: [PATCH 20/42] Add journal flush service for Microsoft Azure VMs
+Subject: [PATCH 17/38] Add journal flush service for Microsoft Azure VMs
 
 Removes "Before" clause when in a Microsoft VM.
 ---
@@ -12,10 +12,10 @@ Removes "Before" clause when in a Microsoft VM.
  create mode 100644 units/systemd-journal-flush-msft.service.in
 
 diff --git a/units/meson.build b/units/meson.build
-index 515da122d8..6c12c932a5 100644
+index 89ea147fbe..2278cac28a 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -187,7 +187,9 @@ in_units = [
+@@ -194,7 +194,9 @@ in_units = [
           'sysinit.target.wants/'],
          ['systemd-importd.service',              'ENABLE_IMPORTD',
           'dbus-org.freedesktop.import1.service'],
@@ -55,7 +55,7 @@ index 0000000000..091d50c9fa
 +RemainAfterExit=yes
 +TimeoutSec=90s
 diff --git a/units/systemd-journal-flush.service b/units/systemd-journal-flush.service
-index 6423f6ea80..8d61454bb4 100644
+index 5d0b811ae3..675145055c 100644
 --- a/units/systemd-journal-flush.service
 +++ b/units/systemd-journal-flush.service
 @@ -16,6 +16,7 @@ After=systemd-journald.service systemd-remount-fs.service
@@ -67,5 +67,5 @@ index 6423f6ea80..8d61454bb4 100644
  [Service]
  ExecStart=journalctl --flush
 -- 
-2.32.0
+2.36.1
 

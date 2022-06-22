@@ -1,7 +1,7 @@
-From 2520335d90548de511589136dfb058c4b696c504 Mon Sep 17 00:00:00 2001
+From 818ad57591b70580930b0fe4b1cecfe0fd54b687 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Thu, 5 Apr 2018 10:02:14 -0700
-Subject: [PATCH 04/42] Build: drop pam/nsswitch, ship legacy tmpfiles, disable
+Subject: [PATCH 04/38] Build: drop pam/nsswitch, ship legacy tmpfiles, disable
  resolved as default resolver at boot.
 
 Adapted from Makefile.am patch by Dimitri John Ledkov.
@@ -15,39 +15,39 @@ breaks various applications.
 
 Ref: https://github.com/coreos/coreos-overlay/pull/2129/commits/76830bedf02a8c54e1d2ce30796046b86bb00b94
 ---
- meson.build            | 5 ++---
- tmpfiles.d/etc.conf.in | 3 +--
- tmpfiles.d/meson.build | 2 +-
- 3 files changed, 4 insertions(+), 6 deletions(-)
+ meson.build            | 6 ++----
+ tmpfiles.d/etc.conf.in | 4 +++-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 738879eb21..45d6161119 100644
+index 36cbfa4893..d6e335ee7d 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -169,7 +169,6 @@ udevrulesdir = join_paths(udevlibexecdir, 'rules.d')
- udevhwdbdir = join_paths(udevlibexecdir, 'hwdb.d')
- catalogdir = join_paths(prefixdir, 'lib/systemd/catalog')
- kernelinstalldir = join_paths(prefixdir, 'lib/kernel/install.d')
--factorydir = join_paths(datadir, 'factory')
- bootlibdir = join_paths(prefixdir, 'lib/systemd/boot/efi')
- testsdir = join_paths(prefixdir, 'lib/systemd/tests')
- systemdstatedir = join_paths(localstatedir, 'lib/systemd')
-@@ -3517,8 +3516,8 @@ subdir('shell-completion/zsh')
+@@ -189,7 +189,6 @@ udevhwdbdir = udevlibexecdir / 'hwdb.d'
+ catalogdir = prefixdir / 'lib/systemd/catalog'
+ kerneldir = prefixdir / 'lib/kernel'
+ kernelinstalldir = kerneldir / 'install.d'
+-factorydir = datadir / 'factory'
+ bootlibdir = prefixdir / 'lib/systemd/boot/efi'
+ testsdir = prefixdir / 'lib/systemd/tests'
+ systemdstatedir = localstatedir / 'lib/systemd'
+@@ -3901,9 +3900,8 @@ subdir('shell-completion/zsh')
  subdir('docs/sysvinit')
  subdir('docs/var-log')
  
 -install_subdir('factory/etc',
 -               install_dir : factorydir)
+-subdir('factory/templates')
 +# FIXME: figure out if the warning is true:
 +# https://github.com/mesonbuild/meson/wiki/Reference-manual#install_subdir
  
  if install_sysconfdir
          install_data('xorg/50-systemd-user.sh',
 diff --git a/tmpfiles.d/etc.conf.in b/tmpfiles.d/etc.conf.in
-index 2323fd8cd8..c29d654b25 100644
+index 2fdd498da5..64306e747d 100644
 --- a/tmpfiles.d/etc.conf.in
 +++ b/tmpfiles.d/etc.conf.in
-@@ -7,13 +7,12 @@
+@@ -7,12 +7,14 @@
  
  # See tmpfiles.d(5) for details
  
@@ -56,25 +56,13 @@ index 2323fd8cd8..c29d654b25 100644
  {% if HAVE_SMACK_RUN_LABEL %}
  t /etc/mtab - - - - security.SMACK64=_
  {% endif %}
- {% if ENABLE_RESOLVE %}
--L! /etc/resolv.conf - - - - ../run/systemd/resolve/stub-resolv.conf
+ C! /etc/locale.conf - - - -
++{% if ENABLE_RESOLVE %}
 +L+! /etc/resolv.conf - - - - ../run/systemd/resolve/resolv.conf
- {% endif %}
++{% endif %}
  C! /etc/nsswitch.conf - - - -
  {% if HAVE_PAM %}
-diff --git a/tmpfiles.d/meson.build b/tmpfiles.d/meson.build
-index a8aaacaf29..406afb05ff 100644
---- a/tmpfiles.d/meson.build
-+++ b/tmpfiles.d/meson.build
-@@ -12,7 +12,7 @@ files = [['README',               ''],
-          ['systemd-pstore.conf',  'ENABLE_PSTORE'],
-          ['tmp.conf',             ''],
-          ['x11.conf',             ''],
--         ['legacy.conf',          'HAVE_SYSV_COMPAT'],
-+         ['legacy.conf',          ''],
-         ]
- 
- foreach pair : files
+ C! /etc/pam.d - - - -
 -- 
-2.32.0
+2.36.1
 

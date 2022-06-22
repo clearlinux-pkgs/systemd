@@ -1,17 +1,17 @@
-From a84b00dfa3f421bd9ba3cadf9c48d185cf4feade Mon Sep 17 00:00:00 2001
+From ceb3b8a49d78ed68849477e3d72e473cbfdefecf Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 24 Aug 2015 14:42:53 +0100
-Subject: [PATCH 12/42] Ship default services in system unit dir.
+Subject: [PATCH 11/38] Ship default services in system unit dir.
 
 ---
- units/meson.build | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ units/meson.build | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
 diff --git a/units/meson.build b/units/meson.build
-index 82760f9113..515da122d8 100644
+index e9f925a810..89ea147fbe 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -64,7 +64,8 @@ units = [
+@@ -68,7 +68,8 @@ units = [
          ['remote-veritysetup.target',           'HAVE_LIBCRYPTSETUP',
           'initrd-root-device.target.wants/'],
          ['remote-fs-pre.target',                ''],
@@ -21,31 +21,24 @@ index 82760f9113..515da122d8 100644
          ['rescue.target',                       '',
           (with_runlevels ? 'runlevel1.target' : '')],
          ['rpcbind.target',                      ''],
-@@ -119,7 +120,8 @@ units = [
-          'sysinit.target.wants/'],
-         ['systemd-journald@.socket',            ''],
-         ['systemd-journald-varlink@.socket',    ''],
--        ['systemd-networkd.socket',             'ENABLE_NETWORKD'],
-+        ['systemd-networkd.socket',             'ENABLE_NETWORKD',
-+         'sockets.target.wants/'],
-         ['systemd-poweroff.service',            ''],
-         ['systemd-reboot.service',              ''],
-         ['systemd-rfkill.socket',               'ENABLE_RFKILL'],
-@@ -201,8 +203,11 @@ in_units = [
+@@ -208,10 +209,12 @@ in_units = [
+          'dbus-org.freedesktop.machine1.service'],
          ['systemd-modules-load.service',         'HAVE_KMOD',
           'sysinit.target.wants/'],
-         ['systemd-network-generator.service',    ''],
+-        ['systemd-network-generator.service',    ''],
 -        ['systemd-networkd.service',             'ENABLE_NETWORKD'],
 -        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD'],
+-        ['systemd-networkd-wait-online@.service','ENABLE_NETWORKD'],
++        ['systemd-network-generator.service',    'ENABLE_NETWORKD'],
 +        ['systemd-networkd.service',             'ENABLE_NETWORKD',
 +         ('dbus-org.freedesktop.network1.service' + ' ' +
 +         'multi-user.target.wants/')],
 +        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD',
 +         'network-online.target.wants/'],
          ['systemd-nspawn@.service',              ''],
-         ['systemd-oomd.service',                 'ENABLE_OOMD',
-          'dbus-org.freedesktop.oom1.service'],
-@@ -213,15 +218,19 @@ in_units = [
+         ['systemd-oomd.service',                 'ENABLE_OOMD'],
+         ['systemd-portabled.service',            'ENABLE_PORTABLED',
+@@ -221,8 +224,11 @@ in_units = [
          ['systemd-quotacheck.service',           'ENABLE_QUOTACHECK'],
          ['systemd-random-seed.service',          'ENABLE_RANDOMSEED',
           'sysinit.target.wants/'],
@@ -59,7 +52,8 @@ index 82760f9113..515da122d8 100644
          ['systemd-rfkill.service',               'ENABLE_RFKILL'],
          ['systemd-suspend.service',              ''],
          ['systemd-sysctl.service',               '',
-          'sysinit.target.wants/'],
+@@ -231,7 +237,8 @@ in_units = [
+         ['systemd-sysupdate-reboot.service',     'ENABLE_SYSUPDATE'],
          ['systemd-timedated.service',            'ENABLE_TIMEDATED',
           'dbus-org.freedesktop.timedate1.service'],
 -        ['systemd-timesyncd.service',            'ENABLE_TIMESYNCD'],
@@ -69,5 +63,5 @@ index 82760f9113..515da122d8 100644
          ['systemd-udevd.service',                '',
           'sysinit.target.wants/'],
 -- 
-2.32.0
+2.36.1
 

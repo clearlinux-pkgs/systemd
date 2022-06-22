@@ -1,7 +1,7 @@
-From 18ba9e2eefb77b1f534e6cbf04be38fe76f1ec11 Mon Sep 17 00:00:00 2001
+From 0359443ad4fc7c8052962b010f4a668a6312acc2 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Mon, 6 Jul 2015 17:07:42 +0100
-Subject: [PATCH 11/42] mount-setup: mount kernel fs by default.
+Subject: [PATCH 10/38] mount-setup: mount kernel fs by default.
 
 Instead of using mount units, just mount hugetlbfs, mqueue, fusectl,
 configfs, debugfs directly from mount-setup.
@@ -21,7 +21,7 @@ configfs, debugfs directly from mount-setup.
  delete mode 100644 units/sys-kernel-debug.mount
 
 diff --git a/src/shared/mount-setup.c b/src/shared/mount-setup.c
-index ef3527e9a7..c14fc1671d 100644
+index 975c027f47..d8a95f4941 100644
 --- a/src/shared/mount-setup.c
 +++ b/src/shared/mount-setup.c
 @@ -110,6 +110,16 @@ static const MountPoint mount_table[] = {
@@ -100,24 +100,27 @@ index 02683a9e1e..0000000000
 -Type=mqueue
 -Options=nosuid,nodev,noexec
 diff --git a/units/meson.build b/units/meson.build
-index 17e9ead9c1..82760f9113 100644
+index e8f81f2230..e9f925a810 100644
 --- a/units/meson.build
 +++ b/units/meson.build
-@@ -11,12 +11,7 @@ units = [
+@@ -11,15 +11,10 @@ units = [
          ['cryptsetup.target',                   'HAVE_LIBCRYPTSETUP',
           'sysinit.target.wants/'],
          ['veritysetup-pre.target',              'HAVE_LIBCRYPTSETUP'],
 -        ['veritysetup.target',                  'HAVE_LIBCRYPTSETUP',
 -         'sysinit.target.wants/'],
++        ['veritysetup.target',                  'HAVE_LIBCRYPTSETUP'],
+         ['integritysetup-pre.target',           'HAVE_LIBCRYPTSETUP'],
+         ['integritysetup.target',               'HAVE_LIBCRYPTSETUP',
+          'sysinit.target.wants/'],
 -        ['dev-hugepages.mount',                 '',
 -         'sysinit.target.wants/'],
 -        ['dev-mqueue.mount',                    '',
 -         'sysinit.target.wants/'],
-+        ['veritysetup.target',                  'HAVE_LIBCRYPTSETUP'],
          ['emergency.target',                    ''],
          ['exit.target',                         ''],
-         ['final.target',                        ''],
-@@ -82,12 +77,6 @@ units = [
+         ['factory-reset.target',                ''],
+@@ -86,12 +81,6 @@ units = [
          ['sound.target',                        ''],
          ['suspend.target',                      ''],
          ['swap.target',                         ''],
@@ -235,5 +238,5 @@ index d03837bafb..0000000000
 -Type=debugfs
 -Options=nosuid,nodev,noexec
 -- 
-2.32.0
+2.36.1
 

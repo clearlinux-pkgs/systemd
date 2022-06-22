@@ -69,6 +69,8 @@ libsystemd.so.0:LIBSYSTEMD_246
 libsystemd.so.0:LIBSYSTEMD_247
 libsystemd.so.0:LIBSYSTEMD_248
 libsystemd.so.0:LIBSYSTEMD_249
+libsystemd.so.0:LIBSYSTEMD_250
+libsystemd.so.0:LIBSYSTEMD_251
 libsystemd.so.0:sd_booted
 libsystemd.so.0:sd_bus_add_fallback
 libsystemd.so.0:sd_bus_add_fallback_vtable
@@ -374,6 +376,7 @@ libsystemd.so.0:sd_device_enumerator_add_match_subsystem
 libsystemd.so.0:sd_device_enumerator_add_match_sysattr
 libsystemd.so.0:sd_device_enumerator_add_match_sysname
 libsystemd.so.0:sd_device_enumerator_add_match_tag
+libsystemd.so.0:sd_device_enumerator_add_nomatch_sysname
 libsystemd.so.0:sd_device_enumerator_allow_uninitialized
 libsystemd.so.0:sd_device_enumerator_get_device_first
 libsystemd.so.0:sd_device_enumerator_get_device_next
@@ -391,6 +394,7 @@ libsystemd.so.0:sd_device_get_devname
 libsystemd.so.0:sd_device_get_devnum
 libsystemd.so.0:sd_device_get_devpath
 libsystemd.so.0:sd_device_get_devtype
+libsystemd.so.0:sd_device_get_diskseq
 libsystemd.so.0:sd_device_get_driver
 libsystemd.so.0:sd_device_get_ifindex
 libsystemd.so.0:sd_device_get_is_initialized
@@ -431,12 +435,15 @@ libsystemd.so.0:sd_device_monitor_start
 libsystemd.so.0:sd_device_monitor_stop
 libsystemd.so.0:sd_device_monitor_unref
 libsystemd.so.0:sd_device_new_from_device_id
+libsystemd.so.0:sd_device_new_from_devname
 libsystemd.so.0:sd_device_new_from_devnum
 libsystemd.so.0:sd_device_new_from_ifindex
 libsystemd.so.0:sd_device_new_from_ifname
+libsystemd.so.0:sd_device_new_from_path
 libsystemd.so.0:sd_device_new_from_stat_rdev
 libsystemd.so.0:sd_device_new_from_subsystem_sysname
 libsystemd.so.0:sd_device_new_from_syspath
+libsystemd.so.0:sd_device_open
 libsystemd.so.0:sd_device_ref
 libsystemd.so.0:sd_device_set_sysattr_value
 libsystemd.so.0:sd_device_set_sysattr_valuef
@@ -448,6 +455,7 @@ libsystemd.so.0:sd_event_add_child_pidfd
 libsystemd.so.0:sd_event_add_defer
 libsystemd.so.0:sd_event_add_exit
 libsystemd.so.0:sd_event_add_inotify
+libsystemd.so.0:sd_event_add_inotify_fd
 libsystemd.so.0:sd_event_add_io
 libsystemd.so.0:sd_event_add_post
 libsystemd.so.0:sd_event_add_signal
@@ -509,6 +517,7 @@ libsystemd.so.0:sd_event_source_set_io_fd_own
 libsystemd.so.0:sd_event_source_set_prepare
 libsystemd.so.0:sd_event_source_set_priority
 libsystemd.so.0:sd_event_source_set_ratelimit
+libsystemd.so.0:sd_event_source_set_ratelimit_expire_callback
 libsystemd.so.0:sd_event_source_set_time
 libsystemd.so.0:sd_event_source_set_time_accuracy
 libsystemd.so.0:sd_event_source_set_time_relative
@@ -534,6 +543,7 @@ libsystemd.so.0:sd_id128_get_machine
 libsystemd.so.0:sd_id128_get_machine_app_specific
 libsystemd.so.0:sd_id128_randomize
 libsystemd.so.0:sd_id128_to_string
+libsystemd.so.0:sd_id128_to_uuid_string
 libsystemd.so.0:sd_is_fifo
 libsystemd.so.0:sd_is_mq
 libsystemd.so.0:sd_is_socket

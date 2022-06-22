@@ -14,3 +14,6 @@
 -Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com"
 -Ddefault-dnssec=no
 -Dzstd=true
+-Dsbat-distro=clearlinux
+-Dsbat-distro-summary="Clear Linux OS for Intel (R) Architecture"
+-Dsbat-distro-url=https://clearlinux.org/

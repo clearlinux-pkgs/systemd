@@ -1,17 +1,17 @@
-From 39bc19eadb2b71925e73ec828c20144e8878b9cc Mon Sep 17 00:00:00 2001
+From cb6c0c0a77a8a5739a6f3b109826b42b210c7bd4 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:26:11 +0100
-Subject: [PATCH 03/42] core: use mmap to load files.
+Subject: [PATCH 03/38] core: use mmap to load files.
 
 ---
  src/core/load-fragment.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/core/load-fragment.c b/src/core/load-fragment.c
-index 8fb3c378ee..1f0a45f16e 100644
+index 3ff6eae8fc..e45d595346 100644
 --- a/src/core/load-fragment.c
 +++ b/src/core/load-fragment.c
-@@ -5743,7 +5743,7 @@ int unit_load_fragment(Unit *u) {
+@@ -6091,7 +6091,7 @@ int unit_load_fragment(Unit *u) {
                  /* Try to open the file name. A symlink is OK, for example for linked files or masks. We
                   * expect that all symlinks within the lookup paths have been already resolved, but we don't
                   * verify this here. */
@@ -21,5 +21,5 @@ index 8fb3c378ee..1f0a45f16e 100644
                          return log_unit_notice_errno(u, errno, "Failed to open %s: %m", fragment);
  
 -- 
-2.32.0
+2.36.1
 

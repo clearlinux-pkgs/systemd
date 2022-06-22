@@ -1,0 +1,28 @@
+From b2169184ecfd76f69e8ccc0c1667b45528f83601 Mon Sep 17 00:00:00 2001
+From: Daan De Meyer <daan.j.demeyer@gmail.com>
+Date: Sun, 22 May 2022 14:36:07 +0200
+Subject: [PATCH 38/38] coredump: Fix format string type mismatch
+
+Fixes #23471
+---
+ src/coredump/coredump.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/coredump/coredump.c b/src/coredump/coredump.c
+index 7a2f18864d..da50f95871 100644
+--- a/src/coredump/coredump.c
++++ b/src/coredump/coredump.c
+@@ -515,8 +515,8 @@ static int save_external_coredump(
+ 
+         if (truncated)
+                 log_struct(LOG_INFO,
+-                           LOG_MESSAGE("Core file was truncated to %zu bytes.", max_size),
+-                           "SIZE_LIMIT=%zu", max_size,
++                           LOG_MESSAGE("Core file was truncated to %"PRIu64" bytes.", max_size),
++                           "SIZE_LIMIT=%"PRIu64, max_size,
+                            "MESSAGE_ID=" SD_MESSAGE_TRUNCATED_CORE_STR);
+ 
+         r = fix_permissions(fd, tmp, fn, context, uid);
+-- 
+2.36.1
+

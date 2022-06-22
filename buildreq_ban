@@ -4,3 +4,4 @@ bzip2-dev
 bzip2-dev32
 pkgconfig(32tss2-esys tss2-rc tss2-mu)
 pkgconfig(tss2-esys tss2-rc tss2-mu)
+pypi(ninja)

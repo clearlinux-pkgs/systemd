@@ -1,7 +1,7 @@
-From cb8ffce6dbdf2f92c909120869f8bbe6302a4ade Mon Sep 17 00:00:00 2001
+From 54e9c48151c1bd7d6a8d623d7bfe2c3de2e4ef3b Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Fri, 14 Jul 2017 11:34:36 -0700
-Subject: [PATCH 27/42] Make timesyncd a "simple" service
+Subject: [PATCH 24/38] Make timesyncd a "simple" service
 
 the daemon ends up waiting 100 msec on networking conditions before notifying
 that it is done, even though that's really not relevant
@@ -23,5 +23,5 @@ index c606461091..3771ede671 100644
  {{SERVICE_WATCHDOG}}
  
 -- 
-2.32.0
+2.36.1
 

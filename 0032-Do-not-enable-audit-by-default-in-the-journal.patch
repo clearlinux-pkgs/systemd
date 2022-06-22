@@ -1,7 +1,7 @@
-From 83a6d515834ebb508b87735b0035f79bb0b20ab3 Mon Sep 17 00:00:00 2001
+From 36c36ee824758c5d999270f2663a1037b4fcbc55 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 14 Jan 2019 09:43:59 -0800
-Subject: [PATCH 35/42] Do not enable audit by default in the journal.
+Subject: [PATCH 32/38] Do not enable audit by default in the journal.
 
 ---
  man/journald.conf.xml         | 2 +-
@@ -22,10 +22,10 @@ index e602f80541..4e840afe0b 100644
  
        <varlistentry>
 diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
-index 87099b0ded..dfca63a1f7 100644
+index 04a99dcfc0..eef6246ce9 100644
 --- a/src/journal/journald-server.c
 +++ b/src/journal/journald-server.c
-@@ -2190,7 +2190,7 @@ int server_init(Server *s, const char *namespace) {
+@@ -2293,7 +2293,7 @@ int server_init(Server *s, const char *namespace) {
                  .compress.threshold_bytes = UINT64_MAX,
                  .seal = true,
  
@@ -35,5 +35,5 @@ index 87099b0ded..dfca63a1f7 100644
                  .watchdog_usec = USEC_INFINITY,
  
 -- 
-2.32.0
+2.36.1
 

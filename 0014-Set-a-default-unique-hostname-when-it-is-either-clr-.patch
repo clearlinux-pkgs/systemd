@@ -1,7 +1,7 @@
-From 47a941315fbb4f85ab4808cc7dbf64d0ef5f4956 Mon Sep 17 00:00:00 2001
+From 8280f2efacd6ad9d43a5aa9adcc3e513be972944 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Thu, 14 Apr 2016 19:15:46 +0100
-Subject: [PATCH 17/42] Set a default, unique, hostname, when it is either
+Subject: [PATCH 14/38] Set a default, unique, hostname, when it is either
  'clr' or 'localhost'
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
@@ -12,10 +12,10 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  3 files changed, 39 insertions(+)
 
 diff --git a/src/core/main.c b/src/core/main.c
-index da6c50a1c4..3385e7228f 100644
+index 409b84a006..4019eebfd6 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -2087,6 +2087,7 @@ static int initialize_runtime(
+@@ -2111,6 +2111,7 @@ static int initialize_runtime(
                          (void) hostname_setup(true);
                          /* Force transient machine-id on first boot. */
                          machine_id_setup(NULL, first_boot, arg_machine_id, NULL);
@@ -24,10 +24,10 @@ index da6c50a1c4..3385e7228f 100644
                          bump_unix_max_dgram_qlen();
                          bump_file_max_and_nr_open();
 diff --git a/src/shared/hostname-setup.c b/src/shared/hostname-setup.c
-index 511aa7d031..ba6b20c642 100644
+index 0fac0ecab7..d9b5529c2f 100644
 --- a/src/shared/hostname-setup.c
 +++ b/src/shared/hostname-setup.c
-@@ -237,3 +237,40 @@ static const char* const hostname_source_table[] = {
+@@ -220,3 +220,40 @@ static const char* const hostname_source_table[] = {
  };
  
  DEFINE_STRING_TABLE_LOOKUP(hostname_source, HostnameSource);
@@ -69,14 +69,14 @@ index 511aa7d031..ba6b20c642 100644
 +        return 0;
 +}
 diff --git a/src/shared/hostname-setup.h b/src/shared/hostname-setup.h
-index 5ac7241a59..766e0c1d26 100644
+index 6def36c350..c9d880166e 100644
 --- a/src/shared/hostname-setup.h
 +++ b/src/shared/hostname-setup.h
-@@ -24,3 +24,4 @@ int read_etc_hostname(const char *path, char **ret);
- bool get_hostname_filtered(char ret[static HOST_NAME_MAX + 1]);
+@@ -23,3 +23,4 @@ int read_etc_hostname(const char *path, char **ret);
+ 
  void hostname_update_source_hint(const char *hostname, HostnameSource source);
  int hostname_setup(bool really);
 +int set_first_hostname(void);
 -- 
-2.32.0
+2.36.1
 

@@ -1,7 +1,7 @@
-From a2938726701cefaee99013422c1a470af14f6bca Mon Sep 17 00:00:00 2001
+From 1bed0a658d981b3e2dd6cac99d845b699e09f35b Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:47:18 +0100
-Subject: [PATCH 07/42] sd-event: return malloc() memory reserves when main
+Subject: [PATCH 07/38] sd-event: return malloc() memory reserves when main
  loop is idle.
 
 ---
@@ -9,7 +9,7 @@ Subject: [PATCH 07/42] sd-event: return malloc() memory reserves when main
  1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/src/libsystemd/sd-event/sd-event.c b/src/libsystemd/sd-event/sd-event.c
-index e9199deb41..75a93ef4e4 100644
+index e5d370d4f3..38e3633a15 100644
 --- a/src/libsystemd/sd-event/sd-event.c
 +++ b/src/libsystemd/sd-event/sd-event.c
 @@ -3,6 +3,7 @@
@@ -20,7 +20,7 @@ index e9199deb41..75a93ef4e4 100644
  
  #include "sd-daemon.h"
  #include "sd-event.h"
-@@ -4127,9 +4128,17 @@ _public_ int sd_event_run(sd_event *e, uint64_t timeout) {
+@@ -4224,9 +4225,17 @@ _public_ int sd_event_run(sd_event *e, uint64_t timeout) {
          _unused_ _cleanup_(sd_event_unrefp) sd_event *ref = sd_event_ref(e);
  
          r = sd_event_prepare(e);
@@ -41,5 +41,5 @@ index e9199deb41..75a93ef4e4 100644
          if (e->profile_delays)
                  e->last_run_usec = now(CLOCK_MONOTONIC);
 -- 
-2.32.0
+2.36.1
 

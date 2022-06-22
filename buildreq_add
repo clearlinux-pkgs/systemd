@@ -17,6 +17,7 @@ libcgroup-dev
 libffi-dev
 libgcrypt-dev
 libgcrypt-dev32
+llvm
 glib-bin
 glib-dev
 glib-dev32

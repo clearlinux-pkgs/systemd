@@ -1,17 +1,17 @@
-From 7d2a77855930371ee7236bf4d727f536a0d44520 Mon Sep 17 00:00:00 2001
+From f4e78dca2ed3fd3ea9c0b4bad9652d4990e295d6 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 13 Jun 2018 11:49:55 -0700
-Subject: [PATCH 31/42] don't use libm just for integer exp10()
+Subject: [PATCH 28/38] don't use libm just for integer exp10()
 
 ---
  src/resolve/resolved-dns-rr.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/src/resolve/resolved-dns-rr.c b/src/resolve/resolved-dns-rr.c
-index 4a0327a19d..85bd97630d 100644
+index 92245770bc..56d85bb09a 100644
 --- a/src/resolve/resolved-dns-rr.c
 +++ b/src/resolve/resolved-dns-rr.c
-@@ -705,6 +705,7 @@ int dns_resource_record_equal(const DnsResourceRecord *a, const DnsResourceRecor
+@@ -703,6 +703,7 @@ int dns_resource_record_equal(const DnsResourceRecord *a, const DnsResourceRecor
          return dns_resource_record_payload_equal(a, b);
  }
  
@@ -19,7 +19,7 @@ index 4a0327a19d..85bd97630d 100644
  static char* format_location(uint32_t latitude, uint32_t longitude, uint32_t altitude,
                               uint8_t size, uint8_t horiz_pre, uint8_t vert_pre) {
          char *s;
-@@ -714,9 +715,9 @@ static char* format_location(uint32_t latitude, uint32_t longitude, uint32_t alt
+@@ -712,9 +713,9 @@ static char* format_location(uint32_t latitude, uint32_t longitude, uint32_t alt
          int lat = latitude >= 1U<<31 ? (int) (latitude - (1U<<31)) : (int) ((1U<<31) - latitude);
          int lon = longitude >= 1U<<31 ? (int) (longitude - (1U<<31)) : (int) ((1U<<31) - longitude);
          double alt = altitude >= 10000000u ? altitude - 10000000u : -(double)(10000000u - altitude);
@@ -33,5 +33,5 @@ index 4a0327a19d..85bd97630d 100644
          if (asprintf(&s, "%d %d %.3f %c %d %d %.3f %c %.2fm %.2fm %.2fm %.2fm",
                       (lat / 60000 / 60),
 -- 
-2.32.0
+2.36.1
 

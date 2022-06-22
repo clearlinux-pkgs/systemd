@@ -4,6 +4,12 @@
 rm -f %{buildroot}/usr/lib/sysusers.d/basic.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/systemd-remote.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-coredump.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-journal.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-network.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-oom.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-resolve.conf
+rm -f %{buildroot}/usr/lib/sysusers.d/systemd-timesync.conf
 rm -f %{buildroot}/usr/lib/sysusers.d/README
 rmdir %{buildroot}/usr/lib/sysusers.d
 

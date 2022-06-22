@@ -1,7 +1,7 @@
-From 6872387bba250987d119d8d722c6160b6729e76b Mon Sep 17 00:00:00 2001
+From 6eb73bc2f4ad086d6650d567454b2a5d0b4b7ea2 Mon Sep 17 00:00:00 2001
 From: Dimitri John Ledkov <dimitri.j.ledkov@intel.com>
 Date: Tue, 23 Jun 2015 11:25:41 +0100
-Subject: [PATCH 02/42] journal: Add option to skip boot kmsg events
+Subject: [PATCH 02/38] journal: Add option to skip boot kmsg events
 
 The `BootKMsg` boolean is added. It defaults to `true` in the default
 system namespace, and doesn't change the default behavior of the
@@ -61,10 +61,10 @@ index 9076597628..76fa93a60c 100644
  # The following is a legacy name for compatibility
  Journal.RateLimitInterval,  config_parse_sec,        0, offsetof(Server, ratelimit_interval)
 diff --git a/src/journal/journald-kmsg.c b/src/journal/journald-kmsg.c
-index c96b84e61f..cc46d31f19 100644
+index 1b79e9366c..75387c38cd 100644
 --- a/src/journal/journald-kmsg.c
 +++ b/src/journal/journald-kmsg.c
-@@ -385,6 +385,17 @@ int server_open_dev_kmsg(Server *s) {
+@@ -398,6 +398,17 @@ int server_open_dev_kmsg(Server *s) {
          if (!s->read_kmsg)
                  return 0;
  
@@ -83,10 +83,10 @@ index c96b84e61f..cc46d31f19 100644
          if (r < 0) {
  
 diff --git a/src/journal/journald-server.c b/src/journal/journald-server.c
-index 30f04f5383..5614642389 100644
+index dc9433701d..18e3c18b8e 100644
 --- a/src/journal/journald-server.c
 +++ b/src/journal/journald-server.c
-@@ -2221,7 +2221,7 @@ int server_init(Server *s, const char *namespace) {
+@@ -2329,7 +2329,7 @@ int server_init(Server *s, const char *namespace) {
                  return r;
  
          /* By default, only read from /dev/kmsg if are the main namespace */
@@ -96,10 +96,10 @@ index 30f04f5383..5614642389 100644
  
          journal_reset_metrics(&s->system_storage.metrics);
 diff --git a/src/journal/journald-server.h b/src/journal/journald-server.h
-index 53e75ff3b0..b32576441d 100644
+index ea51515db3..f472f64635 100644
 --- a/src/journal/journald-server.h
 +++ b/src/journal/journald-server.h
-@@ -108,6 +108,7 @@ struct Server {
+@@ -109,6 +109,7 @@ struct Server {
          bool seal;
          bool read_kmsg;
          int set_audit;
@@ -108,5 +108,5 @@ index 53e75ff3b0..b32576441d 100644
          bool forward_to_kmsg;
          bool forward_to_syslog;
 -- 
-2.32.0
+2.36.1
 
