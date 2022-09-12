@@ -1,0 +1,10 @@
+--- systemd-stable-251.2/src/boot/efi/meson.build~	2022-06-02 18:07:11.000000000 +0000
++++ systemd-stable-251.2/src/boot/efi/meson.build	2022-09-12 14:41:41.137693744 +0000
+@@ -253,7 +253,6 @@
+         '-nostdlib',
+         '-T', efi_lds,
+         '-Wl,--build-id=sha1',
+-        '-Wl,--fatal-warnings',
+         '-Wl,--no-undefined',
+         '-Wl,--warn-common',
+         '-Wl,-Bsymbolic',

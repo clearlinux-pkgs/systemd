@@ -5,7 +5,7 @@ libblkid.so.1
 libc.so.6
 libcap.so.2
 libcrypt.so.1
-libcrypto.so.1.1
+libcrypto.so.3
 libcryptsetup.so.12
 libfdisk.so.1
 libgcc_s.so.1

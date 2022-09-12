@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 251.2
-Release  : 296
+Release  : 297
 URL      : https://github.com/systemd/systemd-stable/archive/v251.2.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v251.2.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -135,6 +135,7 @@ Patch35: 0035-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 Patch36: 0036-Disable-LLDP-listening-by-default.patch
 Patch37: 0037-units-use-var-swapfile-if-found.patch
 Patch38: 0038-coredump-Fix-format-string-type-mismatch.patch
+Patch39: binutils-fix.patch
 
 %description
 systemd System and Service Manager
@@ -323,6 +324,7 @@ cd %{_builddir}/systemd-stable-251.2
 %patch36 -p1
 %patch37 -p1
 %patch38 -p1
+%patch39 -p1
 pushd ..
 cp -a systemd-stable-251.2 build32
 popd
@@ -332,11 +334,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1655929002
+export SOURCE_DATE_EPOCH=1662994251
 export GCC_IGNORE_WERROR=1
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
-export FFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
+export FFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere -mtune=haswell"
 export FCFLAGS=$FFLAGS
 unset LDFLAGS
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
@@ -411,13 +413,13 @@ ninja -C builddir test ||:
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/systemd
-cp %{_builddir}/systemd-stable-251.2/LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
-cp %{_builddir}/systemd-stable-251.2/LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/01a6b4bf79aca9b556822601186afab86e8c4fbf
-cp %{_builddir}/systemd-stable-251.2/LICENSES/BSD-2-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/ea97eb88ae53ec41e26f8542176ab986d7bc943a
-cp %{_builddir}/systemd-stable-251.2/LICENSES/BSD-3-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/5aebbff6ecbe1754fc59dc9b27e1ea8692384d64
-cp %{_builddir}/systemd-stable-251.2/LICENSES/CC0-1.0.txt %{buildroot}/usr/share/package-licenses/systemd/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0
-cp %{_builddir}/systemd-stable-251.2/LICENSES/LGPL-2.0-or-later.txt %{buildroot}/usr/share/package-licenses/systemd/5c6c38fa1b6ac7c66252c83d1203e997ae3d1c98
-cp %{_builddir}/systemd-stable-251.2/LICENSES/MIT.txt %{buildroot}/usr/share/package-licenses/systemd/adadb67a9875aeeac285309f1eab6e47d9ee08a7
+cp %{_builddir}/systemd-stable-%{version}/LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec || :
+cp %{_builddir}/systemd-stable-%{version}/LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/BSD-2-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/ea97eb88ae53ec41e26f8542176ab986d7bc943a || :
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/BSD-3-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/5aebbff6ecbe1754fc59dc9b27e1ea8692384d64 || :
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/CC0-1.0.txt %{buildroot}/usr/share/package-licenses/systemd/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0 || :
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/LGPL-2.0-or-later.txt %{buildroot}/usr/share/package-licenses/systemd/5c6c38fa1b6ac7c66252c83d1203e997ae3d1c98 || :
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/MIT.txt %{buildroot}/usr/share/package-licenses/systemd/adadb67a9875aeeac285309f1eab6e47d9ee08a7 || :
 pushd ../build32/
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
