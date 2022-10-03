@@ -35,5 +35,4 @@
 0035-mount-setup-Harden-a-bit-the-options-for-certan-moun.patch
 0036-Disable-LLDP-listening-by-default.patch
 0037-units-use-var-swapfile-if-found.patch
-0038-coredump-Fix-format-string-type-mismatch.patch
 binutils-fix.patch
