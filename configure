@@ -17,3 +17,5 @@
 -Dsbat-distro=clearlinux
 -Dsbat-distro-summary="Clear Linux OS for Intel (R) Architecture"
 -Dsbat-distro-url=https://clearlinux.org/
+-Dlink-networkd-shared=true
+-Dlink-timesyncd-shared=true
