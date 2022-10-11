@@ -14,13 +14,10 @@ libgnutls.so.30
 libgpg-error.so.0
 libip4tc.so.2
 libkmod.so.2
-liblz4.so.1
-liblzma.so.5
 libm.so.6
 libmount.so.1
 libp11-kit.so.0
 libpam.so.0
 libpam_misc.so.0
 libseccomp.so.2
-libz.so.1
 libzstd.so.1

@@ -2,9 +2,9 @@
 -Dsmack=false
 -Dsysvinit-path=
 -Dsysvrcnd-path=
--Dxz=true
+-Dxz=false
 -Dgcrypt=true
--Dlz4=true
+-Dlz4=false
 -Dqrencode=false
 -Dpcre2=false
 -Dlibidn=false

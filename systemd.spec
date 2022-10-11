@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 251.5
-Release  : 299
+Release  : 300
 URL      : https://github.com/systemd/systemd-stable/archive/v251.5/systemd-stable-251.5.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v251.5/systemd-stable-251.5.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -332,7 +332,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1664904793
+export SOURCE_DATE_EPOCH=1665499178
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -347,9 +347,9 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --
 -Dsmack=false \
 -Dsysvinit-path= \
 -Dsysvrcnd-path= \
--Dxz=true \
+-Dxz=false \
 -Dgcrypt=true \
--Dlz4=true \
+-Dlz4=false \
 -Dqrencode=false \
 -Dpcre2=false \
 -Dlibidn=false \
@@ -373,9 +373,9 @@ meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid 
 -Dsmack=false \
 -Dsysvinit-path= \
 -Dsysvrcnd-path= \
--Dxz=true \
+-Dxz=false \
 -Dgcrypt=true \
--Dlz4=true \
+-Dlz4=false \
 -Dqrencode=false \
 -Dpcre2=false \
 -Dlibidn=false \
@@ -609,14 +609,12 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/systemd-cgroups-agent
 /usr/lib/systemd/systemd-coredump
 /usr/lib/systemd/systemd-cryptsetup
-/usr/lib/systemd/systemd-export
 /usr/lib/systemd/systemd-fsck
 /usr/lib/systemd/systemd-growfs
 /usr/lib/systemd/systemd-hibernate-resume
 /usr/lib/systemd/systemd-homed
 /usr/lib/systemd/systemd-homework
 /usr/lib/systemd/systemd-hostnamed
-/usr/lib/systemd/systemd-import-fs
 /usr/lib/systemd/systemd-integritysetup
 /usr/lib/systemd/systemd-journald
 /usr/lib/systemd/systemd-localed
@@ -865,8 +863,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/dbus-1/interfaces/org.freedesktop.home1.Home.xml
 /usr/share/dbus-1/interfaces/org.freedesktop.home1.Manager.xml
 /usr/share/dbus-1/interfaces/org.freedesktop.hostname1.xml
-/usr/share/dbus-1/interfaces/org.freedesktop.import1.Manager.xml
-/usr/share/dbus-1/interfaces/org.freedesktop.import1.Transfer.xml
 /usr/share/dbus-1/interfaces/org.freedesktop.locale1.xml
 /usr/share/dbus-1/interfaces/org.freedesktop.login1.Manager.xml
 /usr/share/dbus-1/interfaces/org.freedesktop.login1.Seat.xml
@@ -1743,20 +1739,15 @@ rm -rvf %{buildroot}/var/lib/systemd
 %files extras
 %defattr(-,root,root,-)
 /usr/bin/systemd-hwdb
-/usr/lib/systemd/system/dbus-org.freedesktop.import1.service
-/usr/lib/systemd/system/systemd-importd.service
 /usr/lib/systemd/system/systemd-journal-gatewayd.service
 /usr/lib/systemd/system/systemd-journal-gatewayd.socket
 /usr/lib/systemd/system/systemd-journal-remote.service
 /usr/lib/systemd/system/systemd-journal-remote.socket
 /usr/lib/systemd/system/systemd-journal-upload.service
 /usr/lib/systemd/system/var-lib-machines.mount
-/usr/lib/systemd/systemd-import
-/usr/lib/systemd/systemd-importd
 /usr/lib/systemd/systemd-journal-gatewayd
 /usr/lib/systemd/systemd-journal-remote
 /usr/lib/systemd/systemd-journal-upload
-/usr/lib/systemd/systemd-pull
 /usr/lib/udev/cdrom_id
 /usr/lib/udev/hwdb.d/20-OUI.hwdb
 /usr/lib/udev/hwdb.d/20-acpi-vendor.hwdb
@@ -1781,8 +1772,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/udev/rules.d/75-probe_mtd.rules
 /usr/lib/udev/rules.d/78-sound-card.rules
 /usr/lib/udev/v4l_id
-/usr/share/dbus-1/system-services/org.freedesktop.import1.service
-/usr/share/dbus-1/system.d/org.freedesktop.import1.conf
 /usr/share/man/man5/journal-remote.conf.5
 /usr/share/man/man5/journal-remote.conf.d.5
 /usr/share/man/man5/journal-upload.conf.5
@@ -1796,7 +1785,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man8/systemd-journal-upload.8
 /usr/share/man/man8/systemd-journal-upload.service.8
 /usr/share/polkit-1/actions/org.freedesktop.hostname1.policy
-/usr/share/polkit-1/actions/org.freedesktop.import1.policy
 /usr/share/polkit-1/actions/org.freedesktop.locale1.policy
 /usr/share/polkit-1/actions/org.freedesktop.login1.policy
 /usr/share/polkit-1/actions/org.freedesktop.machine1.policy
@@ -1923,7 +1911,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man5/org.freedesktop.LogControl1.5
 /usr/share/man/man5/org.freedesktop.home1.5
 /usr/share/man/man5/org.freedesktop.hostname1.5
-/usr/share/man/man5/org.freedesktop.import1.5
 /usr/share/man/man5/org.freedesktop.locale1.5
 /usr/share/man/man5/org.freedesktop.login1.5
 /usr/share/man/man5/org.freedesktop.machine1.5
@@ -2060,8 +2047,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man8/systemd-hostnamed.service.8
 /usr/share/man/man8/systemd-hwdb.8
 /usr/share/man/man8/systemd-hybrid-sleep.service.8
-/usr/share/man/man8/systemd-importd.8
-/usr/share/man/man8/systemd-importd.service.8
 /usr/share/man/man8/systemd-integritysetup-generator.8
 /usr/share/man/man8/systemd-integritysetup.8
 /usr/share/man/man8/systemd-integritysetup@.service.8
