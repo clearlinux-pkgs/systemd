@@ -1,6 +1,7 @@
 # This file contains recursive sources that require this package
 clr-init
 earlyoom
+gpsd
 libvirt
 linux-oracle
 sysstat
