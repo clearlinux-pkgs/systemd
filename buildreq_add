@@ -56,3 +56,4 @@ pypi-lxml
 pypi(jinja2)
 zstd-dev
 zstd-dev32
+tpm2-tss-dev

@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 251.8
-Release  : 304
+Release  : 305
 URL      : https://github.com/systemd/systemd-stable/archive/v251.8/systemd-stable-251.8.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v251.8/systemd-stable-251.8.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -88,6 +88,7 @@ BuildRequires : pypi-lxml
 BuildRequires : python3
 BuildRequires : readline-dev
 BuildRequires : shadow
+BuildRequires : tpm2-tss-dev
 BuildRequires : util-linux-dev
 BuildRequires : util-linux-dev32
 BuildRequires : util-linux-extras
@@ -330,7 +331,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1668712059
+export SOURCE_DATE_EPOCH=1668713586
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
@@ -1804,6 +1805,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/libsystemd-core-251.so
 /usr/lib/systemd/libsystemd-shared-251.so
 /usr/lib64/cryptsetup/libcryptsetup-token-systemd-pkcs11.so
+/usr/lib64/cryptsetup/libcryptsetup-token-systemd-tpm2.so
 /usr/lib64/libnss_myhostname.so.2
 /usr/lib64/libnss_mymachines.so.2
 /usr/lib64/libnss_resolve.so.2
