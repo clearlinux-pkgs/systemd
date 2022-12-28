@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 251.9
-Release  : 306
+Release  : 307
 URL      : https://github.com/systemd/systemd-stable/archive/v251.9/systemd-stable-251.9.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v251.9/systemd-stable-251.9.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -98,6 +98,9 @@ BuildRequires : xz-dev
 BuildRequires : zlib-dev32
 BuildRequires : zstd-dev
 BuildRequires : zstd-dev32
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 Patch1: 0001-journal-raise-compression-threshold.patch
 Patch2: 0002-journal-Add-option-to-skip-boot-kmsg-events.patch
 Patch3: 0003-core-use-mmap-to-load-files.patch
@@ -333,17 +336,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1671552415
+export SOURCE_DATE_EPOCH=1672251006
 export GCC_IGNORE_WERROR=1
-export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere -mtune=haswell"
+export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export CXXFLAGS=$CFLAGS
-export FFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere -mtune=haswell"
+export FFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wno-error -Wl,-z,max-page-size=0x1000 -march=westmere -mtune=haswell"
 export FCFLAGS=$FFLAGS
 unset LDFLAGS
-export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$FFLAGS -fno-lto "
-export FFLAGS="$FFLAGS -fno-lto "
-export CXXFLAGS="$CXXFLAGS -fno-lto "
+export CFLAGS="$CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid \
 -Dsmack=false \
 -Dsysvinit-path= \
@@ -416,13 +419,13 @@ ninja -C builddir test ||:
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/systemd
-cp %{_builddir}/systemd-stable-%{version}/LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec || :
-cp %{_builddir}/systemd-stable-%{version}/LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/01a6b4bf79aca9b556822601186afab86e8c4fbf || :
-cp %{_builddir}/systemd-stable-%{version}/LICENSES/BSD-2-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/ea97eb88ae53ec41e26f8542176ab986d7bc943a || :
-cp %{_builddir}/systemd-stable-%{version}/LICENSES/BSD-3-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/5aebbff6ecbe1754fc59dc9b27e1ea8692384d64 || :
-cp %{_builddir}/systemd-stable-%{version}/LICENSES/CC0-1.0.txt %{buildroot}/usr/share/package-licenses/systemd/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0 || :
-cp %{_builddir}/systemd-stable-%{version}/LICENSES/LGPL-2.0-or-later.txt %{buildroot}/usr/share/package-licenses/systemd/5c6c38fa1b6ac7c66252c83d1203e997ae3d1c98 || :
-cp %{_builddir}/systemd-stable-%{version}/LICENSES/MIT.txt %{buildroot}/usr/share/package-licenses/systemd/adadb67a9875aeeac285309f1eab6e47d9ee08a7 || :
+cp %{_builddir}/systemd-stable-%{version}/LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
+cp %{_builddir}/systemd-stable-%{version}/LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd/01a6b4bf79aca9b556822601186afab86e8c4fbf
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/BSD-2-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/ea97eb88ae53ec41e26f8542176ab986d7bc943a
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/BSD-3-Clause.txt %{buildroot}/usr/share/package-licenses/systemd/5aebbff6ecbe1754fc59dc9b27e1ea8692384d64
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/CC0-1.0.txt %{buildroot}/usr/share/package-licenses/systemd/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/LGPL-2.0-or-later.txt %{buildroot}/usr/share/package-licenses/systemd/5c6c38fa1b6ac7c66252c83d1203e997ae3d1c98
+cp %{_builddir}/systemd-stable-%{version}/LICENSES/MIT.txt %{buildroot}/usr/share/package-licenses/systemd/adadb67a9875aeeac285309f1eab6e47d9ee08a7
 pushd ../build32/
 DESTDIR=%{buildroot} ninja -C builddir install
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
