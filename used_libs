@@ -10,7 +10,6 @@ libcryptsetup.so.12
 libfdisk.so.1
 libgcc_s.so.1
 libgcrypt.so.20
-libgnutls.so.30
 libgpg-error.so.0
 libip4tc.so.2
 libkmod.so.2
@@ -20,4 +19,5 @@ libp11-kit.so.0
 libpam.so.0
 libpam_misc.so.0
 libseccomp.so.2
+libssl.so.3
 libzstd.so.1

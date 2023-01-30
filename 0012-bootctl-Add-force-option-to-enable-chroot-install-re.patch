@@ -44,17 +44,9 @@ index 2d7432bb02..798ea5fa00 100644
                  ARG_BOOT_PATH,
 +                ARG_PRINT_BOOT_PATH,
 +                ARG_FORCE,
-                 ARG_VERSION,
-                 ARG_NO_VARIABLES,
-                 ARG_NO_PAGER,
-@@ -1354,6 +1358,7 @@ static int parse_argv(int argc, char *argv[]) {
-         static const struct option options[] = {
-                 { "help",                      no_argument,       NULL, 'h'                           },
-                 { "version",                   no_argument,       NULL, ARG_VERSION                   },
-+                { "force",                     no_argument,       NULL, ARG_FORCE                     },
-                 { "esp-path",                  required_argument, NULL, ARG_ESP_PATH                  },
-                 { "path",                      required_argument, NULL, ARG_ESP_PATH                  }, /* Compatibility alias */
-                 { "boot-path",                 required_argument, NULL, ARG_BOOT_PATH                 },
+                 ARG_ROOT,
+                 ARG_IMAGE,
+                 ARG_INSTALL_SOURCE,
 @@ -1413,6 +1418,10 @@ static int parse_argv(int argc, char *argv[]) {
                          arg_print_dollar_boot_path = true;
                          break;
@@ -87,3 +79,13 @@ index 2d7432bb02..798ea5fa00 100644
 -- 
 2.36.1
 
+--- systemd-stable-252.5/src/boot/bootctl.c~	2023-01-26 08:12:21.000000000 +0000
++++ systemd-stable-252.5/src/boot/bootctl.c	2023-01-30 16:14:34.350724053 +0000
+@@ -1512,6 +1512,7 @@
+                 { "help",                        no_argument,       NULL, 'h'                             },
+                 { "version",                     no_argument,       NULL, ARG_VERSION                     },
+                 { "esp-path",                    required_argument, NULL, ARG_ESP_PATH                    },
++                { "force",                     no_argument,       NULL, ARG_FORCE                     },
+                 { "path",                        required_argument, NULL, ARG_ESP_PATH                    }, /* Compatibility alias */
+                 { "boot-path",                   required_argument, NULL, ARG_BOOT_PATH                   },
+                 { "root",                        required_argument, NULL, ARG_ROOT                        },

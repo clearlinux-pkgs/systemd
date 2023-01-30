@@ -7,7 +7,7 @@
 0007-sd-event-return-malloc-memory-reserves-when-main-loo.patch
 0008-efi-boot-generator-Do-not-automount-boot-partition.patch
 0009-core-do-not-apply-presets.patch
-0010-mount-setup-mount-kernel-fs-by-default.patch
+#0010-mount-setup-mount-kernel-fs-by-default.patch
 0011-Ship-default-services-in-system-unit-dir.patch
 0012-bootctl-Add-force-option-to-enable-chroot-install-re.patch
 0013-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
@@ -28,7 +28,7 @@
 0028-don-t-use-libm-just-for-integer-exp10.patch
 0029-Notify-systemd-earlier-that-resolved-is-ready.patch
 0030-Hand-off-coredumps-to-a-wrapper-that-will-optionally.patch
-0031-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
+#0031-add-stateless-for-locale-files-locale.conf-00-keyboa.patch
 0032-Do-not-enable-audit-by-default-in-the-journal.patch
 0033-Disable-XZ-support-in-the-journal.patch
 0034-Localize-1-symbol.patch

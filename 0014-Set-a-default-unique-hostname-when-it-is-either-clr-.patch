@@ -18,7 +18,7 @@ index 409b84a006..4019eebfd6 100644
 @@ -2111,6 +2111,7 @@ static int initialize_runtime(
                          (void) hostname_setup(true);
                          /* Force transient machine-id on first boot. */
-                         machine_id_setup(NULL, first_boot, arg_machine_id, NULL);
+                         machine_id_setup(NULL, /* force_transient= */ first_boot, arg_machine_id, NULL);
 +                        set_first_hostname();
                          (void) loopback_setup();
                          bump_unix_max_dgram_qlen();

@@ -71,6 +71,7 @@ libsystemd.so.0:LIBSYSTEMD_248
 libsystemd.so.0:LIBSYSTEMD_249
 libsystemd.so.0:LIBSYSTEMD_250
 libsystemd.so.0:LIBSYSTEMD_251
+libsystemd.so.0:LIBSYSTEMD_252
 libsystemd.so.0:sd_booted
 libsystemd.so.0:sd_bus_add_fallback
 libsystemd.so.0:sd_bus_add_fallback_vtable
@@ -160,6 +161,7 @@ libsystemd.so.0:sd_bus_error_set_errno
 libsystemd.so.0:sd_bus_error_set_errnof
 libsystemd.so.0:sd_bus_error_set_errnofv
 libsystemd.so.0:sd_bus_error_setf
+libsystemd.so.0:sd_bus_error_setfv
 libsystemd.so.0:sd_bus_flush
 libsystemd.so.0:sd_bus_flush_close_unref
 libsystemd.so.0:sd_bus_get_address
@@ -261,6 +263,7 @@ libsystemd.so.0:sd_bus_message_read
 libsystemd.so.0:sd_bus_message_read_array
 libsystemd.so.0:sd_bus_message_read_basic
 libsystemd.so.0:sd_bus_message_read_strv
+libsystemd.so.0:sd_bus_message_read_strv_extend
 libsystemd.so.0:sd_bus_message_readv
 libsystemd.so.0:sd_bus_message_ref
 libsystemd.so.0:sd_bus_message_rewind
@@ -386,6 +389,8 @@ libsystemd.so.0:sd_device_enumerator_new
 libsystemd.so.0:sd_device_enumerator_ref
 libsystemd.so.0:sd_device_enumerator_unref
 libsystemd.so.0:sd_device_get_action
+libsystemd.so.0:sd_device_get_child_first
+libsystemd.so.0:sd_device_get_child_next
 libsystemd.so.0:sd_device_get_current_tag_first
 libsystemd.so.0:sd_device_get_current_tag_next
 libsystemd.so.0:sd_device_get_devlink_first
@@ -426,14 +431,17 @@ libsystemd.so.0:sd_device_monitor_filter_add_match_sysattr
 libsystemd.so.0:sd_device_monitor_filter_add_match_tag
 libsystemd.so.0:sd_device_monitor_filter_remove
 libsystemd.so.0:sd_device_monitor_filter_update
+libsystemd.so.0:sd_device_monitor_get_description
 libsystemd.so.0:sd_device_monitor_get_event
 libsystemd.so.0:sd_device_monitor_get_event_source
 libsystemd.so.0:sd_device_monitor_new
 libsystemd.so.0:sd_device_monitor_ref
+libsystemd.so.0:sd_device_monitor_set_description
 libsystemd.so.0:sd_device_monitor_set_receive_buffer_size
 libsystemd.so.0:sd_device_monitor_start
 libsystemd.so.0:sd_device_monitor_stop
 libsystemd.so.0:sd_device_monitor_unref
+libsystemd.so.0:sd_device_new_child
 libsystemd.so.0:sd_device_new_from_device_id
 libsystemd.so.0:sd_device_new_from_devname
 libsystemd.so.0:sd_device_new_from_devnum
@@ -476,6 +484,7 @@ libsystemd.so.0:sd_event_now
 libsystemd.so.0:sd_event_prepare
 libsystemd.so.0:sd_event_ref
 libsystemd.so.0:sd_event_run
+libsystemd.so.0:sd_event_set_signal_exit
 libsystemd.so.0:sd_event_set_watchdog
 libsystemd.so.0:sd_event_source_disable_unref
 libsystemd.so.0:sd_event_source_get_child_pid
@@ -532,6 +541,7 @@ libsystemd.so.0:sd_get_uids
 libsystemd.so.0:sd_hwdb_enumerate
 libsystemd.so.0:sd_hwdb_get
 libsystemd.so.0:sd_hwdb_new
+libsystemd.so.0:sd_hwdb_new_from_path
 libsystemd.so.0:sd_hwdb_ref
 libsystemd.so.0:sd_hwdb_seek
 libsystemd.so.0:sd_hwdb_unref
@@ -542,6 +552,7 @@ libsystemd.so.0:sd_id128_get_invocation
 libsystemd.so.0:sd_id128_get_machine
 libsystemd.so.0:sd_id128_get_machine_app_specific
 libsystemd.so.0:sd_id128_randomize
+libsystemd.so.0:sd_id128_string_equal
 libsystemd.so.0:sd_id128_to_string
 libsystemd.so.0:sd_id128_to_uuid_string
 libsystemd.so.0:sd_is_fifo
