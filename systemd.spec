@@ -4,7 +4,7 @@
 #
 Name     : systemd
 Version  : 252.5
-Release  : 310
+Release  : 311
 URL      : https://github.com/systemd/systemd-stable/archive/v252.5/systemd-stable-252.5.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v252.5/systemd-stable-252.5.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -277,6 +277,7 @@ man components for the systemd package.
 %package services
 Summary: services components for the systemd package.
 Group: Systemd services
+Requires: systemd
 
 %description services
 services components for the systemd package.
@@ -330,7 +331,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1675096795
+export SOURCE_DATE_EPOCH=1675263907
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere"
 export CXXFLAGS=$CFLAGS
