@@ -5,7 +5,7 @@
 #
 Name     : systemd
 Version  : 252.11
-Release  : 312
+Release  : 313
 URL      : https://github.com/systemd/systemd-stable/archive/v252.11/systemd-stable-252.11.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v252.11/systemd-stable-252.11.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -96,9 +96,6 @@ BuildRequires : xz-dev
 BuildRequires : zlib-dev32
 BuildRequires : zstd-dev
 BuildRequires : zstd-dev32
-# Suppress stripping binaries
-%define __strip /bin/true
-%define debug_package %{nil}
 Patch1: 0001-journal-raise-compression-threshold.patch
 Patch2: 0002-journal-Add-option-to-skip-boot-kmsg-events.patch
 Patch3: 0003-core-use-mmap-to-load-files.patch
@@ -325,26 +322,23 @@ cd %{_builddir}/systemd-stable-252.11
 pushd ..
 cp -a systemd-stable-252.11 build32
 popd
-pushd ..
-cp -a systemd-stable-252.11 buildavx2
-popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1688062014
+export SOURCE_DATE_EPOCH=1688083847
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -fPIC -march=westmere"
 export CXXFLAGS=$CFLAGS
 export FFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere"
 export FCFLAGS=$FFLAGS
 unset LDFLAGS
-export CFLAGS="$CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
-export FCFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
-export FFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
-export CXXFLAGS="$CXXFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid \
 -Dsmack=false \
 -Dsysvinit-path= \
@@ -367,28 +361,6 @@ CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --
 -Dlink-networkd-shared=true \
 -Dlink-timesyncd-shared=true  builddir
 ninja -v -C builddir
-CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 -O3" CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 " LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3" meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid \
--Dsmack=false \
--Dsysvinit-path= \
--Dsysvrcnd-path= \
--Dxz=false \
--Dgcrypt=true \
--Dlz4=false \
--Dqrencode=false \
--Dpcre2=false \
--Dlibidn=false \
--Dlibidn2=false \
--Dman=true \
--Ddefault-kill-user-processes=false \
--Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" \
--Ddefault-dnssec=no \
--Dzstd=true \
--Dsbat-distro=clearlinux \
--Dsbat-distro-summary="Clear Linux OS for Intel (R) Architecture" \
--Dsbat-distro-url=https://clearlinux.org/ \
--Dlink-networkd-shared=true \
--Dlink-timesyncd-shared=true  builddiravx2
-ninja -v -C builddiravx2
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
@@ -461,7 +433,6 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
-DESTDIR=%{buildroot}-v3 ninja -C builddiravx2 install
 DESTDIR=%{buildroot} ninja -C builddir install
 %find_lang systemd
 mkdir -p %{buildroot}/usr/lib/systemd/system
@@ -582,79 +553,9 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 # remove catalog
 rm -rvf %{buildroot}/var/lib/systemd
 ## install_append end
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
-/V3/usr/lib/systemd/boot/efi/linuxx64.elf.stub
-/V3/usr/lib/systemd/system-generators/systemd-bless-boot-generator
-/V3/usr/lib/systemd/system-generators/systemd-cryptsetup-generator
-/V3/usr/lib/systemd/system-generators/systemd-debug-generator
-/V3/usr/lib/systemd/system-generators/systemd-fstab-generator
-/V3/usr/lib/systemd/system-generators/systemd-getty-generator
-/V3/usr/lib/systemd/system-generators/systemd-gpt-auto-generator
-/V3/usr/lib/systemd/system-generators/systemd-integritysetup-generator
-/V3/usr/lib/systemd/system-generators/systemd-run-generator
-/V3/usr/lib/systemd/systemd
-/V3/usr/lib/systemd/systemd-ac-power
-/V3/usr/lib/systemd/systemd-backlight
-/V3/usr/lib/systemd/systemd-binfmt
-/V3/usr/lib/systemd/systemd-bless-boot
-/V3/usr/lib/systemd/systemd-boot-check-no-failures
-/V3/usr/lib/systemd/systemd-cgroups-agent
-/V3/usr/lib/systemd/systemd-coredump
-/V3/usr/lib/systemd/systemd-cryptsetup
-/V3/usr/lib/systemd/systemd-fsck
-/V3/usr/lib/systemd/systemd-growfs
-/V3/usr/lib/systemd/systemd-hibernate-resume
-/V3/usr/lib/systemd/systemd-homed
-/V3/usr/lib/systemd/systemd-homework
-/V3/usr/lib/systemd/systemd-hostnamed
-/V3/usr/lib/systemd/systemd-integritysetup
-/V3/usr/lib/systemd/systemd-journald
-/V3/usr/lib/systemd/systemd-localed
-/V3/usr/lib/systemd/systemd-logind
-/V3/usr/lib/systemd/systemd-machined
-/V3/usr/lib/systemd/systemd-makefs
-/V3/usr/lib/systemd/systemd-measure
-/V3/usr/lib/systemd/systemd-modules-load
-/V3/usr/lib/systemd/systemd-network-generator
-/V3/usr/lib/systemd/systemd-networkd
-/V3/usr/lib/systemd/systemd-networkd-wait-online
-/V3/usr/lib/systemd/systemd-oomd
-/V3/usr/lib/systemd/systemd-pcrphase
-/V3/usr/lib/systemd/systemd-portabled
-/V3/usr/lib/systemd/systemd-pstore
-/V3/usr/lib/systemd/systemd-quotacheck
-/V3/usr/lib/systemd/systemd-random-seed
-/V3/usr/lib/systemd/systemd-remount-fs
-/V3/usr/lib/systemd/systemd-reply-password
-/V3/usr/lib/systemd/systemd-resolved
-/V3/usr/lib/systemd/systemd-rfkill
-/V3/usr/lib/systemd/systemd-shutdown
-/V3/usr/lib/systemd/systemd-sleep
-/V3/usr/lib/systemd/systemd-socket-proxyd
-/V3/usr/lib/systemd/systemd-sulogin-shell
-/V3/usr/lib/systemd/systemd-sysctl
-/V3/usr/lib/systemd/systemd-sysupdate
-/V3/usr/lib/systemd/systemd-time-wait-sync
-/V3/usr/lib/systemd/systemd-timedated
-/V3/usr/lib/systemd/systemd-timesyncd
-/V3/usr/lib/systemd/systemd-update-utmp
-/V3/usr/lib/systemd/systemd-user-runtime-dir
-/V3/usr/lib/systemd/systemd-user-sessions
-/V3/usr/lib/systemd/systemd-userdbd
-/V3/usr/lib/systemd/systemd-userwork
-/V3/usr/lib/systemd/systemd-vconsole-setup
-/V3/usr/lib/systemd/systemd-veritysetup
-/V3/usr/lib/systemd/systemd-volatile-root
-/V3/usr/lib/systemd/systemd-xdg-autostart-condition
-/V3/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator
-/V3/usr/lib/systemd/user-generators/systemd-xdg-autostart-generator
-/V3/usr/lib/udev/ata_id
-/V3/usr/lib/udev/dmi_memory_id
-/V3/usr/lib/udev/fido_id
-/V3/usr/lib/udev/scsi_id
 /usr/lib/modprobe.d/README
 /usr/lib/modprobe.d/systemd.conf
 /usr/lib/systemd/boot/efi/linuxx64.efi.stub
@@ -841,49 +742,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 
 %files bin
 %defattr(-,root,root,-)
-/V3/usr/bin/bootctl
-/V3/usr/bin/busctl
-/V3/usr/bin/coredumpctl
-/V3/usr/bin/homectl
-/V3/usr/bin/hostnamectl
-/V3/usr/bin/journalctl
-/V3/usr/bin/localectl
-/V3/usr/bin/loginctl
-/V3/usr/bin/machinectl
-/V3/usr/bin/networkctl
-/V3/usr/bin/oomctl
-/V3/usr/bin/portablectl
-/V3/usr/bin/resolvectl
-/V3/usr/bin/systemctl
-/V3/usr/bin/systemd-analyze
-/V3/usr/bin/systemd-ask-password
-/V3/usr/bin/systemd-cat
-/V3/usr/bin/systemd-cgls
-/V3/usr/bin/systemd-cgtop
-/V3/usr/bin/systemd-creds
-/V3/usr/bin/systemd-cryptenroll
-/V3/usr/bin/systemd-delta
-/V3/usr/bin/systemd-detect-virt
-/V3/usr/bin/systemd-dissect
-/V3/usr/bin/systemd-escape
-/V3/usr/bin/systemd-id128
-/V3/usr/bin/systemd-inhibit
-/V3/usr/bin/systemd-machine-id-setup
-/V3/usr/bin/systemd-mount
-/V3/usr/bin/systemd-notify
-/V3/usr/bin/systemd-nspawn
-/V3/usr/bin/systemd-path
-/V3/usr/bin/systemd-repart
-/V3/usr/bin/systemd-run
-/V3/usr/bin/systemd-socket-activate
-/V3/usr/bin/systemd-stdio-bridge
-/V3/usr/bin/systemd-sysext
-/V3/usr/bin/systemd-sysusers
-/V3/usr/bin/systemd-tmpfiles
-/V3/usr/bin/systemd-tty-ask-password-agent
-/V3/usr/bin/timedatectl
-/V3/usr/bin/udevadm
-/V3/usr/bin/userdbctl
 /usr/bin/bootctl
 /usr/bin/busctl
 /usr/bin/coredumpctl
@@ -1910,13 +1768,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 
 %files extras
 %defattr(-,root,root,-)
-/V3/usr/bin/systemd-hwdb
-/V3/usr/lib/systemd/systemd-journal-gatewayd
-/V3/usr/lib/systemd/systemd-journal-remote
-/V3/usr/lib/systemd/systemd-journal-upload
-/V3/usr/lib/udev/cdrom_id
-/V3/usr/lib/udev/mtd_probe
-/V3/usr/lib/udev/v4l_id
 /usr/bin/systemd-hwdb
 /usr/lib/systemd/system/systemd-journal-gatewayd.service
 /usr/lib/systemd/system/systemd-journal-gatewayd.socket
@@ -1978,19 +1829,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/cryptsetup/libcryptsetup-token-systemd-fido2.so
-/V3/usr/lib64/cryptsetup/libcryptsetup-token-systemd-pkcs11.so
-/V3/usr/lib64/cryptsetup/libcryptsetup-token-systemd-tpm2.so
-/V3/usr/lib64/libnss_myhostname.so.2
-/V3/usr/lib64/libnss_mymachines.so.2
-/V3/usr/lib64/libnss_resolve.so.2
-/V3/usr/lib64/libnss_systemd.so.2
-/V3/usr/lib64/libsystemd.so.0.35.0
-/V3/usr/lib64/libudev.so.1.7.5
-/V3/usr/lib64/security/pam_systemd.so
-/V3/usr/lib64/security/pam_systemd_home.so
-/V3/usr/lib64/systemd/libsystemd-core-252.so
-/V3/usr/lib64/systemd/libsystemd-shared-252.so
 /usr/lib64/cryptsetup/libcryptsetup-token-systemd-fido2.so
 /usr/lib64/cryptsetup/libcryptsetup-token-systemd-pkcs11.so
 /usr/lib64/cryptsetup/libcryptsetup-token-systemd-tpm2.so
