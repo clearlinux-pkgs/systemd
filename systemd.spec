@@ -4,10 +4,10 @@
 # Using build pattern: meson
 #
 Name     : systemd
-Version  : 252.11
-Release  : 313
-URL      : https://github.com/systemd/systemd-stable/archive/v252.11/systemd-stable-252.11.tar.gz
-Source0  : https://github.com/systemd/systemd-stable/archive/v252.11/systemd-stable-252.11.tar.gz
+Version  : 252.12
+Release  : 314
+URL      : https://github.com/systemd/systemd-stable/archive/v252.12/systemd-stable-252.12.tar.gz
+Source0  : https://github.com/systemd/systemd-stable/archive/v252.12/systemd-stable-252.12.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
 Source2  : no-hibernate.conf
 Summary  : systemd Library
@@ -73,10 +73,12 @@ BuildRequires : libxslt-bin
 BuildRequires : llvm
 BuildRequires : openssl-dev
 BuildRequires : pkg-config-dev
+BuildRequires : pkgconfig(32bzip2)
 BuildRequires : pkgconfig(32p11-kit-1)
 BuildRequires : pkgconfig(32xkbcommon)
 BuildRequires : pkgconfig(audit)
 BuildRequires : pkgconfig(bash-completion)
+BuildRequires : pkgconfig(bzip2)
 BuildRequires : pkgconfig(libbpf)
 BuildRequires : pkgconfig(polkit-gobject-1)
 BuildRequires : pkgconfig(pwquality)
@@ -281,8 +283,8 @@ services components for the systemd package.
 
 
 %prep
-%setup -q -n systemd-stable-252.11
-cd %{_builddir}/systemd-stable-252.11
+%setup -q -n systemd-stable-252.12
+cd %{_builddir}/systemd-stable-252.12
 %patch -P 1 -p1
 %patch -P 2 -p1
 %patch -P 3 -p1
@@ -320,7 +322,7 @@ cd %{_builddir}/systemd-stable-252.11
 %patch -P 35 -p1
 %patch -P 36 -p1
 pushd ..
-cp -a systemd-stable-252.11 build32
+cp -a systemd-stable-252.12 build32
 popd
 
 %build
@@ -328,7 +330,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1688083847
+export SOURCE_DATE_EPOCH=1689033238
 export GCC_IGNORE_WERROR=1
 export CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -fPIC -march=westmere"
 export CXXFLAGS=$CFLAGS
@@ -683,6 +685,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/udev/hwdb.d/70-cameras.hwdb
 /usr/lib/udev/hwdb.d/70-joystick.hwdb
 /usr/lib/udev/hwdb.d/70-pda.hwdb
+/usr/lib/udev/hwdb.d/70-sound-card.hwdb
 /usr/lib/udev/hwdb.d/80-ieee1394-unit-function.hwdb
 /usr/lib/udev/hwdb.d/README
 /usr/lib/udev/scsi_id

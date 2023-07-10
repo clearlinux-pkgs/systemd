@@ -17,3 +17,7 @@ libfido2
 tss2-esys
 tss2-mu
 tss2-rc
+libcrypt
+libxcrypt
+32libcrypt
+32libxcrypt
