@@ -5,7 +5,7 @@
 #
 Name     : systemd
 Version  : 252.12
-Release  : 319
+Release  : 320
 URL      : https://github.com/systemd/systemd-stable/archive/v252.12/systemd-stable-252.12.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v252.12/systemd-stable-252.12.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
