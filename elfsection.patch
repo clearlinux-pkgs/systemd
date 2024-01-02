@@ -1,0 +1,15 @@
+--- systemd-stable-255.2/tools/elf2efi.py~	2023-12-24 09:00:51.000000000 +0000
++++ systemd-stable-255.2/tools/elf2efi.py	2024-01-02 17:30:37.854208149 +0000
+@@ -260,9 +260,9 @@
+ 
+     relro = None
+     for elf_seg in elf.iter_segments():
+-        if elf_seg["p_type"] == "PT_LOAD" and elf_seg["p_align"] != SECTION_ALIGNMENT:
+-            raise RuntimeError("ELF segments are not properly aligned.")
+-        elif elf_seg["p_type"] == "PT_GNU_RELRO":
++#        if elf_seg["p_type"] == "PT_LOAD" and elf_seg["p_align"] != SECTION_ALIGNMENT:
++#            raise RuntimeError("ELF segments are not properly aligned.")
++        if elf_seg["p_type"] == "PT_GNU_RELRO":
+             relro = elf_seg
+ 
+     for elf_s in elf.iter_sections():

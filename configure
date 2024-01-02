@@ -19,3 +19,4 @@
 -Dsbat-distro-url=https://clearlinux.org/
 -Dlink-networkd-shared=true
 -Dlink-timesyncd-shared=true
+-Dbootloader=true

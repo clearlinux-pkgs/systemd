@@ -7,7 +7,7 @@
 #
 Name     : systemd
 Version  : 255.2
-Release  : 325
+Release  : 326
 URL      : https://github.com/systemd/systemd-stable/archive/v255.2/systemd-stable-255.2.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v255.2/systemd-stable-255.2.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -91,6 +91,7 @@ BuildRequires : polkit-dev
 BuildRequires : pypi(jinja2)
 BuildRequires : pypi(pefile)
 BuildRequires : pypi-lxml
+BuildRequires : pypi-pyelftools
 BuildRequires : python3
 BuildRequires : readline-dev
 BuildRequires : shadow
@@ -131,6 +132,7 @@ Patch26: 0032-Do-not-enable-audit-by-default-in-the-journal.patch
 Patch27: 0034-Localize-1-symbol.patch
 Patch28: 0036-Disable-LLDP-listening-by-default.patch
 Patch29: 0037-units-use-var-swapfile-if-found.patch
+Patch30: elfsection.patch
 
 %description
 systemd System and Service Manager
@@ -311,6 +313,7 @@ cd %{_builddir}/systemd-stable-255.2
 %patch -P 27 -p1
 %patch -P 28 -p1
 %patch -P 29 -p1
+%patch -P 30 -p1
 pushd ..
 cp -a systemd-stable-255.2 build32
 popd
@@ -320,7 +323,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1704215631
+export SOURCE_DATE_EPOCH=1704217339
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere"
 CLEAR_INTERMEDIATE_CXXFLAGS=$CLEAR_INTERMEDIATE_CFLAGS
@@ -356,7 +359,8 @@ meson --libdir=lib64 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid 
 -Dsbat-distro-summary="Clear Linux OS for Intel (R) Architecture" \
 -Dsbat-distro-url=https://clearlinux.org/ \
 -Dlink-networkd-shared=true \
--Dlink-timesyncd-shared=true  builddir
+-Dlink-timesyncd-shared=true \
+-Dbootloader=true  builddir
 ninja -v -C builddir
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
@@ -384,7 +388,8 @@ meson --libdir=lib32 --prefix=/usr --buildtype=plain -Ddefault-hierarchy=hybrid 
 -Dsbat-distro-summary="Clear Linux OS for Intel (R) Architecture" \
 -Dsbat-distro-url=https://clearlinux.org/ \
 -Dlink-networkd-shared=true \
--Dlink-timesyncd-shared=true -Dlibcryptsetup=false \
+-Dlink-timesyncd-shared=true \
+-Dbootloader=true -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \
@@ -584,6 +589,12 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/pcrlock.d/900-ready.pcrlock
 /usr/lib/pcrlock.d/950-shutdown.pcrlock
 /usr/lib/pcrlock.d/990-final.pcrlock
+/usr/lib/systemd/boot/efi/addonia32.efi.stub
+/usr/lib/systemd/boot/efi/addonx64.efi.stub
+/usr/lib/systemd/boot/efi/linuxia32.efi.stub
+/usr/lib/systemd/boot/efi/linuxx64.efi.stub
+/usr/lib/systemd/boot/efi/systemd-bootia32.efi
+/usr/lib/systemd/boot/efi/systemd-bootx64.efi
 /usr/lib/systemd/catalog/systemd.be.catalog
 /usr/lib/systemd/catalog/systemd.be@latin.catalog
 /usr/lib/systemd/catalog/systemd.bg.catalog
@@ -630,6 +641,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/repart/definitions/sysext.repart.d/30-root-verity-sig.conf
 /usr/lib/systemd/resolv.conf
 /usr/lib/systemd/sleep.conf.d/no-hibernate.conf
+/usr/lib/systemd/system-generators/systemd-bless-boot-generator
 /usr/lib/systemd/system-generators/systemd-cryptsetup-generator
 /usr/lib/systemd/system-generators/systemd-debug-generator
 /usr/lib/systemd/system-generators/systemd-fstab-generator
@@ -642,6 +654,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/systemd-backlight
 /usr/lib/systemd/systemd-battery-check
 /usr/lib/systemd/systemd-binfmt
+/usr/lib/systemd/systemd-bless-boot
 /usr/lib/systemd/systemd-boot-check-no-failures
 /usr/lib/systemd/systemd-cgroups-agent
 /usr/lib/systemd/systemd-coredump
@@ -665,6 +678,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/systemd-networkd
 /usr/lib/systemd/systemd-networkd-wait-online
 /usr/lib/systemd/systemd-oomd
+/usr/lib/systemd/systemd-pcrextend
 /usr/lib/systemd/systemd-pcrlock
 /usr/lib/systemd/systemd-portabled
 /usr/lib/systemd/systemd-pstore
@@ -685,6 +699,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/systemd-time-wait-sync
 /usr/lib/systemd/systemd-timedated
 /usr/lib/systemd/systemd-timesyncd
+/usr/lib/systemd/systemd-tpm2-setup
 /usr/lib/systemd/systemd-udevd
 /usr/lib/systemd/systemd-update-helper
 /usr/lib/systemd/systemd-update-utmp
@@ -729,6 +744,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/initrd-root-device.target.wants/remote-veritysetup.target
 /usr/lib/systemd/system/initrd-root-fs.target.wants/systemd-repart.service
 /usr/lib/systemd/system/initrd.target.wants/systemd-battery-check.service
+/usr/lib/systemd/system/initrd.target.wants/systemd-pcrphase-initrd.service
 /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
 /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
@@ -743,6 +759,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
+/usr/lib/systemd/system/sockets.target.wants/systemd-pcrextend.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-sysext.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
@@ -759,15 +776,21 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/sysinit.target.wants/sys-kernel-tracing.mount
 /usr/lib/systemd/system/sysinit.target.wants/systemd-ask-password-console.path
 /usr/lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
+/usr/lib/systemd/system/sysinit.target.wants/systemd-boot-random-seed.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-flush.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-journald.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-machine-id-commit.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-modules-load.service
+/usr/lib/systemd/system/sysinit.target.wants/systemd-pcrmachine.service
+/usr/lib/systemd/system/sysinit.target.wants/systemd-pcrphase-sysinit.service
+/usr/lib/systemd/system/sysinit.target.wants/systemd-pcrphase.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-random-seed.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-repart.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-sysctl.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup-dev-early.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup.service
+/usr/lib/systemd/system/sysinit.target.wants/systemd-tpm2-setup-early.service
+/usr/lib/systemd/system/sysinit.target.wants/systemd-tpm2-setup.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-udev-trigger.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-udevd.service
 /usr/lib/systemd/system/sysinit.target.wants/systemd-update-utmp.service
@@ -1951,6 +1974,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 
 %files man
 %defattr(0644,root,root,0755)
+/usr/share/man/man1/bootctl.1
 /usr/share/man/man1/busctl.1
 /usr/share/man/man1/coredumpctl.1
 /usr/share/man/man1/homectl.1
@@ -1984,6 +2008,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man1/systemd-id128.1
 /usr/share/man/man1/systemd-inhibit.1
 /usr/share/man/man1/systemd-machine-id-setup.1
+/usr/share/man/man1/systemd-measure.1
 /usr/share/man/man1/systemd-mount.1
 /usr/share/man/man1/systemd-notify.1
 /usr/share/man/man1/systemd-nspawn.1
@@ -2015,6 +2040,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man5/journald.conf.5
 /usr/share/man/man5/journald.conf.d.5
 /usr/share/man/man5/journald@.conf.5
+/usr/share/man/man5/loader.conf.5
 /usr/share/man/man5/locale.conf.5
 /usr/share/man/man5/localtime.5
 /usr/share/man/man5/logind.conf.5
@@ -2092,7 +2118,14 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man7/file-hierarchy.7
 /usr/share/man/man7/hwdb.7
 /usr/share/man/man7/kernel-command-line.7
+/usr/share/man/man7/linuxaa64.efi.stub.7
+/usr/share/man/man7/linuxia32.efi.stub.7
+/usr/share/man/man7/linuxx64.efi.stub.7
+/usr/share/man/man7/sd-boot.7
+/usr/share/man/man7/sd-stub.7
 /usr/share/man/man7/smbios-type-11.7
+/usr/share/man/man7/systemd-boot.7
+/usr/share/man/man7/systemd-stub.7
 /usr/share/man/man7/systemd.directives.7
 /usr/share/man/man7/systemd.environment-generator.7
 /usr/share/man/man7/systemd.generator.7
@@ -2133,8 +2166,12 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man8/systemd-battery-check.service.8
 /usr/share/man/man8/systemd-binfmt.8
 /usr/share/man/man8/systemd-binfmt.service.8
+/usr/share/man/man8/systemd-bless-boot-generator.8
+/usr/share/man/man8/systemd-bless-boot.8
+/usr/share/man/man8/systemd-bless-boot.service.8
 /usr/share/man/man8/systemd-boot-check-no-failures.8
 /usr/share/man/man8/systemd-boot-check-no-failures.service.8
+/usr/share/man/man8/systemd-boot-random-seed.service.8
 /usr/share/man/man8/systemd-confext.8
 /usr/share/man/man8/systemd-confext.service.8
 /usr/share/man/man8/systemd-coredump.8
@@ -2199,6 +2236,21 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man8/systemd-networkd.service.8
 /usr/share/man/man8/systemd-oomd.8
 /usr/share/man/man8/systemd-oomd.service.8
+/usr/share/man/man8/systemd-pcrextend.8
+/usr/share/man/man8/systemd-pcrfs-root.service.8
+/usr/share/man/man8/systemd-pcrfs@.service.8
+/usr/share/man/man8/systemd-pcrlock-file-system.service.8
+/usr/share/man/man8/systemd-pcrlock-firmware-code.service.8
+/usr/share/man/man8/systemd-pcrlock-firmware-config.service.8
+/usr/share/man/man8/systemd-pcrlock-machine-id.service.8
+/usr/share/man/man8/systemd-pcrlock-make-policy.service.8
+/usr/share/man/man8/systemd-pcrlock-secureboot-authority.service.8
+/usr/share/man/man8/systemd-pcrlock-secureboot-policy.service.8
+/usr/share/man/man8/systemd-pcrlock.8
+/usr/share/man/man8/systemd-pcrmachine.service.8
+/usr/share/man/man8/systemd-pcrphase-initrd.service.8
+/usr/share/man/man8/systemd-pcrphase-sysinit.service.8
+/usr/share/man/man8/systemd-pcrphase.service.8
 /usr/share/man/man8/systemd-portabled.8
 /usr/share/man/man8/systemd-portabled.service.8
 /usr/share/man/man8/systemd-poweroff.service.8
@@ -2251,6 +2303,9 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man8/systemd-tmpfiles-setup-dev.service.8
 /usr/share/man/man8/systemd-tmpfiles-setup.service.8
 /usr/share/man/man8/systemd-tmpfiles.8
+/usr/share/man/man8/systemd-tpm2-setup-early.service.8
+/usr/share/man/man8/systemd-tpm2-setup.8
+/usr/share/man/man8/systemd-tpm2-setup.service.8
 /usr/share/man/man8/systemd-udev-settle.service.8
 /usr/share/man/man8/systemd-udevd-control.socket.8
 /usr/share/man/man8/systemd-udevd-kernel.socket.8
@@ -2281,6 +2336,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 %exclude /usr/lib/systemd/system/initrd-root-device.target.wants/remote-veritysetup.target
 %exclude /usr/lib/systemd/system/initrd-root-fs.target.wants/systemd-repart.service
 %exclude /usr/lib/systemd/system/initrd.target.wants/systemd-battery-check.service
+%exclude /usr/lib/systemd/system/initrd.target.wants/systemd-pcrphase-initrd.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/systemd-remount-fs.service
 %exclude /usr/lib/systemd/system/local-fs.target.wants/tmp.mount
 %exclude /usr/lib/systemd/system/machines.target.wants/var-lib-machines.mount
@@ -2295,6 +2351,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-coredump.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald-dev-log.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-journald.socket
+%exclude /usr/lib/systemd/system/sockets.target.wants/systemd-pcrextend.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-sysext.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-control.socket
 %exclude /usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
@@ -2311,15 +2368,21 @@ rm -rvf %{buildroot}/var/lib/systemd
 %exclude /usr/lib/systemd/system/sysinit.target.wants/sys-kernel-tracing.mount
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-ask-password-console.path
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-boot-random-seed.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journal-flush.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-journald.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-machine-id-commit.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-modules-load.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-pcrmachine.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-pcrphase-sysinit.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-pcrphase.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-random-seed.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-repart.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-sysctl.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup-dev-early.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tpm2-setup-early.service
+%exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-tpm2-setup.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udev-trigger.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-udevd.service
 %exclude /usr/lib/systemd/system/sysinit.target.wants/systemd-update-utmp.service
@@ -2428,7 +2491,10 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/systemd-backlight@.service
 /usr/lib/systemd/system/systemd-battery-check.service
 /usr/lib/systemd/system/systemd-binfmt.service
+/usr/lib/systemd/system/systemd-bless-boot.service
 /usr/lib/systemd/system/systemd-boot-check-no-failures.service
+/usr/lib/systemd/system/systemd-boot-random-seed.service
+/usr/lib/systemd/system/systemd-boot-update.service
 /usr/lib/systemd/system/systemd-confext.service
 /usr/lib/systemd/system/systemd-coredump.socket
 /usr/lib/systemd/system/systemd-coredump@.service
@@ -2466,6 +2532,21 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/systemd-nspawn@.service
 /usr/lib/systemd/system/systemd-oomd.service
 /usr/lib/systemd/system/systemd-oomd.socket
+/usr/lib/systemd/system/systemd-pcrextend.socket
+/usr/lib/systemd/system/systemd-pcrextend@.service
+/usr/lib/systemd/system/systemd-pcrfs-root.service
+/usr/lib/systemd/system/systemd-pcrfs@.service
+/usr/lib/systemd/system/systemd-pcrlock-file-system.service
+/usr/lib/systemd/system/systemd-pcrlock-firmware-code.service
+/usr/lib/systemd/system/systemd-pcrlock-firmware-config.service
+/usr/lib/systemd/system/systemd-pcrlock-machine-id.service
+/usr/lib/systemd/system/systemd-pcrlock-make-policy.service
+/usr/lib/systemd/system/systemd-pcrlock-secureboot-authority.service
+/usr/lib/systemd/system/systemd-pcrlock-secureboot-policy.service
+/usr/lib/systemd/system/systemd-pcrmachine.service
+/usr/lib/systemd/system/systemd-pcrphase-initrd.service
+/usr/lib/systemd/system/systemd-pcrphase-sysinit.service
+/usr/lib/systemd/system/systemd-pcrphase.service
 /usr/lib/systemd/system/systemd-portabled.service
 /usr/lib/systemd/system/systemd-poweroff.service
 /usr/lib/systemd/system/systemd-pstore.service
@@ -2497,6 +2578,8 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/system/systemd-tmpfiles-clean.timer
 /usr/lib/systemd/system/systemd-tmpfiles-setup-dev-early.service
 /usr/lib/systemd/system/systemd-tmpfiles-setup.service
+/usr/lib/systemd/system/systemd-tpm2-setup-early.service
+/usr/lib/systemd/system/systemd-tpm2-setup.service
 /usr/lib/systemd/system/systemd-udev-settle.service
 /usr/lib/systemd/system/systemd-udev-trigger.service
 /usr/lib/systemd/system/systemd-udevd-control.socket

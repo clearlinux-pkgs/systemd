@@ -59,3 +59,4 @@ zstd-dev32
 tpm2-tss-dev
 libfido2
 libfido2-dev
+pypi-pyelftools
