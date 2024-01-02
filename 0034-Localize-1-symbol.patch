@@ -12,14 +12,6 @@ diff --git a/src/libsystemd/sd-daemon/sd-daemon.c b/src/libsystemd/sd-daemon/sd-
 index c6380768bb..1d12ec67ef 100644
 --- a/src/libsystemd/sd-daemon/sd-daemon.c
 +++ b/src/libsystemd/sd-daemon/sd-daemon.c
-@@ -27,6 +27,7 @@
- #include "strv.h"
- #include "time-util.h"
- #include "util.h"
-+#include "missing_syscall.h"
- 
- #define SNDBUF_SIZE (8*1024*1024)
- 
 @@ -398,13 +399,18 @@ _public_ int sd_is_socket_unix(int fd, int type, int listening, const char *path
          return 1;
  }
@@ -43,3 +35,13 @@ index c6380768bb..1d12ec67ef 100644
 -- 
 2.36.1
 
+--- systemd-stable-255.2/src/libsystemd/sd-daemon/sd-daemon.c~	2023-12-24 09:00:51.000000000 +0000
++++ systemd-stable-255.2/src/libsystemd/sd-daemon/sd-daemon.c	2024-01-02 16:17:19.678790549 +0000
+@@ -27,6 +27,7 @@
+ #include "stat-util.h"
+ #include "strv.h"
+ #include "time-util.h"
++#include "missing_syscall.h"
+ 
+ #define SNDBUF_SIZE (8*1024*1024)
+ 

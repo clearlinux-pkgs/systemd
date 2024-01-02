@@ -13,19 +13,6 @@ Signed-off-by: Mark D Horn <mark.d.horn@intel.com>
  2 files changed, 21 insertions(+)
  create mode 100644 units/var-swapfile.swap
 
-diff --git a/units/meson.build b/units/meson.build
-index 2278cac28a..e02439c3a8 100644
---- a/units/meson.build
-+++ b/units/meson.build
-@@ -160,6 +160,8 @@ units = [
-         ['var-lib-machines.mount',              'ENABLE_MACHINED',
-          'remote-fs.target.wants/ machines.target.wants/'],
-         ['systemd-oomd.socket',                 'ENABLE_OOMD'],
-+        ['var-swapfile.swap',                   '',
-+         'swap.target.wants/'],
- ]
- 
- in_units = [
 diff --git a/units/var-swapfile.swap b/units/var-swapfile.swap
 new file mode 100644
 index 0000000000..6c61cf8ca4
@@ -54,3 +41,16 @@ index 0000000000..6c61cf8ca4
 -- 
 2.36.1
 
+--- systemd-stable-255.2/units/meson.build~	2024-01-02 15:16:59.000000000 +0000
++++ systemd-stable-255.2/units/meson.build	2024-01-02 16:26:58.381989309 +0000
+@@ -714,6 +714,10 @@
+           'file' : 'veritysetup-pre.target',
+           'conditions' : ['HAVE_LIBCRYPTSETUP'],
+         },
++	{
++	  'file' : 'var-swapfile.swap',
++	  'symlinks' : ['swap.target.wants/'],
++        },
+         {
+           'file' : 'veritysetup.target',
+           'conditions' : ['HAVE_LIBCRYPTSETUP'],

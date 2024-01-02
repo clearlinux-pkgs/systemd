@@ -8,19 +8,14 @@ Subject: [PATCH 19/38] network-online: complete once one link is online, not
  units/systemd-networkd-wait-online.service.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
-index 10d8b08c8e..6dd5f79377 100644
---- a/units/systemd-networkd-wait-online.service.in
-+++ b/units/systemd-networkd-wait-online.service.in
-@@ -18,7 +18,7 @@ Before=network-online.target shutdown.target
+--- systemd-stable-255.2/units/systemd-networkd-wait-online.service.in~	2023-12-24 09:00:51.000000000 +0000
++++ systemd-stable-255.2/units/systemd-networkd-wait-online.service.in	2024-01-02 15:43:18.572623833 +0000
+@@ -19,7 +19,7 @@
  
  [Service]
  Type=oneshot
--ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online
-+ExecStart={{ROOTLIBEXECDIR}}/systemd-networkd-wait-online --any
+-ExecStart={{LIBEXECDIR}}/systemd-networkd-wait-online
++ExecStart={{LIBEXECDIR}}/systemd-networkd-wait-online --any
  RemainAfterExit=yes
  
  [Install]
--- 
-2.36.1
-

@@ -25,40 +25,59 @@ configuration and layout.
  src/boot/bootctl.c | 13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/src/boot/bootctl.c b/src/boot/bootctl.c
-index 2d7432bb02..798ea5fa00 100644
---- a/src/boot/bootctl.c
-+++ b/src/boot/bootctl.c
-@@ -85,6 +85,8 @@ static const char *arg_dollar_boot_path(void) {
-         return arg_xbootldr_path ?: arg_esp_path;
- }
+--- systemd-stable-255.2/src/boot/bootctl.c~	2023-12-24 09:00:51.000000000 +0000
++++ systemd-stable-255.2/src/boot/bootctl.c	2024-01-02 15:24:35.045286845 +0000
+@@ -63,6 +63,8 @@
+ STATIC_DESTRUCTOR_REGISTER(arg_efi_boot_option_description, freep);
+ STATIC_DESTRUCTOR_REGISTER(arg_image_policy, image_policy_freep);
  
-+static bool arg_force = false;
++bool arg_force = false;
 +
- static int acquire_esp(
-                 bool unprivileged_mode,
+ int acquire_esp(
+                 int unprivileged_mode,
                  bool graceful,
-@@ -1342,6 +1344,8 @@ static int parse_argv(int argc, char *argv[]) {
+@@ -213,6 +215,8 @@
          enum {
                  ARG_ESP_PATH = 0x100,
                  ARG_BOOT_PATH,
-+                ARG_PRINT_BOOT_PATH,
-+                ARG_FORCE,
++		ARG_PRINT_BOOT_PATH,
++		ARG_FORCE,
                  ARG_ROOT,
                  ARG_IMAGE,
-                 ARG_INSTALL_SOURCE,
-@@ -1413,6 +1418,10 @@ static int parse_argv(int argc, char *argv[]) {
-                         arg_print_dollar_boot_path = true;
+                 ARG_IMAGE_POLICY,
+@@ -233,6 +237,7 @@
+                 { "help",                        no_argument,       NULL, 'h'                             },
+                 { "version",                     no_argument,       NULL, ARG_VERSION                     },
+                 { "esp-path",                    required_argument, NULL, ARG_ESP_PATH                    },
++		{ "force", 			 no_argument,       NULL, ARG_FORCE                     },
+                 { "path",                        required_argument, NULL, ARG_ESP_PATH                    }, /* Compatibility alias */
+                 { "boot-path",                   required_argument, NULL, ARG_BOOT_PATH                   },
+                 { "root",                        required_argument, NULL, ARG_ROOT                        },
+@@ -327,6 +332,10 @@
+                         arg_print_root_device ++;
                          break;
  
-+                case ARG_FORCE:
++		case ARG_FORCE:
 +                        arg_force = true;
 +                        break;
 +
                  case ARG_NO_VARIABLES:
                          arg_touch_variables = false;
                          break;
-@@ -1969,7 +1978,7 @@ static int verb_install(int argc, char *argv[], void *userdata) {
+--- systemd-stable-255.2/src/boot/bootctl-install.c~	2023-12-24 09:00:51.000000000 +0000
++++ systemd-stable-255.2/src/boot/bootctl-install.c	2024-01-02 15:26:49.626342750 +0000
+@@ -23,6 +23,10 @@
+ #include "umask-util.h"
+ #include "utf8.h"
+ 
++
++
++extern bool arg_force;
++
+ static int load_etc_machine_id(void) {
+         int r;
+ 
+@@ -815,7 +819,7 @@
  
          (void) sync_everything();
  
@@ -66,8 +85,8 @@ index 2d7432bb02..798ea5fa00 100644
 +        if (!arg_touch_variables || arg_force)
                  return 0;
  
-         r = install_variables(arg_esp_path, part, pstart, psize, uuid,
-@@ -2041,7 +2050,7 @@ static int verb_remove(int argc, char *argv[], void *userdata) {
+         if (arg_arch_all) {
+@@ -1056,7 +1060,7 @@
  
          (void) sync_everything();
  
@@ -75,17 +94,4 @@ index 2d7432bb02..798ea5fa00 100644
 +        if (!arg_touch_variables || arg_force)
                  return r;
  
-         q = remove_variables(uuid, "/EFI/systemd/systemd-boot" EFI_MACHINE_TYPE_NAME ".efi", true);
--- 
-2.36.1
-
---- systemd-stable-252.5/src/boot/bootctl.c~	2023-01-26 08:12:21.000000000 +0000
-+++ systemd-stable-252.5/src/boot/bootctl.c	2023-01-30 16:14:34.350724053 +0000
-@@ -1512,6 +1512,7 @@
-                 { "help",                        no_argument,       NULL, 'h'                             },
-                 { "version",                     no_argument,       NULL, ARG_VERSION                     },
-                 { "esp-path",                    required_argument, NULL, ARG_ESP_PATH                    },
-+                { "force",                     no_argument,       NULL, ARG_FORCE                     },
-                 { "path",                        required_argument, NULL, ARG_ESP_PATH                    }, /* Compatibility alias */
-                 { "boot-path",                   required_argument, NULL, ARG_BOOT_PATH                   },
-                 { "root",                        required_argument, NULL, ARG_ROOT                        },
+         if (arg_arch_all) {

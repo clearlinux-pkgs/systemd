@@ -25,6 +25,7 @@ rm -f %{buildroot}/etc/systemd/system.conf
 rm -f %{buildroot}/etc/systemd/timesyncd.conf
 rm -f %{buildroot}/etc/systemd/user.conf
 rm -f %{buildroot}/etc/udev/udev.conf
+rm -f %{buildroot}/etc/udev/iocost.conf
 rmdir %{buildroot}/etc/udev/hwdb.d
 rmdir %{buildroot}/etc/udev/rules.d
 rmdir %{buildroot}/etc/udev

@@ -7,61 +7,60 @@ Subject: [PATCH 11/38] Ship default services in system unit dir.
  units/meson.build | 23 +++++++++++++++--------
  1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/units/meson.build b/units/meson.build
-index e9f925a810..89ea147fbe 100644
---- a/units/meson.build
-+++ b/units/meson.build
-@@ -68,7 +68,8 @@ units = [
-         ['remote-veritysetup.target',           'HAVE_LIBCRYPTSETUP',
-          'initrd-root-device.target.wants/'],
-         ['remote-fs-pre.target',                ''],
--        ['remote-fs.target',                    ''],
-+        ['remote-fs.target',                    '',
-+         'multi-user.target.wants/'],
-         ['rescue.target',                       '',
-          (with_runlevels ? 'runlevel1.target' : '')],
-         ['rpcbind.target',                      ''],
-@@ -208,10 +209,12 @@ in_units = [
-          'dbus-org.freedesktop.machine1.service'],
-         ['systemd-modules-load.service',         'HAVE_KMOD',
-          'sysinit.target.wants/'],
--        ['systemd-network-generator.service',    ''],
--        ['systemd-networkd.service',             'ENABLE_NETWORKD'],
--        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD'],
--        ['systemd-networkd-wait-online@.service','ENABLE_NETWORKD'],
-+        ['systemd-network-generator.service',    'ENABLE_NETWORKD'],
-+        ['systemd-networkd.service',             'ENABLE_NETWORKD',
-+         ('dbus-org.freedesktop.network1.service' + ' ' +
-+         'multi-user.target.wants/')],
-+        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD',
-+         'network-online.target.wants/'],
-         ['systemd-nspawn@.service',              ''],
-         ['systemd-oomd.service',                 'ENABLE_OOMD'],
-         ['systemd-portabled.service',            'ENABLE_PORTABLED',
-@@ -221,8 +224,11 @@ in_units = [
-         ['systemd-quotacheck.service',           'ENABLE_QUOTACHECK'],
-         ['systemd-random-seed.service',          'ENABLE_RANDOMSEED',
-          'sysinit.target.wants/'],
--        ['systemd-remount-fs.service',           ''],
--        ['systemd-resolved.service',             'ENABLE_RESOLVE'],
-+        ['systemd-remount-fs.service',           '',
-+         'local-fs.target.wants/'],
-+        ['systemd-resolved.service',             'ENABLE_RESOLVE',
-+         ('dbus-org.freedesktop.resolve1.service' + ' ' +
-+         'multi-user.target.wants/')],
-         ['systemd-rfkill.service',               'ENABLE_RFKILL'],
-         ['systemd-suspend.service',              ''],
-         ['systemd-sysctl.service',               '',
-@@ -231,7 +237,8 @@ in_units = [
-         ['systemd-sysupdate-reboot.service',     'ENABLE_SYSUPDATE'],
-         ['systemd-timedated.service',            'ENABLE_TIMEDATED',
-          'dbus-org.freedesktop.timedate1.service'],
--        ['systemd-timesyncd.service',            'ENABLE_TIMESYNCD'],
-+        ['systemd-timesyncd.service',            'ENABLE_TIMESYNCD',
-+         'sysinit.target.wants/'],
-         ['systemd-time-wait-sync.service',       'ENABLE_TIMESYNCD'],
-         ['systemd-udevd.service',                '',
-          'sysinit.target.wants/'],
--- 
-2.36.1
-
+--- systemd-stable-255.2/units/meson.build.org	2024-01-02 15:09:30.290857163 +0000
++++ systemd-stable-255.2/units/meson.build	2024-01-02 15:16:59.664937452 +0000
+@@ -178,7 +178,9 @@
+           'symlinks' : ['initrd-root-device.target.wants/'],
+         },
+         { 'file' : 'remote-fs-pre.target' },
+-        { 'file' : 'remote-fs.target' },
++        { 'file' : 'remote-fs.target',
++          'symlinks' : ['multi-user.target.wants/'],
++	},
+         {
+           'file' : 'remote-veritysetup.target',
+           'conditions' : ['HAVE_LIBCRYPTSETUP'],
+@@ -408,6 +410,7 @@
+         {
+           'file' : 'systemd-networkd-wait-online.service.in',
+           'conditions' : ['ENABLE_NETWORKD'],
++          'symlinks' : ['network-online.target.wants/'],
+         },
+         {
+           'file' : 'systemd-networkd-wait-online@.service.in',
+@@ -416,6 +419,7 @@
+         {
+           'file' : 'systemd-networkd.service.in',
+           'conditions' : ['ENABLE_NETWORKD'],
++          'symlinks' : ['multi-user.target.wants/', 'dbus-org.freedesktop.network1.service'],
+         },
+         {
+           'file' : 'systemd-networkd.socket',
+@@ -525,7 +529,9 @@
+           'symlinks' : ['sysinit.target.wants/'],
+         },
+         { 'file' : 'systemd-reboot.service' },
+-        { 'file' : 'systemd-remount-fs.service.in' },
++        { 'file' : 'systemd-remount-fs.service.in',
++	  'symlinks' : ['local-fs.target.wants/'],
++	},
+         {
+           'file' : 'systemd-repart.service.in',
+           'conditions' : ['ENABLE_REPART'],
+@@ -534,6 +540,7 @@
+         {
+           'file' : 'systemd-resolved.service.in',
+           'conditions' : ['ENABLE_RESOLVE'],
++	  'symlinks' : ['multi-user.target.wants/', 'dbus-org.freedesktop.resolve1.service'],
+         },
+         {
+           'file' : 'systemd-rfkill.service.in',
+@@ -607,6 +614,8 @@
+         {
+           'file' : 'systemd-timesyncd.service.in',
+           'conditions' : ['ENABLE_TIMESYNCD'],
++	  'symlinks' : ['multi-user.target.wants/'],
++
+         },
+         {
+           'file' : 'systemd-tmpfiles-clean.service',
