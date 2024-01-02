@@ -16,3 +16,4 @@ pkgconfig(pwquality)
 pkgconfig(xencontrol)
 pkgconfig(xkbcommon)
 polkit-dev
+pypi(pefile)
