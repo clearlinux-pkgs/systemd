@@ -7,7 +7,7 @@
 #
 Name     : systemd
 Version  : 255.3
-Release  : 341
+Release  : 342
 URL      : https://github.com/systemd/systemd-stable/archive/v255.3/systemd-stable-255.3.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v255.3/systemd-stable-255.3.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
@@ -323,7 +323,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1706822408
+export SOURCE_DATE_EPOCH=1706831444
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere"
 CLEAR_INTERMEDIATE_CXXFLAGS=$CLEAR_INTERMEDIATE_CFLAGS
@@ -679,7 +679,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/systemd-networkd-wait-online
 /usr/lib/systemd/systemd-oomd
 /usr/lib/systemd/systemd-pcrextend
-/usr/lib/systemd/systemd-pcrlock
 /usr/lib/systemd/systemd-portabled
 /usr/lib/systemd/systemd-pstore
 /usr/lib/systemd/systemd-quotacheck
@@ -1877,6 +1876,7 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/systemd-journal-gatewayd
 /usr/lib/systemd/systemd-journal-remote
 /usr/lib/systemd/systemd-journal-upload
+/usr/lib/systemd/systemd-pcrlock
 /usr/lib/udev/cdrom_id
 /usr/lib/udev/hwdb.d/20-OUI.hwdb
 /usr/lib/udev/hwdb.d/20-acpi-vendor.hwdb
