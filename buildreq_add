@@ -60,3 +60,4 @@ tpm2-tss-dev
 libfido2
 libfido2-dev
 pypi-pyelftools
+libxcrypt-dev32

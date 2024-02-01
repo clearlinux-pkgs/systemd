@@ -39,6 +39,7 @@ libnss_systemd.so.2:_nss_systemd_setgrent
 libnss_systemd.so.2:_nss_systemd_setpwent
 libnss_systemd.so.2:_nss_systemd_setsgent
 libnss_systemd.so.2:_nss_systemd_setspent
+libnss_systemd.so.2:crypt_token_external_path
 libsystemd.so.0:LIBSYSTEMD_209
 libsystemd.so.0:LIBSYSTEMD_211
 libsystemd.so.0:LIBSYSTEMD_213
@@ -72,6 +73,9 @@ libsystemd.so.0:LIBSYSTEMD_249
 libsystemd.so.0:LIBSYSTEMD_250
 libsystemd.so.0:LIBSYSTEMD_251
 libsystemd.so.0:LIBSYSTEMD_252
+libsystemd.so.0:LIBSYSTEMD_253
+libsystemd.so.0:LIBSYSTEMD_254
+libsystemd.so.0:LIBSYSTEMD_255
 libsystemd.so.0:sd_booted
 libsystemd.so.0:sd_bus_add_fallback
 libsystemd.so.0:sd_bus_add_fallback_vtable
@@ -145,6 +149,8 @@ libsystemd.so.0:sd_bus_emit_object_removed
 libsystemd.so.0:sd_bus_emit_properties_changed
 libsystemd.so.0:sd_bus_emit_properties_changed_strv
 libsystemd.so.0:sd_bus_emit_signal
+libsystemd.so.0:sd_bus_emit_signal_to
+libsystemd.so.0:sd_bus_emit_signal_tov
 libsystemd.so.0:sd_bus_emit_signalv
 libsystemd.so.0:sd_bus_enqueue_for_read
 libsystemd.so.0:sd_bus_error_add_map
@@ -257,6 +263,7 @@ libsystemd.so.0:sd_bus_message_new_method_error
 libsystemd.so.0:sd_bus_message_new_method_errorf
 libsystemd.so.0:sd_bus_message_new_method_return
 libsystemd.so.0:sd_bus_message_new_signal
+libsystemd.so.0:sd_bus_message_new_signal_to
 libsystemd.so.0:sd_bus_message_open_container
 libsystemd.so.0:sd_bus_message_peek_type
 libsystemd.so.0:sd_bus_message_read
@@ -375,6 +382,7 @@ libsystemd.so.0:sd_bus_unref
 libsystemd.so.0:sd_bus_wait
 libsystemd.so.0:sd_device_enumerator_add_match_parent
 libsystemd.so.0:sd_device_enumerator_add_match_property
+libsystemd.so.0:sd_device_enumerator_add_match_property_required
 libsystemd.so.0:sd_device_enumerator_add_match_subsystem
 libsystemd.so.0:sd_device_enumerator_add_match_sysattr
 libsystemd.so.0:sd_device_enumerator_add_match_sysname
@@ -465,6 +473,7 @@ libsystemd.so.0:sd_event_add_exit
 libsystemd.so.0:sd_event_add_inotify
 libsystemd.so.0:sd_event_add_inotify_fd
 libsystemd.so.0:sd_event_add_io
+libsystemd.so.0:sd_event_add_memory_pressure
 libsystemd.so.0:sd_event_add_post
 libsystemd.so.0:sd_event_add_signal
 libsystemd.so.0:sd_event_add_time
@@ -511,6 +520,7 @@ libsystemd.so.0:sd_event_source_get_time_accuracy
 libsystemd.so.0:sd_event_source_get_time_clock
 libsystemd.so.0:sd_event_source_get_userdata
 libsystemd.so.0:sd_event_source_is_ratelimited
+libsystemd.so.0:sd_event_source_leave_ratelimit
 libsystemd.so.0:sd_event_source_ref
 libsystemd.so.0:sd_event_source_send_child_signal
 libsystemd.so.0:sd_event_source_set_child_pidfd_own
@@ -523,6 +533,8 @@ libsystemd.so.0:sd_event_source_set_floating
 libsystemd.so.0:sd_event_source_set_io_events
 libsystemd.so.0:sd_event_source_set_io_fd
 libsystemd.so.0:sd_event_source_set_io_fd_own
+libsystemd.so.0:sd_event_source_set_memory_pressure_period
+libsystemd.so.0:sd_event_source_set_memory_pressure_type
 libsystemd.so.0:sd_event_source_set_prepare
 libsystemd.so.0:sd_event_source_set_priority
 libsystemd.so.0:sd_event_source_set_ratelimit
@@ -532,6 +544,7 @@ libsystemd.so.0:sd_event_source_set_time_accuracy
 libsystemd.so.0:sd_event_source_set_time_relative
 libsystemd.so.0:sd_event_source_set_userdata
 libsystemd.so.0:sd_event_source_unref
+libsystemd.so.0:sd_event_trim_memory
 libsystemd.so.0:sd_event_unref
 libsystemd.so.0:sd_event_wait
 libsystemd.so.0:sd_get_machine_names
@@ -546,6 +559,7 @@ libsystemd.so.0:sd_hwdb_ref
 libsystemd.so.0:sd_hwdb_seek
 libsystemd.so.0:sd_hwdb_unref
 libsystemd.so.0:sd_id128_from_string
+libsystemd.so.0:sd_id128_get_app_specific
 libsystemd.so.0:sd_id128_get_boot
 libsystemd.so.0:sd_id128_get_boot_app_specific
 libsystemd.so.0:sd_id128_get_invocation
@@ -583,6 +597,7 @@ libsystemd.so.0:sd_journal_get_events
 libsystemd.so.0:sd_journal_get_fd
 libsystemd.so.0:sd_journal_get_monotonic_usec
 libsystemd.so.0:sd_journal_get_realtime_usec
+libsystemd.so.0:sd_journal_get_seqnum
 libsystemd.so.0:sd_journal_get_timeout
 libsystemd.so.0:sd_journal_get_usage
 libsystemd.so.0:sd_journal_has_persistent_files
@@ -620,6 +635,7 @@ libsystemd.so.0:sd_journal_send_with_location
 libsystemd.so.0:sd_journal_sendv
 libsystemd.so.0:sd_journal_sendv_with_location
 libsystemd.so.0:sd_journal_set_data_threshold
+libsystemd.so.0:sd_journal_step_one
 libsystemd.so.0:sd_journal_stream_fd
 libsystemd.so.0:sd_journal_test_cursor
 libsystemd.so.0:sd_journal_wait
@@ -655,8 +671,18 @@ libsystemd.so.0:sd_pid_get_unit
 libsystemd.so.0:sd_pid_get_user_slice
 libsystemd.so.0:sd_pid_get_user_unit
 libsystemd.so.0:sd_pid_notify
+libsystemd.so.0:sd_pid_notify_barrier
 libsystemd.so.0:sd_pid_notify_with_fds
 libsystemd.so.0:sd_pid_notifyf
+libsystemd.so.0:sd_pid_notifyf_with_fds
+libsystemd.so.0:sd_pidfd_get_cgroup
+libsystemd.so.0:sd_pidfd_get_machine_name
+libsystemd.so.0:sd_pidfd_get_owner_uid
+libsystemd.so.0:sd_pidfd_get_session
+libsystemd.so.0:sd_pidfd_get_slice
+libsystemd.so.0:sd_pidfd_get_unit
+libsystemd.so.0:sd_pidfd_get_user_slice
+libsystemd.so.0:sd_pidfd_get_user_unit
 libsystemd.so.0:sd_seat_can_graphical
 libsystemd.so.0:sd_seat_can_multi_session
 libsystemd.so.0:sd_seat_can_tty
@@ -665,18 +691,22 @@ libsystemd.so.0:sd_seat_get_sessions
 libsystemd.so.0:sd_session_get_class
 libsystemd.so.0:sd_session_get_desktop
 libsystemd.so.0:sd_session_get_display
+libsystemd.so.0:sd_session_get_leader
 libsystemd.so.0:sd_session_get_remote_host
 libsystemd.so.0:sd_session_get_remote_user
 libsystemd.so.0:sd_session_get_seat
 libsystemd.so.0:sd_session_get_service
+libsystemd.so.0:sd_session_get_start_time
 libsystemd.so.0:sd_session_get_state
 libsystemd.so.0:sd_session_get_tty
 libsystemd.so.0:sd_session_get_type
 libsystemd.so.0:sd_session_get_uid
+libsystemd.so.0:sd_session_get_username
 libsystemd.so.0:sd_session_get_vt
 libsystemd.so.0:sd_session_is_active
 libsystemd.so.0:sd_session_is_remote
 libsystemd.so.0:sd_uid_get_display
+libsystemd.so.0:sd_uid_get_login_time
 libsystemd.so.0:sd_uid_get_seats
 libsystemd.so.0:sd_uid_get_sessions
 libsystemd.so.0:sd_uid_get_state

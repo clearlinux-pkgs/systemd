@@ -5,11 +5,9 @@ libc.so.6
 libcap.so.2
 libcrypt.so.1
 libgcc_s.so.1
-libip4tc.so.2
 libkmod.so.2
 libm.so.6
 libmount.so.1
-libp11-kit.so.0
 libpam.so.0
 libpam_misc.so.0
 libseccomp.so.2
