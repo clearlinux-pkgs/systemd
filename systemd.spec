@@ -6,10 +6,10 @@
 # autospec commit: fae1327
 #
 Name     : systemd
-Version  : 255.2
-Release  : 338
-URL      : https://github.com/systemd/systemd-stable/archive/v255.2/systemd-stable-255.2.tar.gz
-Source0  : https://github.com/systemd/systemd-stable/archive/v255.2/systemd-stable-255.2.tar.gz
+Version  : 255.3
+Release  : 339
+URL      : https://github.com/systemd/systemd-stable/archive/v255.3/systemd-stable-255.3.tar.gz
+Source0  : https://github.com/systemd/systemd-stable/archive/v255.3/systemd-stable-255.3.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
 Source2  : no-hibernate.conf
 Summary  : systemd System and Service Manager
@@ -90,7 +90,6 @@ BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(zlib)
 BuildRequires : polkit-dev
 BuildRequires : pypi(jinja2)
-BuildRequires : pypi(pefile)
 BuildRequires : pypi-lxml
 BuildRequires : pypi-pyelftools
 BuildRequires : python3
@@ -283,8 +282,8 @@ services components for the systemd package.
 
 
 %prep
-%setup -q -n systemd-stable-255.2
-cd %{_builddir}/systemd-stable-255.2
+%setup -q -n systemd-stable-255.3
+cd %{_builddir}/systemd-stable-255.3
 %patch -P 1 -p1
 %patch -P 2 -p1
 %patch -P 3 -p1
@@ -316,7 +315,7 @@ cd %{_builddir}/systemd-stable-255.2
 %patch -P 29 -p1
 %patch -P 30 -p1
 pushd ..
-cp -a systemd-stable-255.2 build32
+cp -a systemd-stable-255.3 build32
 popd
 
 %build
@@ -324,7 +323,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1706821555
+export SOURCE_DATE_EPOCH=1706822408
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere"
 CLEAR_INTERMEDIATE_CXXFLAGS=$CLEAR_INTERMEDIATE_CFLAGS
@@ -712,7 +711,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/lib/systemd/systemd-veritysetup
 /usr/lib/systemd/systemd-volatile-root
 /usr/lib/systemd/systemd-xdg-autostart-condition
-/usr/lib/systemd/ukify
 /usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator
 /usr/lib/systemd/user-generators/systemd-xdg-autostart-generator
 /usr/lib/systemd/user-preset/90-systemd.preset
@@ -855,7 +853,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/bin/systemd-vmspawn
 /usr/bin/timedatectl
 /usr/bin/udevadm
-/usr/bin/ukify
 /usr/bin/userdbctl
 /usr/bin/varlinkctl
 
@@ -2022,7 +2019,6 @@ rm -rvf %{buildroot}/var/lib/systemd
 /usr/share/man/man1/systemd-vmspawn.1
 /usr/share/man/man1/systemd.1
 /usr/share/man/man1/timedatectl.1
-/usr/share/man/man1/ukify.1
 /usr/share/man/man1/userdbctl.1
 /usr/share/man/man1/varlinkctl.1
 /usr/share/man/man5/binfmt.d.5

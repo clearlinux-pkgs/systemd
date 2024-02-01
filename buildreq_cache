@@ -1,10 +1,8 @@
-255.2
+255.3
 bash-completion-dev
 libpwquality-dev
 libxkbcommon-dev
 pkgconfig(32bzip2)
-pkgconfig(32passwdqc)
-pkgconfig(32xencontrol)
 pkgconfig(32xkbcommon)
 pkgconfig(audit)
 pkgconfig(bash-completion)
@@ -13,7 +11,5 @@ pkgconfig(libbpf)
 pkgconfig(passwdqc)
 pkgconfig(polkit-gobject-1)
 pkgconfig(pwquality)
-pkgconfig(xencontrol)
 pkgconfig(xkbcommon)
 polkit-dev
-pypi(pefile)
