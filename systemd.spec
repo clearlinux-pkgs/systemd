@@ -7,7 +7,7 @@
 #
 Name     : systemd
 Version  : 255.4
-Release  : 368
+Release  : 369
 URL      : https://github.com/systemd/systemd-stable/archive/v255.4/systemd-stable-255.4.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v255.4/systemd-stable-255.4.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
