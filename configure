@@ -20,3 +20,5 @@
 -Dlink-networkd-shared=true
 -Dlink-timesyncd-shared=true
 -Dbootloader=true
+-Ddefault-user-shell=/usr/bin/bash
+-Ddebug-shell=/usr/bin/bash
