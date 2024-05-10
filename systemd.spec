@@ -7,7 +7,7 @@
 #
 Name     : systemd
 Version  : 255.6
-Release  : 380
+Release  : 381
 URL      : https://github.com/systemd/systemd-stable/archive/v255.6/systemd-stable-255.6.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v255.6/systemd-stable-255.6.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
