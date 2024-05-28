@@ -6,10 +6,10 @@
 # autospec commit: 5905be9
 #
 Name     : systemd
-Version  : 255.6
-Release  : 385
-URL      : https://github.com/systemd/systemd-stable/archive/v255.6/systemd-stable-255.6.tar.gz
-Source0  : https://github.com/systemd/systemd-stable/archive/v255.6/systemd-stable-255.6.tar.gz
+Version  : 255.7
+Release  : 386
+URL      : https://github.com/systemd/systemd-stable/archive/v255.7/systemd-stable-255.7.tar.gz
+Source0  : https://github.com/systemd/systemd-stable/archive/v255.7/systemd-stable-255.7.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
 Source2  : no-hibernate.conf
 Summary  : systemd System and Service Manager
@@ -282,8 +282,8 @@ services components for the systemd package.
 
 
 %prep
-%setup -q -n systemd-stable-255.6
-cd %{_builddir}/systemd-stable-255.6
+%setup -q -n systemd-stable-255.7
+cd %{_builddir}/systemd-stable-255.7
 %patch -P 1 -p1
 %patch -P 2 -p1
 %patch -P 3 -p1
@@ -315,7 +315,7 @@ cd %{_builddir}/systemd-stable-255.6
 %patch -P 29 -p1
 %patch -P 30 -p1
 pushd ..
-cp -a systemd-stable-255.6 build32
+cp -a systemd-stable-255.7 build32
 popd
 
 %build
@@ -323,7 +323,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1715296429
+export SOURCE_DATE_EPOCH=1716913180
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere"
 CLEAR_INTERMEDIATE_CXXFLAGS=$CLEAR_INTERMEDIATE_CFLAGS
