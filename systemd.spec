@@ -7,7 +7,7 @@
 #
 Name     : systemd
 Version  : 256
-Release  : 396
+Release  : 397
 URL      : https://github.com/systemd/systemd-stable/archive/v256/systemd-stable-256.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v256/systemd-stable-256.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
