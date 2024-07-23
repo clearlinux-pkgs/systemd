@@ -18,20 +18,15 @@
 /etc/xdg:
 50-systemd-user.sh
 X11
-X11
 binfmt.d
 coredump.conf
 credstore
-credstore
-credstore.encrypted
 credstore.encrypted
 homed.conf
 install.d
 journal-remote.conf
 journal-upload.conf
 kernel
-kernel
-modules-load.d
 modules-load.d
 network
 networkd.conf
@@ -39,15 +34,11 @@ oomd.conf
 pstore.conf
 sleep.conf
 sysctl.d
-sysctl.d
 system
 systemd
 systemd
-systemd
-tmpfiles.d
 tmpfiles.d
 user
 xdg
-xdg' ']'
 xinit
 xinitrc.d
