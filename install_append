@@ -89,3 +89,4 @@ ln -s ../systemd-timesyncd-fix-localstatedir.service %{buildroot}/usr/lib/system
 
 # remove catalog
 rm -rvf %{buildroot}/var/lib/systemd
+chmod a-x %{buildroot}/usr/share/man/man3/*
