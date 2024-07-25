@@ -1,7 +1,7 @@
 0001-journal-raise-compression-threshold.patch
 0002-journal-Add-option-to-skip-boot-kmsg-events.patch
 0003-core-use-mmap-to-load-files.patch
-0004-Build-drop-pam-nsswitch-ship-legacy-tmpfiles-disable.patch
+#0004-Build-drop-pam-nsswitch-ship-legacy-tmpfiles-disable.patch
 0005-journal-flush-var-kmsg-after-starting-disable-kmsg-f.patch
 0006-logind-pam-fix-systemd-user-to-include-common-sessio.patch
 0007-sd-event-return-malloc-memory-reserves-when-main-loo.patch
