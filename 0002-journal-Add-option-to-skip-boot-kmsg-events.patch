@@ -49,17 +49,17 @@ index 4b0dd90cbb..e602f80541 100644
          <term><varname>TTYPath=</varname></term>
  
 diff --git a/src/journal/journald-gperf.gperf b/src/journal/journald-gperf.gperf
-index 9076597628..76fa93a60c 100644
+index 49987f5fae3a..0adb00464f79 100644
 --- a/src/journal/journald-gperf.gperf
 +++ b/src/journal/journald-gperf.gperf
-@@ -24,6 +24,7 @@ Journal.Compress,           config_parse_compress,   0, offsetof(Server, compres
- Journal.Seal,               config_parse_bool,       0, offsetof(Server, seal)
- Journal.ReadKMsg,           config_parse_bool,       0, offsetof(Server, read_kmsg)
- Journal.Audit,              config_parse_tristate,   0, offsetof(Server, set_audit)
-+Journal.BootKMsg,           config_parse_bool,       0, offsetof(Server, boot_kmsg)
- Journal.SyncIntervalSec,    config_parse_sec,        0, offsetof(Server, sync_interval_usec)
+@@ -24,6 +24,7 @@ Journal.Compress,           config_parse_compress,          0, offsetof(Server,
+ Journal.Seal,               config_parse_bool,              0, offsetof(Server, seal)
+ Journal.ReadKMsg,           config_parse_bool,              0, offsetof(Server, read_kmsg)
+ Journal.Audit,              config_parse_tristate,          0, offsetof(Server, set_audit)
++Journal.BootKMsg,           config_parse_bool,              0, offsetof(Server, boot_kmsg)
+ Journal.SyncIntervalSec,    config_parse_sec,               0, offsetof(Server, sync_interval_usec)
  # The following is a legacy name for compatibility
- Journal.RateLimitInterval,  config_parse_sec,        0, offsetof(Server, ratelimit_interval)
+ Journal.RateLimitInterval,  config_parse_sec,               0, offsetof(Server, ratelimit_interval)
 diff --git a/src/journal/journald-kmsg.c b/src/journal/journald-kmsg.c
 index 1b79e9366c..75387c38cd 100644
 --- a/src/journal/journald-kmsg.c

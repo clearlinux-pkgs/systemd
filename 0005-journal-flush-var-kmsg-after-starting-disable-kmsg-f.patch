@@ -25,24 +25,24 @@ index 18e3c18b8e..04a99dcfc0 100644
  
          journal_reset_metrics(&s->system_storage.metrics);
 diff --git a/src/journal/journald.c b/src/journal/journald.c
-index 3d4044295e..a60e34d7a6 100644
+index 2f013c2ab2b2..c3dc8f4b7bef 100644
 --- a/src/journal/journald.c
 +++ b/src/journal/journald.c
-@@ -53,8 +53,6 @@ int main(int argc, char *argv[]) {
-                 goto finish;
+@@ -57,8 +57,6 @@ static int run(int argc, char *argv[]) {
+                 return r;
  
-         server_vacuum(&server, false);
--        server_flush_to_var(&server, true);
--        server_flush_dev_kmsg(&server);
+         server_vacuum(s, /* verbose = */ false);
+-        server_flush_to_var(s, /* require_flag_file = */ true);
+-        server_flush_dev_kmsg(s);
  
-         if (server.namespace)
-                 log_debug("systemd-journald running as PID "PID_FMT" for namespace '%s'.", getpid_cached(), server.namespace);
-@@ -66,6 +64,9 @@ int main(int argc, char *argv[]) {
+         if (s->namespace)
+                 log_debug("systemd-journald running as PID "PID_FMT" for namespace '%s'.", getpid_cached(), s->namespace);
+@@ -70,6 +68,9 @@ static int run(int argc, char *argv[]) {
                                LOG_MESSAGE("Journal started"),
                                NULL);
  
-+        server_flush_to_var(&server, true);
-+        server_flush_dev_kmsg(&server);
++        server_flush_to_var(s, /* require_flag_file = */ true);
++        server_flush_dev_kmsg(s);
 +
          /* Make sure to send the usage message *after* flushing the
           * journal so entries from the runtime journals are ordered
