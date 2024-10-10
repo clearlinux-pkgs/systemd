@@ -1,5 +1,5 @@
 PKG_NAME := systemd
-URL = https://github.com/systemd/systemd-stable/archive/v256/systemd-stable-256.tar.gz
+URL = https://github.com/systemd/systemd-stable/archive/v255.9/systemd-stable-255.9.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common
