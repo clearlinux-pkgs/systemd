@@ -7,7 +7,7 @@
 #
 Name     : systemd
 Version  : 255.9
-Release  : 471
+Release  : 472
 URL      : https://github.com/systemd/systemd-stable/archive/v255.9/systemd-stable-255.9.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v255.9/systemd-stable-255.9.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
