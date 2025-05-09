@@ -7,7 +7,7 @@
 #
 Name     : systemd
 Version  : 255.18
-Release  : 473
+Release  : 474
 URL      : https://github.com/systemd/systemd-stable/archive/v255.18/systemd-stable-255.18.tar.gz
 Source0  : https://github.com/systemd/systemd-stable/archive/v255.18/systemd-stable-255.18.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
