@@ -39,7 +39,6 @@ libnss_systemd.so.2:_nss_systemd_setgrent
 libnss_systemd.so.2:_nss_systemd_setpwent
 libnss_systemd.so.2:_nss_systemd_setsgent
 libnss_systemd.so.2:_nss_systemd_setspent
-libnss_systemd.so.2:crypt_token_external_path
 libudev.so.1:LIBUDEV_183
 libudev.so.1:LIBUDEV_189
 libudev.so.1:LIBUDEV_196

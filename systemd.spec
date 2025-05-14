@@ -6,10 +6,10 @@
 # autospec commit: 99a7985
 #
 Name     : systemd
-Version  : 255.9
-Release  : 476
-URL      : https://github.com/systemd/systemd-stable/archive/v255.9/systemd-stable-255.9.tar.gz
-Source0  : https://github.com/systemd/systemd-stable/archive/v255.9/systemd-stable-255.9.tar.gz
+Version  : 255.18
+Release  : 477
+URL      : https://github.com/systemd/systemd-stable/archive/v255.18/systemd-stable-255.18.tar.gz
+Source0  : https://github.com/systemd/systemd-stable/archive/v255.18/systemd-stable-255.18.tar.gz
 Source1  : systemd-timesyncd-fix-localstatedir.service
 Source2  : no-hibernate.conf
 Summary  : systemd System and Service Manager
@@ -291,8 +291,8 @@ services components for the systemd package.
 
 
 %prep
-%setup -q -n systemd-stable-255.9
-cd %{_builddir}/systemd-stable-255.9
+%setup -q -n systemd-stable-255.18
+cd %{_builddir}/systemd-stable-255.18
 %patch -P 1 -p1
 %patch -P 2 -p1
 %patch -P 3 -p1
@@ -323,7 +323,7 @@ cd %{_builddir}/systemd-stable-255.9
 %patch -P 28 -p1
 %patch -P 29 -p1
 pushd ..
-cp -a systemd-stable-255.9 build32
+cp -a systemd-stable-255.18 build32
 popd
 
 %build
@@ -331,7 +331,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1747244353
+export SOURCE_DATE_EPOCH=1747248307
 export GCC_IGNORE_WERROR=1
 CLEAR_INTERMEDIATE_CFLAGS="-O2 -g -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -Wno-error -Wl,-z,max-page-size=0x4000 -march=westmere"
 CLEAR_INTERMEDIATE_CXXFLAGS=$CLEAR_INTERMEDIATE_CFLAGS
@@ -349,28 +349,30 @@ ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
 export GOAMD64=v2
 meson --libdir=lib64 --prefix=/usr --buildtype=plain -Dsmack=false \
+-Dkernel-install=false \
 -Dsysvinit-path= \
 -Dsysvrcnd-path= \
--Dxz=false \
--Dgcrypt=true \
--Dlz4=false \
--Dqrencode=false \
--Dpcre2=false \
--Dlibidn=false \
--Dlibidn2=false \
--Dman=true \
+-Dxz=disabled \
+-Dgcrypt=enabled \
+-Dlz4=disabled \
+-Dqrencode=disabled \
+-Dpcre2=disabled \
+-Dlibidn=disabled \
+-Dlibidn2=disabled \
+-Dman=enabled \
 -Ddefault-kill-user-processes=false \
 -Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" \
 -Ddefault-dnssec=no \
--Dzstd=true \
+-Dzstd=enabled \
 -Dsbat-distro=clearlinux \
 -Dsbat-distro-summary="Clear Linux OS for Intel (R) Architecture" \
 -Dsbat-distro-url=https://clearlinux.org/ \
 -Dlink-networkd-shared=true \
 -Dlink-timesyncd-shared=true \
--Dbootloader=true \
+-Dbootloader=enabled \
 -Ddefault-user-shell=/usr/bin/bash \
--Ddebug-shell=/usr/bin/bash  builddir
+-Ddebug-shell=/usr/bin/bash \
+-Dmode=release  builddir
 ninja -v -C builddir
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
@@ -379,28 +381,30 @@ CFLAGS="${CLEAR_INTERMEDIATE_CFLAGS}${CLEAR_INTERMEDIATE_CFLAGS:+ }-m32 -mstackr
 CXXFLAGS="${CLEAR_INTERMEDIATE_CXXFLAGS}${CLEAR_INTERMEDIATE_CXXFLAGS:+ }-m32 -mstackrealign"
 LDFLAGS="${CLEAR_INTERMEDIATE_LDFLAGS}${CLEAR_INTERMEDIATE_LDFLAGS:+ }-m32 -mstackrealign"
 meson --libdir=lib32 --prefix=/usr --buildtype=plain -Dsmack=false \
+-Dkernel-install=false \
 -Dsysvinit-path= \
 -Dsysvrcnd-path= \
--Dxz=false \
--Dgcrypt=true \
--Dlz4=false \
--Dqrencode=false \
--Dpcre2=false \
--Dlibidn=false \
--Dlibidn2=false \
--Dman=true \
+-Dxz=disabled \
+-Dgcrypt=enabled \
+-Dlz4=disabled \
+-Dqrencode=disabled \
+-Dpcre2=disabled \
+-Dlibidn=disabled \
+-Dlibidn2=disabled \
+-Dman=enabled \
 -Ddefault-kill-user-processes=false \
 -Dntp-servers="_gateway gateway 0.clearlinux.pool.ntp.org 1.clearlinux.pool.ntp.org 2.clearlinux.pool.ntp.org 3.clearlinux.pool.ntp.org time.intel.com" \
 -Ddefault-dnssec=no \
--Dzstd=true \
+-Dzstd=enabled \
 -Dsbat-distro=clearlinux \
 -Dsbat-distro-summary="Clear Linux OS for Intel (R) Architecture" \
 -Dsbat-distro-url=https://clearlinux.org/ \
 -Dlink-networkd-shared=true \
 -Dlink-timesyncd-shared=true \
--Dbootloader=true \
+-Dbootloader=enabled \
 -Ddefault-user-shell=/usr/bin/bash \
--Ddebug-shell=/usr/bin/bash -Dlibcryptsetup=false \
+-Ddebug-shell=/usr/bin/bash \
+-Dmode=release -Dlibcryptsetup=false \
 -Dgnutls=false \
 -Dlibcurl=false \
 -Delfutils=false \
@@ -851,7 +855,6 @@ chmod a-x %{buildroot}/usr/share/man/man*/*
 /usr/bin/systemd-tmpfiles
 /usr/bin/systemd-tty-ask-password-agent
 /usr/bin/systemd-umount
-/usr/bin/systemd-vmspawn
 /usr/bin/timedatectl
 /usr/bin/udevadm
 /usr/bin/ukify
@@ -893,6 +896,7 @@ chmod a-x %{buildroot}/usr/share/man/man*/*
 /usr/lib/udev/hwdb.d/70-analyzers.hwdb
 /usr/lib/udev/hwdb.d/70-av-production.hwdb
 /usr/lib/udev/hwdb.d/70-cameras.hwdb
+/usr/lib/udev/hwdb.d/70-hardware-wallets.hwdb
 /usr/lib/udev/hwdb.d/70-joystick.hwdb
 /usr/lib/udev/hwdb.d/70-pda.hwdb
 /usr/lib/udev/hwdb.d/70-sound-card.hwdb
@@ -1066,6 +1070,7 @@ chmod a-x %{buildroot}/usr/share/man/man*/*
 /usr/share/zsh/site-functions/_systemd-tmpfiles
 /usr/share/zsh/site-functions/_timedatectl
 /usr/share/zsh/site-functions/_udevadm
+/usr/share/zsh/site-functions/_varlinkctl
 
 %files dev
 %defattr(-,root,root,-)
@@ -2040,7 +2045,6 @@ chmod a-x %{buildroot}/usr/share/man/man*/*
 /usr/share/man/man1/systemd-stdio-bridge.1
 /usr/share/man/man1/systemd-tty-ask-password-agent.1
 /usr/share/man/man1/systemd-umount.1
-/usr/share/man/man1/systemd-vmspawn.1
 /usr/share/man/man1/systemd.1
 /usr/share/man/man1/timedatectl.1
 /usr/share/man/man1/ukify.1
@@ -2163,7 +2167,6 @@ chmod a-x %{buildroot}/usr/share/man/man*/*
 /usr/share/man/man7/udev.7
 /usr/share/man/man8/30-systemd-environment-d-generator.8
 /usr/share/man/man8/halt.8
-/usr/share/man/man8/kernel-install.8
 /usr/share/man/man8/libnss_myhostname.so.2.8
 /usr/share/man/man8/libnss_mymachines.so.2.8
 /usr/share/man/man8/libnss_resolve.so.2.8
